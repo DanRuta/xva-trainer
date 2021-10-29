@@ -1,0 +1,17 @@
+pipeline:
+   name: pyannote.audio.pipeline.speaker_diarization.SpeakerDiarization
+   params:
+      sad_scores:
+         sad_dihard:
+            duration: 2.0
+            step: 0.1
+      scd_scores:
+         scd_dihard:
+            duration: 2.0
+            step: 0.1
+      embedding:
+         emb_voxceleb:
+            duration: 2.0
+            step: 0.05
+      metric: cosine
+      method: affinity_propagation

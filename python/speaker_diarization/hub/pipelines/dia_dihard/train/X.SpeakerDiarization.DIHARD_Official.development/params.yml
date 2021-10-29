@@ -1,0 +1,21 @@
+loss: 0.30763724045346047
+params:
+  min_duration: 1.6366741056916303
+  speech_turn_assignment:
+    closest_assignment:
+      threshold: 1.110958400471309
+  speech_turn_clustering:
+    clustering:
+      damping: 0.6019704000864378
+      preference: -3.32072794669173
+  speech_turn_segmentation:
+    speaker_change_detection:
+      alpha: 0.0007794969976881276
+      min_duration: 2.2094674277923665
+    speech_activity_detection:
+      min_duration_off: 0.13583405625051126
+      min_duration_on: 0.0014190874731107286
+      offset: 0.7878607185085043
+      onset: 0.59405607642139
+      pad_offset: 0.0
+      pad_onset: 0.0

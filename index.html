@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>xVA Trainer</title>
+</head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<style id="cssHack">
+    ::selection {
+        background: gray;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(204,204,204, 0.5) !important;
+    }
+    a {
+        color: rgb(204, 204, 204);
+    }
+</style>
+<body>
+    <div id="chromeBar">
+        <div id="dragBar">xVA Trainer</div>
+        <div id="chromeActions">
+            <div id="chromeMin">&#x1F5D5;</div>
+            <div id="chromeMax">&#128470;</div>
+            <div id="chromeQuit">&#x2716;</div>
+        </div>
+    </div>
+    <div id="appcontent">
+        <div id="left">
+            <div class="top" id="topLeft">
+                <div id="selectedGameDisplay">New dataset</div>
+                <button id="datasetsPathButton" class="svgButton" style="margin-right: 2px;"></button>
+                <button id="newDatasetButton" style="height: 30px;width: 30px;">+</button>
+            </div>
+            <div class="content">
+                <div id="voiceTypeContainer"></div>
+            </div>
+        </div>
+        <div id="right">
+            <!-- <div id="rightBG1"></div> -->
+            <div id="rightBG2" style="background: linear-gradient(0deg, rgba(128,128,128,1) 0px, rgba(0,0,0,0)), url('assets/other-ccc-x-Other.jpg');"></div>
+            <div id="topRight" class="top">
+                <span></span>
+                <div id="title">Select dataset</div>
+                <svg style="display:none;" id="cogButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                    <path fill="black" stroke="white" stroke-width="3" d="M47.16,21.221l-5.91-0.966c-0.346-1.186-0.819-2.326-1.411-3.405l3.45-4.917c0.279-0.397,0.231-0.938-0.112-1.282 l-3.889-3.887c-0.347-0.346-0.893-0.391-1.291-0.104l-4.843,3.481c-1.089-0.602-2.239-1.08-3.432-1.427l-1.031-5.886 C28.607,2.35,28.192,2,27.706,2h-5.5c-0.49,0-0.908,0.355-0.987,0.839l-0.956,5.854c-1.2,0.345-2.352,0.818-3.437,1.412l-4.83-3.45 c-0.399-0.285-0.942-0.239-1.289,0.106L6.82,10.648c-0.343,0.343-0.391,0.883-0.112,1.28l3.399,4.863 c-0.605,1.095-1.087,2.254-1.438,3.46l-5.831,0.971c-0.482,0.08-0.836,0.498-0.836,0.986v5.5c0,0.485,0.348,0.9,0.825,0.985 l5.831,1.034c0.349,1.203,0.831,2.362,1.438,3.46l-3.441,4.813c-0.284,0.397-0.239,0.942,0.106,1.289l3.888,3.891 c0.343,0.343,0.884,0.391,1.281,0.112l4.87-3.411c1.093,0.601,2.248,1.078,3.445,1.424l0.976,5.861C21.3,47.647,21.717,48,22.206,48 h5.5c0.485,0,0.9-0.348,0.984-0.825l1.045-5.89c1.199-0.353,2.348-0.833,3.43-1.435l4.905,3.441 c0.398,0.281,0.938,0.232,1.282-0.111l3.888-3.891c0.346-0.347,0.391-0.894,0.104-1.292l-3.498-4.857 c0.593-1.08,1.064-2.222,1.407-3.408l5.918-1.039c0.479-0.084,0.827-0.5,0.827-0.985v-5.5C47.999,21.718,47.644,21.3,47.16,21.221z M25,32c-3.866,0-7-3.134-7-7c0-3.866,3.134-7,7-7s7,3.134,7,7C32,28.866,28.866,32,25,32z"></path>
+                </svg>
+            </div>
+            <div class="content">
+
+                <div id="batch_main" style="margin-left: 2.5vw;margin-right: 2.5vw;width: calc(95vw - 306px);">
+                    <span id="batchDropZoneNote">Drag and drop .txt/.csv files here, or start new line</span>
+                    <style id="outPathCSSHack" type="text/css">
+                        #batchRecordsHeader > div:nth-child(3), #batchRecordsContainer > div > div:nth-child(3) {
+                            min-width: 250px;
+                            max-width: 250px;
+                        }
+                    </style>
+                    <div id="batchRecordsHeader" style="display: none;z-index: 100;">
+                        <div id="i18n_batchh_num">#</div>
+                        <div id="i18n_batchh_game">Audio</div>
+                        <div id="i18n_batchh_outpath">File name</div>
+                        <div id="i18n_batchh_text">Text</div>
+                    </div>
+                    <div id="batchRecordsContainer">
+
+                    </div>
+                </div>
+
+                <textarea id="textInput"></textarea>
+
+                <div id="wave_container" style="display: flex;justify-content: center;align-items: center;height: 75px;">
+
+                </div>
+
+                <div id="buttons_container" style="display: flex;justify-content: center;width: 300px;margin: auto;">
+                    <button id="btn_record">Record (Ctrl d)</button>
+                    <button style="display: none;margin-left: 10px;" id="btn_clearRecord">Clear</button>
+                </div>
+
+                <div id="outFileNameContainer">
+                    Output file name:
+                    <input id="outFileNameInput" type="text" placeholder="output file name">
+                </div>
+
+
+                <style type="text/css">
+                    #keyboard_tips, #other_buttons, #bottomrow_buttons {
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 10px;
+                        font-weight: bold;
+                    }
+                    #keyboard_tips>div, #other_buttons>div, #bottomrow_buttons>div {
+                        display: flex;
+                        align-items: center;
+                        margin-right: 15px;
+                        color: #222;
+                    }
+                    .key_elem{
+                        background: #ccc;
+                        padding: 5px;
+                        margin: 2px;
+                        color: white;
+                        text-shadow: 0 0 2px black;
+                        margin-right: 5px;
+                    }
+
+                    #outFileNameContainer {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 25px;
+                        height: 25px;
+                        font-weight: bold;
+                        color: #222;
+                    }
+                    #outFileNameInput {
+                        margin-left: 10px;
+                    }
+
+                </style>
+                <div id="keyboard_tips">
+                    <div>
+                        <button id="btn_delete">Delete (Ctrl x)</button>
+                    </div>
+                    <div>
+                        <button id="btn_play">Play (Ctrl f)</button>
+                    </div>
+                    <div>
+                        <button id="btn_save">Save (Ctrl s)</button>
+                    </div>
+                    <div>
+                        <button id="btn_moveup">Move Up (&uarr;)</button>
+                    </div>
+                    <div>
+                        <button id="btn_movedown">Move Down (&darr;)</button>
+                    </div>
+                    <div>
+                        <button id="btn_newline">New line (Ctrl &darr;)</button>
+                    </div>
+                </div>
+                <div id="other_buttons">
+                    <div>
+                        <button id="btn_preprocessAudioButton">Pre-process audio</button>
+                    </div>
+                    <div>
+                        <button id="btn_autotranscribe">Auto-transcribe</button>
+                    </div>
+                    <div>
+                        <button id="btn_preprocessTextButton">Pre-process text</button>
+                    </div>
+                    <div>
+                        <button id="btn_cleanAudioText">Clean audio/text</button>
+                    </div>
+                    <div>
+                        <button id="btn_exportmodel">Export model</button>
+                    </div>
+                </div>
+                <div id="bottomrow_buttons">
+                    <div>
+                        <button id="btn_opendatasetfolder">Open</button>
+                    </div>
+                    <div id="addmissingmeta_btn_container" style="display: none">
+                        <button id="btn_addmissingmeta" style="background: red">Add missing metadata</button>
+                    </div>
+                    <div id="editdatasetmeta_btn_container" style="display: none;">
+                        <button id="btn_editdatasetmeta">Edit metadata</button>
+                    </div>
+                    <div>
+                        <button id="btn_deleteall">Delete data</button>
+                    </div>
+                    <div>
+                        <button id="btn_deletedataset">Delete dataset</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="cleanAudioTextContainer" style="display:none">
+            <div class="modal" style="height: 50vh;min-height: 500px;">
+                <h2>Clean up text and audio data</h2>
+                <div>
+                    Remove all audio with no associated transcript, and remove all text lines with no associated audio file.
+                </div>
+                <div style="margin-top: 10px">
+                    <button id="cleanTextAudioRunBtn">Clean</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="preprocessAudioContainer" style="display:none">
+            <div class="modal" style="height: 50vh;min-height: 500px;">
+                <h2>Pre-process audio</h2>
+                <div style="height: 100%" class="flexTable">
+                    <div>
+                        <div>Create a backup of the audio files</div>
+                        <div>
+                            <input id="prepAudioBackup" type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Convert all audio to mono 22050Hz .wav</div>
+                        <div>
+                            <input id="prepAudioConvert" type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Trim and splice out silence</div>
+                        <div>
+                            <input id="prepAudioTrimSilence" type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Remove audio files shorter than 1 second</div>
+                        <div>
+                            <input id="prepAudioDelShort" type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Remove audio files longer than 10 seconds</div>
+                        <div>
+                            <input id="prepAudioDelLong" type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px">
+                    <div id="prepAudioCurrentTask"></div>
+                    <div id="prepAudioInfo"></div>
+                    <div id="prepAudioProgress"></div>
+                    <div id="prepAudioCurrentFile"></div>
+                    <div id="prepAudioSpinner" class="spinner" style="display: none;margin-top: 10px;"></div>
+                </div>
+                <div style="margin-top: 10px">
+                    <button id="prepAudioStart">Start</button>
+                </div>
+            </div>
+        </div>
+        <div id="preprocessTextContainer" style="display:none">
+            <div class="modal" style="height: 40vh;min-height: 300px;">
+                <h2>Pre-process text</h2>
+                <div style="height: 100%" class="flexTable">
+                    <div>
+                        <div>Create a backup of the metadata.csv file</div>
+                        <div>
+                            <input id="prepTextBackup" type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Filter out blank lines</div>
+                        <div>
+                            <input id="prepTestFilterBlank" type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Filter out lines with the following characters (comma separated)</div>
+                        <div>
+                            <input id="prepTestFilterChars" type="checkbox" checked>
+                            <input id="prepTestFilterCharsList" type="text" value="(,),[,],{,}">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Filter out lines with duplicate file names (remove both)</div>
+                        <div>
+                            <input id="prepTestFilterDuplicates" type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px">
+                    <div id="prepTextSpinner" class="spinner" style="display: none;margin-top: 10px;"></div>
+                </div>
+                <div style="margin-top: 10px">
+                    <button id="prepTextStart">Start</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="settingsContainer" style="display:none">
+            <div class="modal">
+                <h2 id="i18n_settings">Settings</h2>
+                <div id="settingsOptionsContainer" class="flexTable">
+                    <!-- <div>
+                        <div id="i18n_setting_autoplay">Autoplay generated audio</div>
+                        <div>
+                            <input id="setting_autoplaygenCbx" type="checkbox" name="">
+                        </div>
+                    </div> -->
+                    <!-- <div>
+                        <div id="i18n_setting_darkmode">Dark mode text prompt</div>
+                        <div>
+                            <input id="setting_darkprompt" type="checkbox" name="">
+                        </div>
+                    </div> -->
+                    <div>
+                        <div id="i18n_setting_outpathwidth">Out Path column width (px)</div>
+                        <div>
+                            <input id="setting_outpathwidth" type="number" min="100" step="1">
+                        </div>
+                    </div>
+                    <!-- <div>
+                        <div id="i18n_setting_seqnumbering">Use sequential numbering for file names</div>
+                        <div>
+                            <input id="setting_output_num_seq" type="checkbox" name="">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="i18n_setting_base_speaker">Base app output device</div>
+                        <div>
+                            <select id="setting_base_speaker">
+                            </select>
+                        </div>
+                    </div> -->
+
+                    <!-- <hr style="width:100%"> -->
+
+
+                    <div>
+                        <div id="i18n_setting_microphone">Microphone</div>
+                        <div>
+                            <select id="setting_mic_selection">
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Microphone volume</div>
+                        <div>
+                            <div style="display: flex;align-items: center;justify-content: space-between;">
+                                <div id="setting_micVolume_display">100%</div>
+                                <input style="width:200px" id="setting_micVolume" type="range" min="0" max="100" step="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Use background noise removal</div>
+                        <div>
+                            <input id="setting_doNoiseRemoval" type="checkbox" name="">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Background noise</div>
+                        <div>
+                            <div style="width: 350px;display: flex;align-items: flex-end;justify-content: center;">
+                                <button id="recordNoiseButton">Record noise</button>
+                                <div id="noiseContainer" style="width: 200px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Noise removal strength (0.2-0.3 recommended)</div>
+                        <div>
+                            <input id="setting_noiseRemStrength" name="" placeholder="0.25" type="number" step=0.01 min=0 max=1>
+                        </div>
+                    </div>
+
+                    <!-- <div style="min-height: 65px;">
+                        <div id="i18n_setting_s2s_bgnoise">Remove background noise from microphone. You need to record a background noise clip first. (requires sox >= v14.4.2) </div>
+                        <div>
+                            <div style="display: flex;align-items: center;">
+                                <input style="margin-right: 20px;" id="setting_s2s_removeNoise" type="checkbox" name="">
+                                <button id="s2s_settingsRecNoiseBtn">Record noise</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="i18n_setting_s2s_bgnoise_strength">Noise removal strength (0.2-0.3 recommended)</div>
+                        <div>
+                            <input id="setting_s2s_noiseRemStrength" name="" placeholder="0.25" type="number" step=0.01 min=0 max=1>
+                        </div>
+                    </div> -->
+
+
+
+
+                    <hr style="width:100%">
+                    <div>
+                        <div>Datasets location</div>
+                        <div>
+                            <input id="setting_datasets_input" name="">
+                        </div>
+                    </div>
+<!--                     <div id="setting_out_path_container" style="display: none">
+                        <div id="setting_out_path_label"></div>
+                        <div>
+                            <input id="setting_out_path_input" name="">
+                        </div>
+                    </div> -->
+                </div>
+                <div id="resetBtnsContainer" style="width:100%;height: 60px;">
+                    <button style="padding: 0px;" id="reset_settings_btn">Reset Settings</button>
+                    <!-- <button style="padding: 0px;" id="reset_paths_btn">Reset Paths</button> -->
+                </div>
+                <div id="app_version">v1.0.0</div>
+            </div>
+        </div>
+
+        <div id="toolsContainer" style="display:none">
+            <div class="modal" style="width: 70vw;height: 50vh;">
+                <h1>Tools</h1>
+                <div style="display:flex;width: 65vw;height: 70vh;">
+                    <div id="toolsList" style="display: flex;flex-direction: column;background: rgb(75,75,75);height: 100%;width: 250px;overflow-y: auto;"></div>
+                    <div style="width: calc(75vw - 275px);height: 100%;margin-left: 25px;">
+                        <h3 id="toolNameElem">Select a tool from the menu on the left</h3>
+                        <div id="toolContent" style="display:none;height: 100%;width: 100%;">
+                            <div id="toolDescription"></div>
+                            <div id="toolsInfo" style="height: 20px;margin-top: 40px;"></div>
+                            <div id="toolsCurrentFile" style="height: 20px;"></div>
+                            <div>
+                                <button id="toolsOpenInput">Open input directory</button>
+                                <button id="toolsRunTool">Run tool</button>
+                                <button id="toolsOpenOutput">Open output directory</button>
+                            </div>
+                            <div id="toolProgressInfo" style="height: 50px;display: flex;justify-content: center;align-items: center;">
+                            </div>
+                            <div id="toolsSpinner" class="spinner" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="datasetMetaContainer" style="display: none">
+            <div class="modal" style="width: 40vw;height: 40vh;min-height: 550px;">
+                <h2 id="datasetMetaTitle">New dataset</h2>
+                <div class="flexTable">
+                    <div>
+                        <div>Voice Name:</div>
+                        <div>
+                            <input id="datasetMeta_voiceName" value="Your voice name">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Game ID</div>
+                        <div>
+                            <input id="datasetMeta_gameId" value="other">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Game ID code</div>
+                        <div>
+                            <input id="datasetMeta_gameIdCode" value="x">
+                        </div>
+                    </div>
+                    <div>
+                        <div style="width: 40vw;margin-left: 5vw;">Game ID code follows the naming convention for xVASynth's app name for different games. Eg Skyrim is sk (SKVASynth), Fallout 4 is f4 (F4VASynth), Oblivion is OB (OBVASynth), and so on. You MUST use the correct code for your game. x fits the "other" game ID.</div>
+                    </div>
+                    <div></div>
+                    <div>
+                        <div>Voice ID</div>
+                        <div>
+                            <input id="datasetMeta_voiceId" value="your_voice_name">
+                        </div>
+                    </div>
+                    <div style="font-size: 10pt;color: #999;">
+                        <div>Composed ID:</div>
+                        <div id="composedVoiceId">x_your_voice_name</div>
+                    </div>
+                    <div>
+                        <div>Gender</div>
+                        <div style="flex-direction: row;justify-content: space-evenly;">
+                            <span>
+                                <input id="datasetMeta_gender_male" type="checkbox" checked>
+                                Male
+                            </span>
+                            <span>
+                                <input id="datasetMeta_gender_female" type="checkbox">
+                                Female
+                            </span>
+                            <span>
+                                <input id="datasetMeta_gender_other" type="checkbox">
+                                Other
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Language code</div>
+                        <div>
+                            <input id="datasetMeta_langcode" value="en">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Model version</div>
+                        <div>
+                            <input id="datasetMeta_modelVersion" type="number" min=1 step=0.1 value=1>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="datasetMetaFinishButtonContainer"></div>
+            </div>
+        </div>
+
+
+        <div id="modalContainer" style="display:none"></div>
+    </div>
+</div>
+<div id="toolsIcon">
+    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="240.000000pt" height="240.000000pt" viewBox="0 0 240.000000 240.000000"
+     preserveAspectRatio="xMidYMid meet">
+    <g transform="translate(0.000000,240.000000) scale(0.100000,-0.100000)"
+    fill="#ffffff" stroke="none">
+    <path d="M511 2390 c-24 -5 -46 -12 -49 -15 -4 -3 79 -91 182 -194 l189 -189
+    -6 -55 c-17 -164 -199 -347 -362 -364 l-57 -6 -189 189 c-103 103 -191 186
+    -194 183 -14 -15 -27 -133 -22 -207 7 -101 48 -226 101 -304 82 -125 226 -227
+    371 -263 33 -8 115 -17 181 -18 197 -6 151 29 769 -587 526 -525 530 -528 589
+    -545 232 -67 438 139 371 371 -17 59 -20 63 -545 589 -616 618 -581 572 -587
+    769 -1 66 -10 148 -18 181 -68 270 -304 460 -584 471 -53 2 -116 -1 -140 -6z"/>
+    </g>
+    </svg>
+</div>
+<div id="settingsCog">
+    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+     width="1280.000000pt" height="1280.000000pt" viewBox="0 0 1280.000000 1280.000000"
+     preserveAspectRatio="xMidYMid meet">
+    <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
+    fill="#ffffff" stroke="none">
+    <path d="M6010 12794 c-25 -2 -103 -9 -175 -15 -143 -12 -390 -49 -503 -74
+    l-72 -17 0 -529 0 -530 -139 -207 c-158 -234 -272 -376 -371 -461 -174 -150
+    -329 -225 -570 -277 -67 -15 -129 -18 -290 -18 -216 0 -338 13 -540 59 l-103
+    23 -366 366 -367 367 -139 -112 c-409 -327 -760 -689 -1070 -1102 l-58 -78
+    355 -357 356 -357 40 -105 c99 -258 137 -439 137 -655 0 -152 -9 -214 -47
+    -339 -97 -315 -393 -608 -871 -861 l-104 -55 -510 0 c-437 0 -512 -2 -516 -14
+    -10 -26 -55 -336 -69 -471 -8 -82 -13 -266 -12 -495 0 -373 10 -553 54 -954
+    11 -99 20 -183 20 -188 0 -4 227 -8 504 -8 l503 0 84 -34 c417 -169 661 -374
+    800 -672 141 -299 140 -732 -2 -1218 l-21 -71 -356 -357 -356 -357 27 -40 c45
+    -68 219 -281 350 -427 251 -282 517 -537 771 -740 l130 -105 371 371 371 370
+    79 10 c142 17 511 23 645 11 434 -40 741 -184 989 -464 75 -86 193 -261 250
+    -373 l41 -81 0 -525 0 -525 103 -16 c144 -23 406 -54 577 -69 189 -17 765 -16
+    935 0 137 14 468 59 498 68 16 5 17 39 17 538 l0 532 46 95 c141 290 366 525
+    634 659 117 59 291 114 445 141 113 20 164 23 385 24 154 0 302 -5 375 -14
+    l120 -13 397 -400 398 -401 37 29 c85 63 356 286 468 384 302 265 573 556 755
+    813 l34 48 -397 397 -397 397 -34 170 c-59 293 -70 384 -70 585 -1 143 4 204
+    18 270 48 220 136 387 291 549 142 149 293 255 533 375 l132 66 575 0 575 0 5
+    23 c7 35 34 248 50 407 52 515 43 1075 -26 1529 -11 75 -22 144 -25 154 -5 16
+    -42 17 -589 17 l-584 0 -128 64 c-540 271 -784 609 -818 1136 -10 155 22 485
+    75 760 l10 55 405 405 405 405 -64 93 c-205 303 -507 614 -872 897 -182 143
+    -372 278 -382 273 -5 -1 -184 -174 -396 -383 -279 -274 -397 -384 -424 -393
+    -20 -8 -100 -27 -177 -43 -747 -155 -1306 99 -1725 786 l-60 99 0 553 c0 455
+    -2 553 -13 553 -8 0 -94 9 -193 20 -364 40 -536 51 -829 54 -165 2 -320 2
+    -345 0z m725 -4200 c242 -29 482 -102 720 -219 252 -124 440 -260 636 -461
+    291 -300 495 -679 589 -1095 65 -289 67 -678 4 -964 -181 -817 -764 -1463
+    -1548 -1714 -241 -77 -425 -105 -691 -105 -372 0 -669 68 -1000 229 -332 161
+    -616 393 -826 675 -113 152 -159 227 -239 392 -117 239 -193 507 -221 777 -16
+    153 -6 431 20 586 123 727 562 1329 1214 1665 420 217 856 293 1342 234z"/>
+    </g>
+    </svg>
+</div>
+</body>
+<script>
+"use strict"
+const {remote} = require("electron")
+// createElem
+"use strict";function _toConsumableArray(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};window.createElem=function(){for(var e=arguments.length,t=Array(e),r=0;r<e;r++)t[r]=arguments[r];var n=1;if(Number.isInteger(t[0])){if(!(t[0]>0))throw new Error("Element count must be larger than 0. Actual value: "+t[0]);n=t[0],t.shift()}else if(Number(t[0])===t[0]&&t[0]%1!=0)throw new Error("Floats are not supported for element count.");var o=t[0]?t[0]:"div";if(t.shift(),"string"!=typeof o)throw new Error("Tag name must be a string");var a=document.createElement(o.replace(/(#.*)|(\..*)/g,"")),s=o.match(/#(?:(?![#\.]).)*/),c=o.match(/\.(?:(?![#\.]).)*/g);if(s&&(a.id=s[0].substr(1,s[0].length)),c&&(a.className=c.map(function(e){return e.substr(1,e.length)}).join(" ")),t.length)if("string"==typeof t[0])a.innerHTML=t[0],t.shift();else if(!(Object(t[0])!==t[0]||t[0]instanceof HTMLElement||Array.isArray(t[0]))){for(var i in t[0])!function(){switch(i){case"class":a.className=t[0].class;break;case"style":var e=t[0].style;if(null!=e&&void 0!=e&&e.constructor===Object)a.style.cssText=Object.keys(e).map(function(t){return t.replace(/[A-Z]/g,function(e){return"-"+e.toLowerCase()})+":"+("number"==typeof e[t]?e[t]+"px":e[t])}).join(";");else{if("string"!=typeof e)throw new Error("Style value must be either object or string.");a.style.cssText=e}break;case"events":Object.keys(t[0].events).forEach(function(e){var r=t[0].events[e];Array.isArray(r)?r.forEach(function(t){return a.addEventListener(e,t)}):"function"==typeof r&&a.addEventListener(e,r)});break;default:a.setAttribute(i,t[0][i])}}();t.shift()}var u=function e(t){switch(!0){case t instanceof HTMLElement:a.appendChild(t);break;case Array.isArray(t):t.forEach(e);break;case!!t&&t.constructor===Object:throw new Error("Multiple attributes objects not supported");default:null!=t&&console.warn("Unsupported parameter. Type: "+(void 0===t?"undefined":_typeof(t))+" Value:",t)}};return t.forEach(u),n>1?[].concat(_toConsumableArray(new Array(n))).map(function(e){return a.cloneNode()}):a};
+
+// Chrome
+chromeMin.addEventListener("click", () => remote.getCurrentWindow().minimize())
+chromeMax.addEventListener("click", () => {
+    const w = remote.getCurrentWindow()
+    w.isMaximized() ? w.unmaximize() : w.maximize()
+})
+chromeQuit.addEventListener("click", () => remote.getCurrentWindow().close())
+</script>
+<style id="pluginsCSS" type="text/css"></style>
+<script src="lib/recorder.js"></script>
+<script src="javascript/script.js"></script>
+<script src="lib/wavesurfer.js"></script>
+</html>
