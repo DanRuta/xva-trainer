@@ -50,6 +50,13 @@ const tools = {
         inputDirectory: `${window.path}/python/audio_norm/input`,
         outputDirectory: `${window.path}/python/audio_norm/output/`,
         inputFileType: ".wav"
+    },
+    "WEM to OGG": {
+        taskId: "wem2ogg",
+        description: "Convert .wem files to .ogg files. Use the audio formatting tool to then convert the .ogg files to the .wav format required by tools/models.",
+        inputDirectory: `${window.path}/python/wem2ogg/input`,
+        outputDirectory: `${window.path}/python/wem2ogg/output/`,
+        inputFileType: ".wem"
     }
 }
 

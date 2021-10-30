@@ -43,6 +43,10 @@ class ModelsManager(object):
                 from python.audio_norm.model import AudioNormalizer
                 self.models_bank[model_key] = AudioNormalizer(self.logger, self.PROD, self.device, self)
 
+            if model_key=="wem2ogg":
+                from python.wem2ogg.model import Wem2Ogg
+                self.models_bank[model_key] = Wem2Ogg(self.logger, self.PROD, self.device, self)
+
             if model_key=="silence_cut":
                 from python.silence_cut.model import SilenceCutter
                 self.models_bank[model_key] = SilenceCutter(self.logger, self.PROD, self.device, self)

@@ -3,6 +3,9 @@ xVAEnvCPU
 envXVATrainer
 node_modules
 *.wav
+*.mp3
+*.ogg
+*.wem
 output/*.wav
 output/**/*.wav
 output/*.mp3
