@@ -47,6 +47,10 @@ class ModelsManager(object):
                 from python.wem2ogg.model import Wem2Ogg
                 self.models_bank[model_key] = Wem2Ogg(self.logger, self.PROD, self.device, self)
 
+            if model_key=="cluster_speakers":
+                from python.cluster_speakers.model import ClusterSpeakers
+                self.models_bank[model_key] = ClusterSpeakers(self.logger, self.PROD, self.device, self)
+
             if model_key=="silence_cut":
                 from python.silence_cut.model import SilenceCutter
                 self.models_bank[model_key] = SilenceCutter(self.logger, self.PROD, self.device, self)

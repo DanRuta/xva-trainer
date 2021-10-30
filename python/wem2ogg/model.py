@@ -30,10 +30,10 @@ class Wem2Ogg(object):
         pass
 
     def runTask (self, data, websocket=None):
-        return self.normalize(data, websocket)
+        return self.convert(data, websocket)
 
 
-    async def normalize(self, data, websocket):
+    async def convert(self, data, websocket):
 
         inPath, outputDirectory = data["inPath"], data["outputDirectory"]
         outputPath = f'{outputDirectory}/{inPath.split("/")[-1].split(".")[0]}.ogg'
@@ -60,46 +60,5 @@ class Wem2Ogg(object):
             if websocket is not None:
                 await websocket.send(json.dumps({"key": "tasks_error", "data": traceback.format_exc()}))
 
-
-
-
-        # Part 2
-        # startupinfo = subprocess.STARTUPINFO()
-        # startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        # try:
-        #     sp = subprocess.Popen(f'{self.tool_path}/revorb/revorb.exe "{inPath.replace(".wem", ".ogg")}" "{outputPath}"', startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-        #     stdout, stderr = sp.communicate()
-        #     stderr = stderr.decode("utf-8")
-
-        #     self.logger.info("stdout: "+ stdout.decode("utf-8"))
-
-        #     if len(stderr):
-        #         print("stderr", stderr)
-        #         self.logger.info("stderr: "+ stderr)
-
-        #         if websocket is not None:
-        #             await websocket.send(json.dumps({"key": "tasks_error", "data": stderr}))
-
-        # except:
-        #     self.logger.info(traceback.format_exc())
-        #     if websocket is not None:
-        #         await websocket.send(json.dumps({"key": "tasks_error", "data": traceback.format_exc()}))
-
-
-
-
-
         if websocket is not None:
             await websocket.send(json.dumps({"key": "tasks_next"}))
-
-
-
-
-
-
-
-
-
-
-

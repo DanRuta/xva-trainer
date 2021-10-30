@@ -57,6 +57,13 @@ const tools = {
         inputDirectory: `${window.path}/python/wem2ogg/input`,
         outputDirectory: `${window.path}/python/wem2ogg/output/`,
         inputFileType: ".wem"
+    },
+    "Cluster speakers": {
+        taskId: "cluster_speakers",
+        description: "Group up audio files of speakers into several clusters",
+        inputDirectory: `${window.path}/python/cluster_speakers/input`,
+        outputDirectory: `${window.path}/python/cluster_speakers/output/`,
+        inputFileType: "folder"
     }
 }
 
@@ -140,7 +147,10 @@ toolsRunTool.addEventListener("click", () => {
 
     window.tools_state.taskFiles = fs.readdirSync(window.tools_state.inputDirectory)
 
-    if (window.tools_state.inputFileType) {
+    if (window.tools_state.inputFileType=="folder") {
+        window.tools_state.taskFiles = [""]
+
+    } else if (window.tools_state.inputFileType) {
         window.tools_state.taskFiles = window.tools_state.taskFiles.filter(f => f.endsWith(window.tools_state.inputFileType))
     }
 
@@ -150,7 +160,11 @@ toolsRunTool.addEventListener("click", () => {
 const doNextTaskItem = () => {
     const inPath = `${window.tools_state.inputDirectory}/${window.tools_state.taskFiles[window.tools_state.taskFileIndex]}`
 
-    window.tools_state.currentFileElem.innerHTML = `File: ${window.tools_state.taskFiles[window.tools_state.taskFileIndex]}`
+    if (window.tools_state.taskFiles[window.tools_state.taskFileIndex].length) {
+        window.tools_state.currentFileElem.innerHTML = `File: ${window.tools_state.taskFiles[window.tools_state.taskFileIndex]}`
+    } else {
+        window.tools_state.currentFileElem.innerHTML = ""
+    }
 
     // const toolMeta = Object.keys(tools).find(key => tools[key].taskId==tools_state.taskId)
     // const toolSettings = toolMeta.toolSettings || {}
