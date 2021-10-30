@@ -44,6 +44,13 @@ const tools = {
         outputDirectory: `${window.path}/python/audio_source_separation/output/`,
         inputFileType: ".wav"
     },
+    "Audio normalization": {
+        taskId: "normalize",
+        description: "Normalize audio (EBU R128). Use this if your dataset contains audio from multiple sources. Don't use if you got your data straight from game files (only) and you plan to integrate synthesized audio back into the game.",
+        inputDirectory: `${window.path}/python/audio_norm/input`,
+        outputDirectory: `${window.path}/python/audio_norm/output/`,
+        inputFileType: ".wav"
+    }
 }
 
 
@@ -171,7 +178,6 @@ window.websocket_handlers["tasks_error"] = (data) => {
 }
 
 window.websocket_handlers["tasks_next"] = (data) => {
-    // console.log("tasks_next")
     window.tools_state.progressElem.innerHTML = `${window.tools_state.taskFileIndex}/${window.tools_state.taskFiles.length} files done...`
 
     if (window.tools_state.taskFileIndex<window.tools_state.taskFiles.length-1) {
@@ -460,8 +466,7 @@ prepTextStart.addEventListener("click", () => {
     window.refreshRecordsList(window.appState.currentDataset)
 })
 
-
-
+// Clean the data
 cleanTextAudioRunBtn.addEventListener("click", () => {
 
     window.tools_state.running = true

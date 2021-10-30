@@ -39,6 +39,10 @@ class ModelsManager(object):
                 from python.audio_format.model import AudioFormatter
                 self.models_bank[model_key] = AudioFormatter(self.logger, self.PROD, self.device, self)
 
+            if model_key=="normalize":
+                from python.audio_norm.model import AudioNormalizer
+                self.models_bank[model_key] = AudioNormalizer(self.logger, self.PROD, self.device, self)
+
             if model_key=="silence_cut":
                 from python.silence_cut.model import SilenceCutter
                 self.models_bank[model_key] = SilenceCutter(self.logger, self.PROD, self.device, self)
