@@ -64,6 +64,14 @@ const tools = {
         inputDirectory: `${window.path}/python/cluster_speakers/input`,
         outputDirectory: `${window.path}/python/cluster_speakers/output/`,
         inputFileType: "folder"
+    },
+    "Speaker similarity search": {
+        taskId: "speaker_search",
+        description: "Use one or more speaker audio files as a query to search a big corpus of speaker audio files for similarity. The corpus is copied into the output folder with numerically incremental prefix filenames, such that the files are sorted by similarity to your search query.",
+        inputDirectory: `${window.path}/python/speaker_search/query`,
+        inputDirectory2: `${window.path}/python/speaker_search/corpus`,
+        outputDirectory: `${window.path}/python/speaker_search/results/`,
+        inputFileType: "folder"
     }
 }
 
@@ -100,6 +108,7 @@ Object.keys(tools).forEach(toolName => {
 
         window.tools_state.taskId = tool.taskId
         window.tools_state.inputDirectory = tool.inputDirectory
+        window.tools_state.inputDirectory2 = tool.inputDirectory2
         window.tools_state.outputDirectory = tool.outputDirectory
         window.tools_state.inputFileType = tool.inputFileType
 
@@ -107,6 +116,12 @@ Object.keys(tools).forEach(toolName => {
         window.tools_state.progressElem = toolProgressInfo
         window.tools_state.infoElem = toolsInfo
         window.tools_state.currentFileElem = toolsCurrentFile
+
+        if (tool.inputDirectory2) {
+            toolsOpenInput2.style.display = "inline-block"
+        } else {
+            toolsOpenInput2.style.display = "none"
+        }
 
         if (tool.setupFn) {
             tool.setupFn(tool.taskId)
@@ -122,6 +137,17 @@ toolsOpenInput.addEventListener("click", () => {
         shell.showItemInFolder(`${window.tools_state.inputDirectory}/${files[0]}`)
     } else {
         shell.showItemInFolder(`${window.tools_state.inputDirectory}`)
+    }
+})
+toolsOpenInput2.addEventListener("click", () => {
+    if (window.tools_state.inputDirectory2) {
+        // Until I finally upgrade Electron version, to gain access to the function that implicitly does this
+        const files = fs.readdirSync(window.tools_state.inputDirectory2)
+        if (files.length) {
+            shell.showItemInFolder(`${window.tools_state.inputDirectory2}/${files[0]}`)
+        } else {
+            shell.showItemInFolder(`${window.tools_state.inputDirectory2}`)
+        }
     }
 })
 toolsOpenOutput.addEventListener("click", () => {
@@ -159,6 +185,7 @@ toolsRunTool.addEventListener("click", () => {
 
 const doNextTaskItem = () => {
     const inPath = `${window.tools_state.inputDirectory}/${window.tools_state.taskFiles[window.tools_state.taskFileIndex]}`
+    const inPath2 = window.tools_state.inputDirectory2
 
     if (window.tools_state.taskFiles[window.tools_state.taskFileIndex].length) {
         window.tools_state.currentFileElem.innerHTML = `File: ${window.tools_state.taskFiles[window.tools_state.taskFileIndex]}`
@@ -174,6 +201,7 @@ const doNextTaskItem = () => {
     window.ws.send(JSON.stringify({model: window.tools_state.taskId, task: "runTask", data: {
         outputDirectory: window.tools_state.outputDirectory,
         toolSettings,
+        inPath2,
         inPath
     }}))
 }
