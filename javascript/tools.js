@@ -72,6 +72,14 @@ const tools = {
         inputDirectory2: `${window.path}/python/speaker_search/corpus`,
         outputDirectory: `${window.path}/python/speaker_search/results/`,
         inputFileType: "folder"
+    },
+    "Speaker cluster similarity search": {
+        taskId: "speaker_cluster_search",
+        description: "Use one or more speaker audio files as a query to search a larger corpus of data, sorting whole groups (clusters) as results at a time. Same as speaker search, but treating each folder of audio in the input folder (same structure as the output of the clustering tool) as a data item, before copying it into the ouput directory.",
+        inputDirectory: `${window.path}/python/speaker_cluster_search/query`,
+        inputDirectory2: `${window.path}/python/speaker_cluster_search/corpus`,
+        outputDirectory: `${window.path}/python/speaker_cluster_search/results/`,
+        inputFileType: "folder"
     }
 }
 

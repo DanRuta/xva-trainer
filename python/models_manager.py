@@ -55,6 +55,10 @@ class ModelsManager(object):
                 from python.speaker_search.model import SpeakerSearch
                 self.models_bank[model_key] = SpeakerSearch(self.logger, self.PROD, self.device, self)
 
+            if model_key=="speaker_cluster_search":
+                from python.speaker_cluster_search.model import SpeakerClusterSearch
+                self.models_bank[model_key] = SpeakerClusterSearch(self.logger, self.PROD, self.device, self)
+
             if model_key=="silence_cut":
                 from python.silence_cut.model import SilenceCutter
                 self.models_bank[model_key] = SilenceCutter(self.logger, self.PROD, self.device, self)
