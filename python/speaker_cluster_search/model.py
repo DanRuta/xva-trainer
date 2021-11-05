@@ -41,8 +41,6 @@ class SpeakerClusterSearch(object):
 
     async def search(self, data, websocket):
 
-        self.logger.info("data: "+ str(", ".join(list(data.keys()))))
-
         inPath, inPath2, outputDirectory = data["inPath"], data["inPath2"], data["outputDirectory"]
         shutil.rmtree(outputDirectory, ignore_errors=True)
 

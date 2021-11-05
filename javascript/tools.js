@@ -80,6 +80,13 @@ const tools = {
         inputDirectory2: `${window.path}/python/speaker_cluster_search/corpus`,
         outputDirectory: `${window.path}/python/speaker_cluster_search/results/`,
         inputFileType: "folder"
+    },
+    "Transcribe": {
+        taskId: "transcribe",
+        description: "Automatically generate a transcript for the speaker audio files in the input folder. This is the same tool that is available on the main screen.",
+        inputDirectory: `${window.path}/python/transcribe/input`,
+        outputDirectory: `${window.path}/python/transcribe/output/`,
+        inputFileType: "folder"
     }
 }
 

@@ -59,6 +59,10 @@ class ModelsManager(object):
                 from python.speaker_cluster_search.model import SpeakerClusterSearch
                 self.models_bank[model_key] = SpeakerClusterSearch(self.logger, self.PROD, self.device, self)
 
+            if model_key=="transcribe":
+                from python.transcribe.model import Wav2Vec2PlusPuncTranscribe
+                self.models_bank[model_key] = Wav2Vec2PlusPuncTranscribe(self.logger, self.PROD, self.device, self)
+
             if model_key=="silence_cut":
                 from python.silence_cut.model import SilenceCutter
                 self.models_bank[model_key] = SilenceCutter(self.logger, self.PROD, self.device, self)

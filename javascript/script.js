@@ -384,7 +384,26 @@ btn_autotranscribe.addEventListener("click", () => {
             if (confirmation) {
                 setTimeout(() => {
                     createModal("spinner", "Auto-transcribing...<br>This may take a few minutes if there are hundreds of lines.<br>A model will automatically be downloaded the first ever time this is done, and may then take a little longer.<br>Audio files must be mono 22050Hz<br><br>This window will close if there is an error.")
-                    window.autotranscribe(window.appState.currentDataset)
+
+
+                    const inputDirectory =  `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`
+
+                    window.tools_state.taskId = "transcribe"
+                    window.tools_state.inputDirectory = inputDirectory
+                    window.tools_state.outputDirectory = ""
+                    window.tools_state.inputFileType = "folder"
+
+                    window.tools_state.spinnerElem = toolsSpinner
+                    window.tools_state.progressElem = toolProgressInfo
+                    window.tools_state.infoElem = toolsInfo
+                    window.tools_state.currentFileElem = toolsCurrentFile
+
+                    window.tools_state.post_callback = () => {
+                        closeModal()
+                    }
+
+                    toolsRunTool.click()
+
                 }, 300)
             }
         })
@@ -413,22 +432,6 @@ btn_clearRecord.addEventListener("click", () => {
 
 
 
-
-
-
-
-window.autotranscribe = dataset => {
-
-    const metadataFilePath = `${window.userSettings.datasetsPath}/${dataset}/metadata.csv`
-
-    execFile(`${window.path}/autotranscribe.exe`, [metadataFilePath], (err, stdout, stderr) => {
-        if (err && stderr) {
-            window.appLogger.log(`Error auto-transcribing file: ${metadataFilePath}`)
-            window.appLogger.log(stderr)
-        }
-        closeModal()
-    })
-}
 window.clearTempFiles = () => {
     const files = fs.readdirSync(window.path).filter(fname => fname.includes("recorded_file_"))
     files.forEach(fileName => {
