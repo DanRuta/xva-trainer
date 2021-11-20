@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import torch
+import traceback
 
 def returnFalse():
     return False
@@ -48,41 +49,46 @@ class Diarization(object):
 
         if websocket is not None:
             await websocket.send(json.dumps({"key": "task_info", "data": "Reading file"}))
-        rate, data = wavfile.read(inPath)
 
-
-        if websocket is not None:
-            await websocket.send(json.dumps({"key": "task_info", "data": "Splitting file"}))
-        self.logger.info("self.model")
-        self.logger.info(self.model)
-        diarization = self.model({'audio': inPath})
-
-        out_file_counter = 0
-        total_tracks = len(diarization._tracks)
-
-        for turn, _, speaker in diarization.itertracks(yield_label=True):
+        try:
+            rate, data = wavfile.read(inPath)
 
             if websocket is not None:
-                await websocket.send(json.dumps({"key": "task_info", "data": f'Outputting chunks: {out_file_counter+1}/{total_tracks}'}))
+                await websocket.send(json.dumps({"key": "task_info", "data": "Splitting file"}))
 
-            start_s = turn.start
-            end_s = turn.end
+            diarization = self.model({'audio': inPath})
 
-            # Skip audio chunks less than 1 second long
-            if end_s-start_s < 1:
-                continue
+            out_file_counter = 0
+            total_tracks = len(diarization._tracks)
 
-            split_data = data[int(start_s*rate):int(end_s*rate)]
+            for turn, _, speaker in diarization.itertracks(yield_label=True):
 
-            folder_name = ".".join(inPath.split("/")[-1].split(".")[:-1]).replace(".", "_")
-            if mergeSameOutput:
-                out_folder = f'{"./resources/app" if self.PROD else "."}/python/speaker_diarization/output/'
-            else:
-                out_folder = f'{"./resources/app" if self.PROD else "."}/python/speaker_diarization/output/{folder_name}/speaker {speaker}'
+                if websocket is not None:
+                    await websocket.send(json.dumps({"key": "task_info", "data": f'Outputting chunks: {out_file_counter+1}/{total_tracks}'}))
 
-            os.makedirs(out_folder, exist_ok=True)
-            wavfile.write(f'{out_folder}/{folder_name}_{speaker}_{out_file_counter}.wav', rate, split_data)
-            out_file_counter += 1
+                start_s = turn.start
+                end_s = turn.end
+
+                # Skip audio chunks less than 1 second long
+                if end_s-start_s < 1:
+                    continue
+
+                split_data = data[int(start_s*rate):int(end_s*rate)]
+
+                folder_name = ".".join(inPath.split("/")[-1].split(".")[:-1]).replace(".", "_")
+                if mergeSameOutput:
+                    out_folder = f'{"./resources/app" if self.PROD else "."}/python/speaker_diarization/output/'
+                else:
+                    out_folder = f'{"./resources/app" if self.PROD else "."}/python/speaker_diarization/output/{folder_name}/speaker {speaker}'
+
+                os.makedirs(out_folder, exist_ok=True)
+                if mergeSameOutput:
+                    wavfile.write(f'{out_folder}/{folder_name}_{str(out_file_counter).zfill(7)}.wav', rate, split_data)
+                else:
+                    wavfile.write(f'{out_folder}/{folder_name}_{speaker}_{str(out_file_counter).zfill(7)}.wav', rate, split_data)
+                out_file_counter += 1
+        except:
+            self.logger.info(traceback.format_exc())
 
         if websocket is not None:
             await websocket.send(json.dumps({"key": "tasks_next"}))

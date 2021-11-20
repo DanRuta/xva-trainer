@@ -35,7 +35,7 @@ class AudioFormatter(object):
 
         inPath, outputDirectory = data["inPath"], data["outputDirectory"]
 
-        outputPath = f'{outputDirectory}/{inPath.split("/")[-1].split(".")[0]}.wav'
+        outputPath = f'{outputDirectory}/{".".join(inPath.split("/")[-1].split(".")[:-1])}.wav'
 
         try:
             stream = ffmpeg.input(inPath)

@@ -1,5 +1,6 @@
 import sys
 import json
+import traceback
 
 
 class ASS(object):
@@ -36,7 +37,10 @@ class ASS(object):
     async def separate (self, data, websocket):
         inPath, outputDirectory = data["inPath"], data["outputDirectory"]
 
-        self.model.separate(inPath, output_dir=outputDirectory, resample=True)
+        try:
+            self.model.separate(inPath, output_dir=outputDirectory, resample=True)
+        except:
+            self.logger.info(traceback.format_exc())
 
         if websocket is not None:
             await websocket.send(json.dumps({"key": "tasks_next"}))

@@ -40,8 +40,6 @@ class ClusterSpeakers(object):
 
     async def cluster(self, data, websocket):
 
-        self.logger.info("data: "+ str(", ".join(list(data.keys()))))
-
         inPath, outputDirectory = data["inPath"], data["outputDirectory"]
 
 
@@ -54,11 +52,14 @@ class ClusterSpeakers(object):
             if websocket is not None:
                 await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding audio files: {fi+1}/{len(files)}  ({(int(fi+1)/len(files)*100*100)/100}%)   '}))
 
-            fpath = Path(file)
-            wav = preprocess_wav(fpath)
-            embedding = self.encoder.embed_utterance(wav)
-            embeddings.append(embedding)
-            files_done.append(file)
+            try:
+                fpath = Path(file)
+                wav = preprocess_wav(fpath)
+                embedding = self.encoder.embed_utterance(wav)
+                embeddings.append(embedding)
+                files_done.append(file)
+            except:
+                self.logger.info(traceback.format_exc())
 
 
         if websocket is not None:

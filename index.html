@@ -154,6 +154,9 @@
                         <button id="btn_cleanAudioText">Clean audio/text</button>
                     </div>
                     <div>
+                        <button id="btn_trainmodel">Train</button>
+                    </div>
+                    <div>
                         <button id="btn_exportmodel">Export model</button>
                     </div>
                 </div>
@@ -493,6 +496,230 @@
         </div>
 
 
+        <style type="text/css">
+        .smallButton {
+           font-size: 10pt;
+           margin-top: -2px !important;
+           padding-top: 1px;
+           padding-bottom: 1px;
+           min-height: 0px;
+        }
+        #trainContainer > div > div > div > h3 {
+            text-align: left;
+            padding-left: 25px;
+        }
+        #trainingQueueContainer {
+            /*height: 100%;*/
+            flex-grow: 1;
+            width: 100%;
+            /*background: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px), linear-gradient(0deg, #444 0, rgba(0,0,0,0)), gray;*/
+            background: rgb(75,75,75);
+        }
+        #trainingQueuePanelContainer {
+            height: 70vh;
+            background: rgb(75,75,75);
+            overflow-x: auto;
+        }
+        #lossPlotsContainer {
+            display: flex;
+            height: 35vh;
+            width: 95%;
+        }
+        #lossPlotsContainer > div {
+            width: 50%;
+        }
+        #cmdPanel {
+            width: calc(95% - 10px);
+            margin: auto;
+            /*height: 30vh;*/
+            padding: 5px;
+            height: calc(70vh - 35vh - 35px - 10px);
+            background: rgba(0,0,0,0.3);
+            color: rgba(255,255,255,0.8);
+            overflow: auto;
+            text-align: left;
+            font-size: 10pt;
+            line-height: 20px;
+        }
+        #trainingQueueHeader {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        #trainingQueueHeader > div {
+            padding: 2px;
+            border: 1px solid;
+            color: white;
+            flex-grow: 1;
+            height: 20px;
+            text-overflow: ellipsis;
+
+            background-color: rgb(75,75,75);
+            box-shadow: 0 1px 5px 1px rgba(0,0,0,0.3);
+            text-shadow: 0 0 2px black;
+            font-weight: bold;
+        }
+        #trainingQueueHeader > div, #pluginsRecordsContainer > div {
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #trainingQueueRecordsContainer > div {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        #trainingQueueRecordsContainer > div > div {
+            padding: 2px;
+            border: 1px solid;
+            color: white;
+            flex-grow: 1;
+            height: 20px;
+            text-overflow: ellipsis;
+        }
+        #trainingQueueRecordsContainer > div > div:first-child {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #trainingQueueHeader > div:first-child, #trainingQueueRecordsContainer > div > div:first-child {
+            min-width: 30px;
+            max-width: 30px;
+        }
+        #trainingQueueHeader > div:nth-child(2), #trainingQueueRecordsContainer > div > div:nth-child(2) {
+            min-width: 80px;
+            max-width: 80px;
+        }
+        #trainingQueueHeader > div:nth-child(3), #trainingQueueRecordsContainer > div > div:nth-child(3) {
+            min-width: 80px;
+            max-width: 80px;
+        }
+        #trainingQueueHeader > div:nth-child(4), #trainingQueueRecordsContainer > div > div:nth-child(4) {
+            min-width: 100px;
+            /*max-width: 100px;*/
+        }
+        #pluginsRecordsContainer > div {
+            cursor: pointer;
+        }
+        #trainingSystemCharts {
+            /*height: calc(70vh + 50px);*/
+            height: calc(70vh);
+        }
+        #trainingSystemCharts > div {
+            margin-bottom: 7px;
+        }
+
+        </style>
+
+        <div id="trainContainer" style="display:none">
+            <div class="modal" style="height: 80vh;width: 85vw;min-height: 500px;">
+                <div style="display: flex;">
+                    <!-- Queue -->
+                    <div style="width: 18vw;display: flex;flex-direction: column;margin-left: 10px;height: 80vh;">
+                        <h3 style="margin-top: 0;">Queue</h3>
+                        <div id="trainingQueuePanelContainer">
+                            <div id="trainingQueueHeader">
+                                <div>#</div>
+                                <div>Config</div>
+                                <div>Status</div>
+                                <div>Name</div>
+                            </div>
+                            <div id="trainingQueueRecordsContainer">
+                                <div>
+                                    <div>0</div>
+                                    <div>
+                                        <button class="smallButton">Config</button>
+                                    </div>
+                                    <div>Ready</div>
+                                    <div>FemaleNord</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div style="display: flex;justify-content: space-evenly;height: 40px;margin-top: 10px;">
+                            <button id="trainingQueueBtnMoveUp">Move up</button>
+                            <button id="trainingQueueBtnMoveDown">Move down</button>
+                            <button id="trainingQueueBtnAdd">Add</button>
+                            <button id="trainingQueueBtnClear">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Training -->
+                    <div style="width: 50vw;margin-left: 10px;">
+                        <h3 style="margin-top: 0;">Training</h3>
+                        <div id="lossPlotsContainer">
+                            <div>
+                                <canvas id="loss_plot"></canvas>
+                            </div>
+                            <div>
+                                <canvas id="loss_delta_plot"></canvas>
+                            </div>
+                        </div>
+                        <div style="display: flex;width: 95%;margin: auto;height: 20px;padding-bottom: 10px;padding-top: 5px;">
+                            <div style="margin-right: 10px;">View:</div>
+                            <div>
+                                <select>
+                                    <option value="stage1">Stage 1</option>
+                                    <option value="stage2">Stage 2</option>
+                                    <option value="stage3">Stage 3</option>
+                                    <option value="stage4">Stage 4</option>
+                                    <option value="stage5">Stage 5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="cmdPanel"></div>
+                        <div style="display: flex;justify-content: center;height: 40px;margin-top: 10px;">
+                            <button id="trainingStartBtn">Start</button>
+                            <button id="trainingPauseBtn">Pause</button>
+                            <button id="trainingStopBtn">Stop</button>
+                        </div>
+                    </div>
+                    <!-- System -->
+                    <div style="height: 80vh;width: 15vw;display: flex;flex-direction: column;">
+                        <h3 style="margin-top: 0;">System</h3>
+                        <div>
+                            <!-- <div style="flex-grow: 1;"> -->
+                            <div id="trainingSystemCharts">
+                                <div>
+                                    <canvas id="cpu_chart"></canvas>
+                                </div>
+                                <div>
+                                    <canvas id="ram_chart"></canvas>
+                                </div>
+                                <div>
+                                    <canvas id="cuda_chart"></canvas>
+                                </div>
+                                <div>
+                                    <canvas id="vram_chart"></canvas>
+                                </div>
+                                <div>
+                                    <canvas id="disk_chart"></canvas>
+                                </div>
+                                <div style="display: flex;justify-content: flex-end;height: 40px;margin-top: 10px;">
+                                    <div style="margin-right: 10px">Drive:</div>
+                                    <div>
+                                        <select>
+                                            <option value="drive_c">C:</option>
+                                            <option value="drive_d">D:</option>
+                                            <option value="drive_e">E:</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
         <div id="modalContainer" style="display:none"></div>
     </div>
 </div>
@@ -564,6 +791,9 @@ chromeQuit.addEventListener("click", () => remote.getCurrentWindow().close())
 </script>
 <style id="pluginsCSS" type="text/css"></style>
 <script src="lib/recorder.js"></script>
+<script src="lib/chartjs.js"></script>
+<script src="lib/osutils.js"></script>
 <script src="javascript/script.js"></script>
+<script src="javascript/train.js"></script>
 <script src="lib/wavesurfer.js"></script>
 </html>

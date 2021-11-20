@@ -69,7 +69,7 @@ window.createModal = (type, message) => {
 }
 window.closeModal = (container=undefined, notThisOne=undefined) => {
     return new Promise(resolve => {
-        const allContainers = [settingsContainer, container, modalContainer, toolsContainer, datasetMetaContainer, preprocessAudioContainer, preprocessTextContainer, cleanAudioTextContainer]
+        const allContainers = [settingsContainer, container, modalContainer, toolsContainer, datasetMetaContainer, preprocessAudioContainer, preprocessTextContainer, cleanAudioTextContainer, trainContainer]
         const containers = container==undefined ? allContainers : [container]
         containers.forEach(cont => {
             if ((notThisOne!=undefined&&notThisOne!=cont) && (notThisOne==undefined || notThisOne!=cont) && cont!=undefined) {

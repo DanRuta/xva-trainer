@@ -12,7 +12,7 @@ const tools = {
     },
     "AI speaker diarization": {
         taskId: "diarization",
-        description: "Speaker diarization can be used to automatically extract slices of speech audio from a really long audio sample, such as audiobooks and movies. The slices of speech can also be automatically attributed to the correct individual speakers, before being output to file.",
+        description: "Speaker diarization can be used to automatically extract slices of speech audio from a really long audio sample, such as audiobooks and movies. The slices of speech can also be automatically attributed to the correct individual speakers, before being output to file. Long audio files can take a long time to process.",
         inputDirectory: `${window.path}/python/speaker_diarization/input`,
         outputDirectory: `${window.path}/python/speaker_diarization/output/`,
         toolSettings: {},
@@ -178,6 +178,7 @@ toolsRunTool.addEventListener("click", () => {
 
     window.tools_state.taskFileIndex = 0
     window.tools_state.taskFiles = []
+    window.tools_state.progressElem.innerHTML = ""
 
     if (window.tools_state.spinnerElem) {
         window.tools_state.spinnerElem.style.display = "inline-block"
@@ -242,7 +243,7 @@ window.websocket_handlers["tasks_error"] = (data) => {
 }
 
 window.websocket_handlers["tasks_next"] = (data) => {
-    window.tools_state.progressElem.innerHTML = `${window.tools_state.taskFileIndex}/${window.tools_state.taskFiles.length} files done...`
+    window.tools_state.progressElem.innerHTML = `${window.tools_state.taskFileIndex}/${window.tools_state.taskFiles.length} files done (${parseInt(window.tools_state.taskFileIndex/window.tools_state.taskFiles.length*100*100)/100}%)`
 
     if (window.tools_state.taskFileIndex<window.tools_state.taskFiles.length-1) {
         window.tools_state.taskFileIndex++

@@ -55,7 +55,7 @@ class SpeakerClusterSearch(object):
         for fi, file in enumerate(files):
 
             if websocket is not None:
-                await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding query audio files: {fi+1}/{len(files)}  ({(int(fi+1)/len(files)*100*100)/100}%)   '}))
+                await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding query audio files: {fi+1}/{len(files)}  ({(int((fi+1)/len(files)*100*100))/100}%)   '}))
 
             fpath = Path(file)
             wav = preprocess_wav(fpath)
@@ -65,18 +65,56 @@ class SpeakerClusterSearch(object):
 
 
 
-        folders = [fdname for fdname in sorted(os.listdir(inPath2)) if "." not in fdname]
+        # folders = [fdname for fdname in sorted(os.listdir(inPath2)) if "." not in fdname]
+        folders = [fdname for fdname in sorted(os.listdir(inPath2))]
         folders_files = []
         embeddings_corpus = []
         files_done = []
         files_done_folderIndex = []
 
-        for fdi, fdname in enumerate(folders):
+        # nested_structure = []
+
+        folders_with_files = set()
+        for fdname in folders:
+            for file in list(os.listdir(f'{inPath2}/{fdname}')):
+                if ".wav" in file:
+                    folders_with_files.add(f'{inPath2}/{fdname}')
+                    # nested_structure.
+
+
+                    # Need to adjust for the nested structure of the folders now being flat, on the second leve. Need to assign indeces accordingly for when the files get copied across
+
+
+                else:
+                    sub_files = os.listdir(f'{inPath2}/{fdname}/{file}')
+                    for sf_file in sub_files:
+                        if ".wav" in sf_file:
+                            folders_with_files.add(f'{inPath2}/{fdname}/{file}')
+        folders_with_files = list(folders_with_files)
+
+
+        # for fdi, fdname in enumerate(folders):
+        for fdi, fdname in enumerate(folders_with_files):
+
+            # files = []
+            # for file in list(os.listdir(f'{inPath2}/{fdname}')):
+            #     if ".wav" in file:
+            #         files.append(f'{inPath2}/{fdname}/{file}')
+            #     else:
+            #         sub_files = os.listdir(f'{inPath2}/{fdname}/{file}')
+            #         self.logger.info(f'folder: {inPath2}/{fdname}/{file} | sub_files: {len(sub_files)}')
+            #         for sf_file in sub_files:
+            #             if ".wav" in sf_file:
+            #                 files.append(f'{inPath2}/{fdname}/{file}/{sf_file}')
+
+            # self.logger.info(f'folder: {inPath2}/{fdname} | files: {len(files)}')
 
             if websocket is not None:
-                await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding corpus cluster audio files: {fdi+1}/{len(folders)}  ({(int(fdi+1)/len(folders)*100*100)/100}%)   '}))
+                await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding corpus cluster audio files: {fdi+1}/{len(folders_with_files)}  ({(int(fdi+1)/len(folders_with_files)*100*100)/100}%)   '}))
 
-            files = [f'{inPath2}/{fdname}/{file}' for file in list(os.listdir(f'{inPath2}/{fdname}')) if ".wav" in file]
+
+            # files = [f'{inPath2}/{fdname}/{file}' for file in list(os.listdir(f'{inPath2}/{fdname}')) if ".wav" in file]
+            files = [f'{fdname}/{file}' for file in list(os.listdir(fdname)) if ".wav" in file]
 
             SKIP_SAME_QUERY_NAMES = True
             # Don't use files with the same name as input query names
@@ -87,7 +125,9 @@ class SpeakerClusterSearch(object):
 
             for fi, file in enumerate(files):
                 try:
-                    print(f'\rIndexing pool | {fdi+1}/{len(folders)} | {fi+1}/{len(files)}  ({(int(fdi+1)/len(folders)*100*100)/100}%)   ', end="", flush=True)
+                    if websocket is not None:
+                        await websocket.send(json.dumps({"key": "task_info", "data": f'Indexing corpus | Folder: {fdi+1}/{len(folders_with_files)} | File: {fi+1}/{len(files)}  ({(int((fdi+1)/len(folders_with_files)*100*100))/100}%)'}))
+                    # print(f'\rIndexing pool | {fdi+1}/{len(folders)} | {fi+1}/{len(files)}  ({(int((fdi+1)/len(folders)*100*100))/100}%)   ', end="", flush=True)
 
                     fpath = Path(file)
                     wav = preprocess_wav(fpath)
@@ -102,6 +142,7 @@ class SpeakerClusterSearch(object):
                 except:
                     import traceback
                     print(traceback.format_exc())
+                    self.logger.info(traceback.format_exc())
 
 
 
@@ -140,9 +181,9 @@ class SpeakerClusterSearch(object):
 
 
 
-        folder_scores = [[] for _ in folders]
+        folder_scores = [[] for _ in folders_with_files]
 
-        sort_index = np.argsort((-np.array(pool_scores)))
+        # sort_index = np.argsort((-np.array(pool_scores)))
 
 
         # Go through the summed distance scores for each line, and assign them to their cluster folder
@@ -156,10 +197,17 @@ class SpeakerClusterSearch(object):
         # In ascending distance order, output the clusters out in the new order
         sort_index = np.argsort((np.array(folder_scores)))
 
+        self.logger.info(f'sort_index: {len(sort_index)}')
+        self.logger.info(f'folders_files: {len(folders_files)}')
+        self.logger.info(f'folder_scores: {len(folder_scores)}')
+        self.logger.info(f'pool_scores: {len(pool_scores)}')
+        self.logger.info(f'files_done_folderIndex: {len(files_done_folderIndex)}')
+        self.logger.info(f'folders_with_files: {len(folders_with_files)}')
+
         for sii, si in enumerate(sort_index):
 
             if websocket is not None:
-                await websocket.send(json.dumps({"key": "task_info", "data": f'Sorting and outputting pool clusters data...  {sii+1}/{len(sort_index)}  ({(int(sii+1)/len(sort_index)*100*100)/100}%)   '}))
+                await websocket.send(json.dumps({"key": "task_info", "data": f'Sorting and outputting pool clusters data...  {sii+1}/{len(sort_index)}  ({(int((sii+1)/len(sort_index)*100*100))/100}%)   '}))
 
             os.makedirs(f'{outputDirectory}/{sii}', exist_ok=True)
 

@@ -2,7 +2,7 @@ a {
      display: inline;
 }
  button, .voiceType {
-     background-color: #999;
+     background-color: #888;
      border: none;
      color: white;
      padding: 5px;
@@ -140,7 +140,6 @@ a {
  }
  .voiceType {
      text-align: center;
-     background-color: darkgrey;
      margin: 5px;
      padding: 2px;
  }
@@ -262,7 +261,7 @@ a {
  .spinner {
      display: inline-block;
      border: 7px solid rgba(0, 0, 0, 0.4);
-     border-left-color: #7983ff;
+     border-left-color: #fff;
      border-radius: 50%;
      width: 20px;
      height: 20px;
@@ -318,7 +317,7 @@ a {
  }
 
 
- #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer {
+ #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer {
      display: flex;
      justify-content: center;
      align-items: center;
@@ -373,7 +372,7 @@ a {
      width: 25vw;
      text-align: center;
  }
- #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal {
+ #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal {
      height: 65vh;
      width: 45vw;
      min-height: 500px;
@@ -766,7 +765,7 @@ a {
     align-items: center;
     backface-visibility: hidden;
     background-color: rgb(255, 66, 77);
-    border-radius: 9999px;
+    border-radius: 888px;
     border: 1px solid rgb(255, 66, 77);
     box-sizing: border-box;
     cursor: pointer;

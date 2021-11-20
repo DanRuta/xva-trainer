@@ -57,7 +57,8 @@ const initWebSocketInterval = setInterval(initWebSocket, 1000)
 window.datasets = {}
 window.appState = {
     currentDataset: undefined,
-    recordFocus: undefined
+    recordFocus: undefined,
+    skipRefreshing: false
 }
 window.recordingState = {}
 window.watchedModelsDirs = {}
@@ -70,7 +71,8 @@ setTimeout(() => {
 window.saveDatasetToFile = (datasetName) => {
     const metadata_out = []
     window.datasets[datasetName].metadata.forEach(row => {
-        metadata_out.push(`${row[0].fileName}|${row[0].text}|${row[0].text}`)
+        // metadata_out.push(`${row[0].fileName}|${row[0].text}|${row[0].text}`)
+        metadata_out.push(`${row[0].fileName}|${row[0].text.replace(/\r\n/g,"").replace(/\n/g,"")}`)
     })
     fs.writeFileSync(`${window.userSettings.datasetsPath}/${datasetName}/metadata.csv`, metadata_out.join("\n"))
 }
@@ -80,6 +82,24 @@ btn_addmissingmeta.addEventListener("click", () => {
     console.log("btn_addmissingmeta")
 })
 
+let refreshTimer
+let refreshButton
+let refreshFn = () => {
+    if (refreshButton) {
+        if (!window.appState.skipRefreshing) {
+            refreshButton.click()
+        }
+        window.appState.skipRefreshing = false
+        refreshButton = undefined
+    }
+}
+let startRefreshTimer = () => {
+    if (refreshTimer != null) {
+        clearTimeout(refreshTimer)
+        refreshTimer = null
+    }
+    refreshTimer = setTimeout(refreshFn, 500)
+}
 window.refreshDatasets = () => {
     // const datasetFolders = fs.readdirSync(`${window.path}/datasets`)
     const datasetFolders = fs.readdirSync(window.userSettings.datasetsPath).filter(name => !name.includes(".") && (fs.existsSync(`${window.userSettings.datasetsPath}/${name}/metadata.csv`) || fs.existsSync(`${window.userSettings.datasetsPath}/${name}/wavs`)))
@@ -105,7 +125,7 @@ window.refreshDatasets = () => {
                         metadataAudioFiles.push(line.split("|")[0])
                         records.push({
                             fileName: line.split("|")[0],
-                            text: line.split("|")[1]
+                            text: line.split("|")[1].replace(/\r\n/g,"").replace(/\n/g,"")
                         })
                     })
                 }
@@ -153,7 +173,11 @@ window.refreshDatasets = () => {
         // if (!window.watchedModelsDirs.has(`${window.path}/datasets/${dataset}`)) {
         if (!Object.keys(window.watchedModelsDirs).includes(`${window.userSettings.datasetsPath}/${dataset}`)) {
             window.watchedModelsDirs[`${window.userSettings.datasetsPath}/${dataset}`] = fs.watch(`${window.userSettings.datasetsPath}/${dataset}`, {recursive: true, persistent: true}, (eventType, fileName) => {
-                button.click()
+                // button.click()
+                if (dataset==window.appState.currentDataset) {
+                    refreshButton = button
+                    startRefreshTimer()
+                }
             })
         }
         // window.watchedModelsDirs.add(`${window.path}/datasets/${dataset}`)
@@ -215,6 +239,7 @@ btn_save.addEventListener("click", () => {
     if (window.appState.recordFocus!=undefined) {
 
         const doTheRest = () => {
+            window.appState.skipRefreshing = true
             // Rename audio file if one exists
             const oldFileName = window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][0].fileName
             const newFileName = outFileNameInput.value.replace(".wav","")+".wav"
@@ -263,6 +288,7 @@ btn_save.addEventListener("click", () => {
 
     } else {
         if (textInput.value.length || outFileNameInput.value.length) {
+            window.appState.skipRefreshing = true
             const currentText = textInput.value.replace(/\|/g,"") || ""
             const currentFileName = outFileNameInput.value || getNextFileName(window.appState.currentDataset)
             btn_newline.click()
@@ -383,7 +409,8 @@ btn_autotranscribe.addEventListener("click", () => {
         confirmModal(`Are you sure you'd like to kick off the auto-transcription process?<br>This will run for all 22050Hz audio with no text transcript.`).then(confirmation => {
             if (confirmation) {
                 setTimeout(() => {
-                    createModal("spinner", "Auto-transcribing...<br>This may take a few minutes if there are hundreds of lines.<br>A model will automatically be downloaded the first ever time this is done, and may then take a little longer.<br>Audio files must be mono 22050Hz<br><br>This window will close if there is an error.")
+                    createModal("spinner", "Auto-transcribing...<br>This may take a few minutes if there are hundreds of lines.<br>Audio files must be mono 22050Hz<br><br>This window will close if there is an error.")
+                    window.appState.skipRefreshing = true
 
 
                     const inputDirectory =  `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`
@@ -399,6 +426,8 @@ btn_autotranscribe.addEventListener("click", () => {
                     window.tools_state.currentFileElem = toolsCurrentFile
 
                     window.tools_state.post_callback = () => {
+                        window.appState.skipRefreshing = false
+                        window.refreshRecordsList(window.appState.currentDataset)
                         closeModal()
                     }
 
@@ -551,7 +580,7 @@ const uploadBatchCSVs = async (eType, event) => {
     }
 }
 window.refreshRecordsList = (dataset) => {
-    if (window.tools_state.running) {
+    if (window.tools_state.running || window.appState.skipRefreshing) {
         return
     }
     batchRecordsContainer.innerHTML = ""
@@ -573,14 +602,19 @@ const populateRecordsList = (dataset, records, additive=false) => {
     records.forEach((record, ri) => {
         const row = createElem("div.row")
 
-        const rNumElem = createElem("div.rowItem", batchRecordsContainer.children.length.toString())
+        // const rNumElem = createElem("div.rowItem", batchRecordsContainer.children.length.toString())
+        const rNumElem = createElem("div.rowItem")
         const rGameElem = createElem("div.rowItem", "")
 
 
 
         record.fileName = record.fileName==undefined ? getNextFileName(dataset)+".wav" : record.fileName
-        const rTextElem = createElem("div.rowItem", record.text)
-        const rOutPathElem = createElem("div.rowItem", "&lrm;"+record.fileName+"&lrm;")
+        // const rTextElem = createElem("div.rowItem", record.text)
+        const rTextElem = createElem("div.rowItem")
+        // rTextElem.title = record.text
+        // const rOutPathElem = createElem("div.rowItem", "&lrm;"+record.fileName+"&lrm;")
+        const rOutPathElem = createElem("div.rowItem")
+        // rOutPathElem.title = record.fileName
 
 
         row.appendChild(rNumElem)
@@ -611,6 +645,16 @@ const populateRecordsList = (dataset, records, additive=false) => {
                         // console.log("window.datasets[dataset].metadata[ri][1].children[1]", )
                         window.datasets[dataset].metadata[ri][1].children[1]
                         window.datasets[dataset].metadata[ri][1].children[1].appendChild(audio)
+
+
+                        window.datasets[dataset].metadata[ri][1].children[0].innerHTML = window.datasets[dataset].metadata[ri][2]
+
+                        // Filename
+                        window.datasets[dataset].metadata[ri][1].children[2].innerHTML = "&lrm;"+window.datasets[dataset].metadata[ri][0].fileName+"&lrm;"
+                        window.datasets[dataset].metadata[ri][1].children[2].title = window.datasets[dataset].metadata[ri][0].fileName
+                        // Text
+                        window.datasets[dataset].metadata[ri][1].children[3].innerHTML = window.datasets[dataset].metadata[ri][0].text
+                        window.datasets[dataset].metadata[ri][1].children[3].title = window.datasets[dataset].metadata[ri][0].text
                     }
 
                     observer.unobserve(row)
@@ -1094,4 +1138,9 @@ window.setupModal(settingsCog, settingsContainer)
 // Tools
 // ========
 window.setupModal(toolsIcon, toolsContainer)
+// ========
+
+// Tools
+// ========
+window.setupModal(btn_trainmodel, trainContainer)
 // ========
