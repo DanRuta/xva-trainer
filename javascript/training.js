@@ -5,28 +5,31 @@ const smi = require('node-nvidia-smi')
 smi((err, data) => {console.log(data.nvidia_smi_log.gpu.fb_memory_usage)})
 
 
-
-
 // For Disk usage, I can do something like:
 // typeperf "\\DESKTOP-CV2U1LN\LogicalDisk(H:)\% Disk Time"
 // https://stackoverflow.com/questions/52822588/how-to-get-calculate-the-current-disk-activity-in-node-js-on-windows
 
 
-window.initChart = (canvasId, title, colour, {boundsMax=100, startingData=undefined}={}) => {
-    console.log("startingData", startingData)
+window.initChart = (canvasId, title, colour, {boundsMax=100, startingData=undefined, max=60, minY=0, extradataset=undefined}={}) => {
+
+    const datasets = [
+        {
+            label: title,
+            data: Array.from(Array(60)).map((_,i)=>0),
+            borderColor: `rgb(${colour})`,
+            backgroundColor: `rgba(${colour},0.1)`,
+        }
+    ]
+    if (extradataset) {
+        datasets.push(extradataset)
+    }
+
     const ctx = document.getElementById(canvasId).getContext('2d')
     const chart_object = new Chart(ctx, {
         type: 'line',
         data: {
             labels: startingData?startingData:Array.from(Array(60)).map((_,i)=>i),
-            datasets: [
-                {
-                    label: title,
-                    data: Array.from(Array(60)).map((_,i)=>0),
-                    borderColor: `rgb(${colour})`,
-                    backgroundColor: `rgba(${colour},0.1)`,
-                }
-            ],
+            datasets: datasets,
         },
         options: {
             responsive: true,
@@ -45,12 +48,12 @@ window.initChart = (canvasId, title, colour, {boundsMax=100, startingData=undefi
                 x: {
                     display: false,
                     min: 0,
-                    max: 60,
+                    max: max,
                 },
                 y: {
                     display: true,
-                    beginAtZero: true,
-                    suggestedMin: 0,
+                    beginAtZero: false,
+                    suggestedMin: minY,
                     suggestedMax: boundsMax
                 }
             }
@@ -82,8 +85,19 @@ window.updateSystemGraphs = () => {
 
     window.cpuUsage(cpuLoad => {
         smi((err, data) => {
-            const totalVRAM = parseInt(data.nvidia_smi_log.gpu.fb_memory_usage.total.split(" ")[0])
-            const usedVRAM = parseInt(data.nvidia_smi_log.gpu.fb_memory_usage.used.split(" ")[0])
+            let totalVRAM
+            let usedVRAM
+            let computeLoad
+
+            if (data.nvidia_smi_log.gpu.length) {
+                totalVRAM = parseInt(data.nvidia_smi_log.gpu[0].fb_memory_usage.total.split(" ")[0])
+                usedVRAM = parseInt(data.nvidia_smi_log.gpu[0].fb_memory_usage.used.split(" ")[0])
+                computeLoad = parseFloat(data.nvidia_smi_log.gpu[0].utilization.gpu_util.split(" ")[0])
+            } else {
+                totalVRAM = parseInt(data.nvidia_smi_log.gpu.fb_memory_usage.total.split(" ")[0])
+                usedVRAM = parseInt(data.nvidia_smi_log.gpu.fb_memory_usage.used.split(" ")[0])
+                computeLoad = parseFloat(data.nvidia_smi_log.gpu.utilization.gpu_util.split(" ")[0])
+            }
             const percent = usedVRAM/totalVRAM*100
 
             if (!window.vram_chart_object) {
@@ -92,10 +106,6 @@ window.updateSystemGraphs = () => {
 
 
             let vramUsage = `${(usedVRAM/1000).toFixed(1)}/${(totalVRAM/1000).toFixed(1)} GB (${percent.toFixed(2)}%)`
-
-            const computeLoad = parseFloat(data.nvidia_smi_log.gpu.utilization.gpu_util.split(" ")[0])
-
-
             // console.log(`RAM: ${parseInt(ramUsage)}GB/${parseInt(totalRam)}GB (${percentRAM.toFixed(2)}%) | CPU: ${(cpuLoad*100).toFixed(2)}% | GPU: ${computeLoad}% | VRAM: ${vramUsage}`)
 
 
@@ -138,3 +148,40 @@ window.updateSystemGraphs = () => {
     })
 }
 window.updateSystemGraphs()
+
+
+
+
+trainingStartBtn.addEventListener("click", () => {
+    window.ws.send(JSON.stringify({
+        model: "",
+        task: "startTraining",
+        data: window.training_state.datasetsQueue[0]
+    }))
+    trainingStartBtn.style.display = "none"
+    trainingResumeBtn.style.display = "none"
+    trainingPauseBtn.style.display = "block"
+    trainingStopBtn.style.display = "block"
+})
+trainingPauseBtn.addEventListener("click", () => {
+    trainingStartBtn.style.display = "none"
+    trainingResumeBtn.style.display = "block"
+    trainingPauseBtn.style.display = "none"
+    window.ws.send(JSON.stringify({model: "", task: "pause"}))
+})
+trainingResumeBtn.addEventListener("click", () => {
+    trainingStartBtn.style.display = "none"
+    trainingPauseBtn.style.display = "block"
+    trainingResumeBtn.style.display = "none"
+    window.ws.send(JSON.stringify({model: "", task: "resume"}))
+})
+trainingStopBtn.addEventListener("click", () => {
+    trainingStartBtn.style.display = "block"
+    trainingPauseBtn.style.display = "none"
+    trainingResumeBtn.style.display = "none"
+    trainingStopBtn.style.display = "none"
+    window.ws.send(JSON.stringify({model: "", task: "pause"}))
+    setTimeout(() => {
+        window.ws.send(JSON.stringify({model: "", task: "stop"}))
+    }, 2000)
+})

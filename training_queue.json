@@ -1,0 +1,13 @@
+[
+    {
+        "dataset_path": "D:/FP_INPUT/gtavc_victor_xva",
+        "output_path": "D:/FP_OUTPUT/gtavc_victor_xva",
+        "checkpoint": "D:/FP_OUTPUT/f4_nate",
+        "hifigan_checkpoint": "[male]",
+        "force_stage": 2,
+        "num_workers": 4,
+        "batch_size": 32,
+        "epochs_per_checkpoint": 1,
+        "finished": false
+    }
+]

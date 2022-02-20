@@ -30,7 +30,7 @@ ipcRenderer.send('updateDiscord', {})
 
 const initWebSocket = () => {
 
-    window.ws = new WebSocket("ws://localhost:8000")
+    window.ws = new WebSocket("ws://localhost:8001")
 
     ws.onopen = event => {
         console.log("WebSocket open")
@@ -42,11 +42,23 @@ const initWebSocket = () => {
     }
 
     ws.onmessage = event => {
-        const response = event.data ? JSON.parse(event.data) : undefined
-        // console.log("response", response)
+        console.log("event", event)
+        if (event.data.includes("Finished training HiFi-GAN")) {
+            trainingStopBtn.click()
+        } else if (event.data.includes("Finished training stage")) {
+            const stageFinished = parseInt(event.data.split("training stage ")[1].split("...")[0])
+            stage_select.value = `stage${stageFinished+1}`
+            window.training_state.stage_viewed = stageFinished+1
+            window.updateTrainingLogText()
+            window.updateTrainingGraphs()
 
-        if (Object.keys(window.websocket_handlers).includes(response["key"])) {
-            window.websocket_handlers[response["key"]](response["data"])
+        } else {
+            const response = event.data ? JSON.parse(event.data) : undefined
+            console.log("response", response)
+
+            if (Object.keys(window.websocket_handlers).includes(response["key"])) {
+                window.websocket_handlers[response["key"]](response["data"])
+            }
         }
     }
 }
@@ -71,7 +83,6 @@ setTimeout(() => {
 window.saveDatasetToFile = (datasetName) => {
     const metadata_out = []
     window.datasets[datasetName].metadata.forEach(row => {
-        // metadata_out.push(`${row[0].fileName}|${row[0].text}|${row[0].text}`)
         metadata_out.push(`${row[0].fileName}|${row[0].text.replace(/\r\n/g,"").replace(/\n/g,"")}`)
     })
     fs.writeFileSync(`${window.userSettings.datasetsPath}/${datasetName}/metadata.csv`, metadata_out.join("\n"))
@@ -101,90 +112,93 @@ let startRefreshTimer = () => {
     refreshTimer = setTimeout(refreshFn, 500)
 }
 window.refreshDatasets = () => {
-    // const datasetFolders = fs.readdirSync(`${window.path}/datasets`)
-    const datasetFolders = fs.readdirSync(window.userSettings.datasetsPath).filter(name => !name.includes(".") && (fs.existsSync(`${window.userSettings.datasetsPath}/${name}/metadata.csv`) || fs.existsSync(`${window.userSettings.datasetsPath}/${name}/wavs`)))
-    // const datasetFolders = fs.readdirSync(window.userSettings.datasetsPath).filter(name => !name.includes("."))
-    const buttons = []
-    datasetFolders.forEach(dataset => {
-        window.datasets[dataset] = {metadata: []}
+    try {
+        const datasetFolders = fs.readdirSync(window.userSettings.datasetsPath).filter(name => !name.includes(".") && (fs.existsSync(`${window.userSettings.datasetsPath}/${name}/metadata.csv`) || fs.existsSync(`${window.userSettings.datasetsPath}/${name}/wavs`)))
+        const buttons = []
+        datasetFolders.forEach(dataset => {
+            window.datasets[dataset] = {metadata: []}
 
-        const button = createElem("div.voiceType", dataset)
+            const button = createElem("div.voiceType", dataset)
 
-        button.addEventListener("click", event => {
+            button.addEventListener("click", event => {
 
-            title.innerHTML = `Dataset: ${dataset}`
+                console.log("refreshing")
 
-            const records = []
-            const metadataAudioFiles = []
-            window.appState.recordFocus = undefined
+                title.innerHTML = `Dataset: ${dataset}`
 
-            if (fs.existsSync(`${window.userSettings.datasetsPath}/${dataset}/metadata.csv`)) {
-                const data = fs.readFileSync(`${window.userSettings.datasetsPath}/${dataset}/metadata.csv`, "utf8")
-                if (data.length) {
-                    data.split("\n").forEach(line => {
-                        metadataAudioFiles.push(line.split("|")[0])
+                const records = []
+                const metadataAudioFiles = []
+                window.appState.recordFocus = undefined
+
+                if (fs.existsSync(`${window.userSettings.datasetsPath}/${dataset}/metadata.csv`)) {
+                    const data = fs.readFileSync(`${window.userSettings.datasetsPath}/${dataset}/metadata.csv`, "utf8")
+                    if (data.length) {
+                        data.split("\n").forEach(line => {
+                            if (line.trim().length==0) return
+                            metadataAudioFiles.push(line.split("|")[0])
+                            records.push({
+                                fileName: line.split("|")[0],
+                                text: line.split("|")[1].replace(/\r\n/g,"").replace(/\n/g,"")
+                            })
+                        })
+                    }
+                }
+
+                // Load stray audio files
+                if (fs.existsSync(`${window.userSettings.datasetsPath}/${dataset}/wavs`)) {
+                    const audioFiles = fs.readdirSync(`${window.userSettings.datasetsPath}/${dataset}/wavs`)
+
+                    const strayFiles = audioFiles.filter(fname => !metadataAudioFiles.includes(fname))
+                    strayFiles.forEach(fname => {
                         records.push({
-                            fileName: line.split("|")[0],
-                            text: line.split("|")[1].replace(/\r\n/g,"").replace(/\n/g,"")
+                            fileName: fname,
+                            text: ""
                         })
                     })
                 }
-            }
 
-            // Load stray audio files
-            if (fs.existsSync(`${window.userSettings.datasetsPath}/${dataset}/wavs`)) {
-                const audioFiles = fs.readdirSync(`${window.userSettings.datasetsPath}/${dataset}/wavs`)
+                window.appState.currentDataset = dataset
 
-                const strayFiles = audioFiles.filter(fname => !metadataAudioFiles.includes(fname))
-                strayFiles.forEach(fname => {
-                    records.push({
-                        fileName: fname,
-                        text: ""
-                    })
+                if (records.length) {
+                    batch_main.style.display = "block"
+                    batchDropZoneNote.style.display = "none"
+                    batchRecordsHeader.style.display = "flex"
+                    populateRecordsList(dataset, records)
+                    refreshRecordsList(dataset)
+                } else {
+                    batch_main.style.display = "flex"
+                    batchDropZoneNote.style.display = "flex"
+                    batchRecordsHeader.style.display = "none"
+                    batchRecordsContainer.innerHTML = ""
+                }
+
+                if (!fs.existsSync(`${window.userSettings.datasetsPath}/${dataset}/dataset_metadata.json`)) {
+                    addmissingmeta_btn_container.style.display = "flex"
+                    editdatasetmeta_btn_container.style.display = "none"
+                } else {
+                    editdatasetmeta_btn_container.style.display = "flex"
+                    addmissingmeta_btn_container.style.display = "none"
+                }
+
+            })
+            buttons.push(button)
+
+            if (!Object.keys(window.watchedModelsDirs).includes(`${window.userSettings.datasetsPath}/${dataset}`)) {
+                window.watchedModelsDirs[`${window.userSettings.datasetsPath}/${dataset}`] = fs.watch(`${window.userSettings.datasetsPath}/${dataset}`, {recursive: true, persistent: true}, (eventType, fileName) => {
+                    if (dataset==window.appState.currentDataset && !window.appState.skipRefreshing) {
+                        refreshButton = button
+                        startRefreshTimer()
+                    }
                 })
             }
 
-            window.appState.currentDataset = dataset
-
-            if (records.length) {
-                batch_main.style.display = "block"
-                batchDropZoneNote.style.display = "none"
-                batchRecordsHeader.style.display = "flex"
-                populateRecordsList(dataset, records)
-                refreshRecordsList(dataset)
-            } else {
-                batch_main.style.display = "flex"
-                batchDropZoneNote.style.display = "flex"
-                batchRecordsHeader.style.display = "none"
-                batchRecordsContainer.innerHTML = ""
-            }
-
-            if (!fs.existsSync(`${window.userSettings.datasetsPath}/${dataset}/dataset_metadata.json`)) {
-                addmissingmeta_btn_container.style.display = "flex"
-                editdatasetmeta_btn_container.style.display = "none"
-            } else {
-                editdatasetmeta_btn_container.style.display = "flex"
-                addmissingmeta_btn_container.style.display = "none"
-            }
-
         })
-        buttons.push(button)
+        voiceTypeContainer.innerHTML = ""
+        buttons.sort((a,b) => a.innerHTML<b.innerHTML?-1:1).forEach(button => voiceTypeContainer.appendChild(button))
 
-        // if (!window.watchedModelsDirs.has(`${window.path}/datasets/${dataset}`)) {
-        if (!Object.keys(window.watchedModelsDirs).includes(`${window.userSettings.datasetsPath}/${dataset}`)) {
-            window.watchedModelsDirs[`${window.userSettings.datasetsPath}/${dataset}`] = fs.watch(`${window.userSettings.datasetsPath}/${dataset}`, {recursive: true, persistent: true}, (eventType, fileName) => {
-                // button.click()
-                if (dataset==window.appState.currentDataset) {
-                    refreshButton = button
-                    startRefreshTimer()
-                }
-            })
-        }
-        // window.watchedModelsDirs.add(`${window.path}/datasets/${dataset}`)
-
-    })
-    voiceTypeContainer.innerHTML = ""
-    buttons.sort((a,b) => a.innerHTML<b.innerHTML?-1:1).forEach(button => voiceTypeContainer.appendChild(button))
+    } catch (e) {
+        console.log(e)
+    }
 }
 window.refreshDatasets()
 
@@ -599,6 +613,10 @@ const populateRecordsList = (dataset, records, additive=false) => {
 
     batchDropZoneNote.style.display = "none"
 
+    console.log("reading allPaths")
+    const allPaths = fs.readdirSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/`)
+    console.log("reading allPaths done")
+
     records.forEach((record, ri) => {
         const row = createElem("div.row")
 
@@ -620,7 +638,8 @@ const populateRecordsList = (dataset, records, additive=false) => {
         row.appendChild(rNumElem)
         const potentialAudioPath = `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${record.fileName}`
         let observer
-        if (fs.existsSync(potentialAudioPath)) {
+        // if (fs.existsSync(potentialAudioPath)) {
+        if (allPaths.includes(record.fileName)) {
             // const audio = createElem("audio", {controls: true}, createElem("source", {
             //     src: potentialAudioPath,
             //     type: `audio/wav`
@@ -676,6 +695,16 @@ const populateRecordsList = (dataset, records, additive=false) => {
         row.addEventListener("click", event => {
             setRecordFocus(ri)
         })
+
+
+        const wer_elem = createElem("div.wer")
+        if (record.score) {
+            const r_col = Math.min(record.score, 1)
+            const g_col = 1 - r_col
+            wer_elem.style.background = `rgba(${r_col*255},${g_col*255},50, 0.7)`
+        }
+
+        row.appendChild(wer_elem)
 
         window.datasets[dataset].metadata.push([record, row, ri, observer])
     })
@@ -994,6 +1023,7 @@ let fixedFolderName = undefined
 window.setupModal(btn_preprocessAudioButton, preprocessAudioContainer)
 window.setupModal(btn_preprocessTextButton, preprocessTextContainer)
 window.setupModal(btn_cleanAudioText, cleanAudioTextContainer)
+window.setupModal(btn_checkTextQualityBtn, checkTextQualityContainer)
 
 window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
     datasetMetaTitle.innerHTML = `Edit meta for: ${window.appState.currentDataset}`
@@ -1089,43 +1119,6 @@ datasetMeta_gender_other.addEventListener("change", () => {
     }
 })
 // =====================
-
-
-
-// newDatasetButton.addEventListener("click", () => {
-//     window.createModal("prompt", {prompt: "Name your dataset", value: cachedName}).then(name => {
-//         if (!name.length) {
-//             return
-//         }
-
-//         if (Object.keys(window.datasets).includes(name)) {
-//             setTimeout(() => {
-//                 window.createModal("error", "This dataset name already exists").then(() => {
-//                     setTimeout(() => {
-//                         cachedName = name
-//                         newDatasetButton.click()
-//                     }, 500)
-//                 })
-//             }, 500)
-//             return
-
-//         }
-
-//         cachedName = ""
-
-//         console.log(name)
-
-//         fs.mkdirSync(`${window.path}/datasets/${name}`)
-//         window.refreshDatasets()
-//     })
-// })
-
-
-
-
-
-
-
 
 
 

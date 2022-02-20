@@ -1,5 +1,6 @@
 import os
 import sys
+import gc
 import traceback
 import multiprocessing
 
@@ -57,7 +58,7 @@ if __name__ == '__main__':
         logger = logging.getLogger('serverLog')
         logger.setLevel(logging.DEBUG)
         # fh = RotatingFileHandler('{}/server.log'.format(os.path.dirname(os.path.realpath(__file__))), maxBytes=5*1024*1024, backupCount=2)
-        fh = RotatingFileHandler('./server.log', maxBytes=5*1024*1024, backupCount=2)
+        fh = RotatingFileHandler('./server.log', maxBytes=2*1024*1024, backupCount=5)
         fh.setLevel(logging.DEBUG)
         ch = logging.StreamHandler()
         ch.setLevel(logging.ERROR)
@@ -113,13 +114,12 @@ if __name__ == '__main__':
     async def websocket_handler(websocket, path):
         async for message in websocket:
             try:
-                # logger.info(f'message: {message}')
+                logger.info(f'message: {message}')
 
                 message = json.loads(message)
                 model = message["model"]
                 task = message["task"] if "task" in message else None
                 data = message["data"] if "data" in message else None
-
 
 
                 # DEBUG
@@ -142,15 +142,67 @@ if __name__ == '__main__':
                 # ==================
 
 
-                await models_manager.init_model(model, websocket)
-                if task=="runTask":
-                    await models_manager.models_bank[model].runTask(data, websocket=websocket)
+                # Training
+                if task=="startTraining" or task=="resume":
+                    _thread.start_new_thread(between_callback, (models_manager, data, websocket, [0], task=="resume"))
+                else:
+                    if task=="pause":
+                        logger.info("server.py pause")
+                        if "fastpitch1_1" not in models_manager.models_bank.keys() or models_manager.models_bank["fastpitch1_1"]=="move to hifi":
+                            await models_manager.models_bank["hifigan"].pause()
+                        else:
+                            await models_manager.models_bank["fastpitch1_1"].pause()
+                    if task=="stop":
+                        if "fastpitch1_1" in models_manager.models_bank.keys():
+                            del models_manager.models_bank["fastpitch1_1"]
+                        if "hifigan" in models_manager.models_bank.keys():
+                            del models_manager.models_bank["hifigan"]
+
+                        gc.collect()
+                        torch.cuda.empty_cache()
+
+                    # Tasks
+                    await models_manager.init_model(model, websocket)
+                    if task=="runTask":
+                        logger.info(f'Task: {model}')
+                        try:
+                            await models_manager.models_bank[model].runTask(data, websocket=websocket)
+                        except:
+                            logger.info(traceback.format_exc())
+                            await websocket.send(f'ERROR:{traceback.format_exc()}')
 
 
             except KeyboardInterrupt:
                 sys.exit()
             except:
                 logger.info(traceback.format_exc())
+
+    # https://stackoverflow.com/questions/59645272/how-do-i-pass-an-async-function-to-a-thread-target-in-python
+    def between_callback(models_manager, data, websocket, gpus, resume):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(handleTrainingLoop(models_manager, data, websocket, gpus, resume))
+        loop.close()
+
+    async def handleTrainingLoop(models_manager, data, websocket, gpus, resume):
+        try:
+            if ("fastpitch1_1" in models_manager.models_bank.keys() and models_manager.models_bank["fastpitch1_1"] == "move to hifi") or (data is not None and "force_stage" in data.keys() and data["force_stage"]==5) or ("fastpitch1_1" not in models_manager.models_bank.keys() and "hifigan" in models_manager.models_bank.keys()):
+                from python.hifigan.xva_train import handleTrainer as handleTrainer_hifi
+                result = await handleTrainer_hifi(models_manager, data, websocket, gpus=gpus, resume=resume)
+                if result == "done":
+                    logger.info("server.py done training hifigan")
+            else:
+                from python.fastpitch1_1.xva_train import handleTrainer as handleTrainer_fp
+                result = await handleTrainer_fp(models_manager, data, websocket, gpus=gpus, resume=resume)
+
+                if result == "move to hifi":
+                    logger.info("server.py moving on to HiFi training")
+        except:
+            logger.info(traceback.format_exc())
+            await websocket.send(f'ERROR:{traceback.format_exc()}')
+
+    _thread.start_new_thread(handleTrainingLoop, ())
+
 
     def get_or_create_eventloop ():
         try:
@@ -160,21 +212,24 @@ if __name__ == '__main__':
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 return asyncio.get_event_loop()
+            else:
+                logger.info(str(ex))
     def startWebSocket ():
         try:
             logger.info("Starting websocket")
             get_or_create_eventloop()
-            start_server = websockets.serve(websocket_handler, "localhost", 8000)
-            asyncio.get_event_loop().run_until_complete(start_server)
-            asyncio.get_event_loop().run_forever()
+            start_server = websockets.serve(websocket_handler, "localhost", 8001)
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(start_server)
+            loop.run_forever()
+
+            startWebSocket()
         except:
             import traceback
             with open("DEBUG_websocket.txt", "w+") as f:
                 print(traceback.format_exc())
-
-
-
-
+                logger.info(traceback.format_exc())
+                f.write(traceback.format_exc())
 
 
 
@@ -219,7 +274,6 @@ if __name__ == '__main__':
                     if clearTheCache:
                         logger.info("CLEARING CACHE")
                         torch.cuda.empty_cache()
-
 
                 if self.path == "/checkReady":
                     use_gpu = post_data["device"]=="gpu"

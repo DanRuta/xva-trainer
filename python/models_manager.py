@@ -22,11 +22,12 @@ class ModelsManager(object):
             if model_key in list(self.models_bank.keys()) and self.models_bank[model_key].isReady:
                 return
 
-            if websocket is not None:
-                await websocket.send(json.dumps({"key": "ass_model_loading", "data": "loading"}))
+            # if websocket is not None:
+            #     await websocket.send(json.dumps({"key": "ass_model_loading", "data": "loading"}))
 
             self.logger.info(f'ModelsManager: Initializing model: {model_key}')
 
+            # Tools
             if model_key=="ass":
                 from python.audio_source_separation.model import ASS
                 self.models_bank[model_key] = ASS(self.logger, self.PROD, self.device, self)
@@ -63,9 +64,22 @@ class ModelsManager(object):
                 from python.transcribe.model import Wav2Vec2PlusPuncTranscribe
                 self.models_bank[model_key] = Wav2Vec2PlusPuncTranscribe(self.logger, self.PROD, self.device, self)
 
+            if model_key=="wer_evaluation":
+                from python.wer_evaluation.model import WER_evaluation
+                self.models_bank[model_key] = WER_evaluation(self.logger, self.PROD, self.device, self)
+
             if model_key=="silence_cut":
                 from python.silence_cut.model import SilenceCutter
                 self.models_bank[model_key] = SilenceCutter(self.logger, self.PROD, self.device, self)
+
+            if model_key=="noise_removal":
+                from python.noise_removal.model import NoiseRemoval
+                self.models_bank[model_key] = NoiseRemoval(self.logger, self.PROD, self.device, self)
+
+            # Models
+            if model_key=="fastpitch1_1":
+                from python.fastpitch1_1.xva_train import FastPitchTrainer
+                self.models_bank[model_key] = FastPitchTrainer(self.logger, self.PROD, self.device, self)
 
             if model_key=="hifigan":
                 from python.hifigan.model import HiFi_GAN
@@ -75,6 +89,18 @@ class ModelsManager(object):
                 self.models_bank[model_key].model = self.models_bank[model_key].model.to(self.device)
             except:
                 pass
+        except:
+            self.logger.info(traceback.format_exc())
+
+    def sync_init_model (self, model_key, websocket=None, gpus=[0]):
+        model_key = model_key.lower()
+        try:
+            if model_key=="fastpitch1_1" and "fastpitch1_1" not in list(self.models_bank.keys()):
+                from python.fastpitch1_1.xva_train import FastPitchTrainer
+                self.models_bank[model_key] = FastPitchTrainer(self.logger, self.PROD, gpus, self, websocket=websocket)
+            if model_key=="hifigan" and "hifigan" not in list(self.models_bank.keys()):
+                from python.hifigan.xva_train import HiFiTrainer
+                self.models_bank[model_key] = HiFiTrainer(self.logger, self.PROD, gpus, self, websocket=websocket)
         except:
             self.logger.info(traceback.format_exc())
 

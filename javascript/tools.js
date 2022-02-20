@@ -9,6 +9,28 @@ const tools = {
         description: "Audio must be in mono 22050Hz .wav format for all tools and models. This tool will automatically convert your audio to this.",
         inputDirectory: `${window.path}/python/audio_format/input`,
         outputDirectory: `${window.path}/python/audio_format/output`,
+        isMultiProcessed: false,
+        setupFn: (taskId) => {
+            const ckbxDescription = createElem("div", "Use multi-processing")
+            const ckbx = createElem("input", {type: "checkbox"})
+            ckbx.style.height = "20px"
+            ckbx.style.width = "20px"
+
+            window.tools_state.toolSettings["formatting"] = window.tools_state.toolSettings["formatting"] || {}
+            window.tools_state.toolSettings["formatting"].useMP = false
+
+            ckbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["formatting"].useMP = ckbx.checked
+                window.tools_state.toolSettings["formatting"].isMultiProcessed = ckbx.checked
+                window.tools_state.isMultiProcessed = ckbx.checked
+            })
+
+            const container = createElem("div", ckbx, ckbxDescription)
+            container.style.display = "flex"
+            container.style.justifyContent = "center"
+            container.style.alignItems = "center"
+            toolDescription.appendChild(container)
+        }
     },
     "AI speaker diarization": {
         taskId: "diarization",
@@ -49,7 +71,29 @@ const tools = {
         description: "Normalize audio (EBU R128). Use this if your dataset contains audio from multiple sources. Don't use if you got your data straight from game files (only) and you plan to integrate synthesized audio back into the game.",
         inputDirectory: `${window.path}/python/audio_norm/input`,
         outputDirectory: `${window.path}/python/audio_norm/output/`,
-        inputFileType: ".wav"
+        inputFileType: ".wav",
+        isMultiProcessed: false,
+        setupFn: (taskId) => {
+            const ckbxDescription = createElem("div", "Use multi-processing")
+            const ckbx = createElem("input", {type: "checkbox"})
+            ckbx.style.height = "20px"
+            ckbx.style.width = "20px"
+
+            window.tools_state.toolSettings["normalize"] = window.tools_state.toolSettings["normalize"] || {}
+            window.tools_state.toolSettings["normalize"].useMP = false
+
+            ckbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["normalize"].useMP = ckbx.checked
+                window.tools_state.toolSettings["normalize"].isMultiProcessed = ckbx.checked
+                window.tools_state.isMultiProcessed = ckbx.checked
+            })
+
+            const container = createElem("div", ckbx, ckbxDescription)
+            container.style.display = "flex"
+            container.style.justifyContent = "center"
+            container.style.alignItems = "center"
+            toolDescription.appendChild(container)
+        }
     },
     "WEM to OGG": {
         taskId: "wem2ogg",
@@ -60,10 +104,99 @@ const tools = {
     },
     "Cluster speakers": {
         taskId: "cluster_speakers",
-        description: "Group up audio files of speakers into several clusters",
+        description: "Group up audio files of one or more speakers into several clusters based on speaking style/identity. Aim for max ~10k files at a time.",
         inputDirectory: `${window.path}/python/cluster_speakers/input`,
         outputDirectory: `${window.path}/python/cluster_speakers/output/`,
-        inputFileType: "folder"
+        inputFileType: "folder",
+        setupFn: (taskId) => {
+
+            window.tools_state.toolSettings["cluster_speakers"] = window.tools_state.toolSettings["cluster_speakers"] || {}
+            window.tools_state.toolSettings["cluster_speakers"].use_custom_k = false
+            window.tools_state.toolSettings["cluster_speakers"].custom_k = false
+            window.tools_state.toolSettings["cluster_speakers"].use_min_cluster_size = false
+            window.tools_state.toolSettings["cluster_speakers"].min_cluster_size = false
+            window.tools_state.toolSettings["cluster_speakers"].do_search_reordering = false
+            window.tools_state.toolSettings["cluster_speakers"].use_cluster_folder_prefix = false
+            window.tools_state.toolSettings["cluster_speakers"].cluster_folder_prefix = "0001"
+            window.tools_state.isMultiProcessed = false // ?
+
+            const doSearchReorderCkbxDescription = createElem("div", "Re-order clusters by similarity to the biggest (principal) cluster")
+            const doSearchReorderCkbx = createElem("input", {type: "checkbox"})
+            doSearchReorderCkbx.style.height = "20px"
+            doSearchReorderCkbx.style.width = "20px"
+            doSearchReorderCkbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["cluster_speakers"].do_search_reordering = doSearchReorderCkbx.checked
+            })
+            const rowItemReorder = createElem("div", doSearchReorderCkbxDescription, createElem("div", doSearchReorderCkbx))
+
+
+            const fixedKCkbxDescription = createElem("div", "Use custom fixed number of clusters")
+            const fixedKCkbx = createElem("input", {type: "checkbox"})
+            fixedKCkbx.style.height = "20px"
+            fixedKCkbx.style.width = "20px"
+            fixedKCkbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["cluster_speakers"].use_custom_k = fixedKCkbx.checked
+                inputFixedKValInput.disabled = !fixedKCkbx.checked
+            })
+            const rowItemFixedK = createElem("div", fixedKCkbxDescription, createElem("div", fixedKCkbx))
+
+
+            const inputFixedKValDescription = createElem("div", "Custom fixed number of clusters")
+            const inputFixedKValInput = createElem("input", {type: "number"})
+            inputFixedKValInput.disabled = true
+            inputFixedKValInput.value = 2
+            inputFixedKValInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["cluster_speakers"].custom_k = parseInt(inputFixedKValInput.value)
+            })
+            const rowItemFixedKAmount = createElem("div", inputFixedKValDescription, createElem("div", inputFixedKValInput))
+            window.tools_state.toolSettings["cluster_speakers"].custom_k = parseInt(inputFixedKValInput.value)
+
+
+            const useMinCSizeCkbxDescription = createElem("div", "Only output clusters with a minimum number of files in it")
+            const useMinCSizeCkbx = createElem("input", {type: "checkbox"})
+            useMinCSizeCkbx.style.height = "20px"
+            useMinCSizeCkbx.style.width = "20px"
+            useMinCSizeCkbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["cluster_speakers"].use_min_cluster_size = useMinCSizeCkbx.checked
+                minCSizeInput.disabled = !useMinCSizeCkbx.checked
+            })
+            const rowItemuseMinCSize = createElem("div", useMinCSizeCkbxDescription, createElem("div", useMinCSizeCkbx))
+
+            const minCSizeDescription = createElem("div", "Minimum number of samples per cluster")
+            const minCSizeInput = createElem("input", {type: "number"})
+            minCSizeInput.disabled = true
+            minCSizeInput.value = 2
+            minCSizeInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["cluster_speakers"].min_cluster_size = parseInt(minCSizeInput.value)
+            })
+            const rowItemminCSize = createElem("div", minCSizeDescription, createElem("div", minCSizeInput))
+            window.tools_state.toolSettings["cluster_speakers"].min_cluster_size = parseInt(minCSizeInput.value)
+
+
+            const useClusterFoldersPrefixDescription = createElem("div", "Prefix cluster folder names with something")
+            const useClusterFoldersPrefix = createElem("input", {type: "checkbox"})
+            useClusterFoldersPrefix.style.height = "20px"
+            useClusterFoldersPrefix.style.width = "20px"
+            useClusterFoldersPrefix.addEventListener("click", () => {
+                window.tools_state.toolSettings["cluster_speakers"].use_cluster_folder_prefix = useClusterFoldersPrefix.checked
+                clusterFolderPrefixInput.disabled = !useClusterFoldersPrefix.checked
+            })
+            const rowItemuseClusterFoldersPrefix = createElem("div", useClusterFoldersPrefixDescription, createElem("div", useClusterFoldersPrefix))
+
+            const clusterFolderPrefixDescription = createElem("div", "Cluster folder name prefix")
+            const clusterFolderPrefixInput = createElem("input", {type: "number"})
+            clusterFolderPrefixInput.disabled = true
+            clusterFolderPrefixInput.value = "0001"
+            clusterFolderPrefixInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["cluster_speakers"].cluster_folder_prefix = clusterFolderPrefixInput.value
+            })
+            const rowItemclusterFolderPrefix = createElem("div", clusterFolderPrefixDescription, createElem("div", clusterFolderPrefixInput))
+            window.tools_state.toolSettings["cluster_speakers"].min_cluster_size = clusterFolderPrefixInput.value
+
+
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemReorder, rowItemFixedK, rowItemFixedKAmount, rowItemuseMinCSize, rowItemminCSize, rowItemuseClusterFoldersPrefix, rowItemclusterFolderPrefix)
+            toolDescription.appendChild(container)
+        }
     },
     "Speaker similarity search": {
         taskId: "speaker_search",
@@ -86,6 +219,26 @@ const tools = {
         description: "Automatically generate a transcript for the speaker audio files in the input folder. This is the same tool that is available on the main screen.",
         inputDirectory: `${window.path}/python/transcribe/input`,
         outputDirectory: `${window.path}/python/transcribe/output/`,
+        inputFileType: "folder",
+        setupFn: (taskId) => {
+            window.tools_state.toolSettings["transcribe"] = window.tools_state.toolSettings["transcribe"] || {}
+            window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = false
+        }
+    },
+    "WER transcript evaluation": {
+        taskId: "wer_evaluation",
+        description: "Evaluate the quality of a transcript file's text against the text auto-generated by the Transcription tool.",
+        inputDirectory: `${window.path}/python/wer_evaluation/input`,
+        inputDirectory2: `${window.path}/python/wer_evaluation/asr_reference`,
+        outputDirectory: `${window.path}/python/wer_evaluation/output/`,
+        inputFileType: "folder"
+    },
+    "Remove background noise": {
+        taskId: "noise_removal",
+        description: "Automatically remove background noise from audio, using a reference 'silent' clip with the background noise.",
+        inputDirectory: `${window.path}/python/noise_removal/input`,
+        inputDirectory2: `${window.path}/python/noise_removal/noise`,
+        outputDirectory: `${window.path}/python/noise_removal/output/`,
         inputFileType: "folder"
     }
 }
@@ -131,6 +284,7 @@ Object.keys(tools).forEach(toolName => {
         window.tools_state.progressElem = toolProgressInfo
         window.tools_state.infoElem = toolsInfo
         window.tools_state.currentFileElem = toolsCurrentFile
+        window.tools_state.isMultiProcessed = false
 
         if (tool.inputDirectory2) {
             toolsOpenInput2.style.display = "inline-block"
@@ -189,14 +343,31 @@ toolsRunTool.addEventListener("click", () => {
 
     window.tools_state.taskFiles = fs.readdirSync(window.tools_state.inputDirectory)
 
-    if (window.tools_state.inputFileType=="folder") {
-        window.tools_state.taskFiles = [""]
+    if (window.tools_state.isMultiProcessed) {
+        if (window.tools_state.inputFileType) {
+            window.tools_state.taskFiles = window.tools_state.taskFiles.filter(f => f.endsWith(window.tools_state.inputFileType))
+        }
+        // window.tools_state.inputFileType = "folder"
+        updateMPProgress()
 
-    } else if (window.tools_state.inputFileType) {
-        window.tools_state.taskFiles = window.tools_state.taskFiles.filter(f => f.endsWith(window.tools_state.inputFileType))
+        const toolSettings = window.tools_state.toolSettings[window.tools_state.taskId] || {}
+        window.ws.send(JSON.stringify({model: window.tools_state.taskId, task: "runTask", data: {
+            outputDirectory: window.tools_state.outputDirectory,
+            toolSettings,
+            inPath: window.tools_state.inputDirectory,
+            inPath2: window.tools_state.inputDirectory2,
+        }}))
+
+    } else {
+        if (window.tools_state.inputFileType=="folder") {
+            window.tools_state.taskFiles = [""]
+
+        } else if (window.tools_state.inputFileType) {
+            window.tools_state.taskFiles = window.tools_state.taskFiles.filter(f => f.endsWith(window.tools_state.inputFileType))
+        }
+
+        doNextTaskItem()
     }
-
-    doNextTaskItem()
 })
 
 const doNextTaskItem = () => {
@@ -222,9 +393,26 @@ const doNextTaskItem = () => {
     }}))
 }
 
+const updateMPProgress = () => {
+
+    const outputFiles = fs.readdirSync(window.tools_state.outputDirectory)
+
+    const filesDone = outputFiles.filter(fname => window.tools_state.taskFiles.map(fname => fname.split(".").reverse().slice(1,1000).reverse().join(".")+".wav").includes(fname)).length
+    const percentDone = parseInt(filesDone/window.tools_state.taskFiles.length*100*100)/100
+    window.tools_state.currentFileElem.innerHTML = `Files done: ${filesDone}/${window.tools_state.taskFiles.length} (${percentDone}%)`
+
+    if (filesDone==window.tools_state.taskFiles.length) {
+        window.tools_state.taskFiles = []
+        window.tools_state.currentFileElem.innerHTML = ""
+        console.log("about to force call tasks_next")
+        window.websocket_handlers["tasks_next"](undefined, true)
+    } else {
+        setTimeout(updateMPProgress, 250)
+    }
+}
+
 
 window.websocket_handlers["task_info"] = (data) => {
-    // console.log("tasks_info", data)
     window.tools_state.infoElem.innerHTML = data
 }
 window.websocket_handlers["tasks_error"] = (data) => {
@@ -242,7 +430,14 @@ window.websocket_handlers["tasks_error"] = (data) => {
     window.tools_state.currentFileElem.innerHTML = ""
 }
 
-window.websocket_handlers["tasks_next"] = (data) => {
+window.websocket_handlers["tasks_next"] = (data, mpOverride=false) => {
+
+    if (window.tools_state.isMultiProcessed && !mpOverride) {
+        return
+    }
+
+    console.log("tasks_next", mpOverride)
+
     window.tools_state.progressElem.innerHTML = `${window.tools_state.taskFileIndex}/${window.tools_state.taskFiles.length} files done (${parseInt(window.tools_state.taskFileIndex/window.tools_state.taskFiles.length*100*100)/100}%)`
 
     if (window.tools_state.taskFileIndex<window.tools_state.taskFiles.length-1) {
@@ -287,6 +482,7 @@ const runAudioConversionForDataset = (fromDir, toDir) => {
     })
 }
 const runAudioSilenceCutForDataset = (fromDir, toDir) => {
+    // TODO - update the UI with a progress meter, like with the tools' mp progress
     return new Promise((resolve) => {
         // TODO
 
@@ -312,6 +508,11 @@ const runAudioSilenceCutForDataset = (fromDir, toDir) => {
     })
 }
 
+const timeoutSleep = ms => {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(), ms)
+    })
+}
 
 // Preprocess audio
 prepAudioStart.addEventListener("click", async () => {
@@ -344,6 +545,10 @@ prepAudioStart.addEventListener("click", async () => {
 
 
         // Copy the wavs directory to wavs_backup if doing conversion, or wavs_orig otherwise
+        prepAudioCurrentTask.innerHTML = "Copying out original data..."
+
+        await timeoutSleep(10) // Give the UI a chance to refresh, to display the info before starting
+
         if (DOING_CONVERSION) {
             if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)) {
                 window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
@@ -531,6 +736,94 @@ prepTextStart.addEventListener("click", () => {
     window.refreshRecordsList(window.appState.currentDataset)
 })
 
+
+
+checkTextQualityBtn.addEventListener("click", () => {
+    if (window.appState.currentDataset!=undefined) {
+        confirmModal(`Are you sure you'd like to kick off the text quality evaluation? This includes the auto-transcription as a step.`).then(confirmation => {
+            if (confirmation) {
+                setTimeout(() => {
+                    createModal("spinner", "Auto-transcribing...<br>This may take a few minutes if there are hundreds of lines.<br>Audio files must be mono 22050Hz<br><br>This window will close if there is an error.")
+                    window.appState.skipRefreshing = true
+
+
+                    const inputDirectory =  `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`
+
+                    window.tools_state.taskId = "transcribe"
+                    window.tools_state.inputDirectory = inputDirectory
+                    window.tools_state.outputDirectory = `${window.path}/python/transcribe/output`
+                    window.tools_state.inputFileType = "folder"
+
+                    window.tools_state.spinnerElem = toolsSpinner
+                    window.tools_state.progressElem = toolProgressInfo
+                    window.tools_state.infoElem = toolsInfo
+                    window.tools_state.currentFileElem = toolsCurrentFile
+
+                    window.tools_state.toolSettings["transcribe"] = window.tools_state.toolSettings["transcribe"] || {}
+                    window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = true
+
+                    window.tools_state.post_callback = () => {
+                        window.appState.skipRefreshing = true
+
+                        // Copy the two transcript files into the tool directory
+                        fs.copyFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/metadata.csv`, `${window.path}/python/wer_evaluation/input/metadata.csv`)
+                        fs.copyFileSync(`${window.path}/python/transcribe/output/metadata.csv`, `${window.path}/python/wer_evaluation/asr_reference/metadata.csv`)
+
+                        window.tools_state.taskId = "wer_evaluation"
+                        window.tools_state.inputDirectory = `${window.path}/python/wer_evaluation/input`
+                        window.tools_state.inputDirectory2 = `${window.path}/python/wer_evaluation/asr_reference`
+                        window.tools_state.outputDirectory = `${window.path}/python/wer_evaluation/output`
+
+
+                        window.tools_state.post_callback = () => {
+
+                            window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = false
+
+                            const wer_eval_data = fs.readFileSync(`${window.tools_state.outputDirectory}/wer_eval_results.txt`, "utf8")
+                            const wer_key = {}
+                            wer_eval_data.split("\n").forEach(row => {
+                                const fname = row.split("|")[0].toLowerCase()
+                                const score = row.split("|")[1]
+                                 wer_key[fname] = score
+                            })
+
+                            window.datasets[window.appState.currentDataset].metadata.forEach((sampleItems, si) => {
+
+                                const fileName = sampleItems[0].fileName.toLowerCase()
+
+                                if (wer_key[fileName]==undefined) {
+                                    return
+                                }
+
+                                const wer_elem = sampleItems[1].children[4]
+                                const score = parseFloat(wer_key[fileName].trim())/2
+
+                                window.datasets[window.appState.currentDataset].metadata.wer = score
+
+                                const r_col = Math.min(score, 1)
+                                const g_col = 1 - r_col
+
+                                wer_elem.style.background = `rgba(${r_col*255},${g_col*255},50, 0.7)`
+                            })
+
+                            window.appState.skipRefreshing = false
+                            window.refreshRecordsList(window.appState.currentDataset)
+                            closeModal()
+                        }
+
+                        toolsRunTool.click()
+                    }
+
+                    toolsRunTool.click()
+
+                }, 300)
+            }
+        })
+    }
+})
+
+
+
 // Clean the data
 cleanTextAudioRunBtn.addEventListener("click", () => {
 
@@ -566,3 +859,5 @@ cleanTextAudioRunBtn.addEventListener("click", () => {
     window.tools_state.running = false
     window.refreshRecordsList(window.appState.currentDataset)
 })
+
+

@@ -57,29 +57,43 @@ class Wav2Vec2PlusPuncTranscribe(object):
 
     async def transcribe(self, data, websocket):
 
+        ignore_existing_transcript = data["toolSettings"]["ignore_existing_transcript"] if "ignore_existing_transcript" in data["toolSettings"] else False
+
+        try:
+            if websocket is not None:
+                await websocket.send(json.dumps({"key": "task_info", "data": f'Initializing...'}))
+
+            self.lazy_load_models()
+
+            inPath, outputDirectory = data["inPath"], data["outputDirectory"]
+            if outputDirectory:
+                shutil.rmtree(outputDirectory, ignore_errors=True)
+        except:
+            self.logger.info(traceback.format_exc())
+            return
+
+
         if websocket is not None:
-            await websocket.send(json.dumps({"key": "task_info", "data": f'Initializing...'}))
-
-        self.lazy_load_models()
-
-        inPath, outputDirectory = data["inPath"], data["outputDirectory"]
-        if outputDirectory:
-            shutil.rmtree(outputDirectory, ignore_errors=True)
+            await websocket.send(json.dumps({"key": "task_info", "data": f'Preparing data...'}))
+        else:
+            self.logger.info("No websocket for: Preparing data...")
 
 
         finished_transcript = {}
 
         # Check any existing transcriptions, and use them instead of generating new ones
-        inPathParent = "/".join(inPath.split("/")[:-2])
-        potential_metadata_path = inPathParent+"/metadata.csv"
-        if os.path.exists(potential_metadata_path):
-            with open(potential_metadata_path) as f:
-                existing_data = f.read().split("\n")
-                for line in existing_data:
-                    fname = line.split("|")[0]
-                    text = line.split("|")[1].strip()
-                    if len(text):
-                        finished_transcript[fname] = text
+        self.logger.info(f'ignore_existing_transcript: {ignore_existing_transcript}')
+        if not ignore_existing_transcript:
+            inPathParent = "/".join(inPath.split("/")[:-2])
+            potential_metadata_path = inPathParent+"/metadata.csv"
+            if os.path.exists(potential_metadata_path):
+                with open(potential_metadata_path) as f:
+                    existing_data = f.read().split("\n")
+                    for line in existing_data:
+                        fname = line.split("|")[0]
+                        text = line.split("|")[1].strip()
+                        if len(text):
+                            finished_transcript[fname] = text
 
         input_files = [f'{inPath}/{file}' for file in list(os.listdir(inPath)) if ".wav" in file and "_16khz.wav" not in file]
 
@@ -88,6 +102,8 @@ class Wav2Vec2PlusPuncTranscribe(object):
 
                 if websocket is not None:
                     await websocket.send(json.dumps({"key": "task_info", "data": f'Transcribing audio files: {fi+1}/{len(input_files)}  ({(int(fi+1)/len(input_files)*100*100)/100}%)  - {file.split("/")[-1]} '}))
+                else:
+                    self.logger.info("No websocket for: Transcribing audio files...")
 
                 new_name = file.split("/")[-1].replace(".wem", "") # Helps avoid some issues, later down the line
                 if new_name in list(finished_transcript.keys()):

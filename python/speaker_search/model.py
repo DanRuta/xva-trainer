@@ -53,11 +53,10 @@ class SpeakerSearch(object):
         files = [f'{inPath}/{file}' for file in list(os.listdir(inPath)) if ".wav" in file]
         embeddings_queries = []
 
+        if websocket is not None:
+            await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding query audio files...'}))
+
         for fi, file in enumerate(files):
-
-            if websocket is not None:
-                await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding query audio files: {fi+1}/{len(files)}  ({(int(fi+1)/len(files)*100*100)/100}%)   '}))
-
             fpath = Path(file)
             wav = preprocess_wav(fpath)
             embedding = self.encoder.embed_utterance(wav)
@@ -72,11 +71,13 @@ class SpeakerSearch(object):
         embeddings_corpus = []
         files_done = []
 
+
         for fi, file in enumerate(files):
 
             try:
-                if websocket is not None:
-                    await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding corpus audio files: {fi+1}/{len(files)}  ({(int(fi+1)/len(files)*100*100)/100}%)   '}))
+                if fi%10==0 or fi==len(files)-1:
+                    if websocket is not None:
+                        await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding corpus audio files: {fi+1}/{len(files)}  ({(int(fi+1)/len(files)*100*100)/100}%)   '}))
 
                 fpath = Path(file)
                 wav = preprocess_wav(fpath)
@@ -84,7 +85,6 @@ class SpeakerSearch(object):
                 embeddings_corpus.append(embedding)
                 files_done.append(file)
             except:
-                import traceback
                 self.logger.info(traceback.format_exc())
 
 

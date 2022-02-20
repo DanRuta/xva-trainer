@@ -48,7 +48,7 @@
             </div>
             <div class="content">
 
-                <div id="batch_main" style="margin-left: 2.5vw;margin-right: 2.5vw;width: calc(95vw - 306px);">
+                <div id="batch_main" style="margin-left: 1vw;margin-right: 1vw;width: calc(98vw - 306px);">
                     <span id="batchDropZoneNote">Drag and drop .txt/.csv files here, or start new line</span>
                     <style id="outPathCSSHack" type="text/css">
                         #batchRecordsHeader > div:nth-child(3), #batchRecordsContainer > div > div:nth-child(3) {
@@ -61,6 +61,7 @@
                         <div id="i18n_batchh_game">Audio</div>
                         <div id="i18n_batchh_outpath">File name</div>
                         <div id="i18n_batchh_text">Text</div>
+                        <div id="i18n_batchh_text">WER</div>
                     </div>
                     <div id="batchRecordsContainer">
 
@@ -151,6 +152,9 @@
                         <button id="btn_preprocessTextButton">Pre-process text</button>
                     </div>
                     <div>
+                        <button id="btn_checkTextQualityBtn">Check text quality</button>
+                    </div>
+                    <div>
                         <button id="btn_cleanAudioText">Clean audio/text</button>
                     </div>
                     <div>
@@ -177,6 +181,18 @@
                         <button id="btn_deletedataset">Delete dataset</button>
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <div id="checkTextQualityContainer" style="display:none">
+            <div class="modal" style="height: 50vh;min-height: 500px;">
+                <h2>Check text transcript quality</h2>
+                <div>
+                    Run automatic speech recognition (ASR) and check the quality of your transcript against it using Word Error Rate (WER). This will display a colour in the WER column in the main app, with green indicating small differences, and red indicating big differences.
+                </div>
+                <div style="margin-top: 10px">
+                    <button id="checkTextQualityBtn">Check quality</button>
                 </div>
             </div>
         </div>
@@ -399,7 +415,7 @@
         </div>
 
         <div id="toolsContainer" style="display:none">
-            <div class="modal" style="width: 70vw;height: 50vh;">
+            <div class="modal" style="width: 70vw;height: 60vh;">
                 <h1>Tools</h1>
                 <div style="display:flex;width: 65vw;height: 70vh;">
                     <div id="toolsList" style="display: flex;flex-direction: column;background: rgb(75,75,75);height: 100%;width: 250px;overflow-y: auto;"></div>
@@ -567,6 +583,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #888;
         }
         #trainingQueueRecordsContainer > div {
             width: 100%;
@@ -592,12 +609,12 @@
             max-width: 30px;
         }
         #trainingQueueHeader > div:nth-child(2), #trainingQueueRecordsContainer > div > div:nth-child(2) {
-            min-width: 80px;
-            max-width: 80px;
+            min-width: 115px;
+            max-width: 115px;
         }
         #trainingQueueHeader > div:nth-child(3), #trainingQueueRecordsContainer > div > div:nth-child(3) {
-            min-width: 80px;
-            max-width: 80px;
+            min-width: 75px;
+            max-width: 75px;
         }
         #trainingQueueHeader > div:nth-child(4), #trainingQueueRecordsContainer > div > div:nth-child(4) {
             min-width: 100px;
@@ -616,18 +633,95 @@
 
         </style>
 
+        <!-- Queue config menu -->
+        <div id="queueItemConfigModalContainer" style="display: none;z-index: 1000;" >
+            <div class="modal" style="width: 300px;min-height: 450px;height: 450px;">
+                <h2>Config</h2>
+                <div class="flexTable" style="width:80%">
+
+                    <div>
+                        <div>Force stage</div>
+                        <div style="display: flex;flex-direction: row;">
+                            <input id="trainingAddConfigDoForceStageCkbx" type="checkbox">
+                            <select style="width: 100px;margin-right: 50px;" id="trainingAddConfigForceStageNumberSelect">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr style="opacity: 0.2;margin: 0;">
+                    <div style="color: gray;display: flex;justify-content: center;">Path configs</div>
+                    <hr style="opacity: 0.2;margin: 0;">
+
+                    <div>
+                        <div>Dataset path</div>
+                        <div>
+                            <input id="trainingAddConfigDatasetPathInput">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Output path</div>
+                        <div>
+                            <input id="trainingAddConfigOutputPathInput">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Checkpoint path</div>
+                        <div>
+                            <input id="trainingAddConfigCkptPathInput">
+                        </div>
+                    </div>
+
+                    <hr style="opacity: 0.2;margin: 0;">
+                    <div style="color: gray;display: flex;justify-content: center;">Train configs</div>
+                    <hr style="opacity: 0.2;margin: 0;">
+
+                    <div style="display: none;">
+                        <div>Number of CPU workers</div>
+                        <div>
+                            <input id="trainingAddConfigWorkersInput" type="number" value="4" min="1">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Base batch size</div>
+                        <div>
+                            <input id="trainingAddConfigBatchSizeInput" type="number" value="32" min="1">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Epochs per checkpoint</div>
+                        <div>
+                            <input id="trainingAddConfigEpochsPerCkptInput" type="number" value="32" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button id="acceptConfig">Accept</button>
+                    <button id="cancelConfig">Cancel</button>
+                </div>
+            </div>
+        </div>
+
         <div id="trainContainer" style="display:none">
-            <div class="modal" style="height: 80vh;width: 85vw;min-height: 500px;">
+
+            <div class="modal" style="height: 80vh;width: 88vw;min-height: 500px;">
                 <div style="display: flex;">
+
+
                     <!-- Queue -->
-                    <div style="width: 18vw;display: flex;flex-direction: column;margin-left: 10px;height: 80vh;">
+                    <div style="width: 21.5vw;display: flex;flex-direction: column;margin-left: 10px;height: 80vh;">
                         <h3 style="margin-top: 0;">Queue</h3>
                         <div id="trainingQueuePanelContainer">
                             <div id="trainingQueueHeader">
                                 <div>#</div>
-                                <div>Config</div>
+                                <div>Actions</div>
                                 <div>Status</div>
-                                <div>Name</div>
+                                <div>Dataset</div>
                             </div>
                             <div id="trainingQueueRecordsContainer">
                                 <div>
@@ -642,16 +736,18 @@
 
                         </div>
                         <div style="display: flex;justify-content: space-evenly;height: 40px;margin-top: 10px;">
-                            <button id="trainingQueueBtnMoveUp">Move up</button>
-                            <button id="trainingQueueBtnMoveDown">Move down</button>
+                            <button id="trainingQueueBtnMoveUp" style="margin-left: 0;" disabled="true">Up</button>
+                            <button id="trainingQueueBtnMoveDown" disabled="true">Down</button>
+                            <button id="trainingQueueBtnDelete" disabled="true">Delete</button>
                             <button id="trainingQueueBtnAdd">Add</button>
                             <button id="trainingQueueBtnClear">Clear</button>
+                            <button id="trainingQueueBtnBatchTrain" style="margin-right: 0;">Batch train</button>
                         </div>
                     </div>
 
                     <!-- Training -->
                     <div style="width: 50vw;margin-left: 10px;">
-                        <h3 style="margin-top: 0;">Training</h3>
+                        <h3 id="training_title" style="margin-top: 0;">Training</h3>
                         <div id="lossPlotsContainer">
                             <div>
                                 <canvas id="loss_plot"></canvas>
@@ -663,7 +759,7 @@
                         <div style="display: flex;width: 95%;margin: auto;height: 20px;padding-bottom: 10px;padding-top: 5px;">
                             <div style="margin-right: 10px;">View:</div>
                             <div>
-                                <select>
+                                <select id="stage_select">
                                     <option value="stage1">Stage 1</option>
                                     <option value="stage2">Stage 2</option>
                                     <option value="stage3">Stage 3</option>
@@ -674,9 +770,10 @@
                         </div>
                         <div id="cmdPanel"></div>
                         <div style="display: flex;justify-content: center;height: 40px;margin-top: 10px;">
-                            <button id="trainingStartBtn">Start</button>
-                            <button id="trainingPauseBtn">Pause</button>
-                            <button id="trainingStopBtn">Stop</button>
+                            <button id="trainingStartBtn" disabled>Start</button>
+                            <button id="trainingPauseBtn" style="display: none;">Pause</button>
+                            <button id="trainingResumeBtn" style="display: none;">Resume</button>
+                            <button id="trainingStopBtn" style="display: none;">Stop</button>
                         </div>
                     </div>
                     <!-- System -->

@@ -176,9 +176,9 @@ a {
  textarea {
      opacity: 0.9;
      height: 50px;
-     width: calc(95vw - 306px);
-     margin-left: 2.5vw;
-     margin-right: 2.5vw;
+     width: calc(98vw - 306px);
+     margin-left: 1vw;
+     margin-right: 1vw;
      margin-top: 9px;
      overflow-x: hidden;
      text-align: center;
@@ -317,7 +317,7 @@ a {
  }
 
 
- #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer {
+ #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #checkTextQualityContainer {
      display: flex;
      justify-content: center;
      align-items: center;
@@ -372,7 +372,7 @@ a {
      width: 25vw;
      text-align: center;
  }
- #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal {
+ #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #checkTextQualityContainer > .modal {
      height: 65vh;
      width: 45vw;
      min-height: 500px;
@@ -692,6 +692,12 @@ a {
      width: 95%;
  }
 
+ .toolSettingsTable {
+    width: 75%;
+    margin: auto;
+    margin-top: 25px;
+ }
+
  .renameSVG, .openFolderSVG {
      height: 20px;
      width: 20px;
@@ -1006,6 +1012,11 @@ a {
     /*direction: rtl;*/
     /*text-align: left;*/
 }
+#batchRecordsHeader > div:nth-child(5), #batchRecordsContainer > div > div:nth-child(5) {
+    min-width: 40px;
+    max-width: 40px;
+}
+
 /*Pacing*/
 /*#batchRecordsHeader > div:nth-child(8), #batchRecordsContainer > div > div:nth-child(8) {
     min-width: 50px;

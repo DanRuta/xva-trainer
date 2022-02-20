@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "discord-rich-presence": "0.0.8",
-    "fs-extra": "^9.1.0",
+    "fs-extra": "8.0.0",
     "get-audio-duration": "^3.0.0",
     "node-fetch": "^2.1.2",
     "node-nvidia-smi": "^1.0.0",

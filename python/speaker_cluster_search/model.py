@@ -55,7 +55,8 @@ class SpeakerClusterSearch(object):
         for fi, file in enumerate(files):
 
             if websocket is not None:
-                await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding query audio files: {fi+1}/{len(files)}  ({(int((fi+1)/len(files)*100*100))/100}%)   '}))
+                # await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding query audio files: {fi+1}/{len(files)}  ({(int((fi+1)/len(files)*100*100))/100}%)   '}))
+                websocket.send(json.dumps({"key": "task_info", "data": f'Encoding query audio files: {fi+1}/{len(files)}  ({(int((fi+1)/len(files)*100*100))/100}%)   '}))
 
             fpath = Path(file)
             wav = preprocess_wav(fpath)
@@ -93,22 +94,7 @@ class SpeakerClusterSearch(object):
         folders_with_files = list(folders_with_files)
 
 
-        # for fdi, fdname in enumerate(folders):
         for fdi, fdname in enumerate(folders_with_files):
-
-            # files = []
-            # for file in list(os.listdir(f'{inPath2}/{fdname}')):
-            #     if ".wav" in file:
-            #         files.append(f'{inPath2}/{fdname}/{file}')
-            #     else:
-            #         sub_files = os.listdir(f'{inPath2}/{fdname}/{file}')
-            #         self.logger.info(f'folder: {inPath2}/{fdname}/{file} | sub_files: {len(sub_files)}')
-            #         for sf_file in sub_files:
-            #             if ".wav" in sf_file:
-            #                 files.append(f'{inPath2}/{fdname}/{file}/{sf_file}')
-
-            # self.logger.info(f'folder: {inPath2}/{fdname} | files: {len(files)}')
-
             if websocket is not None:
                 await websocket.send(json.dumps({"key": "task_info", "data": f'Encoding corpus cluster audio files: {fdi+1}/{len(folders_with_files)}  ({(int(fdi+1)/len(folders_with_files)*100*100)/100}%)   '}))
 
@@ -178,17 +164,10 @@ class SpeakerClusterSearch(object):
                 pool_scores[I[query_i][res_i]] += D[query_i][res_i]
 
 
-
-
-
         folder_scores = [[] for _ in folders_with_files]
-
-        # sort_index = np.argsort((-np.array(pool_scores)))
-
 
         # Go through the summed distance scores for each line, and assign them to their cluster folder
         for psi, ps in enumerate(pool_scores):
-            # folder_scores[psi].append(ps)
             folder_scores[files_done_folderIndex[psi]].append(ps)
 
         # Average up the scores for all cluster folders
@@ -196,13 +175,6 @@ class SpeakerClusterSearch(object):
 
         # In ascending distance order, output the clusters out in the new order
         sort_index = np.argsort((np.array(folder_scores)))
-
-        self.logger.info(f'sort_index: {len(sort_index)}')
-        self.logger.info(f'folders_files: {len(folders_files)}')
-        self.logger.info(f'folder_scores: {len(folder_scores)}')
-        self.logger.info(f'pool_scores: {len(pool_scores)}')
-        self.logger.info(f'files_done_folderIndex: {len(files_done_folderIndex)}')
-        self.logger.info(f'folders_with_files: {len(folders_with_files)}')
 
         for sii, si in enumerate(sort_index):
 

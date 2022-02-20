@@ -9,23 +9,13 @@ from pydub import AudioSegment
 
 import multiprocessing as mp
 
-# progress = mp.Value("i", 0)
-# total = mp.Value("i", 0)
-# lock = mp.Lock()
 
-# def initializer(*arguments):
-#     global progress, total, lock
-#     progress, total, lock = arguments
-
-# def processingTask([websocket, inputPath, outputPath]):
 def processingTask(workItem):
-    # websocket, inputPath, outputPath = workItem
     inputPath, outputPath = workItem
 
     threshold = -40 # tweak based on signal-to-noise ratio
     interval = 1 # ms, increase to speed up
     max_silence = 300 / interval
-    # [start, end] = get_silence(dataItem, file, threshold, interval, int(max_silence))
 
     audio = AudioSegment.from_wav(inputPath)
 
@@ -34,7 +24,6 @@ def processingTask(workItem):
 
     # find number of chunks with dBFS below threshold
     final_starting_silent_count = 0
-    # final_end_silent_count = 0
     silent_blocks = 0
 
     index_cuts = []
@@ -51,8 +40,6 @@ def processingTask(workItem):
                 index_cuts.append(ci)
             silent_blocks = 0
 
-    # final_end_silent_count = silent_blocks
-
     index_cuts.append(len(chunks)-silent_blocks) # Add the index of the last bit of audio
     spliced_chunks = []
     for i in range(int(len(index_cuts)/2)):
@@ -64,18 +51,11 @@ def processingTask(workItem):
 
     combined_sound.export(f'{outputPath}', format="wav", bitrate=22050, parameters=["-ac", "1"])
 
-    # with lock:
-    #     progress.value += 1
-    #     sendMPWS_message(f'Progress: {progress.value}')
-        # websocket.send(json.dumps({"key": "tasks_info", "data": f'Progress: {progress.value}'}))
-
-
 
 
 class SilenceCutter(object):
     def __init__(self, logger, PROD, device, models_manager):
         super(SilenceCutter, self).__init__()
-
         self.logger = logger
         self.PROD = PROD
         self.models_manager = models_manager
@@ -84,7 +64,6 @@ class SilenceCutter(object):
 
         self.model = None
         self.isReady = True
-
 
 
     def load_state_dict (self, ckpt_path, sd):
@@ -96,22 +75,16 @@ class SilenceCutter(object):
     def runTask (self, data, websocket=None):
         return self.format(data, websocket)
 
-
-
     async def format(self, data, websocket):
+
         inputDirectory, outputDirectory = data["inputDirectory"], data["outputDirectory"]
 
-                    # Need to figure out how to send a websocket message from inside the multi-processing task
-
-
-        # workItems = [[websocket, f'{inputDirectory}/{file_name}', f'{outputDirectory}/{file_name}'] for file_name in sorted(os.listdir(inputDirectory))]
         workItems = [[f'{inputDirectory}/{file_name}', f'{outputDirectory}/{file_name}'] for file_name in sorted(os.listdir(inputDirectory))]
 
         workers = max(1, mp.cpu_count()-1)
         workers = min(len(workItems), workers)
         self.logger.info("[mp silence_cutter] workers: "+str(workers))
 
-        # pool = mp.Pool(workers, initializer, (progress, total, lock))
         pool = mp.Pool(workers)
         pool.map(processingTask, workItems)
         pool.close()

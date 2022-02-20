@@ -1,6 +1,7 @@
 xVAEnv
 xVAEnvCPU
 envXVATrainer
+env*
 node_modules
 *.wav
 *.mp3
