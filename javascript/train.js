@@ -321,7 +321,7 @@ window.showConfigMenu = (startingData, di) => {
     queueItemConfigModalContainer.style.opacity = 1
     queueItemConfigModalContainer.style.display = "flex"
 
-    const configData = startingData || {
+    const configData = (typeof startingData == "string" ? undefined : startingData) || {
         "status": "Ready",
 
         "dataset_path": undefined,
@@ -332,6 +332,9 @@ window.showConfigMenu = (startingData, di) => {
         "batch_size": 8, // TODO, app-level default settings
         "epochs_per_checkpoint": 3, // TODO, app-level default settings
         "force_stage": undefined,
+    }
+    if (typeof startingData == "string") {
+        configData["dataset_path"] = startingData
     }
 
     window.training_state.currentlyConfiguringDatasetI = di

@@ -123,50 +123,50 @@
                 </style>
                 <div id="keyboard_tips">
                     <div>
-                        <button id="btn_delete">Delete (Ctrl x)</button>
+                        <button class="mainPageButton" id="btn_delete" disabled>Delete (Ctrl x)</button>
                     </div>
                     <div>
-                        <button id="btn_play">Play (Ctrl f)</button>
+                        <button class="mainPageButton" id="btn_play" disabled>Play (Ctrl f)</button>
                     </div>
                     <div>
-                        <button id="btn_save">Save (Ctrl s)</button>
+                        <button class="mainPageButton" id="btn_save" disabled>Save (Ctrl s)</button>
                     </div>
                     <div>
-                        <button id="btn_moveup">Move Up (&uarr;)</button>
+                        <button class="mainPageButton" id="btn_moveup" disabled>Move Up (&uarr;)</button>
                     </div>
                     <div>
-                        <button id="btn_movedown">Move Down (&darr;)</button>
+                        <button class="mainPageButton" id="btn_movedown" disabled>Move Down (&darr;)</button>
                     </div>
                     <div>
-                        <button id="btn_newline">New line (Ctrl &darr;)</button>
+                        <button class="mainPageButton" id="btn_newline" disabled>New line (Ctrl &darr;)</button>
                     </div>
                 </div>
                 <div id="other_buttons">
                     <div>
-                        <button id="btn_preprocessAudioButton">Pre-process audio</button>
+                        <button class="mainPageButton" id="btn_preprocessAudioButton" disabled>Pre-process audio</button>
                     </div>
                     <div>
-                        <button id="btn_autotranscribe">Auto-transcribe</button>
+                        <button class="mainPageButton" id="btn_autotranscribe" disabled>Auto-transcribe</button>
                     </div>
                     <div>
-                        <button id="btn_preprocessTextButton">Pre-process text</button>
+                        <button class="mainPageButton" id="btn_preprocessTextButton" disabled>Pre-process text</button>
                     </div>
                     <div>
-                        <button id="btn_checkTextQualityBtn">Check text quality</button>
+                        <button class="mainPageButton" id="btn_checkTextQualityBtn" disabled>Check text quality</button>
                     </div>
                     <div>
-                        <button id="btn_cleanAudioText">Clean audio/text</button>
+                        <button class="mainPageButton" id="btn_cleanAudioText" disabled>Clean audio/text</button>
                     </div>
                     <div>
-                        <button id="btn_trainmodel">Train</button>
+                        <button class="mainPageButton" id="btn_trainmodel" disabled>Train</button>
                     </div>
                     <div>
-                        <button id="btn_exportmodel">Export model</button>
+                        <button class="mainPageButton" id="btn_exportmodel" disabled>Export model</button>
                     </div>
                 </div>
                 <div id="bottomrow_buttons">
                     <div>
-                        <button id="btn_opendatasetfolder">Open</button>
+                        <button class="mainPageButton" id="btn_opendatasetfolder" disabled>Open</button>
                     </div>
                     <div id="addmissingmeta_btn_container" style="display: none">
                         <button id="btn_addmissingmeta" style="background: red">Add missing metadata</button>
@@ -175,10 +175,10 @@
                         <button id="btn_editdatasetmeta">Edit metadata</button>
                     </div>
                     <div>
-                        <button id="btn_deleteall">Delete data</button>
+                        <button class="mainPageButton" id="btn_deleteall" disabled>Delete data</button>
                     </div>
                     <div>
-                        <button id="btn_deletedataset">Delete dataset</button>
+                        <button class="mainPageButton" id="btn_deletedataset" disabled>Delete dataset</button>
                     </div>
 
                 </div>
@@ -822,7 +822,19 @@
         <div id="modalContainer" style="display:none"></div>
     </div>
 </div>
-<div id="toolsIcon">
+<div id="trainButton" title="Train">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1380" height="400" viewBox="0 0 1380.000000 400.000000" version="1.1">
+        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+        fill="#ffffff" stroke="none">
+        <path d="M425 5105 c-60 -22 -110 -68 -139 -127 l-26 -52 0 -2366 0 -2366 26
+        -52 c31 -63 81 -106 148 -128 72 -24 141 -14 229 34 40 21 974 546 2077 1166
+        1250 703 2019 1142 2043 1164 54 53 77 106 77 182 0 76 -23 129 -77 182 -24
+        22 -793 461 -2043 1164 -1103 620 -2038 1145 -2078 1167 -86 46 -168 57 -237
+        32z"/>
+        </g>
+    </svg>
+</div>
+<div id="toolsIcon" title="Tools">
     <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="240.000000pt" height="240.000000pt" viewBox="0 0 240.000000 240.000000"
      preserveAspectRatio="xMidYMid meet">
     <g transform="translate(0.000000,240.000000) scale(0.100000,-0.100000)"
@@ -836,7 +848,7 @@
     </g>
     </svg>
 </div>
-<div id="settingsCog">
+<div id="settingsCog" title="Settings">
     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
      width="1280.000000pt" height="1280.000000pt" viewBox="0 0 1280.000000 1280.000000"
      preserveAspectRatio="xMidYMid meet">

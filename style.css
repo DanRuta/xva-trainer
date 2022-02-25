@@ -706,7 +706,7 @@ a {
      width: 20px;
  }
 
- #settingsCog, #toolsIcon {
+ #settingsCog, #toolsIcon, #trainButton {
      display: flex;
      position: fixed;
      z-index: 1000;
@@ -717,6 +717,9 @@ a {
  #toolsIcon {
     right: 35px;
     top: 35px;
+ }
+ #trainButton {
+    right: 50px;
  }
 /* #updatesIcon {
     right: 100px;
@@ -753,7 +756,7 @@ a {
     height: 30px !important;
     width: 30px;
  }
- #settingsCog > svg, #toolsIcon > svg {
+ #settingsCog > svg, #toolsIcon > svg, #trainButton > svg {
      height: 25px;
      cursor: pointer;
      filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7))

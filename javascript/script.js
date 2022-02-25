@@ -172,6 +172,8 @@ window.refreshDatasets = () => {
 
                 console.log("refreshing")
 
+                Array.from(document.querySelectorAll(".mainPageButton")).forEach(button => button.disabled = false)
+
                 title.innerHTML = `Dataset: ${dataset}`
 
                 const records = []
@@ -661,9 +663,7 @@ const populateRecordsList = (dataset, records, additive=false) => {
 
     batchDropZoneNote.style.display = "none"
 
-    console.log("reading allPaths")
     const allPaths = fs.readdirSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/`)
-    console.log("reading allPaths done")
 
     records.forEach((record, ri) => {
         const row = createElem("div.row")
@@ -1181,7 +1181,14 @@ window.setupModal(settingsCog, settingsContainer)
 window.setupModal(toolsIcon, toolsContainer)
 // ========
 
-// Tools
+// Training
 // ========
-window.setupModal(btn_trainmodel, trainContainer)
+window.setupModal(btn_trainmodel, trainContainer, () => {
+    if (window.appState.currentDataset) {
+        setTimeout(() => {
+            window.showConfigMenu(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}`)
+        }, 500)
+    }
+})
+window.setupModal(trainButton, trainContainer)
 // ========
