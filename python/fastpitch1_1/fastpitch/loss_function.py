@@ -25,14 +25,19 @@
 #
 # *****************************************************************************
 
+import sys
 import torch
 import torch.nn.functional as F
 from torch import nn
 
 try:
-    from python.fastpitch1_1.fastpitch.attn_loss_function import AttentionCTCLoss
+    sys.path.append(".")
+    from resources.app.python.fastpitch1_1.fastpitch.attn_loss_function import AttentionCTCLoss
 except:
-    from fastpitch.attn_loss_function import AttentionCTCLoss
+    try:
+        from python.fastpitch1_1.fastpitch.attn_loss_function import AttentionCTCLoss
+    except:
+        from fastpitch.attn_loss_function import AttentionCTCLoss
 
 from typing import Optional
 def mask_from_lens(lens, max_len: Optional[int] = None):

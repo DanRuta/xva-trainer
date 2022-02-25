@@ -19,6 +19,10 @@ try:
     import sklearn.neighbors.quad_tree
     import sklearn.tree
     import sklearn.tree._utils
+    import sklearn.utils._cython_blas
+    import sklearn.neighbors.typedefs
+    import sklearn.neighbors.quad_tree
+    import sklearn.tree._utils
 except:
     print("==== scipy")
     print(traceback.format_exc())
@@ -34,12 +38,15 @@ from websockets.legacy import protocol
 from websockets.legacy import server
 from websockets import server
 
-import pyannote.core
-import pyannote.audio
-from pyannote.audio import features
-from pyannote.audio.features.pretrained import Pretrained
-from pyannote.audio import embedding
-from pyannote.audio.embedding import approaches
+try:
+    import pyannote.core
+    import pyannote.audio
+    from pyannote.audio import features
+    from pyannote.audio.features.pretrained import Pretrained
+    from pyannote.audio import embedding
+    from pyannote.audio.embedding import approaches
+except:
+    print("==== pyannote")
 
 try:
     import librosa

@@ -27,6 +27,7 @@
 
 from typing import Optional
 
+import sys
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -34,17 +35,25 @@ import torch.nn.functional as F
 # from common.layers import ConvReLUNorm
 # from common.utils import mask_from_lens
 try:
-    from python.fastpitch1_1.common.layers import ConvReLUNorm
-    from python.fastpitch1_1.common.utils import mask_from_lens
-    from python.fastpitch1_1.fastpitch.alignment import b_mas, mas_width1, b_mas_gpu, mas_width1_gpu
-    from python.fastpitch1_1.fastpitch.attention import ConvAttention
-    from python.fastpitch1_1.fastpitch.transformer import FFTransformer
+    sys.path.append(".")
+    from resources.app.python.fastpitch1_1.common.layers import ConvReLUNorm
+    from resources.app.python.fastpitch1_1.common.utils import mask_from_lens
+    from resources.app.python.fastpitch1_1.fastpitch.alignment import b_mas, mas_width1, b_mas_gpu, mas_width1_gpu
+    from resources.app.python.fastpitch1_1.fastpitch.attention import ConvAttention
+    from resources.app.python.fastpitch1_1.fastpitch.transformer import FFTransformer
 except:
-    from common.layers import ConvReLUNorm
-    from common.utils import mask_from_lens
-    from fastpitch.alignment import b_mas, mas_width1, b_mas_gpu, mas_width1_gpu
-    from fastpitch.attention import ConvAttention
-    from fastpitch.transformer import FFTransformer
+    try:
+        from python.fastpitch1_1.common.layers import ConvReLUNorm
+        from python.fastpitch1_1.common.utils import mask_from_lens
+        from python.fastpitch1_1.fastpitch.alignment import b_mas, mas_width1, b_mas_gpu, mas_width1_gpu
+        from python.fastpitch1_1.fastpitch.attention import ConvAttention
+        from python.fastpitch1_1.fastpitch.transformer import FFTransformer
+    except:
+        from common.layers import ConvReLUNorm
+        from common.utils import mask_from_lens
+        from fastpitch.alignment import b_mas, mas_width1, b_mas_gpu, mas_width1_gpu
+        from fastpitch.attention import ConvAttention
+        from fastpitch.transformer import FFTransformer
 
 
 def regulate_len(durations, enc_out, pace: float = 1.0,

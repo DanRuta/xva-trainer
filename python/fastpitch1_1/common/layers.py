@@ -25,17 +25,23 @@
 #
 # *****************************************************************************
 
+import sys
 import torch
 import torch.nn.functional as F
 from librosa.filters import mel as librosa_mel_fn
 # from common.audio_processing import dynamic_range_compression, dynamic_range_decompression
 # from common.stft import STFT
 try:
-    from python.fastpitch1_1.common.audio_processing import dynamic_range_compression, dynamic_range_decompression
-    from python.fastpitch1_1.common.stft import STFT
+    sys.path.append(".")
+    from resources.app.python.fastpitch1_1.common.audio_processing import dynamic_range_compression, dynamic_range_decompression
+    from resources.app.python.fastpitch1_1.common.stft import STFT
 except:
-    from common.audio_processing import dynamic_range_compression, dynamic_range_decompression
-    from common.stft import STFT
+    try:
+        from python.fastpitch1_1.common.audio_processing import dynamic_range_compression, dynamic_range_decompression
+        from python.fastpitch1_1.common.stft import STFT
+    except:
+        from common.audio_processing import dynamic_range_compression, dynamic_range_decompression
+        from common.stft import STFT
 
 
 class LinearNorm(torch.nn.Module):

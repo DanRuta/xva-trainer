@@ -801,7 +801,7 @@ a {
 
 
 /*Speech to speech*/
-#s2sVLSampleRecordContainer, #s2sVLSampleRecordContainer>span , #s2sNoiseRecordContainer, #s2sNoiseRecordContainer>span {
+/*#s2sVLSampleRecordContainer, #s2sVLSampleRecordContainer>span , #s2sNoiseRecordContainer, #s2sNoiseRecordContainer>span {
     display: flex;
     align-items: center;
     width: 90%;
@@ -860,7 +860,7 @@ a {
 
 
 
-
+*/
 
 
 
@@ -1028,70 +1028,13 @@ a {
 
 /*PLUGINS*/
 /*Enabled*/
-#pluginsRecordsHeader > div {
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#pluginsRecordsContainer > div > div:first-child {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#pluginsRecordsHeader > div:first-child, #pluginsRecordsContainer > div > div:first-child {
-    min-width: 65px;
-    max-width: 65px;
-}
-/*Load order*/
-#pluginsRecordsHeader > div:nth-child(2), #pluginsRecordsContainer > div > div:nth-child(2) {
-    min-width: 50px;
-    max-width: 50px;
-}
-/*Plugin name*/
-#pluginsRecordsHeader > div:nth-child(3), #pluginsRecordsContainer > div > div:nth-child(3) {
-    min-width: 200px;
-    max-width: 200px;
-}
-/*Plugin author*/
-#pluginsRecordsHeader > div:nth-child(4), #pluginsRecordsContainer > div > div:nth-child(4) {
-    min-width: 125px;
-    max-width: 125px;
-}
-/*Version*/
-#pluginsRecordsHeader > div:nth-child(5), #pluginsRecordsContainer > div > div:nth-child(5) {
-    min-width: 90px;
-    max-width: 90px;
-}
-/*Type*/
-#pluginsRecordsHeader > div:nth-child(6), #pluginsRecordsContainer > div > div:nth-child(6) {
-    min-width: 60px;
-    max-width: 60px;
-}
-/*Min App Version*/
-#pluginsRecordsHeader > div:nth-child(7), #pluginsRecordsContainer > div > div:nth-child(7) {
-    min-width: 80px;
-    max-width: 80px;
-}
-/*Max App Version*/
-#pluginsRecordsHeader > div:nth-child(8), #pluginsRecordsContainer > div > div:nth-child(8) {
-    min-width: 80px;
-    max-width: 80px;
-}
-/*Plugin short descriptions*/
-#pluginsRecordsHeader > div:nth-child(9), #pluginsRecordsContainer > div > div:nth-child(9) {
-    min-width: 450px;
-    /*max-width: 450px;*/
-}
-/*Plugin ID*/
-#pluginsRecordsHeader > div:nth-child(10), #pluginsRecordsContainer > div > div:nth-child(10) {
-    min-width: 150px;
-    max-width: 150px;
-}
 
 
 
 
+#trainingQueueRecordsContainer > div {
+    cursor: pointer;
+}
 
 
 

@@ -11,6 +11,7 @@ import warnings
 import asyncio
 import glob
 import re
+import sys
 
 import torch
 import numpy as np
@@ -79,7 +80,6 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             if final_ckpt_fname is None:
                 final_ckpt_fname = ckpt_fname
 
-        trainer.print_and_log(f'Checkpoint: {final_ckpt_fname}', save_to_file=trainer.dataset_output)
         data["checkpoint"] = final_ckpt_fname
         # ======== Get the checkpoint END
     else:
@@ -93,12 +93,15 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
     except RuntimeError as e:
         trainer.running = False
         stageFinished = trainer.model.training_stage - 1
-        del trainer.train_loader
-        del trainer.dataloader_iterator
-        del trainer.model
-        del trainer.criterion
-        del trainer.trainset
-        del trainer.optimizer
+        try:
+            del trainer.train_loader
+            del trainer.dataloader_iterator
+            del trainer.model
+            del trainer.criterion
+            del trainer.trainset
+            del trainer.optimizer
+        except:
+            pass
 
         gc.collect()
         torch.cuda.empty_cache()
@@ -107,22 +110,22 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             trainer.print_and_log("TODO")
             # bs -= 10
         elif trainer.JUST_FINISHED_STAGE:
+            trainer.logger.info(traceback.format_exc())
             trainer.print_and_log(f'Finished training stage {stageFinished}...\n', save_to_file=trainer.dataset_output)
-            await trainer.websocket.send(f'Finished training stage {stageFinished}...\n')
             trainer.JUST_FINISHED_STAGE = False
             trainer.is_init = False
             del trainer
             del models_manager.models_bank["fastpitch1_1"]
-            models_manager.models_bank["fastpitch1_1"] = "move to hifi"
             gc.collect()
             if stageFinished==4:
+                models_manager.models_bank["fastpitch1_1"] = "move to hifi"
                 return "move to hifi"
             else:
+                # # ======================
+                # # data.force_stage = 1 if "force_stage" not in data.keys() else data.force_stage
+                # data["force_stage"] += 1
+                # # ======================
                 return await handleTrainer(models_manager, data, websocket, gpus)
-        # elif trainer.END_OF_TRAINING:
-        #     trainer.print_and_log("Moving on...\n", save_to_file=trainer.dataset_output)
-        #     await trainer.websocket.send(f'Moving on...\n')
-        #     return "move to hifi"
         else:
             raise
 
@@ -194,6 +197,7 @@ class FastPitchTrainer(object):
 
 
     async def init (self):
+
         if __name__ == '__main__': # Do this here, instead of top-level because __main__ can be false for both xVATrainer import, and multi-worker cmd use training
             from fastpitch.attn_loss_function import AttentionBinarizationLoss
             from fastpitch.model import FastPitch
@@ -202,13 +206,23 @@ class FastPitchTrainer(object):
             from common.text.cmudict import CMUDict
 
         else:
-            from python.fastpitch1_1.fastpitch.attn_loss_function import AttentionBinarizationLoss
-            from python.fastpitch1_1.fastpitch.model import FastPitch
-            from python.fastpitch1_1.fastpitch.data_function import batch_to_gpu, TTSCollate, TTSDataset
-            from python.fastpitch1_1.fastpitch.loss_function import FastPitchLoss
+            try:
+                sys.path.append(".")
+                from resources.app.python.fastpitch1_1.fastpitch.attn_loss_function import AttentionBinarizationLoss
+                from resources.app.python.fastpitch1_1.fastpitch.model import FastPitch
+                from resources.app.python.fastpitch1_1.fastpitch.data_function import batch_to_gpu, TTSCollate, TTSDataset
+                from resources.app.python.fastpitch1_1.fastpitch.loss_function import FastPitchLoss
+                from resources.app.python.fastpitch1_1.common.text.cmudict import CMUDict
+            except:
+                try:
+                    from python.fastpitch1_1.fastpitch.attn_loss_function import AttentionBinarizationLoss
+                    from python.fastpitch1_1.fastpitch.model import FastPitch
+                    from python.fastpitch1_1.fastpitch.data_function import batch_to_gpu, TTSCollate, TTSDataset
+                    from python.fastpitch1_1.fastpitch.loss_function import FastPitchLoss
+                    from python.fastpitch1_1.common.text.cmudict import CMUDict
+                except:
+                    self.logger.info(traceback.format_exc())
 
-            # from common.text.cmudict import CMUDict
-            from python.fastpitch1_1.common.text.cmudict import CMUDict
 
         self.batch_to_gpu = batch_to_gpu
         self.TTSDataset = TTSDataset
@@ -286,6 +300,10 @@ class FastPitchTrainer(object):
 
         # Load checkpoint
         self.model.training_stage, start_epoch, start_iter, avg_loss_per_epoch = self.load_checkpoint(ckpt_path)
+        if self.model.training_stage==5:
+            self.END_OF_TRAINING = True
+            self.JUST_FINISHED_STAGE = True
+            raise
         self.avg_loss_per_epoch = avg_loss_per_epoch
         if self.force_stage:
             self.print_and_log(f'Forcing stage: {self.force_stage}', save_to_file=self.dataset_output)
@@ -293,6 +311,15 @@ class FastPitchTrainer(object):
                 start_iter = self.start_iterations
             self.avg_loss_per_epoch = []
             self.model.training_stage = self.force_stage
+
+        if self.websocket:
+            await self.websocket.send(f'Set stage to: {self.model.training_stage} ')
+
+            # ===================== DEVELOPING START
+            # self.JUST_FINISHED_STAGE = True
+            # raise
+            # ===================== DEVELOPING END
+
 
         start_epoch = start_epoch
         self.total_iter = start_iter
@@ -402,44 +429,47 @@ class FastPitchTrainer(object):
 
 
     async def get_or_calculate_pitch_stats (self, training_log, dataset_dir, cmudict, p_arpabet):
-        if os.path.exists(f'{dataset_dir}/pitch_stats.json'):
-            with open(f'{dataset_dir}/pitch_stats.json') as f:
-                json_data = f.read()
-                data = json.loads(json_data)
-                pitch_mean = data["mean"]
-                pitch_std = data["std"]
-                self.print_and_log(f'pitch_mean: {pitch_mean} | pitch_std: {pitch_std}', save_to_file=self.dataset_output)
-        else:
-            self.print_and_log(f'NO existing pitch mean/std stats.', save_to_file=self.dataset_output)
+        try:
+            if os.path.exists(f'{dataset_dir}/pitch_stats.json'):
+                with open(f'{dataset_dir}/pitch_stats.json') as f:
+                    json_data = f.read()
+                    data = json.loads(json_data)
+                    pitch_mean = data["mean"]
+                    pitch_std = data["std"]
+                    self.print_and_log(f'pitch_mean: {pitch_mean} | pitch_std: {pitch_std}', save_to_file=self.dataset_output)
+            else:
+                self.print_and_log(f'No existing pitch mean/std stats.', save_to_file=self.dataset_output)
 
-            pitchCalcDataset = self.TTSDataset(dataset_dir, audiopaths_and_text=self.dataset_input+"/metadata.csv", text_cleaners=[], n_mel_channels=80, dm=-1, pitch_mean=None, pitch_std=None, training_stage=-1, p_arpabet=p_arpabet, max_wav_value=32768.0, sampling_rate=22050, filter_length=1024, hop_length=256, win_length=1024, mel_fmin=0, mel_fmax=8000, betabinomial_online_dir=None, pitch_online_dir=None, cmudict=cmudict, pitch_online_method="pyin")
+                pitchCalcDataset = self.TTSDataset(dataset_dir, audiopaths_and_text=self.dataset_input+"/metadata.csv", text_cleaners=[], n_mel_channels=80, dm=-1, pitch_mean=None, pitch_std=None, training_stage=-1, p_arpabet=p_arpabet, max_wav_value=32768.0, sampling_rate=22050, filter_length=1024, hop_length=256, win_length=1024, mel_fmin=0, mel_fmax=8000, betabinomial_online_dir=None, pitch_online_dir=None, cmudict=cmudict, pitch_online_method="pyin")
 
-            collate_fn = self.TTSCollate()
-            collate_fn.training_stage = -1
-            pitchCalcDataloader = DataLoader(pitchCalcDataset, num_workers=24, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
+                collate_fn = self.TTSCollate()
+                collate_fn.training_stage = -1
+                pitchCalcDataloader = DataLoader(pitchCalcDataset, num_workers=1, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
 
-            pitch_vals = []
+                pitch_vals = []
 
-            self.print_and_log(f'Extracting baseline pitch data', save_to_file=self.dataset_output)
-            for bi, batch in enumerate(pitchCalcDataloader):
-                print(f'\rExtracting baseline pitch data | {bi+1}/{len(pitchCalcDataloader)} ', end="", flush=True)
-                self.training_log_live_line = f'\rExtracting baseline pitch data | {bi+1}/{len(pitchCalcDataloader)} '
-                if bi%5==0 or bi==len(pitchCalcDataloader)-1:
+                self.print_and_log(f'Extracting baseline pitch data', save_to_file=self.dataset_output)
+                for bi, batch in enumerate(pitchCalcDataloader):
+                    print(f'\rExtracting baseline pitch data | {bi+1}/{len(pitchCalcDataloader)} ', end="", flush=True)
+                    self.training_log_live_line = f'\rExtracting baseline pitch data | {bi+1}/{len(pitchCalcDataloader)} '
                     self.print_and_log(save_to_file=self.dataset_output)
 
-                (text_padded, input_lengths, mel_padded, output_lengths, len_x, pitch_padded, energy_padded, speaker, attn_prior, durs_padded, max_inp_lengths, max_mel_lengths, audiopaths) = batch
-                pitch_vals += list(pitch_padded.numpy()[0])
-            self.training_log_live_line = ""
+                    (text_padded, input_lengths, mel_padded, output_lengths, len_x, pitch_padded, energy_padded, speaker, attn_prior, durs_padded, max_inp_lengths, max_mel_lengths, audiopaths) = batch
+                    pitch_vals += list(pitch_padded.numpy()[0])
+                self.training_log_live_line = ""
 
-            pitch_mean = np.mean([np.mean(vals) for vals in pitch_vals])
-            pitch_std = np.std([np.std(vals) for vals in pitch_vals])
+                pitch_mean = np.mean([np.mean(vals) for vals in pitch_vals])
+                pitch_std = np.std([np.std(vals) for vals in pitch_vals])
 
-            with open(f'{dataset_dir}/pitch_stats.json', "w+") as f:
-                f.write(json.dumps({"mean": float(pitch_mean), "std": float(pitch_std)}))
+                with open(f'{dataset_dir}/pitch_stats.json', "w+") as f:
+                    f.write(json.dumps({"mean": float(pitch_mean), "std": float(pitch_std)}))
 
-            self.print_and_log(f'\npitch_mean: {pitch_mean} | pitch_std: {pitch_std}', save_to_file=self.dataset_output)
+                self.print_and_log(f'\npitch_mean: {pitch_mean} | pitch_std: {pitch_std}', save_to_file=self.dataset_output)
 
-            del pitchCalcDataset, pitchCalcDataloader
+                del pitchCalcDataset, pitchCalcDataloader
+        except:
+            self.logger.info(traceback.format_exc())
+            raise
 
         return pitch_mean, pitch_std
 
@@ -491,6 +521,8 @@ class FastPitchTrainer(object):
         self.logs_are_init = True
 
     def get_target_delta(self, num_data_lines):
+        target_delta = 0
+
         if self.model.training_stage==1:
             if num_data_lines>4000:
                 target_delta = 2e-5
@@ -774,7 +806,7 @@ class FastPitchTrainer(object):
                 acc_epoch_deltas_avg20 = np.mean(acc_epoch_deltas if len(acc_epoch_deltas)<self.EPOCH_AVG_SPAN else acc_epoch_deltas[-self.EPOCH_AVG_SPAN:])
                 avg_losses_print = int(acc_epoch_deltas_avg20*100000)/100000
 
-                avg_losses_print = f' | Avg loss delta: {avg_losses_print}'
+                avg_losses_print = f' | Avg loss % delta: {avg_losses_print}'
             else:
                 avg_losses_print = ""
 
@@ -848,11 +880,7 @@ class FastPitchTrainer(object):
 
                         if self.model.training_stage==4:
                             self.END_OF_TRAINING = True
-                        #     self.logger.info("[Trainer] END_OF_TRAINING...")
-                        # else:
-                        #     self.JUST_FINISHED_STAGE = True
-                        #     self.logger.info("[Trainer] JUST_FINISHED_STAGE...")
-                        #     self.model.training_stage += 1
+
                         self.JUST_FINISHED_STAGE = True
                         self.logger.info("[Trainer] JUST_FINISHED_STAGE...")
                         self.model.training_stage += 1
@@ -1019,7 +1047,7 @@ class FastPitchTrainer(object):
             trainset = self.TTSDataset(dataset_path=self.dataset_input, audiopaths_and_text=self.dataset_input+"/metadata.csv", text_cleaners=text_cleaners, n_mel_channels=80, dm=-1, use_file_caching=True, pitch_mean=pitch_mean, pitch_std=pitch_std, training_stage=1, p_arpabet=p_arpabet, max_wav_value=32768.0, sampling_rate=22050, filter_length=1024, hop_length=256, win_length=1024, mel_fmin=0, mel_fmax=8000, betabinomial_online_dir=None, pitch_online_dir=None, cmudict=self.cmudict, pitch_online_method="pyin")
             collate_fn = self.TTSCollate()
             collate_fn.training_stage = 1
-            dataloader = DataLoader(trainset, num_workers=8, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
+            dataloader = DataLoader(trainset, num_workers=2, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
 
             os.makedirs(f'{self.dataset_input}/durs_arpabet', exist_ok=True)
             os.makedirs(f'{self.dataset_input}/durs_text', exist_ok=True)

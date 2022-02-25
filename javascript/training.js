@@ -156,7 +156,7 @@ trainingStartBtn.addEventListener("click", () => {
     window.ws.send(JSON.stringify({
         model: "",
         task: "startTraining",
-        data: window.training_state.datasetsQueue[0]
+        data: window.training_state.datasetsQueue[window.training_state.trainingQueueItem]
     }))
     trainingStartBtn.style.display = "none"
     trainingResumeBtn.style.display = "none"

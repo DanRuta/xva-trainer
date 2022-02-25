@@ -50,6 +50,7 @@ def save_checkpoint(filepath, obj):
         torch.save(obj, filepath)
     except:
         print(traceback.format_exc())
+    del obj
     print("Complete.")
 
 

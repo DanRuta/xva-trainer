@@ -43,14 +43,62 @@ const initWebSocket = () => {
 
     ws.onmessage = event => {
         console.log("event", event)
-        if (event.data.includes("Finished training HiFi-GAN")) {
-            trainingStopBtn.click()
-        } else if (event.data.includes("Finished training stage")) {
-            const stageFinished = parseInt(event.data.split("training stage ")[1].split("...")[0])
-            stage_select.value = `stage${stageFinished+1}`
-            window.training_state.stage_viewed = stageFinished+1
+
+        if (event.data.includes("Set stage to: ")) {
+            const stage = parseInt(event.data.split(": ")[1].split(" ")[0])
+            window.training_state.datasetsQueue[window.training_state.trainingQueueItem].status = `Stage ${stage}`
+            const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))
+            allRowElems[window.training_state.trainingQueueItem].children[2].style.background = "goldenrod"
+            allRowElems[window.training_state.trainingQueueItem].children[2].style.color = "white"
+            allRowElems[window.training_state.trainingQueueItem].children[2].innerHTML = window.training_state.datasetsQueue[window.training_state.trainingQueueItem].status
+            window.saveTrainingQueueJSON()
+
+            stage_select.value = `stage${stage}`
+            window.training_state.stage_viewed = stage
             window.updateTrainingLogText()
             window.updateTrainingGraphs()
+        } else
+
+        if (event.data.includes("Finished training HiFi-GAN")) {
+
+            window.training_state.datasetsQueue[window.training_state.trainingQueueItem].status = `Finished`
+            const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))
+            allRowElems[window.training_state.trainingQueueItem].children[2].style.background = "green"
+            allRowElems[window.training_state.trainingQueueItem].children[2].style.color = "white"
+            allRowElems[window.training_state.trainingQueueItem].children[2].innerHTML = `Finished`
+            window.saveTrainingQueueJSON()
+
+            trainingStopBtn.click()
+
+            if (window.training_state.isBatchTraining) {
+
+                if (window.training_state.trainingQueueItem<(window.training_state.datasetsQueue.length-1)) {
+
+                    // Go down the list, until the first item is found that is not yet finished
+                    let itemIndex = window.training_state.trainingQueueItem
+                    do {
+                        if (window.training_state.datasetsQueue[itemIndex].status!="Finished") {
+                            break
+                        }
+                        itemIndex++
+
+                    } while (itemIndex<window.training_state.datasetsQueue.length)
+
+                    if (itemIndex>=window.training_state.datasetsQueue.length) {
+                        // Batch training is finished
+                        window.training_state.isBatchTraining = false
+
+                    } else {
+                        window.training_state.isBatchTraining = true
+                        window.training_state.trainingQueueItem = itemIndex
+                        allRowElems[window.training_state.trainingQueueItem].click()
+                        trainingStartBtn.click()
+                    }
+
+                } else {
+                    window.training_state.isBatchTraining = false
+                }
+            }
 
         } else {
             const response = event.data ? JSON.parse(event.data) : undefined

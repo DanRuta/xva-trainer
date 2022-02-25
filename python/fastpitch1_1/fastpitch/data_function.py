@@ -26,6 +26,7 @@
 # *****************************************************************************
 
 import os
+import sys
 import time
 import functools
 import json
@@ -41,13 +42,19 @@ from scipy import ndimage
 from scipy.stats import betabinom
 
 try:
-    import python.fastpitch1_1.common.layers as layers
-    from python.fastpitch1_1.common.text.text_processing import TextProcessing
-    from python.fastpitch1_1.common.utils import load_wav_to_torch, load_filepaths_and_text#, to_gpu
+    sys.path.append(".")
+    import resources.app.python.fastpitch1_1.common.layers as layers
+    from resources.app.python.fastpitch1_1.common.text.text_processing import TextProcessing
+    from resources.app.python.fastpitch1_1.common.utils import load_wav_to_torch, load_filepaths_and_text#, to_gpu
 except:
-    import common.layers as layers
-    from common.text.text_processing import TextProcessing
-    from common.utils import load_wav_to_torch, load_filepaths_and_text#, to_gpu
+    try:
+        import python.fastpitch1_1.common.layers as layers
+        from python.fastpitch1_1.common.text.text_processing import TextProcessing
+        from python.fastpitch1_1.common.utils import load_wav_to_torch, load_filepaths_and_text#, to_gpu
+    except:
+        import common.layers as layers
+        from common.text.text_processing import TextProcessing
+        from common.utils import load_wav_to_torch, load_filepaths_and_text#, to_gpu
 
 
 class BetaBinomialInterpolator:

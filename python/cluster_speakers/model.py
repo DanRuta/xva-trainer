@@ -97,7 +97,7 @@ class ClusterSpeakers(object):
 
 
         clusters_with_less_than_min = []
-        if use_min_cluster_size:
+        if use_min_cluster_size and n_clusters_>0:
 
             cluster_counts = [0 for c in range(n_clusters_)]
 
@@ -111,7 +111,7 @@ class ClusterSpeakers(object):
                     clusters_with_less_than_min.append(ci)
 
 
-        if do_search_reordering:
+        if do_search_reordering and n_clusters_>0:
 
             if websocket is not None:
                 await websocket.send(json.dumps({"key": "task_info", "data": f'Running principal cluster similarity re-ranking...'}))

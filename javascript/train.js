@@ -19,7 +19,8 @@ window.loss_delta_chart_object = window.initChart("loss_delta_plot", "Loss Delta
 
 
 window.training_state = {
-    state: 0, // 0 idle, 1 training, 2 paused, 3 finished
+    // state: 0, // 0 idle, 1 training, 2 paused, 3 finished
+    isBatchTraining: false,
     stage_viewed: 1,
     dirs_watching: [],
     datasetsQueue: [
@@ -36,7 +37,8 @@ window.training_state = {
     ],
     trainingQueueItem: 0,
     websocketDynamicLogLine: "",
-    currentlyViewedDataset: "H:/xVA/FP_INPUT/sk_maleeventoned"
+    currentlyViewedDataset: "H:/xVA/FP_INPUT/sk_maleeventoned",
+    selectedQueueItem: undefined,
 
 }
 
@@ -77,11 +79,14 @@ window.refreshTrainingQueueList = () => {
         const rowElem = createElem("div")
         const queueItem = createElem("div", `${di}`)
         const configButton = createElem("button.smallButton", "Config")
-        const viewButton = createElem("button.smallButton", "View")
         const buttonContainer = createElem("div")
         buttonContainer.appendChild(configButton)
-        buttonContainer.appendChild(viewButton)
-        const statusBox = createElem("div", dataset.finished ? "Finished" : "Ready")
+        const statusBox = createElem("div", dataset.finished ? "Finished" : dataset.status)
+        if (dataset.status=="Finished") {
+            statusBox.style.background = "green"
+            statusBox.style.color = "white"
+        }
+
         const nameBox = createElem("div", dataset.dataset_path.split("/").reverse()[0])
         nameBox.title = dataset.dataset_path.split("/").reverse()[0]
 
@@ -93,24 +98,55 @@ window.refreshTrainingQueueList = () => {
 
         window.training_state.datasetsQueue[di].rowElem = rowElem
 
+        rowElem.addEventListener("click", event => {
+            if (event.target==configButton) {
+                return
+            }
+
+            trainingQueueBtnMoveUp.disabled = false
+            trainingQueueBtnMoveDown.disabled = false
+            trainingQueueBtnDelete.disabled = false
+
+            if (window.training_state.selectedQueueItem!=di) {
+
+                // Unhighlight previous
+                const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))
+                if (window.training_state.selectedQueueItem!=undefined) {
+                    allRowElems[window.training_state.selectedQueueItem].style.background = "none"
+                    Array.from(allRowElems[window.training_state.selectedQueueItem].children).forEach(child => child.style.color = "white")
+                }
+                window.training_state.selectedQueueItem = di
+
+                // Highlight this one
+                allRowElems[window.training_state.selectedQueueItem].style.background = "white"
+                Array.from(allRowElems[window.training_state.selectedQueueItem].children).forEach(child => child.style.color = "black")
+
+
+                // View this dataset in the text/graph logs
+                window.training_state.currentlyViewedDataset = dataset.dataset_path
+                trainingStartBtn.disabled = false
+                training_title.innerHTML = `Training - ${nameBox.title}`
+
+                if (!fs.existsSync(dataset.output_path)) {
+                    fs.mkdirSync(dataset.output_path)
+                }
+
+                startTrackingFolder(dataset.dataset_path, dataset.output_path)
+                window.updateTrainingLogText()
+                window.updateTrainingGraphs()
+
+                cmdPanel.scrollTop = cmdPanel.scrollHeight
+            }
+            window.training_state.selectedQueueItem = di
+        })
+        if (window.training_state.selectedQueueItem==di) {
+            rowElem.style.background = "white"
+            Array.from(rowElem.children).forEach(child => child.style.color = "black")
+        }
+
         configButton.addEventListener("click", () => {
             configAnExistingItem = true
             window.showConfigMenu(window.training_state.datasetsQueue[di], di)
-        })
-        viewButton.addEventListener("click", () => {
-            window.training_state.currentlyViewedDataset = dataset.dataset_path
-            trainingStartBtn.disabled = false
-            training_title.innerHTML = `Training - ${nameBox.title}`
-
-            if (!fs.existsSync(dataset.output_path)) {
-                fs.mkdirSync(dataset.output_path)
-            }
-
-            startTrackingFolder(dataset.dataset_path, dataset.output_path)
-            window.updateTrainingLogText()
-            window.updateTrainingGraphs()
-
-            cmdPanel.scrollTop = cmdPanel.scrollHeight
         })
     })
 }
@@ -194,6 +230,73 @@ window.stopTraining = () => {
 }
 
 
+trainingQueueBtnMoveUp.addEventListener("click", () => {
+    if (window.training_state.selectedQueueItem==undefined || window.training_state.selectedQueueItem==0) {
+        return
+    }
+
+    const selectedItem = window.training_state.datasetsQueue.splice(window.training_state.selectedQueueItem, 1)[0]
+    window.training_state.datasetsQueue.splice(window.training_state.selectedQueueItem-1, 0, selectedItem)
+    window.training_state.selectedQueueItem-=1
+
+    window.refreshTrainingQueueList()
+    window.saveTrainingQueueJSON()
+})
+
+
+trainingQueueBtnMoveDown.addEventListener("click", () => {
+    if (window.training_state.selectedQueueItem==undefined || window.training_state.selectedQueueItem==(window.training_state.datasetsQueue.length-1)) {
+        return
+    }
+
+    const selectedItem = window.training_state.datasetsQueue.splice(window.training_state.selectedQueueItem, 1)[0]
+    window.training_state.datasetsQueue.splice(window.training_state.selectedQueueItem+1, 0, selectedItem)
+    window.training_state.selectedQueueItem+=1
+
+    window.refreshTrainingQueueList()
+    window.saveTrainingQueueJSON()
+})
+
+trainingQueueBtnDelete.addEventListener("click", () => {
+    if (window.training_state.selectedQueueItem==undefined) {
+        return
+    }
+    window.confirmModal("Are you sure you'd like to remove this dataset from the training queue?").then(response => {
+        if (response) {
+            window.training_state.datasetsQueue.splice(window.training_state.selectedQueueItem, 1)[0]
+            window.training_state.selectedQueueItem = undefined
+            window.refreshTrainingQueueList()
+            window.saveTrainingQueueJSON()
+        }
+    })
+})
+
+trainingQueueBtnBatchTrain.addEventListener("click", () => {
+    if (!window.training_state.datasetsQueue.length) {
+        return window.errorModal("Add some datasets to the queue first, either via the Add button, or via the Train button from the dataset view in the main app")
+    }
+
+    // Go down the list, until the first item is found that is not yet finished
+    let itemIndex = 0
+    do {
+        if (window.training_state.datasetsQueue[itemIndex].status!="Finished") {
+            break
+        }
+        itemIndex++
+
+    } while (itemIndex<window.training_state.datasetsQueue.length)
+
+    if (itemIndex>=window.training_state.datasetsQueue.length) {
+        return window.errorModal("All datasets have finished training. Add some more!")
+    }
+
+
+    window.training_state.isBatchTraining = true
+    window.training_state.trainingQueueItem = itemIndex
+    const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))
+    allRowElems[itemIndex].click()
+    trainingStartBtn.click()
+})
 
 
 

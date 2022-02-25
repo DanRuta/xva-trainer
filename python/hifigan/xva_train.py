@@ -1,5 +1,6 @@
 import os
 os.environ['FOR_DISABLE_CONSOLE_CTRL_HANDLER'] = '1'
+# os.environ['NCCL_P2P_DISABLE'] = '1'
 import json
 import argparse
 import traceback
@@ -19,14 +20,15 @@ import torch.nn.functional as F
 import wave
 import contextlib
 
+if __name__ == '__main__':
+    import multiprocessing
+    multiprocessing.freeze_support()
+
 # Still allow command-line use, from within this directory
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
 
 
-if __name__ == '__main__':
-    import multiprocessing
-    multiprocessing.freeze_support()
 
 
 
@@ -56,23 +58,32 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
     else:
         trainer = models_manager.models_bank["hifigan"]
 
+
     try:
         await trainer.start(data, gpus=gpus, resume=resume)
     except KeyboardInterrupt:
         trainer.running = False
         raise
     except RuntimeError as e:
+        trainer.logger.info(str(e))
         trainer.running = False
-        del trainer.train_loader
-        del trainer.dataloader_iterator
-        del trainer.model
-        del trainer.criterion
-        del trainer.trainset
-        del trainer.optimizer
+        try:
+            del trainer.train_loader
+            del trainer.dataloader_iterator
+            del trainer.model
+            del trainer.generator
+            del trainer.mpd
+            del trainer.msd
+            # del trainer.criterion
+            del trainer.trainset
+            # del trainer.optimizer
+        except:
+            trainer.logger.info(traceback.format_exc())
 
         gc.collect()
         torch.cuda.empty_cache()
         if "CUDA out of memory" in str(e):
+            trainer.logger.info("CUDA out of memory")
             trainer.print_and_log(f'============= Reducing batch size from {trainer.batch_size} to {trainer.batch_size-10}', save_to_file=trainer.dataset_output)
             trainer.print_and_log("TODO")
             # bs -= 10
@@ -85,6 +96,7 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             gc.collect()
             return "done"
         else:
+            trainer.logger.info(str(e))
             raise
 
 
@@ -96,13 +108,15 @@ class HiFiTrainer(object):
         super(HiFiTrainer, self).__init__()
 
         self.logger = logger
-        self.logger.info("New HiFiTrainer")
+        if self.logger is not None:
+            self.logger.info("New HiFiTrainer")
         self.PROD = PROD
         self.models_manager = models_manager
         self.device = torch.device(f'cuda:{gpus[0]}')
         self.ckpt_path = None
         self.websocket = websocket
         self.training_log = []
+        self.training_log_live_line = ""
 
         self.model = None
         self.isReady = True
@@ -160,11 +174,15 @@ class HiFiTrainer(object):
             from env import AttrDict
             from utils import scan_checkpoint, load_checkpoint, save_checkpoint
             from meldataset import MelDataset, get_dataset_filelist, mel_spectrogram
+            with open(f'./config_v1.json') as f:
+                data = f.read()
         else:
             from python.hifigan.models import Generator, MultiPeriodDiscriminator, MultiScaleDiscriminator, discriminator_loss, feature_loss, generator_loss
             from python.hifigan.env import AttrDict
             from python.hifigan.utils import scan_checkpoint, load_checkpoint, save_checkpoint
             from python.hifigan.meldataset import MelDataset, get_dataset_filelist, mel_spectrogram
+            with open(self.config_path) as f:
+                data = f.read()
         self.mel_spectrogram = mel_spectrogram
         self.discriminator_loss = discriminator_loss
         self.feature_loss = feature_loss
@@ -175,13 +193,15 @@ class HiFiTrainer(object):
         self.EPOCH_AVG_SPAN = 20
         self.avg_loss_per_epoch = []
 
-        with open(self.config_path) as f:
-            data = f.read()
+
+        self.init_logs(dataset_output=self.dataset_output)
 
         json_config = json.loads(data)
         self.h = AttrDict(json_config)
         self.h.batch_size = int(self.batch_size * 1.5)
-        self.h.num_workers = 6
+        self.h.num_workers = self.workers
+
+        torch.cuda.manual_seed(self.h.seed)
 
         self.generator = Generator(self.h).to(self.device)
         self.mpd = MultiPeriodDiscriminator().to(self.device)
@@ -190,8 +210,16 @@ class HiFiTrainer(object):
         checkpoint_path = self.dataset_output+"/hifi"
         self.print_and_log(f'Output checkpoints directory: {checkpoint_path}', save_to_file=self.dataset_output)
         self.print_and_log(f'Stage 5: HiFi-GAN fine-tuning', save_to_file=self.dataset_output)
-        self.print_and_log(f'Batch size: {self.batch_size} (Base: {self.batch_size}, Stage mult: 1.5)', save_to_file=self.dataset_output)
+        self.print_and_log(f'Batch size: {self.h.batch_size} (Base: {self.batch_size}, Stage mult: 1.5)', save_to_file=self.dataset_output)
+        # self.print_and_log(f'Workers: {self.h.num_workers}', save_to_file=self.dataset_output)
         os.makedirs(checkpoint_path, exist_ok=True)
+        if self.websocket:
+            await self.websocket.send(f'Set stage to: 5 ')
+
+            # # ===================== DEVELOPING START
+            # self.END_OF_TRAINING = True
+            # raise
+            # # ===================== DEVELOPING END
 
         if os.path.isdir(checkpoint_path):
             cp_g = scan_checkpoint(checkpoint_path, 'g_')
@@ -208,6 +236,9 @@ class HiFiTrainer(object):
                 cp_do = scan_checkpoint(self.pretrained_ckpt_female, 'do_')
 
 
+
+        self.target_delta = 0.0005
+        self.graphs_json["stages"]["5"]["target_delta"] = self.target_delta
 
         self.training_steps = 0
         self.ckpts_finetuned = 0
@@ -229,7 +260,6 @@ class HiFiTrainer(object):
             self.training_steps = state_dict_do['steps'] + 1
             self.training_epoch = state_dict_do['epoch']
             self.ckpts_finetuned = state_dict_do['ckpts_finetuned'] if 'ckpts_finetuned' in list(state_dict_do.keys()) else 0
-            self.avg_loss_per_epoch = state_dict_do['avg_loss_per_epoch'] if 'avg_loss_per_epoch' in list(state_dict_do.keys()) else []
 
         self.optim_g = torch.optim.AdamW(self.generator.parameters(), self.h.learning_rate, betas=[self.h.adam_b1, self.h.adam_b2])
         self.optim_d = torch.optim.AdamW(itertools.chain(self.msd.parameters(), self.mpd.parameters()),
@@ -244,18 +274,22 @@ class HiFiTrainer(object):
 
         input_training_file = f'{self.dataset_input}/metadata.csv'
         input_wavs_dir = f'{self.dataset_input}/wavs'
-        dm = 100
-        dm = 10
-        training_filelist, validation_filelist = get_dataset_filelist(dm, input_training_file, input_wavs_dir)
+
+        training_filelist, not_found, dm = get_dataset_filelist(input_training_file, input_wavs_dir)
+        self.print_and_log(f'Training items: {int(len(training_filelist)/dm)} | Data multiplier: {dm} | Not found: {not_found} | Total: {len(training_filelist)}', save_to_file=self.dataset_output)
 
         trainset = MelDataset(training_filelist, self.h.segment_size, self.h.n_fft, self.h.num_mels,
                               self.h.hop_size, self.h.win_size, self.h.sampling_rate, self.h.fmin, self.h.fmax, n_cache_reuse=0,
                               shuffle=True, fmax_loss=self.h.fmax_for_loss, device=self.device)
-        self.train_loader = DataLoader(trainset, num_workers=self.h.num_workers, shuffle=True,
+
+        # TODO, fix the script randomly dying at set interval when num_workers>0
+        # self.train_loader = DataLoader(trainset, num_workers=self.h.num_workers, shuffle=True,
+        self.train_loader = DataLoader(trainset, num_workers=0, shuffle=True,
                               sampler=None,
                               batch_size=self.h.batch_size,
-                              pin_memory=False,
-                              persistent_workers=True,
+                              pin_memory=True,
+                              # pin_memory=True,
+                              persistent_workers=False,
                               drop_last=True)
 
         self.sw = SummaryWriter(os.path.join(checkpoint_path, 'logs'))
@@ -333,27 +367,12 @@ class HiFiTrainer(object):
             self.dataset_input = data["dataset_path"]
             self.dataset_id = self.dataset_input.split("/")[-1]
             self.dataset_output = data["output_path"]
-            self.checkpoint = data["checkpoint"]
             self.hifigan_checkpoint = data["hifigan_checkpoint"]
 
             self.workers = data["num_workers"]
             self.batch_size = data["batch_size"]
             self.epochs_per_checkpoint = data["epochs_per_checkpoint"]
 
-            # Maybe TODO, make these configurable
-            self.learning_rate = 0.1
-            self.amp = False
-
-            # Fixed
-            self.weight_decay = 1e-6
-            self.dur_predictor_loss_scale = 0.1
-            self.pitch_predictor_loss_scale = 0.1
-            self.attn_loss_scale = 1.0
-            self.warmup_steps = 1000
-            self.kl_loss_start_epoch = 0
-            self.kl_loss_warmup_epochs = 100
-            self.kl_loss_weight = 1
-            self.grad_clip_thresh = 1000
 
 
         torch.cuda.empty_cache()
@@ -367,7 +386,8 @@ class HiFiTrainer(object):
                 if "recursion depth" in err_msg:
                     continue
                 else:
-                    print(err_msg)
+                    if self.logger is not None:
+                        self.logger.info(err_msg)
                     raise
 
 
@@ -435,6 +455,7 @@ class HiFiTrainer(object):
         # MSD
         y_ds_hat_r, y_ds_hat_g, _, _ = self.msd(y, y_g_hat.detach())
         loss_disc_s, losses_disc_s_r, losses_disc_s_g = self.discriminator_loss(y_ds_hat_r, y_ds_hat_g)
+        del _
 
         loss_disc_all = loss_disc_s + loss_disc_f
         loss_disc_all.backward()
@@ -469,57 +490,28 @@ class HiFiTrainer(object):
         s_per_b =  int((time.time() - start_b)*1000)/1000
         its_p_s = 1/(s_per_b/self.h.batch_size)
         its_p_s = int(its_p_s*100)/100
-        print_line = f'Epoch: {self.training_epoch+1} | It: {(self.training_steps+1)%len(self.train_loader)}/{len(self.train_loader)} ({self.training_steps+1}) | Gen loss: {gen_loss} | Mel loss: {mel_loss} | s/b: {s_per_b} | its/s: {its_p_s}  '
+
+        avg_losses_print = ""
+        if len(self.avg_loss_per_epoch)>=2:
+            acc_epoch_deltas = []
+            avg_loss_per_epoch_for_printing = [val for val in self.avg_loss_per_epoch]
+            avg_loss_per_epoch_for_printing[-1] /= self.epoch_iter
+            for vi, val in enumerate(avg_loss_per_epoch_for_printing):
+                if vi:
+                    delta = (avg_loss_per_epoch_for_printing[vi-1]-avg_loss_per_epoch_for_printing[vi])/avg_loss_per_epoch_for_printing[vi-1]
+                    acc_epoch_deltas.append(delta)
+            acc_epoch_deltas_avg20 = np.mean(acc_epoch_deltas if len(acc_epoch_deltas)<self.EPOCH_AVG_SPAN else acc_epoch_deltas[-self.EPOCH_AVG_SPAN:])
+            avg_losses_print = int(acc_epoch_deltas_avg20*100000)/100000
+            avg_losses_print = f'| Avg loss % delta: {avg_losses_print} | Target: {self.target_delta}'
+
+        print_line = f'Epoch: {self.training_epoch+1} | It: {(self.training_steps+1)%len(self.train_loader)}/{len(self.train_loader)} ({self.training_steps+1}) | Mel loss: {mel_loss} | its/s: {its_p_s} {avg_losses_print}'
         self.training_log_live_line = print_line
         self.print_and_log(save_to_file=self.dataset_output)
 
 
-        del y_mel, y_g_hat, y_g_hat_mel, y_df_hat_r, y_df_hat_g, fmap_f_r, fmap_f_g, y_ds_hat_r, y_ds_hat_g, fmap_s_r, fmap_s_g
+        del y_mel, y_g_hat, y_g_hat_mel, y_df_hat_r, y_df_hat_g, fmap_f_r, fmap_f_g, y_ds_hat_r, y_ds_hat_g, fmap_s_r, fmap_s_g, y
         del loss_fm_f, loss_fm_s, loss_gen_f, losses_gen_f, loss_gen_s, losses_gen_s, loss_mel
         loss_gen_all = loss_gen_all.item()
-
-        # checkpointing
-        checkpoint_interval = 500 # TODO, maybe make configurable
-        # checkpoint_interval = 100 # TODO, maybe make configurable
-        if self.training_steps % checkpoint_interval == 0 and self.training_steps != 0:
-
-            output_path = "{}/hifi/g_{:08d}".format(self.dataset_output, self.training_steps)
-            self.save_checkpoint(output_path, {'generator': (self.generator.module if len(self.gpus)>1 else self.generator).state_dict()})
-            self.print_and_log(f'Epoch: {self.training_epoch} | It: {self.training_steps} | {output_path.split("/")[-1]} | Mel loss: {self.avg_loss_per_epoch[-1] / self.epoch_iter}', save_to_file=self.dataset_output)
-
-            output_path = "{}/hifi/do_{:08d}".format(self.dataset_output, self.training_steps)
-            self.ckpts_finetuned += 1
-            ckpt_data = {
-                'mpd': (self.mpd.module if len(self.gpus)>1 else self.mpd).state_dict(),
-                'msd': (self.msd.module if len(self.gpus)>1 else self.msd).state_dict(),
-                'optim_g': self.optim_g.state_dict(), 'optim_d': self.optim_d.state_dict(), 'steps': self.training_steps,
-                'epoch': self.training_epoch,
-                "avg_loss_per_epoch": self.avg_loss_per_epoch,
-                "ckpts_finetuned": self.ckpts_finetuned
-            }
-            self.save_checkpoint(output_path, ckpt_data)
-
-            # Clear old checkpoints
-            ckpts = sorted([fname for fname in os.listdir(self.dataset_output) if "do_" in fname], key=sort_ckpt)[:-1]
-            for ckpt in ckpts:
-                os.remove(f'{self.dataset_output}/{ckpt}')
-            ckpts = sorted([fname for fname in os.listdir(self.dataset_output) if "g_" in fname], key=sort_ckpt)[:-1]
-            for ckpt in ckpts:
-                os.remove(f'{self.dataset_output}/{ckpt}')
-
-            # Save the output file, for ease
-            output_path = f'{self.dataset_output}/{self.dataset_output.split("/")[-1]}.hg.pt'
-            self.save_checkpoint(output_path, {'generator': (self.generator.module if len(self.gpus)>1 else self.generator).state_dict()})
-
-
-            num_ft_checkpoints = 25 # TODO, maybe make configurable
-            # num_ft_checkpoints = 2 # TODO, maybe make configurable
-            if self.ckpts_finetuned>=num_ft_checkpoints:
-                self.training_log_live_line = ""
-                self.print_and_log(f'HiFi-GAN training finished', save_to_file=self.dataset_output)
-                self.logger.info("[HiFi Trainer] END_OF_TRAINING...")
-                self.END_OF_TRAINING = True
-                raise
 
         # Tensorboard summary logging
         if self.training_steps % 100 == 0:
@@ -530,13 +522,49 @@ class HiFiTrainer(object):
         self.training_steps += 1
 
 
-        del loss_gen_all, mel_error, _
+        del loss_gen_all, mel_error
 
         if self.running:
             await self.iteration()
         else:
+            self.logger.info(f'[DEBUG] returning, not self.running')
             return
 
+
+    def output_checkpoint (self):
+        if self.training_epoch % self.epochs_per_checkpoint == 0:
+            try:
+                output_path = "{}/hifi/g_{:08d}".format(self.dataset_output, self.training_steps)
+                self.save_checkpoint(output_path, {'generator': (self.generator.module if len(self.gpus)>1 else self.generator).state_dict()})
+                self.print_and_log(f'Epoch: {self.training_epoch} | It: {self.training_steps} | {output_path.split("/")[-1]} | Mel loss: {self.avg_loss_per_epoch[-1] / self.epoch_iter}', save_to_file=self.dataset_output)
+
+                output_path = "{}/hifi/do_{:08d}".format(self.dataset_output, self.training_steps)
+                self.ckpts_finetuned += 1
+                ckpt_data = {
+                    'mpd': (self.mpd.module if len(self.gpus)>1 else self.mpd).state_dict(),
+                    'msd': (self.msd.module if len(self.gpus)>1 else self.msd).state_dict(),
+                    'optim_g': self.optim_g.state_dict(), 'optim_d': self.optim_d.state_dict(), 'steps': self.training_steps,
+                    'epoch': self.training_epoch,
+                    "avg_loss_per_epoch": self.avg_loss_per_epoch,
+                    "ckpts_finetuned": self.ckpts_finetuned
+                }
+                self.save_checkpoint(output_path, ckpt_data)
+                del ckpt_data
+
+                # Clear old checkpoints
+                ckpts = sorted([fname for fname in os.listdir(self.dataset_output+"/hifi") if "do_" in fname], key=sort_ckpt)[:-2]
+                for ckpt in ckpts:
+                    os.remove(f'{self.dataset_output}/hifi/{ckpt}')
+                ckpts = sorted([fname for fname in os.listdir(self.dataset_output+"/hifi") if "g_" in fname], key=sort_ckpt)[:-2]
+                for ckpt in ckpts:
+                    os.remove(f'{self.dataset_output}/hifi/{ckpt}')
+
+                # Save the output file, for ease
+                output_path = f'{self.dataset_output}/{self.dataset_output.split("/")[-1]}.hg.pt'
+                self.save_checkpoint(output_path, {'generator': (self.generator.module if len(self.gpus)>1 else self.generator).state_dict()})
+            except:
+                print(traceback.format_exc())
+                raise
 
 
     def finish_epoch (self):
@@ -545,6 +573,7 @@ class HiFiTrainer(object):
         self.scheduler_d.step()
         self.training_epoch += 1
 
+        self.output_checkpoint()
 
         self.avg_loss_per_epoch[-1] /= self.epoch_iter
         self.iter_start_time = None
@@ -552,11 +581,14 @@ class HiFiTrainer(object):
         acc_epoch_deltas = []
         for vi, val in enumerate(self.avg_loss_per_epoch):
             if vi:
-                acc_epoch_deltas.append((self.avg_loss_per_epoch[vi-1]-self.avg_loss_per_epoch[vi])/self.avg_loss_per_epoch[vi-1])
+                delta = (self.avg_loss_per_epoch[vi-1]-self.avg_loss_per_epoch[vi])/self.avg_loss_per_epoch[vi-1]
+                # delta = max(0, delta)
+                acc_epoch_deltas.append(delta)
 
         acc_epoch_deltas_avg20 = None
         if len(acc_epoch_deltas)>=2:
             acc_epoch_deltas_avg20 = np.mean(acc_epoch_deltas if len(acc_epoch_deltas)<self.EPOCH_AVG_SPAN else acc_epoch_deltas[-self.EPOCH_AVG_SPAN:])
+            self.sw.add_scalar(f'meta/stage_5_acc_epoch_deltas_avg20', acc_epoch_deltas_avg20, self.training_steps)
 
         self.graphs_json["stages"]["5"]["loss"].append([self.training_steps, self.avg_loss_per_epoch[-1]])
 
@@ -567,6 +599,14 @@ class HiFiTrainer(object):
             with open(f'{self.dataset_output}/graphs.json', "w+") as f:
                 f.write(json.dumps(self.graphs_json))
 
+            if acc_epoch_deltas_avg20 <= self.target_delta and len(acc_epoch_deltas)>=5:
+                self.training_log_live_line = ""
+                if self.logger is not None:
+                    self.logger.info("[HiFi Trainer] END_OF_TRAINING...")
+                self.print_and_log(f'HiFi-GAN training finished', save_to_file=self.dataset_output)
+                self.END_OF_TRAINING = True
+                raise
+
 
 
 
@@ -575,15 +615,37 @@ if __name__ == '__main__':
     parser.add_argument('-gpus', type=str, default=f'0', help='CUDA devices')
     args, _ = parser.parse_known_args()
 
-    print(f'args.gpus, {args.gpus}')
     gpus = [int(val) for val in args.gpus.split(",")]
-
-
+    print(f'gpus, {gpus}')
 
 
     async def do_next_dataset_or_stage ():
 
-        pass # TODO
+        dataset_pairs = []
+        dataset_pairs.append(["D:/FP_INPUT/trollmourne_ellie_mars", "[female]"])
+
+        while len(dataset_pairs):
+            torch.cuda.empty_cache()
+
+            TRAINER = HiFiTrainer(None, PROD=False, gpus=gpus, models_manager=None)
+
+            try:
+                init_data = {}
+                init_data["dataset_path"] = dataset_pairs[0][0]
+                init_data["output_path"] = f'D:/FP_OUTPUT/{dataset_pairs[0][0].split("/")[-1]}'
+                init_data["hifigan_checkpoint"] = dataset_pairs[0][1]
+                init_data["num_workers"] = 4
+                init_data["batch_size"] = 32
+                init_data["epochs_per_checkpoint"] = 5
+
+                print("start training")
+                await TRAINER.start(init_data, gpus=gpus)
+                print("end training")
+
+            except KeyboardInterrupt:
+                raise
+            except RuntimeError as e:
+                print(str(e))
 
 
 

@@ -5,7 +5,6 @@ import traceback
 import multiprocessing
 
 
-
 if __name__ == '__main__':
     multiprocessing.freeze_support()
 
@@ -31,8 +30,6 @@ if __name__ == '__main__':
         from logging.handlers import RotatingFileHandler
         import json
         from http.server import BaseHTTPRequestHandler, HTTPServer
-        # from python.audio_post import run_audio_post, prepare_input_audio, mp_ffmpeg_output
-        # import ffmpeg
     except:
         print(traceback.format_exc())
         with open("./DEBUG_err_imports.txt", "w+") as f:
@@ -197,11 +194,10 @@ if __name__ == '__main__':
 
                 if result == "move to hifi":
                     logger.info("server.py moving on to HiFi training")
+                    return await handleTrainingLoop(models_manager, data, websocket, gpus, False)
         except:
             logger.info(traceback.format_exc())
             await websocket.send(f'ERROR:{traceback.format_exc()}')
-
-    _thread.start_new_thread(handleTrainingLoop, ())
 
 
     def get_or_create_eventloop ():

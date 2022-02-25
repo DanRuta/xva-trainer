@@ -52,7 +52,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
         if self.lazy_loaded:
             return
 
-        self.wav2vec = Wav2Vec2(None, False, self.device, None)
+        self.wav2vec = Wav2Vec2(None, self.PROD, self.device, None)
         self.lazy_loaded = True
 
     async def transcribe(self, data, websocket):
@@ -90,10 +90,11 @@ class Wav2Vec2PlusPuncTranscribe(object):
                 with open(potential_metadata_path) as f:
                     existing_data = f.read().split("\n")
                     for line in existing_data:
-                        fname = line.split("|")[0]
-                        text = line.split("|")[1].strip()
-                        if len(text):
-                            finished_transcript[fname] = text
+                        if len(line.strip()):
+                            fname = line.split("|")[0]
+                            text = line.split("|")[1].strip() if len(line.split("|"))>1 else ""
+                            if len(text):
+                                finished_transcript[fname] = text
 
         input_files = [f'{inPath}/{file}' for file in list(os.listdir(inPath)) if ".wav" in file and "_16khz.wav" not in file]
 
@@ -126,6 +127,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
                     .replace(" i 'm ", " i'm ")\
                     .replace('"', "")\
                     .replace("hasn '. T", "hansn't")\
+                    .replace("hasn '. t", "hansn't")\
                     .replace("you 've", "you've")\
                     .replace("you 're", "you're")\
                     .replace("does n't", "doesn't")\
@@ -143,7 +145,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
                     .replace(" wo n't ", " won't ")\
                     .replace(" is n't ", " isn't ")\
                     .replace(" should n't ", " shouldn't ")\
-                    .replace("it s  ", "it's ")\
+                    .replace("it s ", "it's ")\
                     .replace(" have n't ", " haven't ")\
                     .replace(" was n't ", " wasn't ")\
                     .replace(" there s ", " there's ")\

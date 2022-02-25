@@ -230,7 +230,7 @@ def mel_spectrogram(y, n_fft, num_mels, sampling_rate, hop_size, win_size, fmin,
     y = y.squeeze(1)
 
     spec = torch.stft(y, n_fft, hop_length=hop_size, win_length=win_size, window=hann_window[str(y.device)],
-                      center=center, pad_mode='reflect', normalized=False, onesided=True)
+                      center=center, pad_mode='reflect', normalized=False, onesided=True, return_complex=False)
 
     spec = torch.sqrt(spec.pow(2).sum(-1)+(1e-9))
 
@@ -265,32 +265,40 @@ def get_group_dataset_filelist(a, voice_dirs):
     print(f'training_files, {len(training_files)}')
     return training_files, None
 
-def get_dataset_filelist(dm, input_training_file, input_wavs_dir):
+def get_dataset_filelist(input_training_file, input_wavs_dir):
     with open(input_training_file, 'r', encoding='utf-8') as fi:
         training_files = []
         found = 0
         not_found = 0
         lines = fi.read().split("\n")
-        for i in range(dm):
-            for line in lines:
-                if len(line):
-                    fname = line.split("|")[0].replace("wavs", "").split("/")[-1]
+        for line in lines:
+            if len(line):
+                fname = line.split("|")[0].replace("wavs", "").split("/")[-1]
 
-                    if ".wav" not in fname:
-                        fname = fname+".wav"
+                if ".wav" not in fname:
+                    fname = fname+".wav"
 
-                    if os.path.exists(f'{input_wavs_dir}/{fname}'):
-                        training_files.append(f'{input_wavs_dir}/{fname}')
-                        found += 1
-                    else:
-                        not_found += 1
+                if os.path.exists(f'{input_wavs_dir}/{fname}'):
+                    training_files.append(f'{input_wavs_dir}/{fname}')
+                    found += 1
+                else:
+                    not_found += 1
         if not_found>0:
             print(f'{not_found}/{not_found+found} not found for {input_wavs_dir}')
         else:
             print(f'OK: {input_wavs_dir}')
 
-    print(f'training_files, {len(training_files)} ({len(training_files) / dm})')
-    return training_files, None
+    dm = 1000/(len(training_files)-int(not_found))
+    dm = max(1, round(dm))
+
+    training_files_total = []
+
+    for _ in range(dm):
+        random.shuffle(training_files)
+        training_files_total += training_files
+
+    print(f'training_files_total, {len(training_files_total)} ({len(training_files_total) / dm})')
+    return training_files_total, int(not_found), dm
 
 
 class MelDataset(torch.utils.data.Dataset):
@@ -314,19 +322,17 @@ class MelDataset(torch.utils.data.Dataset):
         self.cached_wav = None
         self.n_cache_reuse = n_cache_reuse
         self._cache_ref_count = 0
-        self.device = device
 
-        self.mel_cache = {}
-
+        self.audio_cache = {}
 
 
     def __getitem__(self, index):
         filename = self.audio_files[index]
         filename = filename if filename.endswith(".wav") else filename+".wav"
 
-        try:
-            audio = self.mel_cache[filename]
-        except:
+        if filename in self.audio_cache.keys():
+            audio = self.audio_cache[filename]
+        else:
             audio, sampling_rate = load_wav(filename)
             audio = audio / MAX_WAV_VALUE
             audio = normalize(audio) * 0.95
@@ -334,7 +340,7 @@ class MelDataset(torch.utils.data.Dataset):
             audio = torch.FloatTensor(audio)
             audio = audio.unsqueeze(0)
 
-            self.mel_cache[filename] = audio
+            self.audio_cache[filename] = audio
 
         if self.split:
             if audio.size(1) >= self.segment_size:
@@ -346,6 +352,7 @@ class MelDataset(torch.utils.data.Dataset):
 
         mel = mel_spectrogram(audio, self.n_fft, self.num_mels, self.sampling_rate, self.hop_size, self.win_size, self.fmin, self.fmax, center=False)
         mel_loss = mel_spectrogram(audio, self.n_fft, self.num_mels, self.sampling_rate, self.hop_size, self.win_size, self.fmin, self.fmax_loss, center=False)
+
         return (mel.squeeze(), audio.squeeze(0), filename, mel_loss.squeeze())
 
 

@@ -532,7 +532,7 @@
             background: rgb(75,75,75);
         }
         #trainingQueuePanelContainer {
-            height: 70vh;
+            height: 75vh;
             background: rgb(75,75,75);
             overflow-x: auto;
         }
@@ -549,7 +549,7 @@
             margin: auto;
             /*height: 30vh;*/
             padding: 5px;
-            height: calc(70vh - 35vh - 35px - 10px);
+            height: calc(75vh - 35vh - 35px - 10px);
             background: rgba(0,0,0,0.3);
             color: rgba(255,255,255,0.8);
             overflow: auto;
@@ -609,8 +609,8 @@
             max-width: 30px;
         }
         #trainingQueueHeader > div:nth-child(2), #trainingQueueRecordsContainer > div > div:nth-child(2) {
-            min-width: 115px;
-            max-width: 115px;
+            min-width: 60px;
+            max-width: 60px;
         }
         #trainingQueueHeader > div:nth-child(3), #trainingQueueRecordsContainer > div > div:nth-child(3) {
             min-width: 75px;
@@ -709,12 +709,12 @@
 
         <div id="trainContainer" style="display:none">
 
-            <div class="modal" style="height: 80vh;width: 88vw;min-height: 500px;">
+            <div class="modal" style="height: 85vh;width: 93vw;min-height: 500px;">
                 <div style="display: flex;">
 
 
                     <!-- Queue -->
-                    <div style="width: 21.5vw;display: flex;flex-direction: column;margin-left: 10px;height: 80vh;">
+                    <div style="width: 403px;display: flex;flex-direction: column;margin-left: 10px;height: 85vh;">
                         <h3 style="margin-top: 0;">Queue</h3>
                         <div id="trainingQueuePanelContainer">
                             <div id="trainingQueueHeader">
@@ -746,7 +746,7 @@
                     </div>
 
                     <!-- Training -->
-                    <div style="width: 50vw;margin-left: 10px;">
+                    <div style="width: calc(93vw - 715px);margin-left: 10px;">
                         <h3 id="training_title" style="margin-top: 0;">Training</h3>
                         <div id="lossPlotsContainer">
                             <div>
@@ -777,10 +777,9 @@
                         </div>
                     </div>
                     <!-- System -->
-                    <div style="height: 80vh;width: 15vw;display: flex;flex-direction: column;">
+                    <div style="height: 85vh;width: 300px;display: flex;flex-direction: column;">
                         <h3 style="margin-top: 0;">System</h3>
                         <div>
-                            <!-- <div style="flex-grow: 1;"> -->
                             <div id="trainingSystemCharts">
                                 <div>
                                     <canvas id="cpu_chart"></canvas>
