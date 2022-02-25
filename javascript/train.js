@@ -32,7 +32,7 @@ window.training_state = {
             num_workers: 24,
             epochs_per_checkpoint: 5,
             force_stage: undefined,
-            finished: false
+            status: "Ready"
         }
     ],
     trainingQueueItem: 0,
@@ -63,7 +63,7 @@ window.saveTrainingQueueJSON = () => {
         filteredJSON.num_workers = dataset.num_workers
         filteredJSON.epochs_per_checkpoint = dataset.epochs_per_checkpoint
         filteredJSON.force_stage = dataset.force_stage
-        filteredJSON.finished = dataset.finished
+        filteredJSON.status = dataset.status
         return filteredJSON
     })
 
@@ -81,7 +81,7 @@ window.refreshTrainingQueueList = () => {
         const configButton = createElem("button.smallButton", "Config")
         const buttonContainer = createElem("div")
         buttonContainer.appendChild(configButton)
-        const statusBox = createElem("div", dataset.finished ? "Finished" : dataset.status)
+        const statusBox = createElem("div", dataset.status)
         if (dataset.status=="Finished") {
             statusBox.style.background = "green"
             statusBox.style.color = "white"
@@ -291,11 +291,15 @@ trainingQueueBtnBatchTrain.addEventListener("click", () => {
     }
 
 
-    window.training_state.isBatchTraining = true
-    window.training_state.trainingQueueItem = itemIndex
-    const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))
-    allRowElems[itemIndex].click()
-    trainingStartBtn.click()
+    window.confirmModal("Are you sure you'd like to start batch training your datasets?").then(response => {
+        if (response) {
+            window.training_state.isBatchTraining = true
+            window.training_state.trainingQueueItem = itemIndex
+            const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))
+            allRowElems[itemIndex].click()
+            trainingStartBtn.click()
+        }
+    })
 })
 
 
@@ -313,16 +317,20 @@ stage_select.addEventListener("change", () => {
 
 
 window.showConfigMenu = (startingData, di) => {
+
+    queueItemConfigModalContainer.style.opacity = 1
+    queueItemConfigModalContainer.style.display = "flex"
+
     const configData = startingData || {
-        "finished": false,
+        "status": "Ready",
 
         "dataset_path": undefined,
         "output_path": undefined,
         "checkpoint": "H:/xVA/FP_OUTPUT/sk_femaleeventoned/FastPitch_checkpoint_1760_85765.pt",
 
-        "num_workers": 24, // TODO, app-level default settings
-        "batch_size": 32, // TODO, app-level default settings
-        "epochs_per_checkpoint": 5, // TODO, app-level default settings
+        "num_workers": 4, // TODO, app-level default settings
+        "batch_size": 8, // TODO, app-level default settings
+        "epochs_per_checkpoint": 3, // TODO, app-level default settings
         "force_stage": undefined,
     }
 
@@ -361,12 +369,28 @@ cancelConfig.addEventListener("click", () => {
     queueItemConfigModalContainer.style.display = "none"
 })
 acceptConfig.addEventListener("click", () => {
+
+    if (!trainingAddConfigDatasetPathInput.value.trim().length) {
+        return window.errorModal("You need to specify where your dataset is located.", queueItemConfigModalContainer)
+    }
+    if (!trainingAddConfigOutputPathInput.value.trim().length) {
+        return window.errorModal("You need to specify where to output the intermediate data/models for your dataset.", queueItemConfigModalContainer)
+    }
+    if (!trainingAddConfigCkptPathInput.value.trim().length) {
+        return window.errorModal("You need to specify which checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
+    }
+    if (!trainingAddConfigBatchSizeInput.value.trim().length) {
+        return window.errorModal("Please enter the base batch size you'd like to use", queueItemConfigModalContainer)
+    }
+    if (!trainingAddConfigEpochsPerCkptInput.value.trim().length) {
+        return window.errorModal("Please enter how many epochs to train for, between outputting checkpoints", queueItemConfigModalContainer)
+    }
+
     queueItemConfigModalContainer.style.display = "none"
 
     // TODO
     if (configAnExistingItem) {
 
-        // const queueIndex = window.training_state.datasetsQueue.findIndex(ds => ds.dataset_path==window.training_state.currentlyViewedDataset)
         const queueIndex = window.training_state.currentlyConfiguringDatasetI
 
         const configData = {
@@ -380,15 +404,30 @@ acceptConfig.addEventListener("click", () => {
             "force_stage": trainingAddConfigDoForceStageCkbx.checked ? trainingAddConfigForceStageNumberSelect.value : undefined
         }
 
-        configData.finished = window.training_state.datasetsQueue[queueIndex].finished
+        configData.status = window.training_state.datasetsQueue[queueIndex].status
 
         window.training_state.datasetsQueue[queueIndex] = configData
-        window.saveTrainingQueueJSON()
-
 
     } else {
 
+        const configData = {
+            "status": "Ready",
+
+            "dataset_path": trainingAddConfigDatasetPathInput.value,
+            "output_path": trainingAddConfigOutputPathInput.value,
+            "checkpoint": trainingAddConfigCkptPathInput.value,
+
+            "num_workers": parseInt(trainingAddConfigWorkersInput.value),
+            "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
+            "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
+            "force_stage": trainingAddConfigDoForceStageCkbx.checked ? trainingAddConfigForceStageNumberSelect.value : undefined
+        }
+
+        window.training_state.datasetsQueue.push(configData)
     }
+
+    window.saveTrainingQueueJSON()
+    window.refreshTrainingQueueList()
 })
 
 

@@ -180,6 +180,7 @@ trainingStopBtn.addEventListener("click", () => {
     trainingPauseBtn.style.display = "none"
     trainingResumeBtn.style.display = "none"
     trainingStopBtn.style.display = "none"
+    window.training_state.isBatchTraining = false
     window.ws.send(JSON.stringify({model: "", task: "pause"}))
     setTimeout(() => {
         window.ws.send(JSON.stringify({model: "", task: "stop"}))

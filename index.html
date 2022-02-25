@@ -635,7 +635,7 @@
 
         <!-- Queue config menu -->
         <div id="queueItemConfigModalContainer" style="display: none;z-index: 1000;" >
-            <div class="modal" style="width: 300px;min-height: 450px;height: 450px;">
+            <div class="modal" style="width: 300px;min-height: 500px;height: 500px;">
                 <h2>Config</h2>
                 <div class="flexTable" style="width:80%">
 
@@ -686,16 +686,19 @@
                             <input id="trainingAddConfigWorkersInput" type="number" value="4" min="1">
                         </div>
                     </div>
-                    <div>
-                        <div>Base batch size</div>
+                    <div style="height: 60px;">
+                        <div style="align-items: center;">
+                            <span style="margin-bottom: 5px">Base batch size</span>
+                            <span style="font-size: 10pt;color: gray;">(8 for a GPU with 6GB of VRAM, 32 for 24GB, etc)</span>
+                        </div>
                         <div>
-                            <input id="trainingAddConfigBatchSizeInput" type="number" value="32" min="1">
+                            <input id="trainingAddConfigBatchSizeInput" type="number" value="8" min="1">
                         </div>
                     </div>
                     <div>
                         <div>Epochs per checkpoint</div>
                         <div>
-                            <input id="trainingAddConfigEpochsPerCkptInput" type="number" value="32" min="1">
+                            <input id="trainingAddConfigEpochsPerCkptInput" type="number" value="3" min="1">
                         </div>
                     </div>
                 </div>

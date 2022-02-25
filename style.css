@@ -328,6 +328,9 @@ a {
      background: rgba(0,0,0,0.5);
      z-index: 100;
  }
+ #modalContainer {
+     z-index: 10000;
+ }
  #EULAContainer > .modal > div:nth-child(2) {
     overflow-y: auto;
     height: 60vh;
