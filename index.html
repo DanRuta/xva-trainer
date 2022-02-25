@@ -28,7 +28,7 @@
     <div id="appcontent">
         <div id="left">
             <div class="top" id="topLeft">
-                <div id="selectedGameDisplay">New dataset</div>
+                <div id="selectedGameDisplay">Datasets</div>
                 <button id="datasetsPathButton" class="svgButton" style="margin-right: 2px;"></button>
                 <button id="newDatasetButton" style="height: 30px;width: 30px;">+</button>
             </div>
@@ -68,6 +68,28 @@
                     </div>
                 </div>
 
+                <div>
+                    <div style="height: 40px;width: calc(98vw - 306px);margin-left: 1vw;margin-right: 1vw;display: flex;justify-content: space-between;align-items: center;background: rgba(75,75,75,0.8);margin-top: 5px;">
+                        <div id="totalRecords" style="margin-right: 5px; width: 265px;margin-left: 5px;color: white;"></div>
+                        <div style="width: 260px">
+                            <input class="fancySearchInput" style="font-size: 12pt;" placeholder="Search file names..">
+                        </div>
+                        <div style="flex-grow: 1">
+                            <input class="fancySearchInput" style="font-size: 12pt;" placeholder="Search transcript...">
+                        </div>
+                        <div style="display: flex;width: 300px;align-items: center;justify-content: space-around;">
+                            <div><button class="mainPageButton" id="paginationPrev" disabled>Previous</button></div>
+                            <div style="display: flex;align-items: center;">
+                                <div style="margin-left: 5px;">Page:</div>
+                                <input class="mainPageButton" id="pageNum" type="number" min="1" step="1" disabled style="height: 25px;width: 50px;margin: 10px;">
+                                <div id="ofTotalPages" style="width: 45px"></div>
+                                <div id="total_pages" style="margin-right: 10px;"></div>
+                            </div>
+                            <div><button class="mainPageButton" id="paginationNext" disabled>Next</button></div>
+                        </div>
+                    </div>
+                </div>
+
                 <textarea id="textInput"></textarea>
 
                 <div id="wave_container" style="display: flex;justify-content: center;align-items: center;height: 75px;">
@@ -80,7 +102,9 @@
                 </div>
 
                 <div id="outFileNameContainer">
-                    Output file name:
+                    <div>
+                        Output file name:
+                    </div>
                     <input id="outFileNameInput" type="text" placeholder="output file name">
                 </div>
 
@@ -111,7 +135,7 @@
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        margin: 25px;
+                        margin: 5px;
                         height: 25px;
                         font-weight: bold;
                         color: #222;
@@ -311,6 +335,12 @@
                             <input id="setting_darkprompt" type="checkbox" name="">
                         </div>
                     </div> -->
+                    <div>
+                        <div id="i18n_settings_arpabetPagination">Dataset records pagination size</div>
+                        <div>
+                            <input id="setting_paginationSize" type="number" value="200">
+                        </div>
+                    </div>
                     <div>
                         <div id="i18n_setting_outpathwidth">Out Path column width (px)</div>
                         <div>

@@ -28,6 +28,9 @@ if ((typeof window.userSettings)=="string") {
 }
 
 
+if (!Object.keys(window.userSettings).includes("paginationSize")) { // For backwards compatibility
+    window.userSettings.paginationSize = 100
+}
 if (!Object.keys(window.userSettings).includes("outpathwidth")) { // For backwards compatibility
     window.userSettings.outpathwidth = 250
 }
@@ -49,6 +52,7 @@ const updateUIWithSettings = () => {
     // useGPUCbx.checked = window.userSettings.useGPU
     const [height, width] = window.userSettings.customWindowSize.split(",").map(v => parseInt(v))
     ipcRenderer.send("resize", {height, width})
+    setting_paginationSize.value = window.userSettings.paginationSize
     setting_outpathwidth.value = window.userSettings.outpathwidth
     setting_micVolume.value = window.userSettings.micVolume
     setting_micVolume_display.innerHTML = `${parseInt(setting_micVolume.value)}%`
@@ -131,6 +135,7 @@ const updateBackground = () => {
     }, 1000)
 }
 
+initMenuSetting(setting_paginationSize, "paginationSize", "number", undefined, parseInt)
 initMenuSetting(setting_outpathwidth, "outpathwidth", "number", () => {
     outPathCSSHack.innerHTML = `
     #batchRecordsHeader > div:nth-child(3), #batchRecordsContainer > div > div:nth-child(3) {

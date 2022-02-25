@@ -117,6 +117,7 @@ window.datasets = {}
 window.appState = {
     currentDataset: undefined,
     recordFocus: undefined,
+    paginationIndex: 0,
     skipRefreshing: false
 }
 window.recordingState = {}
@@ -169,6 +170,9 @@ window.refreshDatasets = () => {
 
                 Array.from(document.querySelectorAll(".mainPageButton")).forEach(button => button.disabled = false)
 
+
+
+
                 title.innerHTML = `Dataset: ${dataset}`
 
                 const records = []
@@ -203,6 +207,11 @@ window.refreshDatasets = () => {
                 }
 
                 window.appState.currentDataset = dataset
+
+                const numPages = Math.ceil(records.length/window.userSettings.paginationSize)
+                totalRecords.innerHTML = `${records.length} total records`
+                ofTotalPages.innerHTML = `of ${numPages}`
+                pageNum.value = 1
 
                 if (records.length) {
                     batch_main.style.display = "block"
@@ -643,10 +652,15 @@ window.refreshRecordsList = (dataset) => {
         return
     }
     batchRecordsContainer.innerHTML = ""
-    window.datasets[dataset].metadata.forEach(recordAndElem => {
-        recordAndElem[1].children[0].innerHTML = batchRecordsContainer.children.length.toString()
+
+    const startIndex = (window.appState.paginationIndex*window.userSettings.paginationSize)
+    const endIndex = Math.min(startIndex+window.userSettings.paginationSize, window.datasets[window.appState.currentDataset].metadata.length)
+
+    for (let ri=startIndex; ri<endIndex; ri++) {
+        const recordAndElem = window.datasets[window.appState.currentDataset].metadata[ri]
+        recordAndElem[1].children[0].innerHTML = (ri+1)
         batchRecordsContainer.appendChild(recordAndElem[1])
-    })
+    }
 }
 
 
@@ -662,73 +676,25 @@ const populateRecordsList = (dataset, records, additive=false) => {
 
     records.forEach((record, ri) => {
         const row = createElem("div.row")
-
-        // const rNumElem = createElem("div.rowItem", batchRecordsContainer.children.length.toString())
         const rNumElem = createElem("div.rowItem")
         const rGameElem = createElem("div.rowItem", "")
 
-
-
         record.fileName = record.fileName==undefined ? getNextFileName(dataset)+".wav" : record.fileName
-        // const rTextElem = createElem("div.rowItem", record.text)
-        const rTextElem = createElem("div.rowItem")
-        // rTextElem.title = record.text
-        // const rOutPathElem = createElem("div.rowItem", "&lrm;"+record.fileName+"&lrm;")
-        const rOutPathElem = createElem("div.rowItem")
-        // rOutPathElem.title = record.fileName
+        const rTextElem = createElem("div.rowItem", record.text)
+        const rOutPathElem = createElem("div.rowItem", record.fileName)
 
 
         row.appendChild(rNumElem)
         const potentialAudioPath = `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${record.fileName}`
         let observer
-        // if (fs.existsSync(potentialAudioPath)) {
         if (allPaths.includes(record.fileName)) {
-            // const audio = createElem("audio", {controls: true}, createElem("source", {
-            //     src: potentialAudioPath,
-            //     type: `audio/wav`
-            // }))
-            // audio.style.zIndex = "1"
-            // rGameElem.style.zIndex = "1"
-            // rGameElem.appendChild(audio)
-
-            const anchorSpan = createElem("span")
-            rGameElem.appendChild(anchorSpan)
-
-            observer = new IntersectionObserver((entry, observer) => {
-                // console.log("entry", entry, record.text, entry[0].isIntersecting)
-                if (entry[0].isIntersecting) {
-                    if (window.datasets[dataset].metadata[ri][1].children[1].children.length<2) {
-                        // console.log("here", ri)
-                        const audio = createElem("audio", {controls: true}, createElem("source", {
-                            src: potentialAudioPath,
-                            type: `audio/wav`
-                        }))
-                        audio.style.zIndex = "1"
-                        // console.log("window.datasets[dataset].metadata[ri][1].children[1]", )
-                        window.datasets[dataset].metadata[ri][1].children[1]
-                        window.datasets[dataset].metadata[ri][1].children[1].appendChild(audio)
-
-
-                        window.datasets[dataset].metadata[ri][1].children[0].innerHTML = window.datasets[dataset].metadata[ri][2]
-
-                        // Filename
-                        window.datasets[dataset].metadata[ri][1].children[2].innerHTML = "&lrm;"+window.datasets[dataset].metadata[ri][0].fileName+"&lrm;"
-                        window.datasets[dataset].metadata[ri][1].children[2].title = window.datasets[dataset].metadata[ri][0].fileName
-                        // Text
-                        window.datasets[dataset].metadata[ri][1].children[3].innerHTML = window.datasets[dataset].metadata[ri][0].text
-                        window.datasets[dataset].metadata[ri][1].children[3].title = window.datasets[dataset].metadata[ri][0].text
-                    }
-
-                    observer.unobserve(row)
-                    observer.disconnect()
-                }
-
-            // }, {root: batchRecordsContainer, rootMargin: "0px 0px -100px 0px", threshold: 1.0})
-            // }, {rootMargin: "0px 0px -100px 0px", threshold: 1.0})
-            }, {threshold: 0})
-            // }, {root: null})
-            observer.observe(row)
-
+            const audio = createElem("audio", {controls: true}, createElem("source", {
+                src: potentialAudioPath,
+                type: `audio/wav`
+            }))
+            audio.style.zIndex = "1"
+            rGameElem.style.zIndex = "1"
+            rGameElem.appendChild(audio)
         }
         row.appendChild(rGameElem)
 
@@ -997,6 +963,34 @@ if (fs.existsSync(`${window.path}/recorded_noise.wav`)) {
 
 
 
+
+
+paginationPrev.addEventListener("click", () => {
+    pageNum.value = Math.max(1, parseInt(pageNum.value)-1)
+    window.appState.paginationIndex = pageNum.value-1
+    refreshRecordsList(window.appState.currentDataset)
+})
+paginationNext.addEventListener("click", () => {
+    const numPages = Math.ceil(window.datasets[window.appState.currentDataset].metadata.length/window.userSettings.paginationSize)
+    console.log("numPages", numPages)
+    pageNum.value = Math.min(parseInt(pageNum.value)+1, numPages)
+    window.appState.paginationIndex = pageNum.value-1
+    refreshRecordsList(window.appState.currentDataset)
+})
+pageNum.addEventListener("change", () => {
+    const numPages = Math.ceil(window.datasets[window.appState.currentDataset].metadata.length/window.userSettings.paginationSize)
+    pageNum.value = Math.max(1, Math.min(parseInt(pageNum.value), numPages))
+    window.appState.paginationIndex = pageNum.value-1
+    refreshRecordsList(window.appState.currentDataset)
+})
+setting_paginationSize.addEventListener("change", () => {
+    const numPages = Math.ceil(window.datasets[window.appState.currentDataset].metadata.length/window.userSettings.paginationSize)
+    pageNum.value = Math.max(1, Math.min(parseInt(pageNum.value), numPages))
+    window.appState.paginationIndex = pageNum.value-1
+    total_pages.innerHTML = `of ${numPages}`
+
+    refreshRecordsList(window.appState.currentDataset)
+})
 
 
 

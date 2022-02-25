@@ -175,7 +175,8 @@ a {
  }
  textarea {
      opacity: 0.9;
-     height: 50px;
+     height: 40px;
+     max-height: 40px;
      width: calc(98vw - 306px);
      margin-left: 1vw;
      margin-right: 1vw;
@@ -649,6 +650,17 @@ a {
      height: 25px;
      width: 50px;
  }*/
+
+.fancySearchInput {
+    width: calc(100% - 25px);
+    text-align: center;
+    background: none;
+    color: white;
+    border: none;
+    border-bottom: 1px solid white;
+}
+
+
  .flexTable {
      display: flex;
      flex-direction: column;
