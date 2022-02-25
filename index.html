@@ -157,12 +157,6 @@
                     <div>
                         <button class="mainPageButton" id="btn_cleanAudioText" disabled>Clean audio/text</button>
                     </div>
-                    <div>
-                        <button class="mainPageButton" id="btn_trainmodel" disabled>Train</button>
-                    </div>
-                    <div>
-                        <button class="mainPageButton" id="btn_exportmodel" disabled>Export model</button>
-                    </div>
                 </div>
                 <div id="bottomrow_buttons">
                     <div>
@@ -179,6 +173,12 @@
                     </div>
                     <div>
                         <button class="mainPageButton" id="btn_deletedataset" disabled>Delete dataset</button>
+                    </div>
+                    <div>
+                        <button class="mainPageButton" id="btn_trainmodel" disabled>Train</button>
+                    </div>
+                    <div>
+                        <button class="mainPageButton" id="btn_exportmodel" disabled>Export model</button>
                     </div>
 
                 </div>
@@ -505,9 +505,39 @@
                             <input id="datasetMeta_modelVersion" type="number" min=1 step=0.1 value=1>
                         </div>
                     </div>
+                    <div>
+                        <div>Author (your name)</div>
+                        <div>
+                            <input id="datasetMeta_author" placeholder="Optional">
+                        </div>
+                    </div>
 
                 </div>
                 <div id="datasetMetaFinishButtonContainer"></div>
+            </div>
+        </div>
+
+        <div id="exportModelContainer" style="display: none">
+            <div class="modal" style="width: 40vw;height: 30vh;min-height: 350px;">
+                <h2>Export model</h2>
+                <div class="flexTable">
+                    <div>
+                        <div>Model checkpoints directory:</div>
+                        <div>
+                            <input id="modelExport_trainningDir" placeholder="The full output folder path specified for training">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Export output directory:</div>
+                        <div>
+                            <input id="modelExport_outputDir" placeholder="Where do you want the model to be exported to?">
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <button id="exportSubmitButton">Export</button>
+                </div>
             </div>
         </div>
 

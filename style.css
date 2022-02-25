@@ -317,7 +317,7 @@ a {
  }
 
 
- #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #checkTextQualityContainer {
+ #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #exportModelContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #checkTextQualityContainer {
      display: flex;
      justify-content: center;
      align-items: center;
@@ -375,7 +375,7 @@ a {
      width: 25vw;
      text-align: center;
  }
- #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #checkTextQualityContainer > .modal {
+ #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #exportModelContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #checkTextQualityContainer > .modal {
      height: 65vh;
      width: 45vw;
      min-height: 500px;

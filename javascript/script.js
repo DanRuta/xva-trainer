@@ -18,7 +18,6 @@ window.appLogger.log(window.path)
 require("./javascript/util.js")
 require("./javascript/settingsMenu.js")
 require("./javascript/tools.js")
-require("./javascript/training.js")
 const execFile = require('child_process').execFile
 const spawn = require("child_process").spawn
 
@@ -136,10 +135,6 @@ window.saveDatasetToFile = (datasetName) => {
     fs.writeFileSync(`${window.userSettings.datasetsPath}/${datasetName}/metadata.csv`, metadata_out.join("\n"))
 }
 
-
-btn_addmissingmeta.addEventListener("click", () => {
-    console.log("btn_addmissingmeta")
-})
 
 let refreshTimer
 let refreshButton
@@ -1046,16 +1041,16 @@ const initDatasetMeta = (callback) => {
         fs.writeFileSync(`${window.userSettings.datasetsPath}/${composedVoiceId.innerHTML}/dataset_metadata.json`, JSON.stringify({
             "version": "2.0",
             "modelVersion": parseFloat(datasetMeta_modelVersion.value).toFixed(1),
-            "modelType": "FastPitch",
-            "emb_size": 2,
+            "modelType": "FastPitch1.1",
+            "author": datasetMeta_author.value,
+            "lang": datasetMeta_langcode.value.trim().toLowerCase(),
             "games": [
                 {
                     "gameId": datasetMeta_gameId.value.trim().toLowerCase(),
                     "voiceId": datasetMeta_voiceId.value.trim().toLowerCase(),
                     "voiceName": datasetMeta_voiceName.value.trim(),
+                    "resemblyzer": [],
                     "gender": (datasetMeta_gender_male.checked ? "male" : (datasetMeta_gender_female.checked ? "female" : "other")),
-                    "lang": datasetMeta_langcode.value.trim().toLowerCase(),
-                    "emb_i": 0
                 }
             ]
         }, null, 4))
@@ -1083,12 +1078,13 @@ window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
     datasetMeta_gameId.value = datasetMeta.games[0].gameId
     datasetMeta_gameIdCode.value = datasetMeta.games[0].voiceId.includes("_") ? datasetMeta.games[0].voiceId.split("_")[0] : ""
     datasetMeta_voiceId.value = datasetMeta.games[0].voiceId
-    datasetMeta_langcode.value = datasetMeta.games[0].lang
+    datasetMeta_langcode.value = datasetMeta.lang
     datasetMeta_modelVersion.value = parseFloat(datasetMeta.version.split(".").length==2 ? datasetMeta.version : datasetMeta.version.split(".").splice(0,2).join("."))
     datasetMeta_gender_male.checked = datasetMeta.games[0].gender=="male"
     datasetMeta_gender_female.checked = datasetMeta.games[0].gender=="female"
     datasetMeta_gender_other.checked = datasetMeta.games[0].gender=="other"
     composedVoiceId.innerHTML = fixedFolderName
+    datasetMeta_author.value = datasetMeta.author
 
     initDatasetMeta(() => {
         composedVoiceId.innerHTML = fixedFolderName
