@@ -72,10 +72,10 @@
                     <div style="height: 40px;width: calc(98vw - 306px);margin-left: 1vw;margin-right: 1vw;display: flex;justify-content: space-between;align-items: center;background: rgba(75,75,75,0.8);margin-top: 5px;">
                         <div id="totalRecords" style="margin-right: 5px; width: 265px;margin-left: 5px;color: white;"></div>
                         <div style="width: 260px">
-                            <input class="fancySearchInput" style="font-size: 12pt;" placeholder="Search file names..">
+                            <input id="fileNameSearch" class="fancySearchInput" style="font-size: 12pt;" placeholder="Search file names..">
                         </div>
                         <div style="flex-grow: 1">
-                            <input class="fancySearchInput" style="font-size: 12pt;" placeholder="Search transcript...">
+                            <input id="transcriptSearch" class="fancySearchInput" style="font-size: 12pt;" placeholder="Search transcript...">
                         </div>
                         <div style="display: flex;width: 300px;align-items: center;justify-content: space-around;">
                             <div><button class="mainPageButton" id="paginationPrev" disabled>Previous</button></div>
@@ -83,7 +83,7 @@
                                 <div style="margin-left: 5px;">Page:</div>
                                 <input class="mainPageButton" id="pageNum" type="number" min="1" step="1" disabled style="height: 25px;width: 50px;margin: 10px;">
                                 <div id="ofTotalPages" style="width: 45px"></div>
-                                <div id="total_pages" style="margin-right: 10px;"></div>
+                                <!-- <div id="total_pages" style="margin-right: 10px;"></div> -->
                             </div>
                             <div><button class="mainPageButton" id="paginationNext" disabled>Next</button></div>
                         </div>

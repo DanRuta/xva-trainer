@@ -166,12 +166,7 @@ window.refreshDatasets = () => {
 
             button.addEventListener("click", event => {
 
-                console.log("refreshing")
-
                 Array.from(document.querySelectorAll(".mainPageButton")).forEach(button => button.disabled = false)
-
-
-
 
                 title.innerHTML = `Dataset: ${dataset}`
 
@@ -647,17 +642,63 @@ const uploadBatchCSVs = async (eType, event) => {
         batchDropZoneNote.innerHTML = "Drag and drop .txt or .csv files here"
     }
 }
+window.searchDatasetRows = rows => {
+
+    const fileNameQuery = fileNameSearch.value.trim().toLowerCase()
+    const transcriptQuery = transcriptSearch.value.trim().toLowerCase()
+
+    const filteredRows = []
+    rows.forEach(row => {
+        if (row[0].fileName.toLowerCase().includes(fileNameQuery) && row[0].text.toLowerCase().includes(transcriptQuery)) {
+            filteredRows.push(row)
+        }
+    })
+    return filteredRows
+}
+fileNameSearch.addEventListener("keyup", () => {
+    window.refreshRecordsList()
+})
+transcriptSearch.addEventListener("keyup", () => {
+    window.refreshRecordsList()
+})
+
 window.refreshRecordsList = (dataset) => {
     if (window.tools_state.running || window.appState.skipRefreshing) {
         return
     }
     batchRecordsContainer.innerHTML = ""
 
+    const filteredRows = window.searchDatasetRows(window.datasets[window.appState.currentDataset].metadata)
+    const numPages = Math.ceil(filteredRows.length/window.userSettings.paginationSize)
+    totalRecords.innerHTML = `${filteredRows.length} total records`
+    ofTotalPages.innerHTML = `of ${numPages}`
+    pageNum.value = 1
+
+
     const startIndex = (window.appState.paginationIndex*window.userSettings.paginationSize)
-    const endIndex = Math.min(startIndex+window.userSettings.paginationSize, window.datasets[window.appState.currentDataset].metadata.length)
+    const endIndex = Math.min(startIndex+window.userSettings.paginationSize, filteredRows.length)
 
     for (let ri=startIndex; ri<endIndex; ri++) {
-        const recordAndElem = window.datasets[window.appState.currentDataset].metadata[ri]
+        const recordAndElem = filteredRows[ri]
+
+        fs.exists(recordAndElem[3], exists => {
+            if (exists) {
+                const audio = createElem("audio", {controls: true}, createElem("source", {
+                    src: recordAndElem[3],
+                    type: `audio/wav`
+                }))
+                audio.style.zIndex = "1"
+
+                recordAndElem[1].children[1].innerHTML = ""
+                audio.addEventListener("canplaythrough", () => {
+                    if (recordAndElem[1].children[1].innerHTML == "") {
+                        recordAndElem[1].children[1].appendChild(audio)
+                    }
+                })
+            }
+        })
+
+
         recordAndElem[1].children[0].innerHTML = (ri+1)
         batchRecordsContainer.appendChild(recordAndElem[1])
     }
@@ -686,18 +727,10 @@ const populateRecordsList = (dataset, records, additive=false) => {
 
         row.appendChild(rNumElem)
         const potentialAudioPath = `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${record.fileName}`
-        let observer
         if (allPaths.includes(record.fileName)) {
-            const audio = createElem("audio", {controls: true}, createElem("source", {
-                src: potentialAudioPath,
-                type: `audio/wav`
-            }))
-            audio.style.zIndex = "1"
             rGameElem.style.zIndex = "1"
-            rGameElem.appendChild(audio)
         }
         row.appendChild(rGameElem)
-
         row.appendChild(rOutPathElem)
         row.appendChild(rTextElem)
 
@@ -715,7 +748,7 @@ const populateRecordsList = (dataset, records, additive=false) => {
 
         row.appendChild(wer_elem)
 
-        window.datasets[dataset].metadata.push([record, row, ri, observer])
+        window.datasets[dataset].metadata.push([record, row, ri, potentialAudioPath])
     })
 }
 
@@ -987,7 +1020,7 @@ setting_paginationSize.addEventListener("change", () => {
     const numPages = Math.ceil(window.datasets[window.appState.currentDataset].metadata.length/window.userSettings.paginationSize)
     pageNum.value = Math.max(1, Math.min(parseInt(pageNum.value), numPages))
     window.appState.paginationIndex = pageNum.value-1
-    total_pages.innerHTML = `of ${numPages}`
+    ofTotalPages.innerHTML = `of ${numPages}`
 
     refreshRecordsList(window.appState.currentDataset)
 })
