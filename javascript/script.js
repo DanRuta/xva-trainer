@@ -1101,6 +1101,7 @@ const initDatasetMeta = (callback) => {
             "modelVersion": parseFloat(datasetMeta_modelVersion.value).toFixed(1),
             "modelType": "FastPitch1.1",
             "author": datasetMeta_author.value,
+            "license": datasetMeta_license.value,
             "lang": datasetMeta_langcode.value.trim().toLowerCase(),
             "games": [
                 {
@@ -1143,6 +1144,7 @@ window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
     datasetMeta_gender_other.checked = datasetMeta.games[0].gender=="other"
     composedVoiceId.innerHTML = fixedFolderName
     datasetMeta_author.value = datasetMeta.author
+    datasetMeta_license.value = datasetMeta.license || ""
 
     initDatasetMeta(() => {
         composedVoiceId.innerHTML = fixedFolderName
