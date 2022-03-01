@@ -56,9 +56,12 @@ const initWebSocket = () => {
             window.training_state.stage_viewed = stage
             window.updateTrainingLogText()
             window.updateTrainingGraphs()
-        } else
-
-        if (event.data.includes("Finished training HiFi-GAN")) {
+        } else if (event.data.includes("TRAINING_ERROR:")) {
+            const errorMessage = event.data.split("TRAINING_ERROR:")[1].split("\n").join("<br>")
+            window.errorModal(errorMessage).then(() => {
+                trainingStopBtn.click()
+            })
+        } else if (event.data.includes("Finished training HiFi-GAN")) {
 
             window.training_state.datasetsQueue[window.training_state.trainingQueueItem].status = `Finished`
             const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))

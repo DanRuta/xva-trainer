@@ -140,24 +140,31 @@ if __name__ == '__main__':
 
 
                 # Training
-                if task=="startTraining" or task=="resume":
-                    _thread.start_new_thread(between_callback, (models_manager, data, websocket, [0], task=="resume"))
-                else:
-                    if task=="pause":
-                        logger.info("server.py pause")
-                        if "fastpitch1_1" not in models_manager.models_bank.keys() or models_manager.models_bank["fastpitch1_1"]=="move to hifi":
-                            await models_manager.models_bank["hifigan"].pause()
+                if task in ["startTraining", "resume", "pause", "stop"]:
+                    try:
+                        if task=="startTraining" or task=="resume":
+                            _thread.start_new_thread(between_callback, (models_manager, data, websocket, [0], task=="resume"))
                         else:
-                            await models_manager.models_bank["fastpitch1_1"].pause()
-                    if task=="stop":
-                        if "fastpitch1_1" in models_manager.models_bank.keys():
-                            del models_manager.models_bank["fastpitch1_1"]
-                        if "hifigan" in models_manager.models_bank.keys():
-                            del models_manager.models_bank["hifigan"]
+                            if task=="pause":
+                                logger.info("server.py pause")
+                                if "fastpitch1_1" not in models_manager.models_bank.keys() or models_manager.models_bank["fastpitch1_1"]=="move to hifi":
+                                    await models_manager.models_bank["hifigan"].pause()
+                                else:
+                                    models_manager.models_bank["fastpitch1_1"].pause()
+                            if task=="stop":
+                                if "fastpitch1_1" in models_manager.models_bank.keys():
+                                    del models_manager.models_bank["fastpitch1_1"]
+                                if "hifigan" in models_manager.models_bank.keys():
+                                    del models_manager.models_bank["hifigan"]
 
-                        gc.collect()
-                        torch.cuda.empty_cache()
-
+                                gc.collect()
+                                torch.cuda.empty_cache()
+                    except KeyboardInterrupt:
+                        sys.exit()
+                    except:
+                        logger.info(f'TRAINING_ERROR:{traceback.format_exc()}')
+                        await websocket.send(f'TRAINING_ERROR:{traceback.format_exc()}')
+                else:
                     # Tasks
                     await models_manager.init_model(model, websocket)
                     if task=="runTask":
@@ -167,7 +174,6 @@ if __name__ == '__main__':
                         except:
                             logger.info(traceback.format_exc())
                             await websocket.send(f'ERROR:{traceback.format_exc()}')
-
 
             except KeyboardInterrupt:
                 sys.exit()
@@ -196,8 +202,8 @@ if __name__ == '__main__':
                     logger.info("server.py moving on to HiFi training")
                     return await handleTrainingLoop(models_manager, data, websocket, gpus, False)
         except:
-            logger.info(traceback.format_exc())
-            await websocket.send(f'ERROR:{traceback.format_exc()}')
+            logger.info(f'TRAINING_ERROR:{traceback.format_exc()}')
+            await websocket.send(f'TRAINING_ERROR:{traceback.format_exc()}')
 
 
     def get_or_create_eventloop ():
