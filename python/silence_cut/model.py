@@ -11,7 +11,7 @@ import multiprocessing as mp
 
 
 def processingTask(workItem):
-    inputPath, outputPath = workItem
+    [inputPath, outputPath] = workItem
 
     threshold = -40 # tweak based on signal-to-noise ratio
     interval = 1 # ms, increase to speed up

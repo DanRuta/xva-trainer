@@ -10,6 +10,7 @@ window.path = path
 window.websocket_handlers = {}
 
 const fs = require("fs")
+window.smi = require('node-nvidia-smi')
 const doFetch = require("node-fetch")
 const {exec} = require("child_process")
 const {shell, ipcRenderer} = require("electron")
@@ -21,6 +22,18 @@ require("./javascript/settingsMenu.js")
 require("./javascript/tools.js")
 const execFile = require('child_process').execFile
 const spawn = require("child_process").spawn
+
+window.hasCUDA = false
+window.spinnerModal("Waiting for the WebSocket to connect...")
+smi((err, data) => {
+    if (err) {
+        return window.errorModal(`Error reading GPU data:<br>${err}`)
+    }
+    if (!data.nvidia_smi_log.cuda_version) {
+        return window.errorModal(`CUDA installation not detected. This is required (along with an NVIDIA GPU) for most things to work. Please install it from the NVIDIA website. You can verify its installation by running "nvcc --version" on the command-line`)
+    }
+    window.hasCUDA = true
+})
 
 // Start the server
 if (window.PRODUCTION) {
@@ -35,7 +48,9 @@ const initWebSocket = () => {
     ws.onopen = event => {
         console.log("WebSocket open")
         clearInterval(initWebSocketInterval)
-        window.closeModal()
+        if (window.hasCUDA) { // Don't clear the CUDA error message
+            window.closeModal()
+        }
     }
 
     ws.onclose = event => {
@@ -120,7 +135,7 @@ const initWebSocket = () => {
         }
     }
 }
-window.spinnerModal("Waiting for the WebSocket to connect...")
+
 const initWebSocketInterval = setInterval(initWebSocket, 1000)
 
 
@@ -702,8 +717,6 @@ window.refreshRecordsList = (dataset) => {
     })
 
     totalRecords.innerHTML = `${filteredRows.length} files`
-    ofTotalPages.innerHTML = `of ${numPages}`
-    pageNum.value = 1
 
 
     const startIndex = (window.appState.paginationIndex*window.userSettings.paginationSize)

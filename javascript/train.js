@@ -1,7 +1,5 @@
 "use strict"
 
-const smi = require('node-nvidia-smi')
-
 // https://www.chartjs.org/docs/latest/
 window.updateTrainingGraphValues = (allValues, chart) => {
     chart.data.datasets[0].data = allValues.map(pairs => pairs[1])
@@ -92,7 +90,7 @@ window.updateSystemGraphs = () => {
 
 
     window.cpuUsage(cpuLoad => {
-        smi((err, data) => {
+        window.smi((err, data) => {
             let totalVRAM
             let usedVRAM
             let computeLoad
