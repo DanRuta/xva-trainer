@@ -2,27 +2,48 @@ import os
 import json
 import traceback
 
-# import ffmpeg
-import subprocess
-
 # Not a model, but it was easier to just integrate the code this way
 
 import multiprocessing as mp
+from lib.ffmpeg_normalize._ffmpeg_normalize import FFmpegNormalize
 
 
 def normalizeTask (data):
     [inPath, outPath] = data
-    startupinfo = subprocess.STARTUPINFO()
-    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-    # sp = subprocess.Popen(f'ffmpeg-normalize -ar 22050 "{inPath}" -o "{outPath}"', startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    sp = subprocess.Popen(f'ffmpeg-normalize -ar 16000 "{inPath}" -o "{outPath}"', startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = sp.communicate()
-    stderr = stderr.decode("utf-8")
+    sample_rate = 22050
+    ffmpeg_normalize = FFmpegNormalize(
+            normalization_type="ebu",
+            target_level=-23.0,
+            print_stats=False,
+            loudness_range_target=7.0,
+            true_peak=-2.0,
+            offset=0.0,
+            dual_mono=False,
+            audio_codec=None,
+            audio_bitrate=None,
+            sample_rate=sample_rate,
+            keep_original_audio=False,
+            pre_filter=None,
+            post_filter=None,
+            video_codec="copy",
+            video_disable=False,
+            subtitle_disable=False,
+            metadata_disable=False,
+            chapters_disable=False,
+            extra_input_options=[],
+            extra_output_options=[],
+            output_format=None,
+            dry_run=False,
+            progress=False,
+        )
 
-    if len(stderr) and "duration of less than 3 seconds" not in stderr:
-        print("stderr", stderr)
-        return "stderr: "+ stderr
+    try:
+        ffmpeg_normalize.add_media_file(inPath, outPath)
+        ffmpeg_normalize.run_normalization()
+    except:
+        print(traceback.format_exc())
+        return "stderr: "+ traceback.format_exc()
 
     return None
 
@@ -51,9 +72,6 @@ class AudioNormalizer(object):
 
 
     async def normalize(self, data, websocket):
-
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
         inPath, outputDirectory = data["inPath"], data["outputDirectory"]
         useMP = data["toolSettings"]["useMP"]
@@ -92,24 +110,38 @@ class AudioNormalizer(object):
 
             outputPath = f'{outputDirectory}/{inPath.split("/")[-1].split(".")[0]}.wav'
 
+            sample_rate = 22050
+            ffmpeg_normalize = FFmpegNormalize(
+                    normalization_type="ebu",
+                    target_level=-23.0,
+                    print_stats=False,
+                    loudness_range_target=7.0,
+                    true_peak=-2.0,
+                    offset=0.0,
+                    dual_mono=False,
+                    audio_codec=None,
+                    audio_bitrate=None,
+                    sample_rate=sample_rate,
+                    keep_original_audio=False,
+                    pre_filter=None,
+                    post_filter=None,
+                    video_codec="copy",
+                    video_disable=False,
+                    subtitle_disable=False,
+                    metadata_disable=False,
+                    chapters_disable=False,
+                    extra_input_options=[],
+                    extra_output_options=[],
+                    output_format=None,
+                    dry_run=False,
+                    progress=False,
+                )
+
             try:
-                sp = subprocess.Popen(f'ffmpeg-normalize -ar 22050 "{inPath}" -o "{outputPath}"', startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                # sp = subprocess.Popen(f'ffmpeg-normalize -ar 16000 "{inPath}" -o "{outputPath}"', startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                stdout, stderr = sp.communicate()
-                stderr = stderr.decode("utf-8")
-
-                if len(stderr) and "duration of less than 3 seconds" not in stderr:
-                    print("stderr", stderr)
-                    self.logger.info("stderr: "+ stderr)
-
-                    if websocket is not None:
-                        await websocket.send(json.dumps({"key": "tasks_error", "data": stderr}))
-
+                ffmpeg_normalize.add_media_file(inPath, outputPath)
+                ffmpeg_normalize.run_normalization()
             except:
                 self.logger.info(traceback.format_exc())
-                if websocket is not None:
-                    await websocket.send(json.dumps({"key": "tasks_error", "data": traceback.format_exc()}))
-
 
             if websocket is not None:
                 await websocket.send(json.dumps({"key": "tasks_next"}))
