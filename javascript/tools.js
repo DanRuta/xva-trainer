@@ -129,8 +129,6 @@ const tools = {
             })
             const rowItemReorder = createElem("div", doSearchReorderCkbxDescription, createElem("div", doSearchReorderCkbx))
 
-
-            const fixedKCkbxDescription = createElem("div", "Use custom fixed number of clusters")
             const fixedKCkbx = createElem("input", {type: "checkbox"})
             fixedKCkbx.style.height = "20px"
             fixedKCkbx.style.width = "20px"
@@ -138,21 +136,21 @@ const tools = {
                 window.tools_state.toolSettings["cluster_speakers"].use_custom_k = fixedKCkbx.checked
                 inputFixedKValInput.disabled = !fixedKCkbx.checked
             })
-            const rowItemFixedK = createElem("div", fixedKCkbxDescription, createElem("div", fixedKCkbx))
 
-
-            const inputFixedKValDescription = createElem("div", "Custom fixed number of clusters")
+            const inputFixedKValDescription = createElem("div", "Use custom fixed number of clusters")
             const inputFixedKValInput = createElem("input", {type: "number"})
             inputFixedKValInput.disabled = true
             inputFixedKValInput.value = 2
+            inputFixedKValInput.style.width = "70%"
             inputFixedKValInput.addEventListener("change", () => {
                 window.tools_state.toolSettings["cluster_speakers"].custom_k = parseInt(inputFixedKValInput.value)
             })
-            const rowItemFixedKAmount = createElem("div", inputFixedKValDescription, createElem("div", inputFixedKValInput))
+            const rowItemFixedKAmountInputs = createElem("div", fixedKCkbx, inputFixedKValInput)
+            rowItemFixedKAmountInputs.style.flexDirection = "row"
+            const rowItemFixedKAmount = createElem("div", inputFixedKValDescription, rowItemFixedKAmountInputs)
             window.tools_state.toolSettings["cluster_speakers"].custom_k = parseInt(inputFixedKValInput.value)
 
 
-            const useMinCSizeCkbxDescription = createElem("div", "Only output clusters with a minimum number of files in it")
             const useMinCSizeCkbx = createElem("input", {type: "checkbox"})
             useMinCSizeCkbx.style.height = "20px"
             useMinCSizeCkbx.style.width = "20px"
@@ -160,20 +158,20 @@ const tools = {
                 window.tools_state.toolSettings["cluster_speakers"].use_min_cluster_size = useMinCSizeCkbx.checked
                 minCSizeInput.disabled = !useMinCSizeCkbx.checked
             })
-            const rowItemuseMinCSize = createElem("div", useMinCSizeCkbxDescription, createElem("div", useMinCSizeCkbx))
 
-            const minCSizeDescription = createElem("div", "Minimum number of samples per cluster")
+            const minCSizeDescription = createElem("div", "Only output clusters with a minimum number of files in it")
             const minCSizeInput = createElem("input", {type: "number"})
             minCSizeInput.disabled = true
             minCSizeInput.value = 2
+            minCSizeInput.style.width = "70%"
             minCSizeInput.addEventListener("change", () => {
                 window.tools_state.toolSettings["cluster_speakers"].min_cluster_size = parseInt(minCSizeInput.value)
             })
-            const rowItemminCSize = createElem("div", minCSizeDescription, createElem("div", minCSizeInput))
+            const rowItemminCSizeInputs = createElem("div", useMinCSizeCkbx, minCSizeInput)
+            rowItemminCSizeInputs.style.flexDirection = "row"
+            const rowItemminCSize = createElem("div", minCSizeDescription, rowItemminCSizeInputs)
             window.tools_state.toolSettings["cluster_speakers"].min_cluster_size = parseInt(minCSizeInput.value)
 
-
-            const useClusterFoldersPrefixDescription = createElem("div", "Prefix cluster folder names with something")
             const useClusterFoldersPrefix = createElem("input", {type: "checkbox"})
             useClusterFoldersPrefix.style.height = "20px"
             useClusterFoldersPrefix.style.width = "20px"
@@ -181,20 +179,21 @@ const tools = {
                 window.tools_state.toolSettings["cluster_speakers"].use_cluster_folder_prefix = useClusterFoldersPrefix.checked
                 clusterFolderPrefixInput.disabled = !useClusterFoldersPrefix.checked
             })
-            const rowItemuseClusterFoldersPrefix = createElem("div", useClusterFoldersPrefixDescription, createElem("div", useClusterFoldersPrefix))
 
-            const clusterFolderPrefixDescription = createElem("div", "Cluster folder name prefix")
+            const clusterFolderPrefixDescription = createElem("div", "Prefix cluster folder names with something")
             const clusterFolderPrefixInput = createElem("input", {type: "number"})
             clusterFolderPrefixInput.disabled = true
+            clusterFolderPrefixInput.style.width = "70%"
             clusterFolderPrefixInput.value = "0001"
             clusterFolderPrefixInput.addEventListener("change", () => {
                 window.tools_state.toolSettings["cluster_speakers"].cluster_folder_prefix = clusterFolderPrefixInput.value
             })
-            const rowItemclusterFolderPrefix = createElem("div", clusterFolderPrefixDescription, createElem("div", clusterFolderPrefixInput))
+            const rowItemclusterFolderPrefixInputs = createElem("div", useClusterFoldersPrefix, clusterFolderPrefixInput)
+            rowItemclusterFolderPrefixInputs.style.flexDirection = "row"
+            const rowItemclusterFolderPrefix = createElem("div", clusterFolderPrefixDescription, rowItemclusterFolderPrefixInputs)
             window.tools_state.toolSettings["cluster_speakers"].min_cluster_size = clusterFolderPrefixInput.value
 
-
-            const container = createElem("div.flexTable.toolSettingsTable", rowItemReorder, rowItemFixedK, rowItemFixedKAmount, rowItemuseMinCSize, rowItemminCSize, rowItemuseClusterFoldersPrefix, rowItemclusterFolderPrefix)
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemReorder, rowItemFixedKAmount, rowItemminCSize, rowItemclusterFolderPrefix)
             toolDescription.appendChild(container)
         }
     },
@@ -242,7 +241,6 @@ const tools = {
         inputFileType: "folder"
     }
 }
-
 
 
 
@@ -339,6 +337,7 @@ toolsRunTool.addEventListener("click", () => {
     }
     toolsRunTool.disabled = true
     prepAudioStart.disabled = true
+    toolsList.querySelectorAll("button").forEach(button => button.disabled = true)
     window.deleteFolderRecursive(window.tools_state.outputDirectory, true)
 
     window.tools_state.taskFiles = fs.readdirSync(window.tools_state.inputDirectory)
@@ -436,8 +435,6 @@ window.websocket_handlers["tasks_next"] = (data, mpOverride=false) => {
         return
     }
 
-    console.log("tasks_next", mpOverride)
-
     window.tools_state.progressElem.innerHTML = `${window.tools_state.taskFileIndex}/${window.tools_state.taskFiles.length} files done (${parseInt(window.tools_state.taskFileIndex/window.tools_state.taskFiles.length*100*100)/100}%)`
 
     if (window.tools_state.taskFileIndex<window.tools_state.taskFiles.length-1) {
@@ -450,6 +447,7 @@ window.websocket_handlers["tasks_next"] = (data, mpOverride=false) => {
         window.tools_state.progressElem.innerHTML = "Done"
         toolsRunTool.disabled = false
         prepAudioStart.disabled = false
+        toolsList.querySelectorAll("button").forEach(button => button.disabled = false)
         window.tools_state.infoElem.innerHTML = ""
         window.tools_state.currentFileElem.innerHTML = ""
 
