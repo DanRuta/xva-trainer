@@ -536,132 +536,136 @@ const timeoutSleep = ms => {
 }
 
 // Preprocess audio
-prepAudioStart.addEventListener("click", async () => {
+prepAudioStart.addEventListener("click", () => {
 
-    // Disable the tool buttons, to prevent parallel execution of other tools/tool instances
-    Array.from(toolsList.querySelectorAll("button")).forEach(button => {
-        button.disabled = true
-    })
+    window.confirmModal("Run audio pre-processing?").then(async resp => {
+        if (resp) {
+            // Disable the tool buttons, to prevent parallel execution of other tools/tool instances
+            Array.from(toolsList.querySelectorAll("button")).forEach(button => {
+                button.disabled = true
+            })
 
-    window.tools_state.running = true
+            window.tools_state.running = true
 
-    try {
-        // Copy the wavs directory to wavs_backup if doing conversion, or wavs_orig otherwise
-        // Run the conversion task for the audio, if turned on, from wavs_backup to wavs_orig if doing silence cutting, or wavs otherwise
-        // Run the silence cutting for the audio, if turned on, from wavs_orig to wavs
-        // Remove short files from wavs, if enabled
-        // Remove long files from wavs, if enabled
-        // if not doing backups, delete wavs_backup if doing conversion, and delete wavs_orig
-        // else rename wavs_orig to wavs_backup if not doing conversion, else delete wavs_orig
+            try {
+                // Copy the wavs directory to wavs_backup if doing conversion, or wavs_orig otherwise
+                // Run the conversion task for the audio, if turned on, from wavs_backup to wavs_orig if doing silence cutting, or wavs otherwise
+                // Run the silence cutting for the audio, if turned on, from wavs_orig to wavs
+                // Remove short files from wavs, if enabled
+                // Remove long files from wavs, if enabled
+                // if not doing backups, delete wavs_backup if doing conversion, and delete wavs_orig
+                // else rename wavs_orig to wavs_backup if not doing conversion, else delete wavs_orig
 
-        // ============
+                // ============
 
-        const DOING_CONVERSION = prepAudioConvert.checked
-        const DOING_SILENCE_CUT = prepAudioTrimSilence.checked
-        const DELETING_SHORT = prepAudioDelShort.checked
-        const DELETING_LONG = prepAudioDelLong.checked
-        const DOING_BACKUP = prepAudioBackup.checked
+                const DOING_CONVERSION = prepAudioConvert.checked
+                const DOING_SILENCE_CUT = prepAudioTrimSilence.checked
+                const DELETING_SHORT = prepAudioDelShort.checked
+                const DELETING_LONG = prepAudioDelLong.checked
+                const DOING_BACKUP = prepAudioBackup.checked
 
-        prepAudioSpinner.style.display = "inline-block"
+                prepAudioSpinner.style.display = "inline-block"
 
 
-        // Copy the wavs directory to wavs_backup if doing conversion, or wavs_orig otherwise
-        prepAudioCurrentTask.innerHTML = "Copying out original data..."
+                // Copy the wavs directory to wavs_backup if doing conversion, or wavs_orig otherwise
+                prepAudioCurrentTask.innerHTML = "Copying out original data..."
 
-        await timeoutSleep(10) // Give the UI a chance to refresh, to display the info before starting
+                await timeoutSleep(10) // Give the UI a chance to refresh, to display the info before starting
 
-        if (DOING_CONVERSION) {
-            if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)) {
-                window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
-            }
-            fs.copySync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
-            // window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`, true)
-        } else {
-            if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)) {
-                window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
-            }
-            fs.copySync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
-            // window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`, true)
-        }
-        window.tools_state.progressElem.innerHTML = ""
+                if (DOING_CONVERSION) {
+                    if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)) {
+                        window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
+                    }
+                    fs.copySync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
+                    // window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`, true)
+                } else {
+                    if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)) {
+                        window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
+                    }
+                    fs.copySync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
+                    // window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`, true)
+                }
+                window.tools_state.progressElem.innerHTML = ""
 
-        // Run the conversion task for the audio, if turned on, from wavs_backup to wavs_orig if doing silence cutting, or wavs otherwise
-        if (DOING_CONVERSION) {
-            if (DOING_SILENCE_CUT) {
-                if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)) {
+                // Run the conversion task for the audio, if turned on, from wavs_backup to wavs_orig if doing silence cutting, or wavs otherwise
+                if (DOING_CONVERSION) {
+                    if (DOING_SILENCE_CUT) {
+                        if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)) {
+                            window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
+                        }
+                        fs.mkdirSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
+                        prepAudioCurrentTask.innerHTML = "Running audio conversion..."
+                        await runAudioConversionForDataset(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
+                    } else {
+                        prepAudioCurrentTask.innerHTML = "Running audio conversion..."
+                        await runAudioConversionForDataset(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`)
+                    }
+                }
+                window.tools_state.progressElem.innerHTML = ""
+
+                // Run the silence cutting for the audio, if turned on, from wavs_orig to wavs
+                if (DOING_SILENCE_CUT) {
+                    prepAudioCurrentTask.innerHTML = "Running silence cutting..."
+                    await runAudioSilenceCutForDataset(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`)
+                }
+                window.tools_state.progressElem.innerHTML = ""
+
+
+                // Remove short files from wavs, if enabled
+                // Remove long files from wavs, if enabled
+                if (DELETING_SHORT || DELETING_LONG) {
+
+                    prepAudioCurrentTask.innerHTML = "Removing files too "+ (DELETING_SHORT ? (DELETING_LONG ? "long/short" : "short") : "long") + "..."
+                    const audioFiles = fs.readdirSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`)
+
+                    for (let ai=0; ai<audioFiles.length; ai++) {
+                        const filePath = `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${audioFiles[ai]}`
+                        const duration = await getAudioDurationInSeconds(filePath)
+
+                        prepAudioCurrentTask.innerHTML = "Removing files too "+ (DELETING_SHORT ? (DELETING_LONG ? "long/short" : "short") : "long") + `... (${ai+1}/${audioFiles.length})`
+
+                        if (DELETING_SHORT && duration<1) {
+                            fs.unlinkSync(filePath)
+                        } else if (DELETING_LONG && duration>10) {
+                            fs.unlinkSync(filePath)
+                        }
+                    }
+                }
+
+                prepAudioCurrentTask.innerHTML = "Cleaning up..."
+
+                // if not doing backups, delete wavs_backup if doing conversion, and delete wavs_orig
+                if (!DOING_BACKUP) {
+                    if (DOING_CONVERSION) {
+                        window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
+                    }
                     window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
+                } else {
+                    // else rename wavs_orig to wavs_backup if not doing conversion, else delete wavs_orig
+                    if (!DOING_CONVERSION) {
+                        fs.copySync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
+                        window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
+                    } else {
+                        window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
+                    }
                 }
-                fs.mkdirSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
-                prepAudioCurrentTask.innerHTML = "Running audio conversion..."
-                await runAudioConversionForDataset(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
-            } else {
-                prepAudioCurrentTask.innerHTML = "Running audio conversion..."
-                await runAudioConversionForDataset(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`)
+                prepAudioCurrentTask.innerHTML = ""
+                window.tools_state.progressElem.innerHTML = "Done"
+
+            } catch (e) {
+                console.log("ERR:", e)
+                window.appLogger.log(e)
+            } finally {
+                Array.from(toolsList.querySelectorAll("button")).forEach(button => {
+                    button.disabled = false
+                })
             }
+
+            prepAudioSpinner.style.display = "none"
+            window.tools_state.running = false
+            window.refreshRecordsList(window.appState.currentDataset)
         }
-        window.tools_state.progressElem.innerHTML = ""
-
-        // Run the silence cutting for the audio, if turned on, from wavs_orig to wavs
-        if (DOING_SILENCE_CUT) {
-            prepAudioCurrentTask.innerHTML = "Running silence cutting..."
-            await runAudioSilenceCutForDataset(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`)
-        }
-        window.tools_state.progressElem.innerHTML = ""
-
-
-        // Remove short files from wavs, if enabled
-        // Remove long files from wavs, if enabled
-        if (DELETING_SHORT || DELETING_LONG) {
-
-            prepAudioCurrentTask.innerHTML = "Removing files too "+ (DELETING_SHORT ? (DELETING_LONG ? "long/short" : "short") : "long") + "..."
-            const audioFiles = fs.readdirSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`)
-
-            for (let ai=0; ai<audioFiles.length; ai++) {
-                const filePath = `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${audioFiles[ai]}`
-                const duration = await getAudioDurationInSeconds(filePath)
-
-                prepAudioCurrentTask.innerHTML = "Removing files too "+ (DELETING_SHORT ? (DELETING_LONG ? "long/short" : "short") : "long") + `... (${ai+1}/${audioFiles.length})`
-
-                if (DELETING_SHORT && duration<1) {
-                    fs.unlinkSync(filePath)
-                } else if (DELETING_LONG && duration>10) {
-                    fs.unlinkSync(filePath)
-                }
-            }
-        }
-
-        prepAudioCurrentTask.innerHTML = "Cleaning up..."
-
-        // if not doing backups, delete wavs_backup if doing conversion, and delete wavs_orig
-        if (!DOING_BACKUP) {
-            if (DOING_CONVERSION) {
-                window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
-            }
-            window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
-        } else {
-            // else rename wavs_orig to wavs_backup if not doing conversion, else delete wavs_orig
-            if (!DOING_CONVERSION) {
-                fs.copySync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_backup`)
-                window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
-            } else {
-                window.deleteFolderRecursive(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs_orig`)
-            }
-        }
-        prepAudioCurrentTask.innerHTML = ""
-        window.tools_state.progressElem.innerHTML = "Done"
-
-    } catch (e) {
-        console.log("ERR:", e)
-        window.appLogger.log(e)
-    } finally {
-        Array.from(toolsList.querySelectorAll("button")).forEach(button => {
-            button.disabled = false
-        })
-    }
-
-    prepAudioSpinner.style.display = "none"
-    window.tools_state.running = false
-    window.refreshRecordsList(window.appState.currentDataset)
+    })
 })
 
 // Preprocess text
