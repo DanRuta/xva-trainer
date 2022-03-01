@@ -35,6 +35,7 @@ const initWebSocket = () => {
     ws.onopen = event => {
         console.log("WebSocket open")
         clearInterval(initWebSocketInterval)
+        window.closeModal()
     }
 
     ws.onclose = event => {
@@ -113,6 +114,7 @@ const initWebSocket = () => {
         }
     }
 }
+window.spinnerModal("Waiting for the WebSocket to connect...")
 const initWebSocketInterval = setInterval(initWebSocket, 1000)
 
 
