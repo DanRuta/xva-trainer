@@ -55,7 +55,7 @@ class AudioFormatter(object):
 
         self.logger.info(f'format task')
 
-        useMP = data["toolSettings"]["useMP"]
+        useMP = data["toolSettings"]["useMP"] if "useMP" in data["toolSettings"].keys() else False
         # processes = data["toolSettings"]["mpProcesses"]
         processes = max(1, mp.cpu_count()-1) # TODO
 

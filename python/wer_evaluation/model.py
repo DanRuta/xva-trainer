@@ -66,7 +66,11 @@ class WER_evaluation(object):
 
         out = []
         for fname in list(data.keys()):
-            err = wer(data[fname]["asr"], data[fname]["orig"])
+            if "asr" in data[fname].keys():
+                err = wer(data[fname]["asr"], data[fname]["orig"])
+            else:
+                err = "0"
+                data[fname]["asr"] = ""
             out.append("|".join([fname, str(err), data[fname]["orig"], data[fname]["asr"]]))
 
         out = sorted(out, key=sort_err, reverse=True)
