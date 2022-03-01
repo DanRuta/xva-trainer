@@ -105,11 +105,17 @@ const initWebSocket = () => {
             }
 
         } else {
-            const response = event.data ? JSON.parse(event.data) : undefined
-            console.log("response", response)
+            try {
+                const response = event.data ? JSON.parse(event.data) : undefined
+                console.log("response", response)
 
-            if (Object.keys(window.websocket_handlers).includes(response["key"])) {
-                window.websocket_handlers[response["key"]](response["data"])
+                if (Object.keys(window.websocket_handlers).includes(response["key"])) {
+                    window.websocket_handlers[response["key"]](response["data"])
+                }
+            } catch (e) {
+                if (window.tools_state.running) {
+                    window.errorModal(event.data.split("\n").join("<br>"))
+                }
             }
         }
     }
