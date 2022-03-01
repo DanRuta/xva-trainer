@@ -287,7 +287,7 @@ class TTSDataset(torch.utils.data.Dataset):
 
         self.total_cached_samples = 0
         self.MAX_CACHE_SAMPLES = 1000
-        # self.MAX_CACHE_SAMPLES = 5000
+        self.MAX_CACHE_SAMPLES = 5000
         # self.MAX_CACHE_SAMPLES = 4000
         # self.MAX_CACHE_SAMPLES = 3000
 

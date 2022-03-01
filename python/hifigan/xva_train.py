@@ -13,6 +13,7 @@ import warnings
 import asyncio
 import glob
 import re
+import datetime
 
 import torch
 import numpy as np
@@ -78,7 +79,7 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             del trainer.trainset
             # del trainer.optimizer
         except:
-            trainer.logger.info(traceback.format_exc())
+            pass
 
         gc.collect()
         torch.cuda.empty_cache()
@@ -151,7 +152,9 @@ class HiFiTrainer(object):
         if line is None:
             print(f'\r{self.training_log_live_line}', end="", flush=True)
         else:
-            self.training_log.append(line)
+            time_str = str(datetime.datetime.now().time())
+            time_str = time_str.split(":")[0]+":"+time_str.split(":")[1]
+            self.training_log.append(f'{time_str} | {line}')
             print(("\r" if flush else "")+line, end=end, flush=flush)
 
 

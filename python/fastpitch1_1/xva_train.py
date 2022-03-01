@@ -12,6 +12,7 @@ import asyncio
 import glob
 import re
 import sys
+import datetime
 
 import torch
 import numpy as np
@@ -180,7 +181,9 @@ class FastPitchTrainer(object):
         if line is None:
             print(f'\r{self.training_log_live_line}', end="", flush=True)
         else:
-            self.training_log.append(line)
+            time_str = str(datetime.datetime.now().time())
+            time_str = time_str.split(":")[0]+":"+time_str.split(":")[1]
+            self.training_log.append(f'{time_str} | {line}')
             print(("\r" if flush else "")+line, end=end, flush=flush)
 
 
@@ -610,7 +613,7 @@ class FastPitchTrainer(object):
             if gpus is not None:
                 self.gpus = gpus
 
-            self.force_stage = data["force_stage"] if "force_stage" in data.keys() else None
+            self.force_stage = int(data["force_stage"]) if "force_stage" in data.keys() else None
 
             self.dataset_input = data["dataset_path"]
             self.dataset_id = self.dataset_input.split("/")[-1]
