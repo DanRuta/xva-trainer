@@ -24,11 +24,22 @@ const tools = {
                 window.tools_state.toolSettings["formatting"].isMultiProcessed = ckbx.checked
                 window.tools_state.isMultiProcessed = ckbx.checked
             })
+            const rowItemUseMp = createElem("div", createElem("div", ckbxDescription), createElem("div", ckbx))
 
-            const container = createElem("div", ckbx, ckbxDescription)
-            container.style.display = "flex"
-            container.style.justifyContent = "center"
-            container.style.alignItems = "center"
+            const formattingHzDescription = createElem("div", "Audio Hz (22050 unless you know what you're doing)")
+            const formattingHzInput = createElem("input", {type: "number"})
+            formattingHzInput.style.width = "70%"
+            formattingHzInput.value = "22050"
+            formattingHzInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["formatting"].formatting_hz = formattingHzInput.value
+            })
+            const rowItemformattingHzInputs = createElem("div", formattingHzInput)
+            rowItemformattingHzInputs.style.flexDirection = "row"
+            const rowItemFormattingHz = createElem("div", formattingHzDescription, rowItemformattingHzInputs)
+            window.tools_state.toolSettings["formatting"].formatting_hz = formattingHzInput.value
+
+
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp, rowItemFormattingHz)
             toolDescription.appendChild(container)
         }
     },
@@ -88,10 +99,22 @@ const tools = {
                 window.tools_state.isMultiProcessed = ckbx.checked
             })
 
-            const container = createElem("div", ckbx, ckbxDescription)
-            container.style.display = "flex"
-            container.style.justifyContent = "center"
-            container.style.alignItems = "center"
+            const rowItemUseMp = createElem("div", createElem("div", ckbxDescription), createElem("div", ckbx))
+
+            const normalizationHzDescription = createElem("div", "Audio Hz (22050 unless you know what you're doing)")
+            const normalizationHzInput = createElem("input", {type: "number"})
+            normalizationHzInput.style.width = "70%"
+            normalizationHzInput.value = "22050"
+            normalizationHzInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["normalize"].normalization_hz = normalizationHzInput.value
+            })
+            const rowItemNormalizationHzInputs = createElem("div", normalizationHzInput)
+            rowItemNormalizationHzInputs.style.flexDirection = "row"
+            const rowItemNormalizationHz = createElem("div", normalizationHzDescription, rowItemNormalizationHzInputs)
+            window.tools_state.toolSettings["normalize"].normalization_hz = normalizationHzInput.value
+
+
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp, rowItemNormalizationHz)
             toolDescription.appendChild(container)
         }
     },

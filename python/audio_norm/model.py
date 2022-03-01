@@ -9,9 +9,9 @@ from lib.ffmpeg_normalize._ffmpeg_normalize import FFmpegNormalize
 
 
 def normalizeTask (data):
-    [inPath, outPath] = data
+    [inPath, outPath, normalization_hz] = data
 
-    sample_rate = 22050
+    sample_rate = normalization_hz
     ffmpeg_normalize = FFmpegNormalize(
             normalization_type="ebu",
             target_level=-23.0,
@@ -75,6 +75,8 @@ class AudioNormalizer(object):
 
         inPath, outputDirectory = data["inPath"], data["outputDirectory"]
         useMP = data["toolSettings"]["useMP"]
+        normalization_hz = data["toolSettings"]["normalization_hz"] if "normalization_hz" in data["toolSettings"].keys() else "22050"
+        normalization_hz = int(normalization_hz)
         # processes = data["toolSettings"]["mpProcesses"]
         processes = max(1, mp.cpu_count()-1) # TODO
 
@@ -87,7 +89,7 @@ class AudioNormalizer(object):
 
             workItems = []
             for ip, path in enumerate(input_paths):
-                workItems.append([path, output_paths[ip]])
+                workItems.append([path, output_paths[ip], normalization_hz])
 
             workers = processes if processes>0 else max(1, mp.cpu_count()-1)
             workers = min(len(workItems), workers)
@@ -110,7 +112,7 @@ class AudioNormalizer(object):
 
             outputPath = f'{outputDirectory}/{inPath.split("/")[-1].split(".")[0]}.wav'
 
-            sample_rate = 22050
+            sample_rate = normalization_hz
             ffmpeg_normalize = FFmpegNormalize(
                     normalization_type="ebu",
                     target_level=-23.0,

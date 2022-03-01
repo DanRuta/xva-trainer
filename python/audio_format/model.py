@@ -9,12 +9,11 @@ import ffmpeg
 import multiprocessing as mp
 
 def formatTask (data):
-    [inPath, outPath] = data
+    [inPath, outPath, formatting_hz] = data
 
     try:
         stream = ffmpeg.input(inPath)
-        ffmpeg_options = {"ar": 22050, "ac": 1} # 22050Hz mono
-        # ffmpeg_options = {"ar": 16000, "ac": 1} # 22050Hz mono
+        ffmpeg_options = {"ar": formatting_hz, "ac": 1} # 22050Hz mono
         stream = ffmpeg.output(stream, outPath, **ffmpeg_options)
         out, err = (ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, overwrite_output=True))
     except ffmpeg.Error as e:
@@ -56,6 +55,8 @@ class AudioFormatter(object):
         self.logger.info(f'format task')
 
         useMP = data["toolSettings"]["useMP"] if "useMP" in data["toolSettings"].keys() else False
+        formatting_hz = data["toolSettings"]["formatting_hz"] if "formatting_hz" in data["toolSettings"].keys() else "22050"
+        formatting_hz = int(formatting_hz)
         # processes = data["toolSettings"]["mpProcesses"]
         processes = max(1, mp.cpu_count()-1) # TODO
 
@@ -74,7 +75,7 @@ class AudioFormatter(object):
 
             workItems = []
             for ip, path in enumerate(input_paths):
-                workItems.append([path, output_paths[ip]])
+                workItems.append([path, output_paths[ip], formatting_hz])
 
             workers = processes if processes>0 else max(1, mp.cpu_count()-1)
             workers = min(len(workItems), workers)
@@ -96,8 +97,7 @@ class AudioFormatter(object):
             try:
                 stream = ffmpeg.input(inPath)
 
-                ffmpeg_options = {"ar": 22050, "ac": 1} # 22050Hz mono
-                # ffmpeg_options = {"ar": 16000, "ac": 1} # 22050Hz mono
+                ffmpeg_options = {"ar": formatting_hz, "ac": 1} # 22050Hz mono
 
                 stream = ffmpeg.output(stream, outputPath, **ffmpeg_options)
 

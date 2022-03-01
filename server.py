@@ -113,8 +113,6 @@ if __name__ == '__main__':
     async def websocket_handler(websocket, path):
         async for message in websocket:
             try:
-                logger.info(f'message: {message}')
-
                 message = json.loads(message)
                 model = message["model"]
                 task = message["task"] if "task" in message else None
@@ -180,7 +178,7 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 sys.exit()
             except:
-                logger.info(traceback.format_exc())
+                logger.info(f'message: {message} | {traceback.format_exc()}')
 
     # https://stackoverflow.com/questions/59645272/how-do-i-pass-an-async-function-to-a-thread-target-in-python
     def between_callback(models_manager, data, websocket, gpus, resume):
