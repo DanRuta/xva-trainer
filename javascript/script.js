@@ -10,6 +10,7 @@ window.path = path
 window.websocket_handlers = {}
 
 const fs = require("fs")
+const doFetch = require("node-fetch")
 const {exec} = require("child_process")
 const {shell, ipcRenderer} = require("electron")
 const {xVAAppLogger} = require("./javascript/appLogger.js")
@@ -207,7 +208,6 @@ window.refreshDatasets = () => {
                 window.appState.currentDataset = dataset
 
                 const numPages = Math.ceil(records.length/window.userSettings.paginationSize)
-                totalRecords.innerHTML = `${records.length} total records`
                 ofTotalPages.innerHTML = `of ${numPages}`
                 pageNum.value = 1
 
@@ -665,6 +665,7 @@ transcriptSearch.addEventListener("keyup", () => {
     window.refreshRecordsList()
 })
 
+
 window.refreshRecordsList = (dataset) => {
     if (window.tools_state.running || window.appState.skipRefreshing) {
         return
@@ -673,7 +674,26 @@ window.refreshRecordsList = (dataset) => {
 
     const filteredRows = window.searchDatasetRows(window.datasets[window.appState.currentDataset].metadata)
     const numPages = Math.ceil(filteredRows.length/window.userSettings.paginationSize)
-    totalRecords.innerHTML = `${filteredRows.length} total records`
+
+    doFetch(`http://localhost:8002/getAudioLengthOfDir`, {
+        method: "Post",
+        body: JSON.stringify({
+            directory: `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`
+        })
+    }).then(r=>r.text()).then((res) => {
+
+        let displayString = `${filteredRows.length} files`
+        if (res) {
+
+            let meanSeconds = parseInt(res.split("|")[0])
+            let totalSeconds = parseInt(res.split("|")[1])
+
+            displayString += " | "+window.formatSecondsToTimeString(totalSeconds)
+        }
+        totalRecords.innerHTML = displayString
+    })
+
+    totalRecords.innerHTML = `${filteredRows.length} files`
     ofTotalPages.innerHTML = `of ${numPages}`
     pageNum.value = 1
 

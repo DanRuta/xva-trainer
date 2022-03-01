@@ -3,7 +3,9 @@ import sys
 import gc
 import traceback
 import multiprocessing
-
+import wave
+import contextlib
+import numpy as np
 
 if __name__ == '__main__':
     multiprocessing.freeze_support()
@@ -282,6 +284,21 @@ if __name__ == '__main__':
                     models_manager.set_device('cuda' if use_gpu else 'cpu')
                     req_response = "ready"
 
+                if self.path == "/getAudioLengthOfDir":
+
+                    directory = post_data["directory"]
+                    audio_lengths = []
+                    files = os.listdir(directory)
+                    for fname in files:
+                        if not fname.endswith(".wav"):
+                            continue
+                        with contextlib.closing(wave.open(f'{directory}/{fname}', 'r')) as f:
+                            frames = f.getnframes()
+                            rate = f.getframerate()
+                            duration = frames / float(rate)
+                            audio_lengths.append(duration)
+                    req_response = f'{np.mean(audio_lengths)}|{np.sum(audio_lengths)}'
+
 
                 self._set_response()
                 self.wfile.write(req_response.encode("utf-8"))
@@ -294,7 +311,7 @@ if __name__ == '__main__':
                 logger.info(traceback.format_exc())
 
     try:
-        server = HTTPServer(("",8001), Handler)
+        server = HTTPServer(("",8002), Handler)
     except:
         with open("./DEBUG_server_error.txt", "w+") as f:
             f.write(traceback.format_exc())

@@ -378,6 +378,32 @@ window.getNextFileName = dataset => {
 
 }
 
+
+
+window.formatSecondsToTimeString = totalSeconds => {
+    const timeDisplay = []
+
+    if (totalSeconds > (60*60)) { // hours
+        const hours = parseInt(totalSeconds/(60*60))
+        timeDisplay.push(hours+"h")
+        totalSeconds -= hours*(60*60)
+    }
+    if (totalSeconds > (60)) { // minutes
+        const minutes = parseInt(totalSeconds/(60))
+        timeDisplay.push(String(minutes).padStart(2, "0")+"m")
+        totalSeconds -= minutes*(60)
+    }
+    if (totalSeconds > (1)) { // seconds
+        const seconds = parseInt(totalSeconds/(1))
+        timeDisplay.push(String(seconds).padStart(2, "0")+"s")
+        totalSeconds -= seconds*(1)
+    }
+
+    return timeDisplay.join(" ")
+}
+
+
+
 // Disable page navigation on badly dropped file
 window.document.addEventListener("dragover", event => event.preventDefault(), false)
 window.document.addEventListener("drop", event => event.preventDefault(), false)
