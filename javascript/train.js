@@ -204,6 +204,7 @@ window.saveTrainingQueueJSON = () => {
         filteredJSON.epochs_per_checkpoint = dataset.epochs_per_checkpoint
         filteredJSON.force_stage = dataset.force_stage
         filteredJSON.status = dataset.status
+        filteredJSON.hifigan_checkpoint = dataset.hifigan_checkpoint
         return filteredJSON
     })
 
@@ -467,6 +468,7 @@ window.showConfigMenu = (startingData, di) => {
         "dataset_path": undefined,
         "output_path": undefined,
         "checkpoint": "H:/xVA/FP_OUTPUT/sk_femaleeventoned/FastPitch_checkpoint_1760_85765.pt",
+        "hifigan_checkpoint": undefined,
 
         "num_workers": 4, // TODO, app-level default settings
         "batch_size": 8, // TODO, app-level default settings
@@ -494,6 +496,7 @@ window.showConfigMenu = (startingData, di) => {
     trainingAddConfigDatasetPathInput.value = configData.dataset_path || ""
     trainingAddConfigOutputPathInput.value = configData.output_path || ""
     trainingAddConfigCkptPathInput.value = configData.checkpoint
+    trainingAddConfigHiFiCkptPathInput.value = configData.hifigan_checkpoint || ""
 
     trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
     trainingAddConfigBatchSizeInput.value = parseInt(configData.batch_size)
@@ -520,7 +523,10 @@ acceptConfig.addEventListener("click", () => {
         return window.errorModal("You need to specify where to output the intermediate data/models for your dataset.", queueItemConfigModalContainer)
     }
     if (!trainingAddConfigCkptPathInput.value.trim().length) {
-        return window.errorModal("You need to specify which checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
+        return window.errorModal("You need to specify which FastPitch checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
+    }
+    if (!trainingAddConfigHiFiCkptPathInput.value.trim().length) {
+        return window.errorModal("You need to specify which HiFi-GAN checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
     }
     if (!trainingAddConfigBatchSizeInput.value.trim().length) {
         return window.errorModal("Please enter the base batch size you'd like to use", queueItemConfigModalContainer)
@@ -540,6 +546,7 @@ acceptConfig.addEventListener("click", () => {
             "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path,
             "output_path": trainingAddConfigOutputPathInput.value,
             "checkpoint": trainingAddConfigCkptPathInput.value,
+            "hifigan_checkpoint": trainingAddConfigHiFiCkptPathInput.value,
 
             "num_workers": parseInt(trainingAddConfigWorkersInput.value),
             "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
@@ -559,6 +566,7 @@ acceptConfig.addEventListener("click", () => {
             "dataset_path": trainingAddConfigDatasetPathInput.value,
             "output_path": trainingAddConfigOutputPathInput.value,
             "checkpoint": trainingAddConfigCkptPathInput.value,
+            "hifigan_checkpoint": trainingAddConfigHiFiCkptPathInput.value,
 
             "num_workers": parseInt(trainingAddConfigWorkersInput.value),
             "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
