@@ -66,7 +66,6 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         trainer.running = False
         raise
     except RuntimeError as e:
-        trainer.logger.info(str(e))
         trainer.running = False
         try:
             del trainer.train_loader
@@ -75,9 +74,7 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             del trainer.generator
             del trainer.mpd
             del trainer.msd
-            # del trainer.criterion
             del trainer.trainset
-            # del trainer.optimizer
         except:
             pass
 
@@ -87,8 +84,10 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             trainer.logger.info("CUDA out of memory")
             trainer.print_and_log(f'============= Reducing batch size from {trainer.batch_size} to {trainer.batch_size-10}', save_to_file=trainer.dataset_output)
             trainer.print_and_log("TODO")
+            # return await handleTrainer()
             # bs -= 10
         elif trainer.END_OF_TRAINING:
+            trainer.logger.info("Finished training HiFi-GAN")
             trainer.print_and_log(f'Finished training HiFi-GAN\n', save_to_file=trainer.dataset_output)
             await trainer.websocket.send(f'Finished training HiFi-GAN\n')
 
@@ -97,6 +96,7 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             gc.collect()
             return "done"
         else:
+            trainer.logger.info("HiFi-GAN error")
             trainer.logger.info(str(e))
             raise
 
@@ -240,7 +240,7 @@ class HiFiTrainer(object):
 
 
 
-        self.target_delta = 0.0005
+        self.target_delta = 0.00025
         self.graphs_json["stages"]["5"]["target_delta"] = self.target_delta
 
         self.training_steps = 0
@@ -397,6 +397,7 @@ class HiFiTrainer(object):
     def pause (self, websocket=None):
         self.logger.info("pause")
         self.running = False
+        torch.cuda.empty_cache()
 
     def resume (self, websocket=None):
         self.logger.info("resume")
@@ -507,7 +508,7 @@ class HiFiTrainer(object):
             avg_losses_print = int(acc_epoch_deltas_avg20*100000)/100000
             avg_losses_print = f'| Avg loss % delta: {avg_losses_print} | Target: {self.target_delta}'
 
-        print_line = f'Epoch: {self.training_epoch+1} | It: {(self.training_steps+1)%len(self.train_loader)}/{len(self.train_loader)} ({self.training_steps+1}) | Mel loss: {mel_loss} | its/s: {its_p_s} {avg_losses_print}'
+        print_line = f'Stage 5 | Epoch: {self.training_epoch+1} | It: {(self.training_steps+1)%len(self.train_loader)}/{len(self.train_loader)} ({self.training_steps+1}) | Mel loss: {mel_loss} | its/s: {its_p_s} {avg_losses_print}'
         self.training_log_live_line = print_line
         self.print_and_log(save_to_file=self.dataset_output)
 
@@ -539,7 +540,7 @@ class HiFiTrainer(object):
             try:
                 output_path = "{}/hifi/g_{:08d}".format(self.dataset_output, self.training_steps)
                 self.save_checkpoint(output_path, {'generator': (self.generator.module if len(self.gpus)>1 else self.generator).state_dict()})
-                self.print_and_log(f'Epoch: {self.training_epoch} | It: {self.training_steps} | {output_path.split("/")[-1]} | Mel loss: {self.avg_loss_per_epoch[-1] / self.epoch_iter}', save_to_file=self.dataset_output)
+                self.print_and_log(f'Stage 5 |Epoch: {self.training_epoch} | It: {self.training_steps} | {output_path.split("/")[-1]} | Mel loss: {self.avg_loss_per_epoch[-1] / self.epoch_iter}', save_to_file=self.dataset_output)
 
                 output_path = "{}/hifi/do_{:08d}".format(self.dataset_output, self.training_steps)
                 self.ckpts_finetuned += 1
@@ -548,7 +549,8 @@ class HiFiTrainer(object):
                     'msd': (self.msd.module if len(self.gpus)>1 else self.msd).state_dict(),
                     'optim_g': self.optim_g.state_dict(), 'optim_d': self.optim_d.state_dict(), 'steps': self.training_steps,
                     'epoch': self.training_epoch,
-                    "avg_loss_per_epoch": self.avg_loss_per_epoch,
+                    # "avg_loss_per_epoch": self.avg_loss_per_epoch,
+                    "avg_loss_per_epoch": [],
                     "ckpts_finetuned": self.ckpts_finetuned
                 }
                 self.save_checkpoint(output_path, ckpt_data)
@@ -602,7 +604,7 @@ class HiFiTrainer(object):
             with open(f'{self.dataset_output}/graphs.json', "w+") as f:
                 f.write(json.dumps(self.graphs_json))
 
-            if acc_epoch_deltas_avg20 <= self.target_delta and len(acc_epoch_deltas)>=5:
+            if acc_epoch_deltas_avg20 <= self.target_delta and len(acc_epoch_deltas)>=10:
                 self.training_log_live_line = ""
                 if self.logger is not None:
                     self.logger.info("[HiFi Trainer] END_OF_TRAINING...")

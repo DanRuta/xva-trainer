@@ -388,6 +388,8 @@ class FastPitchTrainer(object):
 
 
         self.trainset = self.TTSDataset(dataset_path=self.dataset_input, audiopaths_and_text=self.dataset_input+"/metadata.csv", text_cleaners=text_cleaners, n_mel_channels=80, dm=DATA_MULT, pitch_mean=pitch_mean, pitch_std=pitch_std, training_stage=self.model.training_stage, p_arpabet=self.p_arpabet, max_wav_value=32768.0, sampling_rate=22050, filter_length=1024, hop_length=256, win_length=1024, mel_fmin=0, mel_fmax=8000, betabinomial_online_dir=None, pitch_online_dir=None, cmudict=self.cmudict, pitch_online_method="pyin")
+        self.print_and_log(self.trainset.summary_print_str, save_to_file=self.dataset_output)
+
         num_data_lines = self.trainset.actual_num_lines
         self.print_and_log(f'Workers: {self.workers}', save_to_file=self.dataset_output)
         distributed_run = False
@@ -658,6 +660,7 @@ class FastPitchTrainer(object):
     def pause (self, websocket=None):
         self.logger.info("pause")
         self.running = False
+        torch.cuda.empty_cache()
 
     # def resume (self, websocket=None):
     #     self.logger.info("xvatrain resume")
