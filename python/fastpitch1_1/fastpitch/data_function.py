@@ -215,7 +215,7 @@ class TTSDataset(torch.utils.data.Dataset):
         self.use_file_caching = use_file_caching
         self.training_stage = training_stage
         self.dataset_path = dataset_path
-        self.audiopaths_and_text, self.actual_num_lines = load_filepaths_and_text(
+        self.audiopaths_and_text, self.actual_num_lines, self.summary_print_str = load_filepaths_and_text(
             dataset_path, audiopaths_and_text,
             has_speakers=(n_speakers > 1), dm=self.dm)
         self.load_mel_from_disk = load_mel_from_disk

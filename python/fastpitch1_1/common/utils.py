@@ -139,6 +139,8 @@ def load_filepaths_and_text(dataset_path, fnames, has_speakers=False, split="|",
                 # if loops_done>0:
                 #     random.shuffle(lines)
             for line in lines:
+                if line.startswith("|"):
+                    continue
                 data = split_line(dataset_path, line)
                 if data is not None:
                     fpaths_and_text.append(data)
@@ -165,13 +167,14 @@ def load_filepaths_and_text(dataset_path, fnames, has_speakers=False, split="|",
         fpaths_and_text_total += fpaths_and_text
 
 
-    print(f'Composed items: {len(fpaths_and_text_total)} | Base number of data lines: {actual_num_lines} | Missing: {nope} | DM: {dm}')
+    summary_str = f'Composed items: {len(fpaths_and_text_total)} | Base number of data lines: {actual_num_lines} | Missing: {nope} | DM: {dm}'
+    print(summary_str)
 
     # print(fpaths_and_text[:5])
     # print("====")
     # print(fpaths_and_text[0])
     # dfgdf()
-    return fpaths_and_text_total, actual_num_lines
+    return fpaths_and_text_total, actual_num_lines, summary_str
 
 
 def stats_filename(dataset_path, filelist_path, feature_name):

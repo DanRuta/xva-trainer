@@ -164,6 +164,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
         except KeyboardInterrupt :
             raise
         except:
+            self.logger.info(f'file: {file}')
             self.logger.info(traceback.format_exc())
             pass
 
