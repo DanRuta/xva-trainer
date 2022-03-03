@@ -465,7 +465,7 @@ window.showConfigMenu = (startingData, di) => {
 
         "dataset_path": undefined,
         "output_path": undefined,
-        "checkpoint": "H:/xVA/FP_OUTPUT/sk_femaleeventoned/FastPitch_checkpoint_1760_85765.pt",
+        "checkpoint": undefined,
         "hifigan_checkpoint": undefined,
 
         "num_workers": 4, // TODO, app-level default settings
