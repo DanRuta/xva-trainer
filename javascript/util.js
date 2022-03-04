@@ -341,8 +341,8 @@ window.CSVToArray = CSVToArray
 
 
 window.getNextFileName = dataset => {
-    if (fs.existsSync(`${window.path}/datasets/${dataset}/wavs`)) {
-        const numFiles = fs.readdirSync(`${window.path}/datasets/${dataset}/wavs`).length
+    if (fs.existsSync(`${window.userSettings.datasetsPath}/${dataset}/wavs`)) {
+        const numFiles = fs.readdirSync(`${window.userSettings.datasetsPath}/${dataset}/wavs`).length
 
         let nameNumber = numFiles
         let nameValid = false
@@ -372,7 +372,7 @@ window.getNextFileName = dataset => {
         return `${nameNumber}`.padStart(6, "0")
 
     } else {
-        fs.mkdirSync(`${window.path}/datasets/${dataset}/wavs`)
+        fs.mkdirSync(`${window.userSettings.datasetsPath}/${dataset}/wavs`)
         return "0".padStart(6, "0")
     }
 
