@@ -1,5 +1,15 @@
 "use strict"
 
+const nodeDiskInfo = require("node-disk-info")
+try {
+    const disks = nodeDiskInfo.getDiskInfoSync()
+    for (const disk of disks) {
+        disk_drive_select.appendChild(createElem(`option#drive_${disk._mounted.split(":")[0].toLowerCase()}`, disk._mounted))
+    }
+} catch (e) {
+    console.log(e)
+}
+
 // https://www.chartjs.org/docs/latest/
 window.updateTrainingGraphValues = (allValues, chart) => {
     chart.data.datasets[0].data = allValues.map(pairs => pairs[1])
@@ -72,11 +82,34 @@ window.cpu_chart_object = initChart("cpu_chart", "CPU", "62,149,205")
 window.cuda_chart_object = initChart("cuda_chart", "CUDA", "62,149,205")
 window.ram_chart_object = undefined
 window.vram_chart_object = undefined
-
 window.disk_chart_object = initChart("disk_chart", "Disk", "140,200,130")
 
 
 
+// https://stackoverflow.com/questions/52822588/how-to-get-calculate-the-current-disk-activity-in-node-js-on-windows
+let diskTrackerProcess
+let diskTrackerCurrent = 0
+window.getDiskTimePercent = (driveLetter) => {
+
+    if (!diskTrackerProcess) {
+        diskTrackerProcess = exec(`typeperf.exe "\\LogicalDisk(${driveLetter})\\% Disk Time" -SC 50`);
+        diskTrackerProcess.stdout.on('data', function (data) {
+            const stdout = data.toString();
+            const lines = stdout.split('\r\n');
+            const values = lines[0].split(",");
+            const result = Math.round(values.pop().replace(/"/g, ''), 0);
+            if (!isNaN(result)) {
+                diskTrackerCurrent = result;
+            }
+        });
+        diskTrackerProcess.on('exit', function (code) {
+            diskTrackerProcess = null;
+        });
+        return diskTrackerCurrent;
+    } else {
+        return diskTrackerCurrent;
+    }
+}
 window.updateSystemGraphs = () => {
 
     const totalRam = window.totalmem()
@@ -86,8 +119,6 @@ window.updateSystemGraphs = () => {
     if (!window.ram_chart_object) {
         window.ram_chart_object = initChart("ram_chart", "RAM", "191,101,191", {boundsMax: totalRam/1024})
     }
-
-
 
     window.cpuUsage(cpuLoad => {
         window.smi((err, data) => {
@@ -110,9 +141,8 @@ window.updateSystemGraphs = () => {
                 window.vram_chart_object = initChart("vram_chart", "VRAM", "62,149,205", {boundsMax: parseInt(totalVRAM/1024)})
             }
 
-
+            const diskUsage = getDiskTimePercent(disk_drive_select.selectedOptions[0].innerText)
             let vramUsage = `${(usedVRAM/1000).toFixed(1)}/${(totalVRAM/1000).toFixed(1)} GB (${percent.toFixed(2)}%)`
-            // console.log(`RAM: ${parseInt(ramUsage)}GB/${parseInt(totalRam)}GB (${percentRAM.toFixed(2)}%) | CPU: ${(cpuLoad*100).toFixed(2)}% | GPU: ${computeLoad}% | VRAM: ${vramUsage}`)
 
 
             // CPU
@@ -143,10 +173,19 @@ window.updateSystemGraphs = () => {
             }
             vram_chart_object.data.datasets[0].label = `${vram_chart_object.data.datasets[0].label.split(" ")[0]} ${(usedVRAM/1024).toFixed(1)}/${(totalVRAM/1024).toFixed(1)} GB (${percent.toFixed(2)}%)`
 
+            // Disk
+            disk_chart_object.data.datasets[0].data.push(parseInt(diskUsage))
+            if (disk_chart_object.data.datasets[0].data.length>60) {
+                disk_chart_object.data.datasets[0].data.splice(0,1)
+            }
+            disk_chart_object.data.datasets[0].label = `${disk_chart_object.data.datasets[0].label.split(" ")[0]} (${disk_drive_select.selectedOptions[0].innerText}) ${(diskUsage).toFixed(2)}%`
+
+
             cpu_chart_object.update()
             ram_chart_object.update()
             vram_chart_object.update()
             cuda_chart_object.update()
+            disk_chart_object.update()
             window.updateSystemGraphs()
 
 
@@ -154,6 +193,17 @@ window.updateSystemGraphs = () => {
     })
 }
 window.updateSystemGraphs()
+disk_drive_select.addEventListener("change", () => {
+    for (let x=0; x<60; x++) {
+        disk_chart_object.data.datasets[0].data.push(0)
+        if (disk_chart_object.data.datasets[0].data.length>60) {
+            disk_chart_object.data.datasets[0].data.splice(0,1)
+        }
+        disk_chart_object.update()
+    }
+    disk_chart_object.data.datasets[0].label = `${disk_chart_object.data.datasets[0].label.split(" ")[0]} (${disk_drive_select.selectedOptions[0].innerText}) 0%`
+    disk_chart_object.update()
+})
 
 
 window.training_state = {
