@@ -303,6 +303,7 @@ window.refreshTrainingQueueList = () => {
 
                 // View this dataset in the text/graph logs
                 window.training_state.currentlyViewedDataset = dataset.dataset_path
+                window.training_state.trainingQueueItem = di
                 trainingStartBtn.disabled = false
                 training_title.innerHTML = `Training - ${nameBox.title}`
 
@@ -702,17 +703,33 @@ exportSubmitButton.addEventListener("click", () => {
         return window.errorModal("A HiFi-GAN model file was not found in the given checkpoints directory. Have you trained it yet?")
     }
 
-    // Copy over the resemblyzer embedding data, and export the .json metadata
-    const trainingJSON = JSON.parse(fs.readFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.json`, "utf8"))
-    const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
-    metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
-    fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON))
 
-    // Copy over the model files
-    fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.pt`)
-    fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)
+    window.spinnerModal("Exporting...")
+    doFetch(`http://localhost:8002/exportWav`, {
+        method: "Post",
+        body: JSON.stringify({
+            fp_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`,
+            hg_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`,
+            out_path: `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.wav`
+        })
+    }).then(r=>r.text()).then((res) => {
+        if (res.length) {
+            window.appLogger.log(res)
+            window.errorModal(res)
+        } else {
+            // Copy over the resemblyzer embedding data, and export the .json metadata
+            const trainingJSON = JSON.parse(fs.readFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.json`, "utf8"))
+            const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
+            metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
+            fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON))
 
-    window.createModal("error", "Model exported successfully").then(() => {
-        exportModelContainer.click()
+            // Copy over the model files
+            fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.pt`)
+            fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)
+
+            window.createModal("error", "Model exported successfully").then(() => {
+                exportModelContainer.click()
+            })
+        }
     })
 })

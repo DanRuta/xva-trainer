@@ -22,6 +22,8 @@ import contextlib
 # Still allow command-line use, from within this directory
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
+from torch.nn.utils.rnn import pad_sequence
+from scipy.io.wavfile import write
 
 
 if __name__ == '__main__':
@@ -31,7 +33,13 @@ if __name__ == '__main__':
 else:
     from python.fastpitch1_1.lamb import Lamb
 
-
+try:
+    sys.path.append(".")
+    from resources.app.python.fastpitch1_1.fastpitch.model import FastPitch
+    from resources.app.python.fastpitch1_1.common.text import text_to_sequence
+except:
+    from python.fastpitch1_1.fastpitch.model import FastPitch
+    from python.fastpitch1_1.common.text import text_to_sequence
 
 import torch.nn as nn
 # Continue allowing access to model attributes, when using DataParallel
@@ -129,8 +137,6 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
                 return await handleTrainer(models_manager, data, websocket, gpus)
         else:
             raise
-
-
 
 
 
@@ -521,7 +527,7 @@ class FastPitchTrainer(object):
                 self.graphs_json = f.read()
                 self.graphs_json = json.loads(self.graphs_json)
         else:
-            self.print_and_log("No graphs.json file found. Starting anew.")
+            self.print_and_log("No graphs.json file found. Starting anew.", save_to_file=dataset_output)
 
         self.logs_are_init = True
 
@@ -1087,6 +1093,70 @@ class FastPitchTrainer(object):
             self.model.training_stage = acc_model_stage
         torch.cuda.empty_cache()
 
+
+
+class FastPitch1_1(object):
+    def __init__(self, logger, PROD, device, models_manager):
+        super(FastPitch1_1, self).__init__()
+
+        self.logger = logger
+        self.PROD = PROD
+        self.models_manager = models_manager
+        self.device = device
+        self.ckpt_path = None
+
+        self.arpabet_dict = {}
+
+        torch.backends.cudnn.benchmark = True
+
+        self.init_model("english_basic")
+        self.isReady = True
+
+    def init_model (self, symbols_alphabet):
+        self.symbols_alphabet = symbols_alphabet
+        self.model = FastPitch()
+        self.model.eval()
+        self.model.device = self.device
+
+    def load_state_dict (self, ckpt_path, ckpt, n_speakers=1):
+
+        self.ckpt_path = ckpt_path
+
+        with open(ckpt_path.replace(".pt", ".json"), "r") as f:
+            data = json.load(f)
+            if "symbols_alphabet" in data.keys() and data["symbols_alphabet"]!=self.symbols_alphabet:
+                self.logger.info(f'Changing symbols_alphabet from {self.symbols_alphabet} to {data["symbols_alphabet"]}')
+                self.init_model(data["symbols_alphabet"])
+
+        if 'state_dict' in ckpt:
+            ckpt = ckpt['state_dict']
+
+        self.model.load_state_dict(ckpt, strict=False)
+        self.model = self.model.float()
+        self.model.eval()
+
+    def infer(self, plugin_manager, text, output, vocoder, speaker_i, pace=1.0, pitch_data=None, old_sequence=None, globalAmplitudeModifier=None):
+
+        sampling_rate = 22050
+        text = re.sub(r'[^a-zA-ZäöüÄÖÜß\s\(\)\[\]0-9\?\.\,\!\'\{\}]+', '', text)
+        text = text.replace("(", "").replace(")", "")
+        sequence = text_to_sequence(text, "english_basic", ['english_cleaners'])
+        text = torch.LongTensor(sequence)
+        text = pad_sequence([text], batch_first=True).to(self.models_manager.device)
+
+        with torch.no_grad():
+            mel, mel_lens, _, _, _ = self.model.infer(text, pace=pace)
+
+            y_g_hat = self.models_manager.models("infer_hifigan").model(mel)
+            audio = y_g_hat.squeeze()
+            audio = audio * 32768.0
+            audio = audio.cpu().numpy().astype('int16')
+            write(output, sampling_rate, audio)
+            del audio
+
+            del mel, mel_lens, _
+
+        return ""
 
 
 def sort_fp (x):

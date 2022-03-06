@@ -71,6 +71,38 @@ class AudioNormalizer(object):
         return self.normalize(data, websocket)
 
 
+    def normalize_sync(self, inPath, outputPath):
+        ffmpeg_normalize = FFmpegNormalize(
+                normalization_type="ebu",
+                target_level=-23.0,
+                print_stats=False,
+                loudness_range_target=7.0,
+                true_peak=-2.0,
+                offset=0.0,
+                dual_mono=False,
+                audio_codec=None,
+                audio_bitrate=None,
+                sample_rate=22050,
+                keep_original_audio=False,
+                pre_filter=None,
+                post_filter=None,
+                video_codec="copy",
+                video_disable=False,
+                subtitle_disable=False,
+                metadata_disable=False,
+                chapters_disable=False,
+                extra_input_options=[],
+                extra_output_options=[],
+                output_format=None,
+                dry_run=False,
+                progress=False,
+            )
+        try:
+            ffmpeg_normalize.add_media_file(inPath, outputPath)
+            ffmpeg_normalize.run_normalization()
+        except:
+            self.logger.info(traceback.format_exc())
+
     async def normalize(self, data, websocket):
 
         inPath, outputDirectory = data["inPath"], data["outputDirectory"]

@@ -80,7 +80,6 @@ class ModelsManager(object):
             if model_key=="fastpitch1_1":
                 from python.fastpitch1_1.xva_train import FastPitchTrainer
                 self.models_bank[model_key] = FastPitchTrainer(self.logger, self.PROD, self.device, self)
-
             if model_key=="hifigan":
                 from python.hifigan.model import HiFi_GAN
                 self.models_bank[model_key] = HiFi_GAN(self.logger, self.PROD, self.device, self)
@@ -107,7 +106,13 @@ class ModelsManager(object):
     def load_model (self, model_key, ckpt_path, **kwargs):
 
         if model_key not in self.models_bank.keys():
-            self.init_model(model_key)
+            # Do here, to avoid having to handle async init_model code in the HTTP server
+            if model_key=="infer_fastpitch1_1":
+                from python.fastpitch1_1.xva_train import FastPitch1_1
+                self.models_bank[model_key] = FastPitch1_1(self.logger, self.PROD, self.device, self)
+            if model_key=="infer_hifigan":
+                from python.hifigan.models import HiFi_GAN
+                self.models_bank[model_key] = HiFi_GAN(self.logger, self.PROD, self.device, self)
 
         if not os.path.exists(ckpt_path):
             return "ENOENT"

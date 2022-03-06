@@ -1,3 +1,6 @@
+import os
+import json
+
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
@@ -284,3 +287,38 @@ def generator_loss(disc_outputs):
 
     return loss, gen_losses
 
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super(AttrDict, self).__init__(*args, **kwargs)
+        self.__dict__ = self
+
+class HiFi_GAN(object):
+    def __init__(self, logger, PROD, device, models_manager, config_file=None):
+        super(HiFi_GAN, self).__init__()
+
+        self.logger = logger
+        self.PROD = PROD
+        self.models_manager = models_manager
+        self.device = device
+        self.ckpt_path = None
+
+        if config_file is None:
+            config_file = os.path.join(f'{"./resources/app" if self.PROD else "."}/python/hifigan/config_v1.json')
+
+        with open(config_file) as f:
+            data = f.read()
+        json_config = json.loads(data)
+        h = AttrDict(json_config)
+
+        self.model = Generator(h).to(self.device)
+        self.isReady = True
+
+
+    def load_state_dict (self, ckpt_path, sd):
+        self.ckpt_path = ckpt_path
+        self.model.load_state_dict(sd["generator"])
+
+    def set_device (self, device):
+        self.device = device
+        self.model = self.model.to(device)
+        self.model.device = device

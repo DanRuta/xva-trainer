@@ -56,23 +56,17 @@ except:
         from fastpitch.transformer import FFTransformer
 
 
-def regulate_len(durations, enc_out, pace: float = 1.0,
-                 mel_max_len: Optional[int] = None):
+def regulate_len(durations, enc_out, pace: float = 1.0, mel_max_len: Optional[int] = None):
     """If target=None, then predicted durations are applied"""
     dtype = enc_out.dtype
-    reps = durations.float() / pace
+    reps = durations.float() * pace
     reps = (reps + 0.5).long()
     dec_lens = reps.sum(dim=1)
 
-    # max_len = dec_lens.max()
-    max_len = mel_max_len
-    reps_cumsum = torch.cumsum(F.pad(reps, (1, 0, 0, 0), value=0.0),
-                               dim=1)[:, None, :]
+    max_len = dec_lens.max()
+    reps_cumsum = torch.cumsum(F.pad(reps, (1, 0, 0, 0), value=0.0), dim=1)[:, None, :]
     reps_cumsum = reps_cumsum.to(dtype)
 
-    # print(f'max_len, {max_len}')
-    # print(f'torch.arange(max_len), {torch.arange(max_len).shape}')
-    # print(f'torch.arange(max_len).to(enc_out.device), {torch.arange(max_len).to(enc_out.device).shape}')
     range_ = torch.arange(max_len).to(enc_out.device)[None, :, None]
     mult = ((reps_cumsum[:, :, :-1] <= range_) &
             (reps_cumsum[:, :, 1:] > range_))
@@ -96,7 +90,6 @@ def average_pitch(pitch, durs):
     dcs = durs_cums_starts[:, None, :].expand(bs, n_formants, l)
     dce = durs_cums_ends[:, None, :].expand(bs, n_formants, l)
 
-    # print(f'pitch_cums, {pitch_cums.shape}')
     pitch_sums = (torch.gather(pitch_cums, 2, dce)
                   - torch.gather(pitch_cums, 2, dcs)).float()
     pitch_nelems = (torch.gather(pitch_nonzero_cums, 2, dce)
@@ -421,9 +414,6 @@ class FastPitch(nn.Module):
             energy_tgt = None
 
         return enc_out, pitch_tgt, pitch_pred, energy_pred, energy_tgt
-
-
-
 
 
     def infer(self, inputs, pace=1.0, dur_tgt=None, pitch_tgt=None, energy_tgt=None, pitch_transform=None, max_duration=75, speaker=0):

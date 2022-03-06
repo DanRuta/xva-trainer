@@ -283,6 +283,24 @@ if __name__ == '__main__':
                     models_manager.set_device('cuda' if use_gpu else 'cpu')
                     req_response = "ready"
 
+                if self.path == "/exportWav":
+
+                    fp_ckpt = post_data["fp_ckpt"]
+                    hg_ckpt = post_data["hg_ckpt"]
+                    out_path = post_data["out_path"]
+                    out_path_intermediate = out_path.replace(".wav", "_temp.wav")
+
+                    models_manager.load_model("infer_fastpitch1_1", fp_ckpt)
+                    models_manager.load_model("infer_hifigan", hg_ckpt)
+
+                    req_response = models_manager.models("infer_fastpitch1_1").infer(None, "This is what my voice sounds like", out_path_intermediate, vocoder="infer_hifigan", speaker_i=None)
+
+                    from python.audio_norm.model import AudioNormalizer
+                    normalizer = AudioNormalizer(logger, PROD, models_manager.device, models_manager)
+                    normalizer.normalize_sync(out_path_intermediate, out_path)
+                    os.remove(out_path_intermediate)
+
+
                 if self.path == "/getAudioLengthOfDir":
 
                     directory = post_data["directory"]
@@ -315,6 +333,7 @@ if __name__ == '__main__':
         with open("./DEBUG_server_error.txt", "w+") as f:
             f.write(traceback.format_exc())
         logger.info(traceback.format_exc())
+
     try:
         logger.info("About to start websocket")
         _thread.start_new_thread(startWebSocket, ())
