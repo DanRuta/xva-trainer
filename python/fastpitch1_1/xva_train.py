@@ -285,11 +285,15 @@ class FastPitchTrainer(object):
                     fname = line.split("|")[0]
                     fname = f'{self.dataset_input}/wavs/{fname+(".wav" if not fname.endswith(".wav") else "")}'
                     if os.path.exists(fname):
-                        with contextlib.closing(wave.open(fname,'r')) as f:
-                            frames = f.getnframes()
-                            rate = f.getframerate()
-                            duration = frames / float(rate)
-                            dataset_file_lengths.append(duration)
+                        try:
+                            with contextlib.closing(wave.open(fname,'r')) as f:
+                                frames = f.getnframes()
+                                rate = f.getframerate()
+                                duration = frames / float(rate)
+                                dataset_file_lengths.append(duration)
+                        except:
+                            self.logger.info(f'Error opening file: {fname}')
+                            raise
         num_data_lines = len(dataset_file_lengths)
 
         if num_data_lines>1000:
