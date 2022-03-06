@@ -322,6 +322,9 @@ Object.keys(tools).forEach(toolName => {
 })
 toolsOpenInput.addEventListener("click", () => {
     // Until I finally upgrade Electron version, to gain access to the function that implicitly does this
+    if (!fs.existsSync(window.tools_state.inputDirectory)) {
+        fs.mkdirSync(window.tools_state.inputDirectory)
+    }
     const files = fs.readdirSync(window.tools_state.inputDirectory)
     if (files.length) {
         shell.showItemInFolder(`${window.tools_state.inputDirectory}/${files[0]}`)
@@ -331,6 +334,9 @@ toolsOpenInput.addEventListener("click", () => {
 })
 toolsOpenInput2.addEventListener("click", () => {
     if (window.tools_state.inputDirectory2) {
+        if (!fs.existsSync(window.tools_state.inputDirectory2)) {
+            fs.mkdirSync(window.tools_state.inputDirectory2)
+        }
         // Until I finally upgrade Electron version, to gain access to the function that implicitly does this
         const files = fs.readdirSync(window.tools_state.inputDirectory2)
         if (files.length) {
@@ -342,6 +348,9 @@ toolsOpenInput2.addEventListener("click", () => {
 })
 toolsOpenOutput.addEventListener("click", () => {
     // Until I finally upgrade Electron version, to gain access to the function that implicitly does this
+    if (!fs.existsSync(window.tools_state.outputDirectory)) {
+        fs.mkdirSync(window.tools_state.outputDirectory)
+    }
     const files = fs.readdirSync(window.tools_state.outputDirectory)
     if (files.length) {
         shell.showItemInFolder(`${window.tools_state.outputDirectory}/${files[0]}`)
