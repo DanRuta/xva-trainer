@@ -285,7 +285,7 @@ window.tools_state = {
 }
 
 
-Object.keys(tools).forEach(toolName => {
+Object.keys(tools).sort().forEach(toolName => {
     const button = createElem("button", toolName)
     button.addEventListener("click", () => {
 
