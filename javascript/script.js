@@ -1248,6 +1248,11 @@ datasetMeta_gender_other.addEventListener("change", () => {
 
 
 
+ccLink.addEventListener("click", () => {
+    shell.openExternal("https://creativecommons.org/licenses/")
+})
+
+
 // Settings
 // ========
 window.setupModal(settingsCog, settingsContainer)
