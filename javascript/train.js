@@ -574,50 +574,83 @@ acceptConfig.addEventListener("click", () => {
         return window.errorModal("Please enter how many epochs to train for, between outputting checkpoints", queueItemConfigModalContainer)
     }
 
-    queueItemConfigModalContainer.style.display = "none"
+    const finishUp = () => {
+        queueItemConfigModalContainer.style.display = "none"
 
-    // TODO
-    if (configAnExistingItem) {
+        // TODO
+        if (configAnExistingItem) {
 
-        const queueIndex = window.training_state.currentlyConfiguringDatasetI
+            const queueIndex = window.training_state.currentlyConfiguringDatasetI
 
-        const configData = {
-            "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path,
-            "output_path": trainingAddConfigOutputPathInput.value,
-            "checkpoint": trainingAddConfigCkptPathInput.value,
-            "hifigan_checkpoint": trainingAddConfigHiFiCkptPathInput.value,
+            const configData = {
+                "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path,
+                "output_path": trainingAddConfigOutputPathInput.value,
+                "checkpoint": fp_ckpt,
+                "hifigan_checkpoint": hg_ckpt,
 
-            "num_workers": parseInt(trainingAddConfigWorkersInput.value),
-            "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
-            "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
-            "force_stage": trainingAddConfigDoForceStageCkbx.checked ? trainingAddConfigForceStageNumberSelect.value : undefined
+                "num_workers": parseInt(trainingAddConfigWorkersInput.value),
+                "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
+                "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
+                "force_stage": trainingAddConfigDoForceStageCkbx.checked ? trainingAddConfigForceStageNumberSelect.value : undefined
+            }
+
+            configData.status = window.training_state.datasetsQueue[queueIndex].status
+
+            window.training_state.datasetsQueue[queueIndex] = configData
+
+        } else {
+
+            const configData = {
+                "status": "Ready",
+
+                "dataset_path": trainingAddConfigDatasetPathInput.value,
+                "output_path": trainingAddConfigOutputPathInput.value,
+                "checkpoint": fp_ckpt,
+                "hifigan_checkpoint": hg_ckpt,
+
+                "num_workers": parseInt(trainingAddConfigWorkersInput.value),
+                "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
+                "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
+                "force_stage": trainingAddConfigDoForceStageCkbx.checked ? trainingAddConfigForceStageNumberSelect.value : undefined
+            }
+
+            window.training_state.datasetsQueue.push(configData)
         }
 
-        configData.status = window.training_state.datasetsQueue[queueIndex].status
-
-        window.training_state.datasetsQueue[queueIndex] = configData
-
-    } else {
-
-        const configData = {
-            "status": "Ready",
-
-            "dataset_path": trainingAddConfigDatasetPathInput.value,
-            "output_path": trainingAddConfigOutputPathInput.value,
-            "checkpoint": trainingAddConfigCkptPathInput.value,
-            "hifigan_checkpoint": trainingAddConfigHiFiCkptPathInput.value,
-
-            "num_workers": parseInt(trainingAddConfigWorkersInput.value),
-            "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
-            "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
-            "force_stage": trainingAddConfigDoForceStageCkbx.checked ? trainingAddConfigForceStageNumberSelect.value : undefined
-        }
-
-        window.training_state.datasetsQueue.push(configData)
+        window.saveTrainingQueueJSON()
+        window.refreshTrainingQueueList()
     }
 
-    window.saveTrainingQueueJSON()
-    window.refreshTrainingQueueList()
+    const fp_ckpt = trainingAddConfigCkptPathInput.value.trim()
+    const hg_ckpt = trainingAddConfigHiFiCkptPathInput.value.trim()
+
+    if (fp_ckpt!="[male]" && fp_ckpt!="[female]" && !fs.existsSync(fp_ckpt)) {
+        window.confirmModal(`A FastPitch1.1 checkpoint file was not found at the following file/folder location. Continue regardless?<br>${fp_ckpt}`).then(resp => {
+            if (resp) {
+                setTimeout(() => {
+                    if (hg_ckpt!="[male]" && hg_ckpt!="[female]" && !fs.existsSync(hg_ckpt)) {
+                        window.confirmModal(`A HiFi-GAN checkpoint file was not found at the following file/folder location. Continue regardless?<br>${hg_ckpt}`).then(resp2 => {
+                            if (resp2) {
+                                finishUp()
+                            }
+                        })
+                    } else {
+                        finishUp()
+                    }
+                }, 500)
+            }
+        })
+    } else {
+        if (hg_ckpt!="[male]" && hg_ckpt!="[female]" && !fs.existsSync(hg_ckpt)) {
+            window.confirmModal(`A HiFi-GAN checkpoint file was not found at the following file/folder location. Continue regardless?<br>${hg_ckpt}`).then(resp2 => {
+                if (resp2) {
+                    finishUp()
+                }
+            })
+        } else {
+            finishUp()
+        }
+    }
 })
 
 

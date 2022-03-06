@@ -77,17 +77,23 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
                 if len(ckpts):
                     ckpts = sorted(ckpts, key=sort_fp)
                     final_ckpt_fname = f'{data["output_path"]}/{ckpts[-1]}'
-            ckpt_is_dir = os.path.isdir(ckpt_fname)
-            if final_ckpt_fname is None and ckpt_is_dir:
-                ckpts = os.listdir(f'{ckpt_fname}')
-                ckpts = [ckpt for ckpt in ckpts if ckpt.startswith("FastPitch_checkpoint_")]
 
-                if len(ckpts):
-                    ckpts = sorted(ckpts, key=sort_fp)
-                    final_ckpt_fname = f'{ckpt_fname}/{ckpts[-1]}'
+            if ckpt_fname=="[male]":
+                final_ckpt_fname = trainer.pretrained_ckpt_male
+            elif ckpt_fname=="[female]":
+                final_ckpt_fname = trainer.pretrained_ckpt_female
+            else:
+                ckpt_is_dir = os.path.isdir(ckpt_fname)
+                if final_ckpt_fname is None and ckpt_is_dir:
+                    ckpts = os.listdir(f'{ckpt_fname}')
+                    ckpts = [ckpt for ckpt in ckpts if ckpt.startswith("FastPitch_checkpoint_")]
 
-            if final_ckpt_fname is None:
-                final_ckpt_fname = ckpt_fname
+                    if len(ckpts):
+                        ckpts = sorted(ckpts, key=sort_fp)
+                        final_ckpt_fname = f'{ckpt_fname}/{ckpts[-1]}'
+
+                if final_ckpt_fname is None:
+                    final_ckpt_fname = ckpt_fname
 
         data["checkpoint"] = final_ckpt_fname
         # ======== Get the checkpoint END
@@ -177,6 +183,9 @@ class FastPitchTrainer(object):
         self.local_rank = os.getenv('LOCAL_RANK', 0)
         self.cmudict_path = f'{"./resources/app" if self.PROD else "."}/python/fastpitch1_1/cmudict/cmudict-0.7b'
         self.gpus = gpus
+
+        self.pretrained_ckpt_male = f'{"./resources/app" if self.PROD else "."}/python/fastpitch1_1/pretrained_models/f4_nate_FastPitch_checkpoint_5760_67000.pt'
+        self.pretrained_ckpt_female = f'{"./resources/app" if self.PROD else "."}/python/fastpitch1_1/pretrained_models/f4_nora_FastPitch_checkpoint_4520_65550.pt'
 
 
         self.JUST_FINISHED_STAGE = False
