@@ -284,23 +284,25 @@ window.refreshDatasets()
 
 // Recording panel functionality
 // =============================
+window.clearRecordFocus = ri => {
+    batchRecordsContainer.children[ri].style.background = "rgb(75,75,75)"
+    batchRecordsContainer.children[ri].style.color = "white"
+    Array.from(batchRecordsContainer.children[ri].children).forEach(c => {
+        c.style.color = "white"
+    })
+}
 window.setRecordFocus = ri => {
     if (window.appState.recordFocus!=undefined) {
-        batchRecordsContainer.children[window.appState.recordFocus].style.background = "rgb(75,75,75)"
-        batchRecordsContainer.children[window.appState.recordFocus].style.color = "white"
-        Array.from(batchRecordsContainer.children[window.appState.recordFocus].children).forEach(c => {
-            c.style.color = "white"
-        })
+        window.clearRecordFocus(window.appState.recordFocus)
     }
 
     if (ri!=undefined) {
-        batchRecordsContainer.children[ri]
-        batchRecordsContainer.children[ri].style.background = "rgb(255,255,255)"
-        batchRecordsContainer.children[ri].style.color = "black"
-        Array.from(batchRecordsContainer.children[ri].children).forEach(c => {
+        batchRecordsContainer.children[ri%window.userSettings.paginationSize]
+        batchRecordsContainer.children[ri%window.userSettings.paginationSize].style.background = "rgb(255,255,255)"
+        batchRecordsContainer.children[ri%window.userSettings.paginationSize].style.color = "black"
+        Array.from(batchRecordsContainer.children[ri%window.userSettings.paginationSize].children).forEach(c => {
             c.style.color = "black"
         })
-
         textInput.value = window.datasets[window.appState.currentDataset].metadata[ri][0].text
         outFileNameInput.value = window.datasets[window.appState.currentDataset].metadata[ri][0].fileName
     } else {
@@ -314,7 +316,7 @@ right.addEventListener("click", event => {
         ["row", "rowItem"].includes(event.target.className))  {
         return
     }
-    if (window.appState.currentDataset && window.appState.recordFocus!=undefined && window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][0].text!=textInput.value) {
+    if (window.appState.currentDataset && window.appState.recordFocus!=undefined && window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][0].text.trim().toLowerCase().replace(/\n/, "")!=textInput.value.trim().toLowerCase().replace(/\n/, "")) {
         window.confirmModal("The transcript for this line has changed discard changes?").then(resp => {
             if (resp) {
                 setRecordFocus()
@@ -651,7 +653,6 @@ const uploadBatchCSVs = async (eType, event) => {
             }
 
             const records = await readFile(file)
-            console.log("records", records)
             records.forEach(item => {
                 dataLines.push(item)
             })
@@ -665,7 +666,6 @@ const uploadBatchCSVs = async (eType, event) => {
 
 
         if (cleanedData.length) {
-            console.log("cleanedData", cleanedData)
             populateRecordsList(window.appState.currentDataset, cleanedData, true)
             refreshRecordsList(window.appState.currentDataset)
             saveDatasetToFile(window.appState.currentDataset)
@@ -1053,18 +1053,23 @@ if (fs.existsSync(`${window.path}/recorded_noise.wav`)) {
 paginationPrev.addEventListener("click", () => {
     pageNum.value = Math.max(1, parseInt(pageNum.value)-1)
     window.appState.paginationIndex = pageNum.value-1
+    window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    window.appState.recordFocus = undefined
     refreshRecordsList(window.appState.currentDataset)
 })
 paginationNext.addEventListener("click", () => {
     const numPages = Math.ceil(window.datasets[window.appState.currentDataset].metadata.length/window.userSettings.paginationSize)
-    console.log("numPages", numPages)
     pageNum.value = Math.min(parseInt(pageNum.value)+1, numPages)
+    window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    window.appState.recordFocus = undefined
     window.appState.paginationIndex = pageNum.value-1
     refreshRecordsList(window.appState.currentDataset)
 })
 pageNum.addEventListener("change", () => {
     const numPages = Math.ceil(window.datasets[window.appState.currentDataset].metadata.length/window.userSettings.paginationSize)
     pageNum.value = Math.max(1, Math.min(parseInt(pageNum.value), numPages))
+    window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    window.appState.recordFocus = undefined
     window.appState.paginationIndex = pageNum.value-1
     refreshRecordsList(window.appState.currentDataset)
 })
@@ -1073,6 +1078,8 @@ setting_paginationSize.addEventListener("change", () => {
     pageNum.value = Math.max(1, Math.min(parseInt(pageNum.value), numPages))
     window.appState.paginationIndex = pageNum.value-1
     ofTotalPages.innerHTML = `of ${numPages}`
+    window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    window.appState.recordFocus = undefined
 
     refreshRecordsList(window.appState.currentDataset)
 })
