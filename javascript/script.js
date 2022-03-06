@@ -1263,6 +1263,32 @@ window.setupModal(settingsCog, settingsContainer)
 window.setupModal(toolsIcon, toolsContainer)
 // ========
 
+// Info
+// ====
+window.setupModal(infoIcon, infoContainer)
+discordLink.addEventListener("click", () => {
+    shell.openExternal("https://discord.gg/nv7c6E2TzV")
+})
+youtubeLink.addEventListener("click", () => {
+    shell.openExternal("https://www.youtube.com/watch?v=W-9SFoNuTtM")
+})
+
+
+// ====
+
+// Patreon
+// =======
+window.setupModal(patreonIcon, patreonContainer, () => {
+    const data = fs.readFileSync(`${path}/patreon.txt`, "utf8")
+    const names = new Set()
+    data.split("\r\n").forEach(name => names.add(name))
+
+    let content = ``
+    creditsList.innerHTML = ""
+    names.forEach(name => content += `<br>${name}`)
+    creditsList.innerHTML = content
+})
+
 // Training
 // ========
 window.setupModal(btn_trainmodel, trainContainer, () => {

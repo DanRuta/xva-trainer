@@ -318,7 +318,7 @@ a {
  }
 
 
- #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #exportModelContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #checkTextQualityContainer {
+ #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #exportModelContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #checkTextQualityContainer, #patreonContainer, #infoContainer {
      display: flex;
      justify-content: center;
      align-items: center;
@@ -376,7 +376,7 @@ a {
      width: 25vw;
      text-align: center;
  }
- #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #exportModelContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #checkTextQualityContainer > .modal {
+ #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #exportModelContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #checkTextQualityContainer > .modal, #patreonContainer > .modal, #infoContainer > .modal {
      height: 65vh;
      width: 45vw;
      min-height: 500px;
@@ -718,21 +718,28 @@ a {
      width: 20px;
  }
 
- #settingsCog, #toolsIcon, #trainButton {
-     display: flex;
-     position: fixed;
-     z-index: 1000;
-     width: 50px;
-     top: 35px;
-     right: 0px;
- }
- #toolsIcon {
-    right: 35px;
+#settingsCog, #toolsIcon, #trainButton, #patreonIcon, #infoIcon {
+    display: flex;
+    position: fixed;
+    cursor: pointer;
+    z-index: 1000;
+    width: 50px;
     top: 35px;
- }
- #trainButton {
-    right: 50px;
- }
+    right: 0px;
+}
+#patreonIcon {
+    right: 25px;
+}
+#infoIcon {
+    right: 75px;
+}
+#toolsIcon {
+    right: 106px;
+    top: 37px;
+}
+#trainButton {
+    right: 120px;
+}
 /* #updatesIcon {
     right: 100px;
     top: 38px;
