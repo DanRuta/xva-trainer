@@ -350,10 +350,10 @@ btn_save.addEventListener("click", () => {
                 fs.renameSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${oldFileName}`, `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${newFileName}`)
             }
 
-            window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][0].text = textInput.value.replace(/\|/g,"")
+            window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][0].text = textInput.value.replace(/\|/g,"").replace(/\n/g,"").replace(/\r/g,"").trim()
             window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][0].fileName = outFileNameInput.value.replace(".wav","")+".wav"
             window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][1].children[2].innerHTML = outFileNameInput.value.replace(".wav","")+".wav"
-            window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][1].children[3].innerHTML = textInput.value.replace(/\|/g,"")
+            window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][1].children[3].innerHTML = textInput.value.replace(/\|/g,"").replace(/\n/g,"").replace(/\r/g,"").trim()
 
             window.saveDatasetToFile(window.appState.currentDataset)
             setRecordFocus()
