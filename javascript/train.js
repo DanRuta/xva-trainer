@@ -220,15 +220,7 @@ window.training_state = {
 
 }
 
-// Load training batch queue file
-try {
-    fs.readFile(`${window.path}/training_queue.json`, "utf8", (err, data) => {
-        if (data) {
-            window.training_state.datasetsQueue = JSON.parse(data)
-            window.refreshTrainingQueueList()
-        }
-    })
-} catch (e) {}
+
 
 window.saveTrainingQueueJSON = () => {
     // Copy over everything except the DOM element references
@@ -329,6 +321,27 @@ window.refreshTrainingQueueList = () => {
             window.showConfigMenu(window.training_state.datasetsQueue[di], di)
         })
     })
+}
+
+
+// Load training batch queue file
+try {
+    if (fs.existsSync(`${window.path}/training_queue.json`)) {
+        fs.readFile(`${window.path}/training_queue.json`, "utf8", (err, data) => {
+            if (data) {
+                window.training_state.datasetsQueue = JSON.parse(data)
+                window.refreshTrainingQueueList()
+                window.saveTrainingQueueJSON()
+            }
+        })
+    } else {
+        window.training_state.datasetsQueue = []
+        window.refreshTrainingQueueList()
+        window.saveTrainingQueueJSON()
+        console.log("new file")
+    }
+} catch (e) {
+    console.log(e)
 }
 
 

@@ -285,15 +285,17 @@ window.refreshDatasets()
 // Recording panel functionality
 // =============================
 window.clearRecordFocus = ri => {
-    batchRecordsContainer.children[ri].style.background = "rgb(75,75,75)"
-    batchRecordsContainer.children[ri].style.color = "white"
-    Array.from(batchRecordsContainer.children[ri].children).forEach(c => {
-        c.style.color = "white"
-    })
+    if (ri!=undefined) {
+        batchRecordsContainer.children[ri].style.background = "rgb(75,75,75)"
+        batchRecordsContainer.children[ri].style.color = "white"
+        Array.from(batchRecordsContainer.children[ri].children).forEach(c => {
+            c.style.color = "white"
+        })
+    }
 }
 window.setRecordFocus = ri => {
     if (window.appState.recordFocus!=undefined) {
-        window.clearRecordFocus(window.appState.recordFocus)
+        window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
     }
 
     if (ri!=undefined) {
@@ -319,11 +321,13 @@ right.addEventListener("click", event => {
     if (window.appState.currentDataset && window.appState.recordFocus!=undefined && window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][0].text.trim().toLowerCase().replace(/\n/, "")!=textInput.value.trim().toLowerCase().replace(/\n/, "")) {
         window.confirmModal("The transcript for this line has changed discard changes?").then(resp => {
             if (resp) {
-                setRecordFocus()
+                clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
             }
         })
     } else {
-        setRecordFocus()
+        if (window.appState.recordFocus!=undefined) {
+            clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+        }
     }
 })
 // =============================
@@ -1053,14 +1057,18 @@ if (fs.existsSync(`${window.path}/recorded_noise.wav`)) {
 paginationPrev.addEventListener("click", () => {
     pageNum.value = Math.max(1, parseInt(pageNum.value)-1)
     window.appState.paginationIndex = pageNum.value-1
-    window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    if (window.appState.recordFocus!=undefined) {
+        window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    }
     window.appState.recordFocus = undefined
     refreshRecordsList(window.appState.currentDataset)
 })
 paginationNext.addEventListener("click", () => {
     const numPages = Math.ceil(window.datasets[window.appState.currentDataset].metadata.length/window.userSettings.paginationSize)
     pageNum.value = Math.min(parseInt(pageNum.value)+1, numPages)
-    window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    if (window.appState.recordFocus!=undefined) {
+        window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    }
     window.appState.recordFocus = undefined
     window.appState.paginationIndex = pageNum.value-1
     refreshRecordsList(window.appState.currentDataset)
@@ -1068,7 +1076,9 @@ paginationNext.addEventListener("click", () => {
 pageNum.addEventListener("change", () => {
     const numPages = Math.ceil(window.datasets[window.appState.currentDataset].metadata.length/window.userSettings.paginationSize)
     pageNum.value = Math.max(1, Math.min(parseInt(pageNum.value), numPages))
-    window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    if (window.appState.recordFocus!=undefined) {
+        window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    }
     window.appState.recordFocus = undefined
     window.appState.paginationIndex = pageNum.value-1
     refreshRecordsList(window.appState.currentDataset)
@@ -1078,7 +1088,9 @@ setting_paginationSize.addEventListener("change", () => {
     pageNum.value = Math.max(1, Math.min(parseInt(pageNum.value), numPages))
     window.appState.paginationIndex = pageNum.value-1
     ofTotalPages.innerHTML = `of ${numPages}`
-    window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    if (window.appState.recordFocus!=undefined) {
+        window.clearRecordFocus(window.appState.recordFocus%window.userSettings.paginationSize)
+    }
     window.appState.recordFocus = undefined
 
     refreshRecordsList(window.appState.currentDataset)
