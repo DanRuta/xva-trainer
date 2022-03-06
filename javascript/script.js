@@ -314,7 +314,15 @@ right.addEventListener("click", event => {
         ["row", "rowItem"].includes(event.target.className))  {
         return
     }
-    setRecordFocus()
+    if (window.appState.currentDataset && window.appState.recordFocus!=undefined && window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][0].text!=textInput.value) {
+        window.confirmModal("The transcript for this line has changed discard changes?").then(resp => {
+            if (resp) {
+                setRecordFocus()
+            }
+        })
+    } else {
+        setRecordFocus()
+    }
 })
 // =============================
 
