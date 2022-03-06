@@ -212,20 +212,10 @@ window.training_state = {
     stage_viewed: 1,
     dirs_watching: [],
     datasetsQueue: [
-        {
-            voice_name: "MaleEvenToned",
-            dataset_path: "H:/xVA/FP_INPUT/sk_maleeventoned",
-            output_path: "H:/xVA/FP_OUTPUT/sk_maleeventoned",
-            batch_size: 32,
-            num_workers: 24,
-            epochs_per_checkpoint: 5,
-            force_stage: undefined,
-            status: "Ready"
-        }
     ],
     trainingQueueItem: 0,
     websocketDynamicLogLine: "",
-    currentlyViewedDataset: "H:/xVA/FP_INPUT/sk_maleeventoned",
+    currentlyViewedDataset: undefined,
     selectedQueueItem: undefined,
 
 }
@@ -543,7 +533,7 @@ window.showConfigMenu = (startingData, di) => {
 
     trainingAddConfigDatasetPathInput.value = configData.dataset_path || ""
     trainingAddConfigOutputPathInput.value = configData.output_path || ""
-    trainingAddConfigCkptPathInput.value = configData.checkpoint
+    trainingAddConfigCkptPathInput.value = configData.checkpoint || ""
     trainingAddConfigHiFiCkptPathInput.value = configData.hifigan_checkpoint || ""
 
     trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
