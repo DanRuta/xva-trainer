@@ -445,6 +445,9 @@ class FastPitchTrainer(object):
         self.dataloader_iterator = iter(self.train_loader)
         self.start_new_epoch()
 
+        if self.websocket:
+            await self.websocket.send(f'Set stage to: {self.model.training_stage} ')
+
         self.is_init = True
 
 
