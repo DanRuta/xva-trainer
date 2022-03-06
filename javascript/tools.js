@@ -364,6 +364,11 @@ toolsRunTool.addEventListener("click", () => {
     window.tools_state.taskFiles = []
     window.tools_state.progressElem.innerHTML = ""
 
+    window.tools_state.taskFiles = fs.readdirSync(window.tools_state.inputDirectory)
+    if (!window.tools_state.taskFiles.length) {
+        return window.errorModal(`There are no files in the tool's input directory: <br>${window.tools_state.inputDirectory}`)
+    }
+
     if (window.tools_state.spinnerElem) {
         window.tools_state.spinnerElem.style.display = "inline-block"
     }
@@ -372,7 +377,6 @@ toolsRunTool.addEventListener("click", () => {
     toolsList.querySelectorAll("button").forEach(button => button.disabled = true)
     window.deleteFolderRecursive(window.tools_state.outputDirectory, true)
 
-    window.tools_state.taskFiles = fs.readdirSync(window.tools_state.inputDirectory)
 
     if (window.tools_state.isMultiProcessed) {
         if (window.tools_state.inputFileType) {
