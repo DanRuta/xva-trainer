@@ -379,6 +379,9 @@ toolsRunTool.addEventListener("click", () => {
             window.tools_state.taskFiles = window.tools_state.taskFiles.filter(f => f.endsWith(window.tools_state.inputFileType))
         }
         // window.tools_state.inputFileType = "folder"
+        if (!fs.existsSync(window.tools_state.outputDirectory)) {
+            fs.mkdirSync(window.tools_state.outputDirectory)
+        }
         updateMPProgress()
 
         const toolSettings = window.tools_state.toolSettings[window.tools_state.taskId] || {}

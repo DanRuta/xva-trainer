@@ -52,13 +52,11 @@ class AudioFormatter(object):
 
         outputPath = f'{outputDirectory}/{".".join(inPath.split("/")[-1].split(".")[:-1])}.wav'
 
-        self.logger.info(f'format task')
-
         useMP = data["toolSettings"]["useMP"] if "useMP" in data["toolSettings"].keys() else False
         formatting_hz = data["toolSettings"]["formatting_hz"] if "formatting_hz" in data["toolSettings"].keys() else "22050"
         formatting_hz = int(formatting_hz)
         # processes = data["toolSettings"]["mpProcesses"]
-        processes = max(1, mp.cpu_count()-1) # TODO
+        processes = max(1, int(mp.cpu_count()/2)-5) # TODO, figure out why more processes break the websocket
 
         # TODO, make this an checkbox toggle
         # also TODO, need to add checkbox toggle for not deleting the output director first, before kicking off the tool
@@ -114,9 +112,6 @@ class AudioFormatter(object):
                 if websocket is not None:
                     await websocket.send(json.dumps({"key": "tasks_error", "data": traceback.format_exc()}))
 
-
-
-
-        if websocket is not None:
-            await websocket.send(json.dumps({"key": "tasks_next"}))
+            if websocket is not None:
+                await websocket.send(json.dumps({"key": "tasks_next"}))
 

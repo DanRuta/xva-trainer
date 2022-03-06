@@ -81,7 +81,7 @@ class SilenceCutter(object):
 
         workItems = [[f'{inputDirectory}/{file_name}', f'{outputDirectory}/{file_name}'] for file_name in sorted(os.listdir(inputDirectory))]
 
-        workers = max(1, mp.cpu_count()-1)
+        workers = max(1, int(mp.cpu_count()/2)-5) # TODO
         workers = min(len(workItems), workers)
         self.logger.info("[mp silence_cutter] workers: "+str(workers))
 

@@ -110,7 +110,7 @@ class AudioNormalizer(object):
         normalization_hz = data["toolSettings"]["normalization_hz"] if "normalization_hz" in data["toolSettings"].keys() else "22050"
         normalization_hz = int(normalization_hz)
         # processes = data["toolSettings"]["mpProcesses"]
-        processes = max(1, mp.cpu_count()-1) # TODO
+        processes = max(1, int(mp.cpu_count()/2)-5) # TODO
 
         if useMP:
 
@@ -132,7 +132,6 @@ class AudioNormalizer(object):
             results = pool.map(normalizeTask, workItems)
             pool.close()
             pool.join()
-            self.logger.info("Finished mp job")
 
             errs = [items for items in results if items is not None]
             if len(errs):
