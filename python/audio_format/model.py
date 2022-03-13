@@ -9,13 +9,13 @@ import ffmpeg
 import multiprocessing as mp
 
 def formatTask (data):
-    [inPath, outPath, formatting_hz] = data
+    [inPath, outPath, formatting_hz, ffmpeg_path] = data
 
     try:
         stream = ffmpeg.input(inPath)
         ffmpeg_options = {"ar": formatting_hz, "ac": 1} # 22050Hz mono
         stream = ffmpeg.output(stream, outPath, **ffmpeg_options)
-        out, err = (ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, overwrite_output=True))
+        out, err = (ffmpeg.run(stream, cmd=ffmpeg_path, capture_stdout=True, capture_stderr=True, overwrite_output=True))
     except ffmpeg.Error as e:
         return "ffmpeg err: "+ e.stderr.decode('utf8')
     except:
@@ -69,11 +69,11 @@ class AudioFormatter(object):
             input_paths = sorted(os.listdir(inPath))
             output_paths = [f'{outputDirectory}/{".".join(fpath.split(".")[:-1])+".wav"}' for fpath in input_paths]
             input_paths = [f'{inPath}/{fpath}' for fpath in input_paths]
-
+            ffmpeg_path = f'{"./resources/app" if self.PROD else "."}/python/ffmpeg.exe'
 
             workItems = []
             for ip, path in enumerate(input_paths):
-                workItems.append([path, output_paths[ip], formatting_hz])
+                workItems.append([path, output_paths[ip], formatting_hz, ffmpeg_path])
 
             workers = processes if processes>0 else max(1, mp.cpu_count()-1)
             workers = min(len(workItems), workers)
@@ -98,8 +98,9 @@ class AudioFormatter(object):
                 ffmpeg_options = {"ar": formatting_hz, "ac": 1} # 22050Hz mono
 
                 stream = ffmpeg.output(stream, outputPath, **ffmpeg_options)
+                ffmpeg_path = f'{"./resources/app" if self.PROD else "."}/python/ffmpeg.exe'
 
-                out, err = (ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, overwrite_output=True))
+                out, err = (ffmpeg.run(stream, cmd=ffmpeg_path, capture_stdout=True, capture_stderr=True, overwrite_output=True))
 
             except ffmpeg.Error as e:
                 self.logger.info("ffmpeg err: "+ e.stderr.decode('utf8'))
