@@ -166,7 +166,7 @@ let refreshTimer
 let refreshButton
 let refreshFn = () => {
     if (refreshButton) {
-        if (!window.appState.skipRefreshing) {
+        if (!window.appState.skipRefreshing && trainContainer.style.display=="none") {
             refreshButton.click()
         }
         window.appState.skipRefreshing = false
@@ -255,6 +255,10 @@ window.refreshDatasets = () => {
 
             })
             buttons.push(button)
+
+            if (!fs.existsSync(`${window.userSettings.datasetsPath}/${dataset}`)) {
+                fs.mkdirSync(`${window.userSettings.datasetsPath}/${dataset}`)
+            }
 
             if (!Object.keys(window.watchedModelsDirs).includes(`${window.userSettings.datasetsPath}/${dataset}`)) {
                 window.watchedModelsDirs[`${window.userSettings.datasetsPath}/${dataset}`] = fs.watch(`${window.userSettings.datasetsPath}/${dataset}`, {recursive: true, persistent: true}, (eventType, fileName) => {
