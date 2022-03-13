@@ -468,6 +468,11 @@ trainingQueueBtnDelete.addEventListener("click", () => {
 })
 
 trainingQueueBtnBatchTrain.addEventListener("click", () => {
+    if (window.userSettings.installation != "gpu") {
+        window.errorModal("The CPU-only installation is enabled. Switch to the GPU installation if you can, or run training on a CUDA-compatible machine if not. It is not practical to run the training on the CPU, it would take forever.")
+        return
+    }
+
     if (!window.training_state.datasetsQueue.length) {
         return window.errorModal("Add some datasets to the queue first, either via the Add button, or via the Train button from the dataset view in the main app")
     }
@@ -687,6 +692,11 @@ trainingQueueBtnClear.addEventListener("click", () => {
 })
 
 trainingStartBtn.addEventListener("click", () => {
+    if (window.userSettings.installation != "gpu") {
+        window.errorModal("The CPU-only installation is enabled. Switch to the GPU installation if you can, or run training on a CUDA-compatible machine if not. It is not practical to run the training on the CPU, it would take forever.")
+        return
+    }
+
     window.ws.send(JSON.stringify({
         model: "",
         task: "startTraining",

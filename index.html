@@ -336,6 +336,15 @@
                         </div>
                     </div> -->
                     <div>
+                        <div style="flex-direction: row;justify-content: flex-end;">
+                            <span id="i18n_settings_curr_install">Current installation:</span>
+                            <span id="settings_installation" style="margin-left: 5px;">CPU</span>
+                        </div>
+                        <div>
+                            <button id="setting_change_installation">Change to CPU+GPU</button>
+                        </div>
+                    </div>
+                    <div>
                         <div id="i18n_settings_arpabetPagination">Dataset records pagination size</div>
                         <div>
                             <input id="setting_paginationSize" type="number" value="200">
@@ -436,7 +445,7 @@
                         </div>
                     </div> -->
                 </div>
-                <div id="resetBtnsContainer" style="width:100%;height: 60px;">
+                <div id="resetBtnsContainer" style="width:100%;height: 30px;">
                     <button style="padding: 0px;" id="reset_settings_btn">Reset Settings</button>
                     <!-- <button style="padding: 0px;" id="reset_paths_btn">Reset Paths</button> -->
                 </div>
@@ -999,7 +1008,20 @@ chromeMax.addEventListener("click", () => {
     const w = remote.getCurrentWindow()
     w.isMaximized() ? w.unmaximize() : w.maximize()
 })
-chromeQuit.addEventListener("click", () => remote.getCurrentWindow().close())
+chromeQuit.addEventListener("click", () => doFetch(`http://localhost:8002/stopServer`, {
+    method: "Post",
+    body: JSON.stringify({})
+}).then(r=>r.text()).then(() => {
+    try {
+        window.pythonProcess.kill()
+    } catch (e) {}
+    remote.getCurrentWindow().close()
+}).catch(e => {
+    try {
+        window.pythonProcess.kill()
+    } catch (e) {}
+    remote.getCurrentWindow().close()
+}))
 </script>
 <style id="pluginsCSS" type="text/css"></style>
 <script src="lib/recorder.js"></script>

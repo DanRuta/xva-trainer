@@ -27,7 +27,9 @@ if ((typeof window.userSettings)=="string") {
     window.userSettings = JSON.parse(window.userSettings)
 }
 
-
+if (!Object.keys(window.userSettings).includes("installation")) { // For backwards compatibility
+    window.userSettings.installation = "gpu"
+}
 if (!Object.keys(window.userSettings).includes("paginationSize")) { // For backwards compatibility
     window.userSettings.paginationSize = 100
 }
@@ -166,11 +168,93 @@ reset_settings_btn.addEventListener("click", () => {
 
 initFilePickerButton(datasetsPathButton, setting_datasets_input, "datasetsPath", ["openDirectory"], undefined, undefined, ()=>window.refreshDatasets())
 
-datasetsPathButton.addEventListener("click", () => {
 
+
+// Installation sever handling
+// =========================
+settings_installation.innerHTML = window.userSettings.installation=="cpu" ? `CPU` : "CPU+GPU"
+setting_change_installation.innerHTML = window.userSettings.installation=="cpu" ? `Change to CPU+GPU` : `Change to CPU`
+setting_change_installation.addEventListener("click", () => {
+    spinnerModal("Changing installation sever...")
+    doFetch(`http://localhost:8002/stopServer`, {
+        method: "Post",
+        body: JSON.stringify({})
+    }).then(r=>r.text()).then(console.log) // The server stopping should mean this never runs
+    .catch(() => {
+
+        if (window.userSettings.installation=="cpu") {
+            window.userSettings.installation = "gpu"
+            settings_installation.innerHTML = `GPU`
+            setting_change_installation.innerHTML = `Change to CPU`
+        } else {
+            doFetch(`http://localhost:8002/setDevice`, {
+                method: "Post",
+                body: JSON.stringify({device: "cpu"})
+            })
+
+            window.userSettings.installation = "cpu"
+            window.userSettings.useGPU = false
+            settings_installation.innerHTML = `CPU`
+            setting_change_installation.innerHTML = `Change to CPU+GPU`
+        }
+        saveUserSettings()
+
+        // Start the new server
+        if (window.PRODUCTION) {
+            window.appLogger.log(window.userSettings.installation)
+            window.pythonProcess = spawn(`${path}/cpython_${window.userSettings.installation}/server.exe`, {stdio: "ignore"})
+        } else {
+            window.pythonProcess = spawn("python", [`${path}/server.py`], {stdio: "ignore"})
+        }
+
+        window.serverIsUp = false
+        window.doWeirdServerStartupCheck()
+    })
 })
+window.doWeirdServerStartupCheck = () => {
+    const check = () => {
+        return new Promise(topResolve => {
+            if (window.serverIsUp) {
+                topResolve()
+            } else {
+                (new Promise((resolve, reject) => {
+                    // Gather the model paths to send to the server
+                    const modelsPaths = {}
+                    Object.keys(window.userSettings).filter(key => key.includes("modelspath_")).forEach(key => {
+                        modelsPaths[key.split("_")[1]] = window.userSettings[key]
+                    })
 
+                    doFetch(`http://localhost:8002/checkReady`, {
+                        method: "Post",
+                        body: JSON.stringify({
+                            device: (window.userSettings.installation=="gpu")?"gpu":"cpu",
+                            modelsPaths: JSON.stringify(modelsPaths)
+                        })
+                    }).then(r => r.text()).then(r => {
+                        closeModal([document.querySelector("#activeModal"), modalContainer], []).then(() => {
+                            // window.electronBrowserWindow.setProgressBar(-1)
+                        })
+                        window.serverIsUp = true
+                        if (window.userSettings.installation=="cpu") {
+                            saveUserSettings()
+                        }
 
+                        resolve()
+                    }).catch((err) => {
+                        reject()
+                    })
+                })).catch(() => {
+                    setTimeout(async () => {
+                        await check()
+                        topResolve()
+                    }, 100)
+                })
+            }
+        })
+    }
+
+    check()
+}
 
 window.saveUserSettings = saveUserSettings
 exports.saveUserSettings = saveUserSettings

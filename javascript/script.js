@@ -2,9 +2,7 @@
 
 window.appVersion = "1.0"
 app_version.innerHTML = "v"+window.appVersion
-// const PRODUCTION = process.mainModule.filename.includes("resources")
-const PRODUCTION = module.filename.includes("resources")
-// const path = PRODUCTION ? `${__dirname.replace(/\\/g,"/")}/resources/app` : `${__dirname.replace(/\\/g,"/")}`
+window.PRODUCTION = module.filename.includes("resources")
 const path = PRODUCTION ? `${__dirname.replace(/\\/g,"/")}` : `${__dirname.replace(/\\/g,"/")}`
 window.path = path
 window.websocket_handlers = {}

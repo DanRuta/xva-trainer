@@ -13,9 +13,9 @@ import sklearn
 
 # Temporary
 import torch
-def returnFalse():
-    return False
-torch.cuda.is_available = returnFalse
+# def returnFalse():
+#     return False
+# torch.cuda.is_available = returnFalse
 
 # Transcription
 from python.transcribe.wav2vec2.model import Wav2Vec2
