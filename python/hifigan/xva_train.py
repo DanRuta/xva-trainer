@@ -55,7 +55,12 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
     if not resume:
         models_manager.sync_init_model("hifigan", websocket=websocket, gpus=[0])
         trainer = models_manager.models_bank["hifigan"]
-        trainer.init_logs(dataset_output=data["output_path"])
+
+        dataset_id = data["dataset_path"].split("/")[-1]
+        dataset_output = data["output_path"] + f'/{dataset_id}'
+
+        # trainer.init_logs(dataset_output=data["output_path"])
+        trainer.init_logs(dataset_output=dataset_output)
     else:
         trainer = models_manager.models_bank["hifigan"]
 
@@ -369,7 +374,8 @@ class HiFiTrainer(object):
 
             self.dataset_input = data["dataset_path"]
             self.dataset_id = self.dataset_input.split("/")[-1]
-            self.dataset_output = data["output_path"]
+            self.dataset_output = data["output_path"] + f'/{self.dataset_id}'
+            os.makedirs(self.dataset_output, exist_ok=True)
             self.hifigan_checkpoint = data["hifigan_checkpoint"]
 
             self.workers = data["num_workers"]

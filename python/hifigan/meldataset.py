@@ -265,7 +265,7 @@ def get_group_dataset_filelist(a, voice_dirs):
     print(f'training_files, {len(training_files)}')
     return training_files, None
 
-def get_dataset_filelist(input_training_file, input_wavs_dir):
+def get_dataset_filelist(input_training_file, input_wavs_dir, dm=None):
     with open(input_training_file, 'r', encoding='utf-8') as fi:
         training_files = []
         found = 0
@@ -288,8 +288,9 @@ def get_dataset_filelist(input_training_file, input_wavs_dir):
         else:
             print(f'OK: {input_wavs_dir}')
 
-    dm = 1000/(len(training_files)-int(not_found))
-    dm = max(1, round(dm))
+    if dm is None:
+        dm = 1000/(len(training_files)-int(not_found))
+        dm = max(1, round(dm))
 
     training_files_total = []
 

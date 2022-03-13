@@ -149,7 +149,7 @@ if __name__ == '__main__':
                                 logger.info("server.py pause")
                                 if "fastpitch1_1" not in models_manager.models_bank.keys() or models_manager.models_bank["fastpitch1_1"]=="move to hifi":
                                     if "hifigan" in models_manager.models_bank.keys():
-                                        await models_manager.models_bank["hifigan"].pause()
+                                        models_manager.models_bank["hifigan"].pause()
                                 else:
                                     models_manager.models_bank["fastpitch1_1"].pause()
                             if task=="stop":

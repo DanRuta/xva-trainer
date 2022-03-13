@@ -122,7 +122,8 @@ class Wav2Vec2PlusPuncTranscribe(object):
                 #     # transcript_punct = transcript
 
                 transcript = (" "+transcript.lower()+" ")\
-                    .replace("on't ", "don't ")\
+                    .replace(" on't ", " don't ")\
+                    .replace(" on't ", " don't ")\
                     .replace(" do n't ", " don't ")\
                     .replace(" i 'm ", " i'm ")\
                     .replace('"', "")\
@@ -156,6 +157,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
                     .replace(" didn t ", " didn't ")\
                     .replace(" weren t ", " weren't ")\
                     .replace(" you re ", " you're ")\
+                    .replace(" ddon't ", " don't ")\
                     .strip()
 
                 transcript = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".") or transcript.endswith(",") else f'{transcript}.'

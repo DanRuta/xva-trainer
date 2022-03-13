@@ -141,6 +141,10 @@ class SpeakerClusterSearch(object):
 
         pool_scores = [0 for _ in range(len(embeddings_corpus))]
 
+        self.logger.info(f'[Speaker cluster search] - Query files: {len(embeddings_queries)}')
+        self.logger.info(f'[Speaker cluster search] - Corpus files: {len(embeddings_corpus)}')
+        self.logger.info(f'[Speaker cluster search] - Corpus folders: {len(folders_with_files)}')
+
         pool_features = np.array(embeddings_corpus).astype(np.float32)
         query_features = np.array(embeddings_queries).astype(np.float32)
         index = faiss.IndexFlatL2(pool_features.shape[1])

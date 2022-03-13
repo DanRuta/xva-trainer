@@ -257,7 +257,7 @@ const tools = {
     },
     "Remove background noise": {
         taskId: "noise_removal",
-        description: "Automatically remove background noise from audio, using a reference 'silent' clip with the background noise.",
+        description: "Automatically remove background noise from audio, using a reference 'silent' clip with the background noise. Requires sox to be installed.",
         inputDirectory: `${window.path}/python/noise_removal/input`,
         inputDirectory2: `${window.path}/python/noise_removal/noise`,
         outputDirectory: `${window.path}/python/noise_removal/output/`,
@@ -847,8 +847,8 @@ checkTextQualityBtn.addEventListener("click", () => {
                                 wer_elem.style.background = `rgba(${r_col*255},${g_col*255},50, 0.7)`
                             })
 
-                            window.appState.skipRefreshing = false
                             window.refreshRecordsList(window.appState.currentDataset)
+                            window.appState.skipRefreshing = false
                             closeModal()
                         }
 

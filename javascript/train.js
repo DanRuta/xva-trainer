@@ -303,7 +303,8 @@ window.refreshTrainingQueueList = () => {
                     fs.mkdirSync(dataset.output_path)
                 }
 
-                startTrackingFolder(dataset.dataset_path, dataset.output_path)
+                console.log(`${dataset.output_path}/${dataset.dataset_path.split("/").reverse()[0]}`)
+                startTrackingFolder(dataset.dataset_path, `${dataset.output_path}/${dataset.dataset_path.split("/").reverse()[0]}`)
                 window.updateTrainingLogText()
                 window.updateTrainingGraphs()
 
@@ -352,9 +353,10 @@ window.trainingTextLogNumLines = 0
 window.updateTrainingLogText = () => {
     try {
         const datasetConfig = window.training_state.datasetsQueue.find(ds => ds.dataset_path==window.training_state.currentlyViewedDataset)
+        const datasetId = datasetConfig.dataset_path.split("/").reverse()[0]
 
-        if (fs.existsSync(`${datasetConfig.output_path}/training.log`)) {
-            const logData = fs.readFileSync(`${datasetConfig.output_path}/training.log`, "utf8").split("\n")
+        if (fs.existsSync(`${datasetConfig.output_path}/${datasetId}/training.log`)) {
+            const logData = fs.readFileSync(`${datasetConfig.output_path}/${datasetId}/training.log`, "utf8").split("\n")
             logData.push(window.training_state.websocketDynamicLogLine)
             cmdPanel.innerHTML = logData.join("<br>")+"<br><br>"
             // TODO, only apply if the number of lines changes
@@ -370,8 +372,9 @@ window.updateTrainingLogText = () => {
 window.updateTrainingGraphs = () => {
 
     const datasetConfig = window.training_state.datasetsQueue.find(ds => ds.dataset_path==window.training_state.currentlyViewedDataset)
-    if (fs.existsSync(`${datasetConfig.output_path}/graphs.json`)) {
-        const jsonString = fs.readFileSync(`${datasetConfig.output_path}/graphs.json`, "utf8")
+    const datasetId = datasetConfig.dataset_path.split("/").reverse()[0]
+    if (fs.existsSync(`${datasetConfig.output_path}/${datasetId}/graphs.json`)) {
+        const jsonString = fs.readFileSync(`${datasetConfig.output_path}/${datasetId}/graphs.json`, "utf8")
 
         try {
             const graphsJson = JSON.parse(jsonString)
@@ -704,7 +707,7 @@ trainingResumeBtn.addEventListener("click", () => {
     trainingStartBtn.style.display = "none"
     trainingPauseBtn.style.display = "block"
     trainingResumeBtn.style.display = "none"
-    window.ws.send(JSON.stringify({model: "", task: "resume"}))
+    window.ws.send(JSON.stringify({model: "", task: "resume", data: window.training_state.datasetsQueue[window.training_state.trainingQueueItem]}))
 })
 trainingStopBtn.addEventListener("click", () => {
     trainingStartBtn.style.display = "block"
@@ -767,7 +770,8 @@ exportSubmitButton.addEventListener("click", () => {
             const trainingJSON = JSON.parse(fs.readFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.json`, "utf8"))
             const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
             metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
-            fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON))
+            metadataJSON.games[0].voiceId = window.appState.currentDataset
+            fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON, null, 4))
 
             // Copy over the model files
             fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.pt`)

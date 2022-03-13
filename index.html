@@ -445,10 +445,10 @@
         </div>
 
         <div id="toolsContainer" style="display:none">
-            <div class="modal" style="width: 70vw;height: 60vh;">
+            <div class="modal" style="width: 72.5vw;height: 60vh;">
                 <h1>Tools</h1>
-                <div style="display:flex;width: 65vw;height: 70vh;">
-                    <div id="toolsList" style="display: flex;flex-direction: column;background: rgb(75,75,75);height: 100%;width: 250px;overflow-y: auto;"></div>
+                <div style="display:flex;width: 70vw;height: 70vh;">
+                    <div id="toolsList" style="display: flex;flex-direction: column;background: rgb(75,75,75);height: 100%;width: 300px;overflow-y: auto;"></div>
                     <div style="width: calc(75vw - 275px);height: 100%;margin-left: 25px;">
                         <h3 id="toolNameElem">Select a tool from the menu on the left</h3>
                         <div id="toolContent" style="display:none;height: 100%;width: 100%;">
@@ -581,6 +581,12 @@
 
 
         <style type="text/css">
+        #toolsList > button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3px;
+        }
         .smallButton {
            font-size: 10pt;
            margin-top: -2px !important;

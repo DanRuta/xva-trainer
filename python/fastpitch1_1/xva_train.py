@@ -64,19 +64,23 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
 
         trainer = models_manager.models_bank["fastpitch1_1"]
 
-        trainer.init_logs(dataset_output=data["output_path"])
+        dataset_id = data["dataset_path"].split("/")[-1]
+        dataset_output = data["output_path"] + f'/{dataset_id}'
+
+        # trainer.init_logs(dataset_output=data["output_path"])
+        trainer.init_logs(dataset_output=dataset_output)
 
         ckpt_fname = data["checkpoint"]
 
         # ======== Get the checkpoint START
         final_ckpt_fname = None
         if ckpt_fname is not None:
-            if os.path.exists(f'{data["output_path"]}'):
-                ckpts = os.listdir(f'{data["output_path"]}')
+            if os.path.exists(f'{dataset_output}'):
+                ckpts = os.listdir(f'{dataset_output}')
                 ckpts = [ckpt for ckpt in ckpts if ckpt.startswith("FastPitch_checkpoint_")]
                 if len(ckpts):
                     ckpts = sorted(ckpts, key=sort_fp)
-                    final_ckpt_fname = f'{data["output_path"]}/{ckpts[-1]}'
+                    final_ckpt_fname = f'{dataset_output}/{ckpts[-1]}'
 
             if ckpt_fname=="[male]":
                 final_ckpt_fname = trainer.pretrained_ckpt_male
@@ -125,7 +129,6 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             trainer.print_and_log("TODO")
             # bs -= 10
         elif trainer.JUST_FINISHED_STAGE:
-            trainer.logger.info(traceback.format_exc())
             trainer.print_and_log(f'Finished training stage {stageFinished}...\n', save_to_file=trainer.dataset_output)
             trainer.JUST_FINISHED_STAGE = False
             trainer.is_init = False
@@ -375,6 +378,7 @@ class FastPitchTrainer(object):
 
         self.gam = max(1, round(256/(self.batch_size)))
         self.print_and_log(f'CUDA device IDs: {",".join([str(v) for v in self.gpus])}', save_to_file=self.dataset_output)
+        torch.cuda.set_device(int(self.gpus[0]))
 
         if self.model.training_stage==1:
             self.print_and_log(f'Stage 1: Pre-training only the alignment.', save_to_file=self.dataset_output)
@@ -641,7 +645,8 @@ class FastPitchTrainer(object):
 
             self.dataset_input = data["dataset_path"]
             self.dataset_id = self.dataset_input.split("/")[-1]
-            self.dataset_output = data["output_path"]
+            self.dataset_output = data["output_path"] + f'/{self.dataset_id}'
+            os.makedirs(self.dataset_output, exist_ok=True)
             self.checkpoint = data["checkpoint"]
 
             self.workers = data["num_workers"]
