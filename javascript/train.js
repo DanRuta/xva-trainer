@@ -126,24 +126,27 @@ window.updateSystemGraphs = () => {
             let usedVRAM
             let computeLoad
 
-            if (data.nvidia_smi_log.gpu.length) {
-                totalVRAM = parseInt(data.nvidia_smi_log.gpu[0].fb_memory_usage.total.split(" ")[0])
-                usedVRAM = parseInt(data.nvidia_smi_log.gpu[0].fb_memory_usage.used.split(" ")[0])
-                computeLoad = parseFloat(data.nvidia_smi_log.gpu[0].utilization.gpu_util.split(" ")[0])
-            } else {
-                totalVRAM = parseInt(data.nvidia_smi_log.gpu.fb_memory_usage.total.split(" ")[0])
-                usedVRAM = parseInt(data.nvidia_smi_log.gpu.fb_memory_usage.used.split(" ")[0])
-                computeLoad = parseFloat(data.nvidia_smi_log.gpu.utilization.gpu_util.split(" ")[0])
+            if (window.userSettings.installation=="gpu" && !err) {
+                if (data.nvidia_smi_log.gpu.length) {
+                    totalVRAM = parseInt(data.nvidia_smi_log.gpu[0].fb_memory_usage.total.split(" ")[0])
+                    usedVRAM = parseInt(data.nvidia_smi_log.gpu[0].fb_memory_usage.used.split(" ")[0])
+                    computeLoad = parseFloat(data.nvidia_smi_log.gpu[0].utilization.gpu_util.split(" ")[0])
+                } else {
+                    totalVRAM = parseInt(data.nvidia_smi_log.gpu.fb_memory_usage.total.split(" ")[0])
+                    usedVRAM = parseInt(data.nvidia_smi_log.gpu.fb_memory_usage.used.split(" ")[0])
+                    computeLoad = parseFloat(data.nvidia_smi_log.gpu.utilization.gpu_util.split(" ")[0])
+                }
             }
-            const percent = usedVRAM/totalVRAM*100
+
 
             if (!window.vram_chart_object) {
                 window.vram_chart_object = initChart("vram_chart", "VRAM", "62,149,205", {boundsMax: parseInt(totalVRAM/1024)})
             }
 
-            const diskUsage = getDiskTimePercent(disk_drive_select.selectedOptions[0].innerText)
-            let vramUsage = `${(usedVRAM/1000).toFixed(1)}/${(totalVRAM/1000).toFixed(1)} GB (${percent.toFixed(2)}%)`
-
+            if (totalVRAM) {
+                const percent = usedVRAM/totalVRAM*100
+                let vramUsage = `${(usedVRAM/1000).toFixed(1)}/${(totalVRAM/1000).toFixed(1)} GB (${percent.toFixed(2)}%)`
+            }
 
             // CPU
             cpu_chart_object.data.datasets[0].data.push(parseInt(cpuLoad*100))
@@ -152,13 +155,6 @@ window.updateSystemGraphs = () => {
             }
             cpu_chart_object.data.datasets[0].label = `${cpu_chart_object.data.datasets[0].label.split(" ")[0]} ${(cpuLoad*100).toFixed(2)}%`
 
-            // CUDA
-            cuda_chart_object.data.datasets[0].data.push(parseInt(computeLoad))
-            if (cuda_chart_object.data.datasets[0].data.length>60) {
-                cuda_chart_object.data.datasets[0].data.splice(0,1)
-            }
-            cuda_chart_object.data.datasets[0].label = `${cuda_chart_object.data.datasets[0].label.split(" ")[0]} ${computeLoad}%`
-
             // RAM
             ram_chart_object.data.datasets[0].data.push(parseInt(ramUsage/1024))
             if (ram_chart_object.data.datasets[0].data.length>60) {
@@ -166,14 +162,25 @@ window.updateSystemGraphs = () => {
             }
             ram_chart_object.data.datasets[0].label = `${ram_chart_object.data.datasets[0].label.split(" ")[0]} ${(ramUsage/1024).toFixed(1)}GB/${(totalRam/1024).toFixed(1)}GB`
 
-            // VRAM
-            vram_chart_object.data.datasets[0].data.push(parseInt(usedVRAM/1024))
-            if (vram_chart_object.data.datasets[0].data.length>60) {
-                vram_chart_object.data.datasets[0].data.splice(0,1)
+            if (computeLoad) {
+                // CUDA
+                cuda_chart_object.data.datasets[0].data.push(parseInt(computeLoad))
+                if (cuda_chart_object.data.datasets[0].data.length>60) {
+                    cuda_chart_object.data.datasets[0].data.splice(0,1)
+                }
+                cuda_chart_object.data.datasets[0].label = `${cuda_chart_object.data.datasets[0].label.split(" ")[0]} ${computeLoad}%`
+
+                // VRAM
+                vram_chart_object.data.datasets[0].data.push(parseInt(usedVRAM/1024))
+                if (vram_chart_object.data.datasets[0].data.length>60) {
+                    vram_chart_object.data.datasets[0].data.splice(0,1)
+                }
+                vram_chart_object.data.datasets[0].label = `${vram_chart_object.data.datasets[0].label.split(" ")[0]} ${(usedVRAM/1024).toFixed(1)}/${(totalVRAM/1024).toFixed(1)} GB (${percent.toFixed(2)}%)`
             }
-            vram_chart_object.data.datasets[0].label = `${vram_chart_object.data.datasets[0].label.split(" ")[0]} ${(usedVRAM/1024).toFixed(1)}/${(totalVRAM/1024).toFixed(1)} GB (${percent.toFixed(2)}%)`
+
 
             // Disk
+            const diskUsage = getDiskTimePercent(disk_drive_select.selectedOptions[0].innerText)
             disk_chart_object.data.datasets[0].data.push(parseInt(diskUsage))
             if (disk_chart_object.data.datasets[0].data.length>60) {
                 disk_chart_object.data.datasets[0].data.splice(0,1)
@@ -183,8 +190,12 @@ window.updateSystemGraphs = () => {
 
             cpu_chart_object.update()
             ram_chart_object.update()
-            vram_chart_object.update()
-            cuda_chart_object.update()
+            if (vram_chart_object) {
+                vram_chart_object.update()
+            }
+            if (cuda_chart_object) {
+                cuda_chart_object.update()
+            }
             disk_chart_object.update()
             window.updateSystemGraphs()
 
