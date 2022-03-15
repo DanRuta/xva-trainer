@@ -196,8 +196,9 @@ if __name__ == '__main__':
                 if result == "done":
                     logger.info("server.py done training hifigan")
             else:
-                from python.fastpitch1_1.xva_train import handleTrainer as handleTrainer_fp
-                result = await handleTrainer_fp(models_manager, data, websocket, gpus=gpus, resume=resume)
+                if not ("hifigan" in models_manager.models_bank.keys() and resume):
+                    from python.fastpitch1_1.xva_train import handleTrainer as handleTrainer_fp
+                    result = await handleTrainer_fp(models_manager, data, websocket, gpus=gpus, resume=resume)
 
                 if result == "move to hifi":
                     logger.info("server.py moving on to HiFi training")

@@ -59,6 +59,9 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         dataset_id = data["dataset_path"].split("/")[-1]
         dataset_output = data["output_path"] + f'/{dataset_id}'
 
+        trainer.logger.info(f'[debug HiFi] {str(data)}')
+        trainer.logger.info(f'[debug] traceback: {traceback.format_exc()}')
+
         # trainer.init_logs(dataset_output=data["output_path"])
         trainer.init_logs(dataset_output=dataset_output)
     else:
@@ -97,7 +100,10 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             await trainer.websocket.send(f'Finished training HiFi-GAN\n')
 
             del trainer
-            del models_manager.models_bank["hifigan"]
+            try:
+                del models_manager.models_bank["hifigan"]
+            except:
+                pass
             gc.collect()
             return "done"
         else:
@@ -198,7 +204,7 @@ class HiFiTrainer(object):
         self.save_checkpoint = save_checkpoint
         self.load_checkpoint = load_checkpoint
 
-        self.EPOCH_AVG_SPAN = 20
+        self.EPOCH_AVG_SPAN = 25
         self.avg_loss_per_epoch = []
 
 
@@ -245,7 +251,7 @@ class HiFiTrainer(object):
 
 
 
-        self.target_delta = 0.00025
+        self.target_delta = 0.0002
         self.graphs_json["stages"]["5"]["target_delta"] = self.target_delta
 
         self.training_steps = 0
@@ -259,8 +265,12 @@ class HiFiTrainer(object):
             cp_g = cp_g.replace("\\", "/")
             self.print_and_log(f'Loading checkpoint from: {cp_g}', save_to_file=self.dataset_output)
 
-            state_dict_g = self.load_checkpoint(cp_g, self.device)
-            state_dict_do = self.load_checkpoint(cp_do, self.device)
+            try:
+                state_dict_g = self.load_checkpoint(cp_g, self.device)
+                state_dict_do = self.load_checkpoint(cp_do, self.device)
+            except:
+                self.print_and_log(f'Failed to load the checkpoint! Maybe try the second-last checkpoint (delete the last one). Full error message: {traceback.format_exc()}', save_to_file=self.dataset_output)
+                raise
             self.generator.load_state_dict(state_dict_g['generator'])
             self.mpd.load_state_dict(state_dict_do['mpd'])
             self.msd.load_state_dict(state_dict_do['msd'])
@@ -610,7 +620,7 @@ class HiFiTrainer(object):
             with open(f'{self.dataset_output}/graphs.json', "w+") as f:
                 f.write(json.dumps(self.graphs_json))
 
-            if acc_epoch_deltas_avg20 <= self.target_delta and len(acc_epoch_deltas)>=10:
+            if acc_epoch_deltas_avg20 <= self.target_delta and len(acc_epoch_deltas)>=25:
                 self.training_log_live_line = ""
                 if self.logger is not None:
                     self.logger.info("[HiFi Trainer] END_OF_TRAINING...")
@@ -633,7 +643,8 @@ if __name__ == '__main__':
     async def do_next_dataset_or_stage ():
 
         dataset_pairs = []
-        dataset_pairs.append(["D:/FP_INPUT/trollmourne_ellie_mars", "[female]"])
+        dataset_pairs.append(["D:/FP_INPUT/...", "[male]"])
+        dataset_pairs.append(["D:/FP_INPUT/...", "[female]"])
 
         while len(dataset_pairs):
             torch.cuda.empty_cache()

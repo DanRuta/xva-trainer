@@ -125,6 +125,8 @@ window.updateSystemGraphs = () => {
             let totalVRAM
             let usedVRAM
             let computeLoad
+            let percent
+            let vramUsage
 
             if (window.userSettings.installation=="gpu" && !err) {
                 if (data.nvidia_smi_log.gpu.length) {
@@ -144,8 +146,8 @@ window.updateSystemGraphs = () => {
             }
 
             if (totalVRAM) {
-                const percent = usedVRAM/totalVRAM*100
-                let vramUsage = `${(usedVRAM/1000).toFixed(1)}/${(totalVRAM/1000).toFixed(1)} GB (${percent.toFixed(2)}%)`
+                percent = usedVRAM/totalVRAM*100
+                vramUsage = `${(usedVRAM/1000).toFixed(1)}/${(totalVRAM/1000).toFixed(1)} GB (${percent.toFixed(2)}%)`
             }
 
             // CPU

@@ -704,7 +704,7 @@ transcriptSearch.addEventListener("keyup", () => {
 
 
 window.refreshRecordsList = (dataset) => {
-    if (window.tools_state.running || window.appState.skipRefreshing) {
+    if (window.tools_state.running || window.appState.skipRefreshing || !window.appState.currentDataset) {
         return
     }
     batchRecordsContainer.innerHTML = ""

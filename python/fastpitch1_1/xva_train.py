@@ -1006,7 +1006,11 @@ class FastPitchTrainer(object):
     def load_checkpoint (self, filepath):
         if self.local_rank == 0:
             self.print_and_log(f'Loading model and optimizer state from {filepath}', save_to_file=self.dataset_output)
-        checkpoint = torch.load(filepath, map_location='cpu')
+        try:
+            checkpoint = torch.load(filepath, map_location='cpu')
+        except:
+            self.print_and_log(f'Failed to load the checkpoint! Maybe try the second-last checkpoint (delete the last one). Full error message: {traceback.format_exc()}', save_to_file=self.dataset_output)
+            raise
         try:
             epoch = checkpoint['epoch'] + 1
         except:
