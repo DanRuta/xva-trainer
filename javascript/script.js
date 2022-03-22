@@ -1293,7 +1293,7 @@ discordLink.addEventListener("click", () => {
     shell.openExternal("https://discord.gg/nv7c6E2TzV")
 })
 youtubeLink.addEventListener("click", () => {
-    shell.openExternal("https://www.youtube.com/watch?v=W-9SFoNuTtM")
+    shell.openExternal("https://www.youtube.com/watch?v=PXv_SeTWk2M")
 })
 
 
