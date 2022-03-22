@@ -617,10 +617,10 @@ acceptConfig.addEventListener("click", () => {
             const queueIndex = window.training_state.currentlyConfiguringDatasetI
 
             const configData = {
-                "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path,
-                "output_path": trainingAddConfigOutputPathInput.value,
-                "checkpoint": fp_ckpt,
-                "hifigan_checkpoint": hg_ckpt,
+                "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path.replaceAll(/\\/, "/"),
+                "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
+                "checkpoint": fp_ckpt.replaceAll(/\\/, "/"),
+                "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
 
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
                 "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
@@ -637,10 +637,10 @@ acceptConfig.addEventListener("click", () => {
             const configData = {
                 "status": "Ready",
 
-                "dataset_path": trainingAddConfigDatasetPathInput.value,
-                "output_path": trainingAddConfigOutputPathInput.value,
-                "checkpoint": fp_ckpt,
-                "hifigan_checkpoint": hg_ckpt,
+                "dataset_path": trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/"),
+                "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
+                "checkpoint": fp_ckpt.replaceAll(/\\/, "/"),
+                "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
 
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
                 "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
@@ -655,8 +655,8 @@ acceptConfig.addEventListener("click", () => {
         window.refreshTrainingQueueList()
     }
 
-    const fp_ckpt = trainingAddConfigCkptPathInput.value.trim()
-    const hg_ckpt = trainingAddConfigHiFiCkptPathInput.value.trim()
+    const fp_ckpt = trainingAddConfigCkptPathInput.value.trim().replaceAll(/\\/, "/")
+    const hg_ckpt = trainingAddConfigHiFiCkptPathInput.value.trim().replaceAll(/\\/, "/")
 
     if (fp_ckpt!="[male]" && fp_ckpt!="[female]" && !fs.existsSync(fp_ckpt)) {
         window.confirmModal(`A FastPitch1.1 checkpoint file was not found at the following file/folder location. Continue regardless?<br>${fp_ckpt}`).then(resp => {
