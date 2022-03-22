@@ -133,7 +133,10 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             trainer.JUST_FINISHED_STAGE = False
             trainer.is_init = False
             del trainer
-            del models_manager.models_bank["fastpitch1_1"]
+            try:
+                del models_manager.models_bank["fastpitch1_1"]
+            except:
+                pass
             gc.collect()
             if stageFinished==4:
                 models_manager.models_bank["fastpitch1_1"] = "move to hifi"
@@ -250,9 +253,8 @@ class FastPitchTrainer(object):
         self.TTSCollate = TTSCollate
 
 
-        if self.local_rank == 0:
-            if not os.path.exists(self.dataset_output):
-                os.makedirs(self.dataset_output)
+        if not os.path.exists(self.dataset_output):
+            os.makedirs(self.dataset_output)
         self.init_logs(dataset_output=self.dataset_output)
         self.print_and_log(f'Dataset: {self.dataset_input}', save_to_file=self.dataset_output)
         ckpt_path = last_checkpoint(self.dataset_output)
@@ -508,6 +510,8 @@ class FastPitchTrainer(object):
     def init_logs (self, dataset_output):
         if self.logs_are_init:
             return
+        if not os.path.exists(dataset_output):
+            os.makedirs(dataset_output)
         self.training_log = []
         self.training_log_live_line = ""
         self.graphs_json = {
@@ -1084,7 +1088,7 @@ class FastPitchTrainer(object):
             trainset = self.TTSDataset(dataset_path=self.dataset_input, audiopaths_and_text=self.dataset_input+"/metadata.csv", text_cleaners=text_cleaners, n_mel_channels=80, dm=-1, use_file_caching=True, pitch_mean=pitch_mean, pitch_std=pitch_std, training_stage=1, p_arpabet=p_arpabet, max_wav_value=32768.0, sampling_rate=22050, filter_length=1024, hop_length=256, win_length=1024, mel_fmin=0, mel_fmax=8000, betabinomial_online_dir=None, pitch_online_dir=None, cmudict=self.cmudict, pitch_online_method="pyin")
             collate_fn = self.TTSCollate()
             collate_fn.training_stage = 1
-            dataloader = DataLoader(trainset, num_workers=2, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
+            dataloader = DataLoader(trainset, num_workers=1, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
 
             os.makedirs(f'{self.dataset_input}/durs_arpabet', exist_ok=True)
             os.makedirs(f'{self.dataset_input}/durs_text', exist_ok=True)
