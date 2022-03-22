@@ -27,6 +27,7 @@ if __name__ == '__main__':
         import _thread
         import python.pyinstaller_imports
         import numpy
+        from python.audio_norm.model import AudioNormalizer
 
         import logging
         from logging.handlers import RotatingFileHandler
@@ -293,12 +294,15 @@ if __name__ == '__main__':
 
                     models_manager.load_model("infer_fastpitch1_1", fp_ckpt)
                     models_manager.load_model("infer_hifigan", hg_ckpt)
+                    logger.info(f'Generating audio preview...')
 
                     req_response = models_manager.models("infer_fastpitch1_1").infer(None, "This is what my voice sounds like", out_path_intermediate, vocoder="infer_hifigan", speaker_i=None)
 
-                    from python.audio_norm.model import AudioNormalizer
+
+                    logger.info(f'Normalizing audio preview...')
                     normalizer = AudioNormalizer(logger, PROD, models_manager.device, models_manager)
                     normalizer.normalize_sync(out_path_intermediate, out_path)
+                    logger.info(f'Exported.')
                     os.remove(out_path_intermediate)
 
 

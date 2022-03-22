@@ -785,21 +785,26 @@ exportSubmitButton.addEventListener("click", () => {
             out_path: `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.wav`
         })
     }).then(r=>r.text()).then((res) => {
+        console.log("Exporting res:", res)
+
+        // Copy over the resemblyzer embedding data, and export the .json metadata
+        const trainingJSON = JSON.parse(fs.readFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.json`, "utf8"))
+        const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
+        metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
+        metadataJSON.games[0].voiceId = window.appState.currentDataset
+        fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON, null, 4))
+
+        // Copy over the model files
+        fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.pt`)
+        fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)
+
         if (res.length) {
             window.appLogger.log(res)
             window.errorModal(res)
+            window.createModal("error", `There was an issue with exporting the preview audio file:<br><br>${res}`).then(() => {
+                exportModelContainer.click()
+            })
         } else {
-            // Copy over the resemblyzer embedding data, and export the .json metadata
-            const trainingJSON = JSON.parse(fs.readFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.json`, "utf8"))
-            const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
-            metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
-            metadataJSON.games[0].voiceId = window.appState.currentDataset
-            fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON, null, 4))
-
-            // Copy over the model files
-            fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.pt`)
-            fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)
-
             window.createModal("error", "Model exported successfully").then(() => {
                 exportModelContainer.click()
             })
