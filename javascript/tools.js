@@ -245,6 +245,7 @@ const tools = {
         setupFn: (taskId) => {
             window.tools_state.toolSettings["transcribe"] = window.tools_state.toolSettings["transcribe"] || {}
             window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = false
+            window.tools_state.toolSettings["transcribe"].language = "en"
         }
     },
     "WER transcript evaluation": {

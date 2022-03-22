@@ -33,6 +33,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
         self.device = device
         self.ckpt_path = None
 
+        self.wav2vec = None
         self.model = None
         self.isReady = True
         self.lazy_loaded = False
@@ -48,22 +49,25 @@ class Wav2Vec2PlusPuncTranscribe(object):
         return self.transcribe(data, websocket)
 
 
-    def lazy_load_models (self):
-        if self.lazy_loaded:
+    def lazy_load_models (self, language):
+        if self.lazy_loaded and self.wav2vec.language==language:
             return
 
-        self.wav2vec = Wav2Vec2(None, self.PROD, self.device, None)
+        if self.wav2vec:
+            del self.wav2vec
+        self.wav2vec = Wav2Vec2(self.logger, self.PROD, self.device, None, language)
         self.lazy_loaded = True
 
     async def transcribe(self, data, websocket):
 
         ignore_existing_transcript = data["toolSettings"]["ignore_existing_transcript"] if "ignore_existing_transcript" in data["toolSettings"] else False
+        language = data["toolSettings"]["language"] if "language" in data["toolSettings"] else "en"
 
         try:
             if websocket is not None:
                 await websocket.send(json.dumps({"key": "task_info", "data": f'Initializing...'}))
 
-            self.lazy_load_models()
+            self.lazy_load_models(language)
 
             inPath, outputDirectory = data["inPath"], data["outputDirectory"]
             if outputDirectory:

@@ -7,6 +7,7 @@ node_modules
 *.wav
 *.mp3
 *.ogg
+*.opus
 *.wem
 output/*.wav
 output/**/*.wav
@@ -39,3 +40,4 @@ app.log
 batch
 pytorch_model.bin
 *.csv
+*.noise_profile_file
