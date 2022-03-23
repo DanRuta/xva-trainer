@@ -62,7 +62,7 @@ class NoiseRemoval(object):
 
         for fni, fname in enumerate(input_files):
 
-            if websocket is not None:
+            if fni%3==0 and websocket is not None:
                 await websocket.send(json.dumps({"key": "task_info", "data": f'Removing noise: {fni+1}/{len(input_files)}  ({(int(fni+1)/len(input_files)*100*100)/100}%)'}))
 
             command = f'sox {inPath}/{fname} {outputDirectory}/{fname} noisered {inPath2}/{noise_profile_file} {removeNoiseStrength}'

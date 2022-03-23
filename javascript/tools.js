@@ -45,7 +45,7 @@ const tools = {
     },
     "AI speaker diarization": {
         taskId: "diarization",
-        description: "Speaker diarization can be used to automatically extract slices of speech audio from a really long audio sample, such as audiobooks and movies. The slices of speech can also be automatically attributed to the correct individual speakers, before being output to file. Long audio files can take a long time to process.",
+        description: "Speaker diarization can be used to automatically extract slices of speech audio from a really long audio sample, such as audiobooks and movies, based on Speaker Activity Detection. The slices of speech can also be automatically attributed to the correct individual speakers, before being output to file. Long audio files can take a long time to process.",
         inputDirectory: `${window.path}/python/speaker_diarization/input`,
         outputDirectory: `${window.path}/python/speaker_diarization/output/`,
         toolSettings: {},
@@ -72,7 +72,7 @@ const tools = {
     },
     "AI Source separation": {
         taskId: "ass",
-        description: "AI audio source separation can be used to extract only the dialogue audio from an audio sample with lots of other audio mixed in, such as music, background sounds, and ambient noises. It can also remove echo from voices.",
+        description: "AI audio source separation can be used to extract only the dialogue audio from an audio sample with lots of other audio mixed in, such as music, background sounds, and ambient noises. It can also remove echo from voices. Don't run on long files.",
         inputDirectory: `${window.path}/python/audio_source_separation/input`,
         outputDirectory: `${window.path}/python/audio_source_separation/output/`,
         inputFileType: ".wav"
@@ -258,12 +258,67 @@ const tools = {
     },
     "Remove background noise": {
         taskId: "noise_removal",
-        description: "Automatically remove background noise from audio, using a reference 'silent' clip with the background noise. Requires sox to be installed.",
+        description: "Automatically remove constant background hiss/hum/noise from audio, using a reference 'silent' clip with just the background noise. Requires sox to be installed.",
         inputDirectory: `${window.path}/python/noise_removal/input`,
         inputDirectory2: `${window.path}/python/noise_removal/noise`,
         outputDirectory: `${window.path}/python/noise_removal/output/`,
         inputFileType: "folder"
-    }
+    },
+    "Silence split": {
+        taskId: "silence_split",
+        description: "Split audio based on configurable silence detection. Use the background noise removal tool if there's a constant hiss/hum/noise throughout your clips.",
+        inputDirectory: `${window.path}/python/silence_split/input`,
+        outputDirectory: `${window.path}/python/silence_split/output/`,
+        inputFileType: ".wav",
+        isMultiProcessed: false,
+        setupFn: (taskId) => {
+            const ckbxDescription = createElem("div", "Use multi-processing")
+            const ckbx = createElem("input", {type: "checkbox"})
+            ckbx.style.height = "20px"
+            ckbx.style.width = "20px"
+
+            window.tools_state.toolSettings["silence_split"] = window.tools_state.toolSettings["silence_split"] || {}
+            window.tools_state.toolSettings["silence_split"].useMP = false
+
+            ckbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["silence_split"].useMP = ckbx.checked
+                window.tools_state.toolSettings["silence_split"].isMultiProcessed = ckbx.checked
+                window.tools_state.isMultiProcessed = ckbx.checked
+            })
+
+            const rowItemUseMp = createElem("div", createElem("div", ckbxDescription), createElem("div", ckbx))
+
+            const silenceSplitSilenceThresholdDescription = createElem("div", "Silence threshold (dB)")
+            const silenceSplitSilenceThresholdInput = createElem("input", {type: "number"})
+            silenceSplitSilenceThresholdInput.style.width = "70%"
+            silenceSplitSilenceThresholdInput.value = "-10"
+            silenceSplitSilenceThresholdInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["silence_split"].min_dB = silenceSplitSilenceThresholdInput.value
+            })
+            const rowItemsilenceSplitSilenceThresholdInputs = createElem("div", silenceSplitSilenceThresholdInput)
+            rowItemsilenceSplitSilenceThresholdInputs.style.flexDirection = "row"
+            const rowItemSilenceSplitSilenceThreshold = createElem("div", silenceSplitSilenceThresholdDescription, rowItemsilenceSplitSilenceThresholdInputs)
+            window.tools_state.toolSettings["silence_split"].min_dB = silenceSplitSilenceThresholdInput.value
+
+
+            const silenceSplitSilenceDurationDescription = createElem("div", "Silence duration (s)")
+            const silenceSplitSilenceDurationInput = createElem("input", {type: "number"})
+            silenceSplitSilenceDurationInput.style.width = "70%"
+            silenceSplitSilenceDurationInput.value = "0.25"
+            silenceSplitSilenceDurationInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["silence_split"].silence_duration = silenceSplitSilenceDurationInput.value
+            })
+            const rowItemsilenceSplitSilenceDurationInputs = createElem("div", silenceSplitSilenceDurationInput)
+            rowItemsilenceSplitSilenceDurationInputs.style.flexDirection = "row"
+            const rowItemSilenceSplitSilenceDuration = createElem("div", silenceSplitSilenceDurationDescription, rowItemsilenceSplitSilenceDurationInputs)
+            window.tools_state.toolSettings["silence_split"].silence_duration = silenceSplitSilenceDurationInput.value
+
+
+            // const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp, rowItemSilenceSplitSilenceThreshold, rowItemSilenceSplitSilenceDuration)
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemSilenceSplitSilenceThreshold, rowItemSilenceSplitSilenceDuration)
+            toolDescription.appendChild(container)
+        }
+    },
 }
 
 
@@ -446,7 +501,7 @@ const updateMPProgress = () => {
         console.log("about to force call tasks_next")
         window.websocket_handlers["tasks_next"](undefined, true)
     } else {
-        setTimeout(updateMPProgress, 250)
+        setTimeout(updateMPProgress, 1000)
     }
 }
 

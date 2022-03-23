@@ -105,7 +105,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
         try:
             for fi, file in enumerate(input_files):
 
-                if websocket is not None:
+                if fi%25==0 and websocket is not None:
                     await websocket.send(json.dumps({"key": "task_info", "data": f'Transcribing audio files: {fi+1}/{len(input_files)}  ({(int(fi+1)/len(input_files)*100*100)/100}%)  - {file.split("/")[-1]} '}))
                 else:
                     self.logger.info("No websocket for: Transcribing audio files...")
@@ -125,44 +125,47 @@ class Wav2Vec2PlusPuncTranscribe(object):
                 #     self.logger.info(traceback.format_exc())
                 #     # transcript_punct = transcript
 
-                transcript = (" "+transcript.lower()+" ")\
-                    .replace(" on't ", " don't ")\
-                    .replace(" on't ", " don't ")\
-                    .replace(" do n't ", " don't ")\
-                    .replace(" i 'm ", " i'm ")\
-                    .replace('"', "")\
-                    .replace("hasn '. T", "hansn't")\
-                    .replace("hasn '. t", "hansn't")\
-                    .replace("you 've", "you've")\
-                    .replace("you 're", "you're")\
-                    .replace("does n't", "doesn't")\
-                    .replace(" will' ", " we'll ")\
-                    .replace("i don '", "i don't")\
-                    .replace("it ' ", "it's")\
-                    .replace(" '", "'")\
-                    .replace("i,'ve' ", "i've")\
-                    .replace("would n't", "wouldn't")\
-                    .replace("ca n't", "can't")\
-                    .replace("that,'s", "that's")\
-                    .replace("they ve", "they've")\
-                    .replace("we,'re", "we're")\
-                    .replace("did n't", "didn't")\
-                    .replace(" wo n't ", " won't ")\
-                    .replace(" is n't ", " isn't ")\
-                    .replace(" should n't ", " shouldn't ")\
-                    .replace("it s ", "it's ")\
-                    .replace(" have n't ", " haven't ")\
-                    .replace(" was n't ", " wasn't ")\
-                    .replace(" there s ", " there's ")\
-                    .replace(" are n't ", " aren't ")\
-                    .replace(" ai n't ", " ain't ")\
-                    .replace(" i ve ", " i've ")\
-                    .replace(" was nt ", " wasn't ")\
-                    .replace(" didn t ", " didn't ")\
-                    .replace(" weren t ", " weren't ")\
-                    .replace(" you re ", " you're ")\
-                    .replace(" ddon't ", " don't ")\
-                    .strip()
+                if self.wav2vec.language=="en":
+                    transcript = (" "+transcript.lower()+" ")\
+                        .replace(" on't ", " don't ")\
+                        .replace(" on't ", " don't ")\
+                        .replace(" do n't ", " don't ")\
+                        .replace(" i 'm ", " i'm ")\
+                        .replace('"', "")\
+                        .replace("hasn '. T", "hansn't")\
+                        .replace("hasn '. t", "hansn't")\
+                        .replace("you 've", "you've")\
+                        .replace("you 're", "you're")\
+                        .replace("does n't", "doesn't")\
+                        .replace(" will' ", " we'll ")\
+                        .replace("i don '", "i don't")\
+                        .replace("it ' ", "it's")\
+                        .replace(" '", "'")\
+                        .replace("i,'ve' ", "i've")\
+                        .replace("would n't", "wouldn't")\
+                        .replace("ca n't", "can't")\
+                        .replace("that,'s", "that's")\
+                        .replace("they ve", "they've")\
+                        .replace("we,'re", "we're")\
+                        .replace("did n't", "didn't")\
+                        .replace(" wo n't ", " won't ")\
+                        .replace(" is n't ", " isn't ")\
+                        .replace(" should n't ", " shouldn't ")\
+                        .replace("it s ", "it's ")\
+                        .replace(" have n't ", " haven't ")\
+                        .replace(" was n't ", " wasn't ")\
+                        .replace(" there s ", " there's ")\
+                        .replace(" are n't ", " aren't ")\
+                        .replace(" ai n't ", " ain't ")\
+                        .replace(" i ve ", " i've ")\
+                        .replace(" was nt ", " wasn't ")\
+                        .replace(" didn t ", " didn't ")\
+                        .replace(" weren t ", " weren't ")\
+                        .replace(" you re ", " you're ")\
+                        .replace(" ddon't ", " don't ")\
+                        .strip()
+                else:
+                    transcript = transcript.lower().strip()
 
                 transcript = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".") or transcript.endswith(",") else f'{transcript}.'
                 transcript_punct = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".")  or transcript.endswith(",") else f'{transcript}.'
