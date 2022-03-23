@@ -125,9 +125,9 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         gc.collect()
         torch.cuda.empty_cache()
         if "CUDA out of memory" in str(e):
-            trainer.print_and_log(f'============= Reducing batch size from {trainer.batch_size} to {trainer.batch_size-10}', save_to_file=trainer.dataset_output)
-            trainer.print_and_log("TODO")
-            # bs -= 10
+            trainer.print_and_log(f'============= Reducing base batch size from {trainer.batch_size} to {trainer.batch_size-5}', save_to_file=trainer.dataset_output)
+            data["batch_size"] = data["batch_size"] - 5
+            return await handleTrainer(models_manager, data, websocket, gpus)
         elif trainer.JUST_FINISHED_STAGE:
             trainer.print_and_log(f'Finished training stage {stageFinished}...\n', save_to_file=trainer.dataset_output)
             trainer.JUST_FINISHED_STAGE = False
