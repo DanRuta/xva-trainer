@@ -318,7 +318,7 @@ a {
  }
 
 
- #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #exportModelContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #checkTextQualityContainer, #patreonContainer, #infoContainer {
+ #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #exportModelContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #checkTextQualityContainer, #patreonContainer, #infoContainer, #updatesContainer {
      display: flex;
      justify-content: center;
      align-items: center;
@@ -376,7 +376,7 @@ a {
      width: 25vw;
      text-align: center;
  }
- #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #exportModelContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #checkTextQualityContainer > .modal, #patreonContainer > .modal, #infoContainer > .modal {
+ #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #exportModelContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #checkTextQualityContainer > .modal, #patreonContainer > .modal, #infoContainer > .modal, #updatesContainer > .modal {
      height: 65vh;
      width: 45vw;
      min-height: 500px;
@@ -387,6 +387,18 @@ a {
     width: 85vw;
     min-height: 500px;
     min-width: 500px;
+ }
+ #updatesLogList {
+     width: 100%;
+     height: 100%;
+     max-height: 50vh;
+     overflow-y: auto;
+ }
+ #updatesLogList > div {
+    text-align: left;
+ }
+ #updatesLogList > div > div:first-child {
+     width: 25%;
  }
  #pluginsContainer > .modal {
     width: 65vw;
@@ -718,7 +730,7 @@ a {
      width: 20px;
  }
 
-#settingsCog, #toolsIcon, #trainButton, #patreonIcon, #infoIcon {
+#settingsCog, #toolsIcon, #trainButton, #patreonIcon, #infoIcon, #updatesIcon {
     display: flex;
     position: fixed;
     cursor: pointer;
@@ -733,12 +745,17 @@ a {
 #infoIcon {
     right: 75px;
 }
+#updatesIcon {
+    right: 95px;
+    top: 38px;
+}
+
 #toolsIcon {
-    right: 106px;
+    right: 132px;
     top: 37px;
 }
 #trainButton {
-    right: 120px;
+    right: 150px;
 }
 /* #updatesIcon {
     right: 100px;
@@ -775,7 +792,7 @@ a {
     height: 30px !important;
     width: 30px;
  }
- #settingsCog > svg, #toolsIcon > svg, #trainButton > svg {
+ #settingsCog > svg, #toolsIcon > svg, #trainButton > svg , #updatesIcon > svg{
      height: 25px;
      cursor: pointer;
      filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7))

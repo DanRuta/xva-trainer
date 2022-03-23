@@ -1167,6 +1167,7 @@ const initDatasetMeta = (callback) => {
 let voiceIDInputChanged = false
 let fixedFolderName = undefined
 
+
 window.setupModal(btn_preprocessAudioButton, preprocessAudioContainer)
 window.setupModal(btn_preprocessTextButton, preprocessTextContainer)
 window.setupModal(btn_cleanAudioText, cleanAudioTextContainer)
@@ -1197,6 +1198,7 @@ window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
     composedVoiceId.innerHTML = window.appState.currentDataset
     datasetMeta_voiceId.value = window.appState.currentDataset
 })
+
 
 window.setupModal(btn_addmissingmeta, datasetMetaContainer, () => {
     datasetMetaTitle.innerHTML = `Add meta to: ${window.appState.currentDataset}`
@@ -1296,9 +1298,57 @@ discordLink.addEventListener("click", () => {
 youtubeLink.addEventListener("click", () => {
     shell.openExternal("https://www.youtube.com/watch?v=PXv_SeTWk2M")
 })
-
-
 // ====
+
+// Updates
+// =======
+window.setupModal(updatesIcon, updatesContainer)
+const checkForUpdates = () => {
+    doFetch("http://danruta.co.uk/xvatrainer_updates.txt").then(r=>r.json()).then(data => {
+        fs.writeFileSync(`${path}/updates.json`, JSON.stringify(data), "utf8")
+        checkUpdates.innerHTML = "Check for updates now"
+        window.showUpdates()
+    }).catch(() => {
+        checkUpdates.innerHTML = "Can't reach server"
+    })
+}
+window.showUpdates = () => {
+    window.updatesLog = fs.readFileSync(`${path}/updates.json`, "utf8")
+    window.updatesLog = JSON.parse(window.updatesLog)
+    const sortedLogVersions = Object.keys(window.updatesLog).map( a => a.split('.').map( n => +n+100000 ).join('.') ).sort()
+        .map( a => a.split('.').map( n => +n-100000 ).join('.') )
+
+    const appVersion = window.appVersion.replace("v", "")
+    const appIsUpToDate = sortedLogVersions.indexOf(appVersion)==(sortedLogVersions.length-1) || sortedLogVersions.indexOf(appVersion)==-1
+
+    if (!appIsUpToDate) {
+        update_nothing.style.display = "none"
+        update_something.style.display = "block"
+        updatesVersions.innerHTML = `This app version: ${appVersion}. Update available: ${sortedLogVersions[sortedLogVersions.length-1]}`
+    } else {
+        updatesVersions.innerHTML = `This app version: ${appVersion}. Up to date.`
+    }
+
+    updatesLogList.innerHTML = ""
+    sortedLogVersions.reverse().forEach(version => {
+        const versionLabel = createElem("h2", version)
+        const logItem = createElem("div", versionLabel)
+        window.updatesLog[version].split("\n").forEach(line => {
+            logItem.appendChild(createElem("div", line))
+        })
+        updatesLogList.appendChild(logItem)
+    })
+}
+checkForUpdates()
+window.setupModal(updatesIcon, updatesContainer)
+
+checkUpdates.addEventListener("click", () => {
+    checkUpdates.innerHTML = "Checking for updates"
+    checkForUpdates()
+})
+window.showUpdates()
+// =======
+
 
 // Patreon
 // =======
