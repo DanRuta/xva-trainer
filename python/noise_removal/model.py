@@ -42,13 +42,15 @@ class NoiseRemoval(object):
 
         removeNoiseStrength = 0.25 # TODO, make configurable
 
+        sox_path = f'{"./resources/app" if self.PROD else "."}/python/sox/sox.exe'
+
         # Create noise profile
         noise_wav = sorted([fname for fname in os.listdir(inPath2) if fname.endswith(".wav")])[0]
         noise_profile_file = f'{noise_wav.replace(".wav", "")}.noise_profile_file'
         if not os.path.exists(noise_profile_file):
-            command = f'sox {inPath2}/{noise_wav} -n noiseprof {inPath2}/{noise_profile_file}'
-            sox = subprocess.Popen(command, startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = sox.communicate()
+            command = f'{sox_path} {inPath2}/{noise_wav} -n noiseprof {inPath2}/{noise_profile_file}'
+            command_process = subprocess.Popen(command, startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = command_process.communicate()
             stderr = stderr.decode("utf-8")
             if len(stderr):
                 self.logger.info(f'SOX Command: {command}')
@@ -65,9 +67,9 @@ class NoiseRemoval(object):
             if fni%3==0 and websocket is not None:
                 await websocket.send(json.dumps({"key": "task_info", "data": f'Removing noise: {fni+1}/{len(input_files)}  ({(int(fni+1)/len(input_files)*100*100)/100}%)'}))
 
-            command = f'sox {inPath}/{fname} {outputDirectory}/{fname} noisered {inPath2}/{noise_profile_file} {removeNoiseStrength}'
-            sox = subprocess.Popen(command, startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = sox.communicate()
+            command = f'{sox_path} {inPath}/{fname} {outputDirectory}/{fname} noisered {inPath2}/{noise_profile_file} {removeNoiseStrength}'
+            command_process = subprocess.Popen(command, startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = command_process.communicate()
             stderr = stderr.decode("utf-8")
             if len(stderr):
                 self.logger.info(f'SOX Command: {command}')

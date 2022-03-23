@@ -290,7 +290,7 @@ const tools = {
     },
     "Remove background noise": {
         taskId: "noise_removal",
-        description: "Automatically remove constant background hiss/hum/noise from audio, using a reference 'silent' clip with just the background noise. Requires sox to be installed.",
+        description: "Automatically remove constant background hiss/hum/noise from audio, using a reference 'silent' clip with just the background noise.",
         inputDirectory: `${window.path}/python/noise_removal/input`,
         inputDirectory2: `${window.path}/python/noise_removal/noise`,
         outputDirectory: `${window.path}/python/noise_removal/output/`,

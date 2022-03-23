@@ -926,8 +926,9 @@ window.stopRecord = (cancelled) => {
             // Remove background noise
             if (window.userSettings.removeNoise) {
 
+                const sox_path = (window.PRODUCTION ? "./resources/app" :  ".") + "/python/sox/sox.exe"
                 const outputNameSox = `${window.recordingState.tempAudioFileName.replace(".wav", "")}_sil.wav`
-                const soxCommand = `sox "${window.recordingState.tempAudioFileName}" "${outputNameSox}" noisered ${window.path}/noise_profile_file ${window.userSettings.noiseRemStrength} rate 22050`
+                const soxCommand = `${sox_path} "${window.recordingState.tempAudioFileName}" "${outputNameSox}" noisered ${window.path}/noise_profile_file ${window.userSettings.noiseRemStrength} rate 22050`
                 exec(soxCommand, async (err, stdout, stderr) => {
                     if (err) {
                         console.log(err)
