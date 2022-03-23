@@ -587,6 +587,12 @@ let configAnExistingItem = false
 cancelConfig.addEventListener("click", () => {
     queueItemConfigModalContainer.style.display = "none"
 })
+trainingAddConfigDatasetPathInput.addEventListener("keyup", e => {
+    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/")
+})
+trainingAddConfigOutputPathInput.addEventListener("keyup", e => {
+    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/")
+})
 acceptConfig.addEventListener("click", () => {
 
     if (!trainingAddConfigDatasetPathInput.value.trim().length) {

@@ -187,7 +187,7 @@ class FastPitchTrainer(object):
         self.workers = None
 
         self.local_rank = os.getenv('LOCAL_RANK', 0)
-        self.cmudict_path = f'{"./resources/app" if self.PROD else "."}/python/fastpitch1_1/cmudict/cmudict-0.7b'
+        self.cmudict_path = f'{"./resources/app" if self.PROD else "."}/python/fastpitch1_1/cmudict/cmudict-0.7b.txt'
         self.gpus = gpus
 
         self.pretrained_ckpt_male = f'{"./resources/app" if self.PROD else "."}/python/fastpitch1_1/pretrained_models/f4_nate_FastPitch_checkpoint_5760_67000.pt'
@@ -1243,7 +1243,7 @@ if __name__ == '__main__':
             torch.cuda.empty_cache()
 
             TRAINER = FastPitchTrainer(None, PROD=False, device=gpus, models_manager=None)
-            TRAINER.cmudict_path = f'./cmudict/cmudict-0.7b'
+            TRAINER.cmudict_path = f'./cmudict/cmudict-0.7b.txt'
 
             bs = 32 #args.batch_size
 
