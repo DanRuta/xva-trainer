@@ -242,10 +242,42 @@ const tools = {
         inputDirectory: `${window.path}/python/transcribe/input`,
         outputDirectory: `${window.path}/python/transcribe/output/`,
         inputFileType: "folder",
+        isMultiProcessed: false,
         setupFn: (taskId) => {
             window.tools_state.toolSettings["transcribe"] = window.tools_state.toolSettings["transcribe"] || {}
             window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = false
             window.tools_state.toolSettings["transcribe"].language = "en"
+
+            const ckbxDescription = createElem("div", "Use multi-processing")
+            const ckbx = createElem("input", {type: "checkbox"})
+            ckbx.style.height = "20px"
+            ckbx.style.width = "20px"
+
+            window.tools_state.toolSettings["transcribe"] = window.tools_state.toolSettings["transcribe"] || {}
+            window.tools_state.toolSettings["transcribe"].useMP = false
+
+            ckbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["transcribe"].useMP = ckbx.checked
+            })
+            const rowItemUseMp = createElem("div", createElem("div", ckbxDescription), createElem("div", ckbx))
+
+
+            const transcribeMPworkersDescription = createElem("div", "Number of processes (Set low - quite RAM intense)")
+            const transcribeMPworkersInput = createElem("input", {type: "number"})
+            transcribeMPworkersInput.style.width = "70%"
+            transcribeMPworkersInput.value = "2"
+            transcribeMPworkersInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["transcribe"].useMP_num_workers = transcribeMPworkersInput.value
+            })
+            const rowItemtranscribeMPworkersInputs = createElem("div", transcribeMPworkersInput)
+            rowItemtranscribeMPworkersInputs.style.flexDirection = "row"
+            const rowItemtranscribeMPworkers = createElem("div", transcribeMPworkersDescription, rowItemtranscribeMPworkersInputs)
+            window.tools_state.toolSettings["transcribe"].useMP_num_workers = transcribeMPworkersInput.value
+
+
+
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp, rowItemtranscribeMPworkers)
+            toolDescription.appendChild(container)
         }
     },
     "WER transcript evaluation": {

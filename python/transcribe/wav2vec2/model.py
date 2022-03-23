@@ -22,7 +22,8 @@ class Wav2Vec2(object):
 
     def init_model (self, language):
 
-        self.logger.info(f'Loading Wav2Vec2 model for language: {self.language}')
+        if self.logger is not None:
+            self.logger.info(f'Loading Wav2Vec2 model for language: {self.language}')
 
         self.processor = Wav2Vec2Processor.from_pretrained(f'{"./resources/app" if self.PROD else "."}/python/transcribe/wav2vec2/{self.language}', local_files_only=True)
         self.model = Wav2Vec2ForCTC.from_pretrained(f'{"./resources/app" if self.PROD else "."}/python/transcribe/wav2vec2/{self.language}', local_files_only=True)
@@ -33,11 +34,14 @@ class Wav2Vec2(object):
 
 
     def infer (self, audiopath):
-        stream = ffmpeg.input(audiopath)
-        ffmpeg_options = {"ar": "16000", "ac": "1"}
-        stream = ffmpeg.output(stream, audiopath.replace(".wav", "_16khz.wav"), **ffmpeg_options)
-        out, err = (ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, overwrite_output=True))
-        audio_input, sample_rate = sf.read(audiopath.replace(".wav", "_16khz.wav"))
+        if "_16khz.wav" not in audiopath:
+            stream = ffmpeg.input(audiopath)
+            ffmpeg_options = {"ar": "16000", "ac": "1"}
+            stream = ffmpeg.output(stream, audiopath.replace(".wav", "_16khz.wav"), **ffmpeg_options)
+            out, err = (ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, overwrite_output=True))
+            audiopath = audiopath.replace(".wav", "_16khz.wav")
+
+        audio_input, sample_rate = sf.read(audiopath)
 
         # Tokenize
         input_values = self.processor(audio_input, sample_rate=sample_rate, return_tensors="pt", padding="longest").input_values

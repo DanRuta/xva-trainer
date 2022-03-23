@@ -4,24 +4,104 @@ import shutil
 import json
 import traceback
 
-import faiss
-from pathlib import Path
-import numpy as np
-import sklearn
+# import faiss
+# from pathlib import Path
+# import numpy as np
+# import sklearn
 
 # Not a model, but it was easier to just integrate the code this way
 
+import ffmpeg
+
 # Temporary
-import torch
+# import torch
 # def returnFalse():
 #     return False
 # torch.cuda.is_available = returnFalse
 
 # Transcription
-from python.transcribe.wav2vec2.model import Wav2Vec2
+
 # Punctuation restoration
 # from python.transcribe.NLP_Toolkit.nlptoolkit.utils.config import Config
 # from python.transcribe.NLP_Toolkit.nlptoolkit.punctuation_restoration.infer import infer_from_trained
+
+
+import multiprocessing as mp
+
+def transcribeTask (data):
+    [language, PROD, files] = data
+    transcripts = []
+
+    from python.transcribe.wav2vec2.model import Wav2Vec2
+    wav2vec = Wav2Vec2(None, PROD, "cpu", None, language)
+
+    for file_data in files:
+        [new_name, fpath] = file_data
+        transcript = wav2vec.infer(fpath)
+
+        if language=="en":
+            transcript = (" "+transcript.lower()+" ")\
+                .replace(" on't ", " don't ")\
+                .replace(" on't ", " don't ")\
+                .replace(" do n't ", " don't ")\
+                .replace(" i 'm ", " i'm ")\
+                .replace('"', "")\
+                .replace("hasn '. T", "hansn't")\
+                .replace("hasn '. t", "hansn't")\
+                .replace("you 've", "you've")\
+                .replace("you 're", "you're")\
+                .replace("does n't", "doesn't")\
+                .replace(" will' ", " we'll ")\
+                .replace("i don '", "i don't")\
+                .replace("it ' ", "it's")\
+                .replace(" '", "'")\
+                .replace("i,'ve' ", "i've")\
+                .replace("would n't", "wouldn't")\
+                .replace("ca n't", "can't")\
+                .replace("that,'s", "that's")\
+                .replace("they ve", "they've")\
+                .replace("we,'re", "we're")\
+                .replace("did n't", "didn't")\
+                .replace(" wo n't ", " won't ")\
+                .replace(" is n't ", " isn't ")\
+                .replace(" should n't ", " shouldn't ")\
+                .replace("it s ", "it's ")\
+                .replace(" have n't ", " haven't ")\
+                .replace(" was n't ", " wasn't ")\
+                .replace(" there s ", " there's ")\
+                .replace(" are n't ", " aren't ")\
+                .replace(" ai n't ", " ain't ")\
+                .replace(" i ve ", " i've ")\
+                .replace(" was nt ", " wasn't ")\
+                .replace(" didn t ", " didn't ")\
+                .replace(" weren t ", " weren't ")\
+                .replace(" you re ", " you're ")\
+                .replace(" ddon't ", " don't ")\
+                .strip()
+        else:
+            transcript = transcript.lower().strip()
+
+        transcript = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".") or transcript.endswith(",") else f'{transcript}.'
+        transcript_punct = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".")  or transcript.endswith(",") else f'{transcript}.'
+        transcripts.append([new_name, transcript_punct])
+
+    return transcripts
+
+
+
+def formatTask (data):
+    [inPath, outPath, formatting_hz, ffmpeg_path] = data
+
+    try:
+        stream = ffmpeg.input(inPath)
+        ffmpeg_options = {"ar": formatting_hz, "ac": 1} # 22050Hz mono
+        stream = ffmpeg.output(stream, outPath, **ffmpeg_options)
+        out, err = (ffmpeg.run(stream, cmd=ffmpeg_path, capture_stdout=True, capture_stderr=True, overwrite_output=True))
+    except ffmpeg.Error as e:
+        return "ffmpeg err: "+ e.stderr.decode('utf8')
+    except:
+        return traceback.format_exc()
+
 
 class Wav2Vec2PlusPuncTranscribe(object):
     def __init__(self, logger, PROD, device, models_manager):
@@ -55,6 +135,8 @@ class Wav2Vec2PlusPuncTranscribe(object):
 
         if self.wav2vec:
             del self.wav2vec
+
+        from python.transcribe.wav2vec2.model import Wav2Vec2
         self.wav2vec = Wav2Vec2(self.logger, self.PROD, self.device, None, language)
         self.lazy_loaded = True
 
@@ -62,6 +144,9 @@ class Wav2Vec2PlusPuncTranscribe(object):
 
         ignore_existing_transcript = data["toolSettings"]["ignore_existing_transcript"] if "ignore_existing_transcript" in data["toolSettings"] else False
         language = data["toolSettings"]["language"] if "language" in data["toolSettings"] else "en"
+        useMP = data["toolSettings"]["useMP"] if "useMP" in data["toolSettings"].keys() else False
+        useMP_num_workers = int(data["toolSettings"]["useMP_num_workers"]) if "useMP_num_workers" in data["toolSettings"].keys() else 2
+        processes = max(1, int(mp.cpu_count()/2)-5) # TODO, figure out why more processes break the websocket
 
         try:
             if websocket is not None:
@@ -82,7 +167,6 @@ class Wav2Vec2PlusPuncTranscribe(object):
         else:
             self.logger.info("No websocket for: Preparing data...")
 
-
         finished_transcript = {}
 
         # Check any existing transcriptions, and use them instead of generating new ones
@@ -102,78 +186,142 @@ class Wav2Vec2PlusPuncTranscribe(object):
 
         input_files = [f'{inPath}/{file}' for file in list(os.listdir(inPath)) if ".wav" in file and "_16khz.wav" not in file]
 
+        if useMP:
+            input_paths = input_files
+            ffmpeg_path = f'{"./resources/app" if self.PROD else "."}/python/ffmpeg.exe'
+
+            workItems = []
+            for ip, fpath in enumerate(input_paths):
+                workItems.append([fpath, fpath.replace(".wav", "_16khz.wav"), 16000, ffmpeg_path])
+
+            workers = processes if processes>0 else max(1, mp.cpu_count()-1)
+            workers = min(len(workItems), workers)
+
+            self.logger.info("[mp ffmpeg] workers: "+str(workers))
+
+            pool = mp.Pool(workers)
+            results = pool.map(formatTask, workItems)
+            pool.close()
+            pool.join()
+
+            errs = [items for items in results if items is not None]
+
+            errs = []
+            input_files_new = []
+            for ii, items in enumerate(results):
+                if items is None:
+                    input_files_new.append(input_paths[ii].replace(".wav", "_16khz.wav"))
+
+            input_files = input_files_new
+            if len(errs):
+                self.logger.info(errs)
+
         try:
-            for fi, file in enumerate(input_files):
 
-                if fi%25==0 and websocket is not None:
-                    await websocket.send(json.dumps({"key": "task_info", "data": f'Transcribing audio files: {fi+1}/{len(input_files)}  ({(int(fi+1)/len(input_files)*100*100)/100}%)  - {file.split("/")[-1]} '}))
-                else:
-                    self.logger.info("No websocket for: Transcribing audio files...")
+            self.logger.info(f'Transcribing {len(input_files)} files...')
 
-                new_name = file.split("/")[-1].replace(".wem", "") # Helps avoid some issues, later down the line
-                if new_name in list(finished_transcript.keys()):
-                    continue
+            if useMP:
+                num_workers = useMP_num_workers
+                workItems = [[language, self.PROD, []] for _ in range(num_workers)]
+                for fi, file in enumerate(input_files):
+                    new_name = file.split("/")[-1].replace(".wem", "") # Helps avoid some issues, later down the line
+                    if new_name in list(finished_transcript.keys()):
+                        continue
+                    workItems[fi%num_workers][2].append([new_name, file])
 
-                transcript = self.wav2vec.infer(file)
 
-                # Generate punctuation for the line, and apply some manual post-processing to fix common issues
-                # try:
-                #     # transcript_punct = self.inferer.infer_sentence(transcript)
-                #     # transcript = transcript_punct
-                #     pass
-                # except:
-                #     self.logger.info(traceback.format_exc())
-                #     # transcript_punct = transcript
+                self.logger.info("[mp ffmpeg] transcribe workers: "+str(num_workers))
 
-                if self.wav2vec.language=="en":
-                    transcript = (" "+transcript.lower()+" ")\
-                        .replace(" on't ", " don't ")\
-                        .replace(" on't ", " don't ")\
-                        .replace(" do n't ", " don't ")\
-                        .replace(" i 'm ", " i'm ")\
-                        .replace('"', "")\
-                        .replace("hasn '. T", "hansn't")\
-                        .replace("hasn '. t", "hansn't")\
-                        .replace("you 've", "you've")\
-                        .replace("you 're", "you're")\
-                        .replace("does n't", "doesn't")\
-                        .replace(" will' ", " we'll ")\
-                        .replace("i don '", "i don't")\
-                        .replace("it ' ", "it's")\
-                        .replace(" '", "'")\
-                        .replace("i,'ve' ", "i've")\
-                        .replace("would n't", "wouldn't")\
-                        .replace("ca n't", "can't")\
-                        .replace("that,'s", "that's")\
-                        .replace("they ve", "they've")\
-                        .replace("we,'re", "we're")\
-                        .replace("did n't", "didn't")\
-                        .replace(" wo n't ", " won't ")\
-                        .replace(" is n't ", " isn't ")\
-                        .replace(" should n't ", " shouldn't ")\
-                        .replace("it s ", "it's ")\
-                        .replace(" have n't ", " haven't ")\
-                        .replace(" was n't ", " wasn't ")\
-                        .replace(" there s ", " there's ")\
-                        .replace(" are n't ", " aren't ")\
-                        .replace(" ai n't ", " ain't ")\
-                        .replace(" i ve ", " i've ")\
-                        .replace(" was nt ", " wasn't ")\
-                        .replace(" didn t ", " didn't ")\
-                        .replace(" weren t ", " weren't ")\
-                        .replace(" you re ", " you're ")\
-                        .replace(" ddon't ", " don't ")\
-                        .strip()
-                else:
-                    transcript = transcript.lower().strip()
+                self.logger.info(f'Loading Wav2Vec2 model for language: {language}')
 
-                transcript = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".") or transcript.endswith(",") else f'{transcript}.'
-                transcript_punct = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".")  or transcript.endswith(",") else f'{transcript}.'
-                finished_transcript[new_name] = transcript_punct
-        except KeyboardInterrupt :
+                pool = mp.Pool(workers)
+                results = pool.map(transcribeTask, workItems)
+                pool.close()
+                pool.join()
+
+                for result in results:
+                    for item in result:
+                        [new_name, transcript] = item
+                        finished_transcript[new_name] = transcript
+
+            else:
+
+                try:
+                    for fi, file in enumerate(input_files):
+
+                        if fi%25==0 and websocket is not None:
+                            await websocket.send(json.dumps({"key": "task_info", "data": f'Transcribing audio files: {fi+1}/{len(input_files)}  ({(int(fi+1)/len(input_files)*100*100)/100}%)  - {file.split("/")[-1]} '}))
+
+                        new_name = file.split("/")[-1].replace(".wem", "") # Helps avoid some issues, later down the line
+                        if new_name in list(finished_transcript.keys()):
+                            continue
+
+                        transcript = self.wav2vec.infer(file)
+
+                        # Generate punctuation for the line, and apply some manual post-processing to fix common issues
+                        # try:
+                        #     # transcript_punct = self.inferer.infer_sentence(transcript)
+                        #     # transcript = transcript_punct
+                        #     pass
+                        # except:
+                        #     self.logger.info(traceback.format_exc())
+                        #     # transcript_punct = transcript
+
+                        if self.wav2vec.language=="en":
+                            transcript = (" "+transcript.lower()+" ")\
+                                .replace(" on't ", " don't ")\
+                                .replace(" on't ", " don't ")\
+                                .replace(" do n't ", " don't ")\
+                                .replace(" i 'm ", " i'm ")\
+                                .replace('"', "")\
+                                .replace("hasn '. T", "hansn't")\
+                                .replace("hasn '. t", "hansn't")\
+                                .replace("you 've", "you've")\
+                                .replace("you 're", "you're")\
+                                .replace("does n't", "doesn't")\
+                                .replace(" will' ", " we'll ")\
+                                .replace("i don '", "i don't")\
+                                .replace("it ' ", "it's")\
+                                .replace(" '", "'")\
+                                .replace("i,'ve' ", "i've")\
+                                .replace("would n't", "wouldn't")\
+                                .replace("ca n't", "can't")\
+                                .replace("that,'s", "that's")\
+                                .replace("they ve", "they've")\
+                                .replace("we,'re", "we're")\
+                                .replace("did n't", "didn't")\
+                                .replace(" wo n't ", " won't ")\
+                                .replace(" is n't ", " isn't ")\
+                                .replace(" should n't ", " shouldn't ")\
+                                .replace("it s ", "it's ")\
+                                .replace(" have n't ", " haven't ")\
+                                .replace(" was n't ", " wasn't ")\
+                                .replace(" there s ", " there's ")\
+                                .replace(" are n't ", " aren't ")\
+                                .replace(" ai n't ", " ain't ")\
+                                .replace(" i ve ", " i've ")\
+                                .replace(" was nt ", " wasn't ")\
+                                .replace(" didn t ", " didn't ")\
+                                .replace(" weren t ", " weren't ")\
+                                .replace(" you re ", " you're ")\
+                                .replace(" ddon't ", " don't ")\
+                                .strip()
+                        else:
+                            transcript = transcript.lower().strip()
+
+                        transcript = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".") or transcript.endswith(",") else f'{transcript}.'
+                        transcript_punct = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".")  or transcript.endswith(",") else f'{transcript}.'
+                        finished_transcript[new_name] = transcript_punct
+                except KeyboardInterrupt:
+                    raise
+                except:
+                    self.logger.info(f'file: {file}')
+                    self.logger.info(traceback.format_exc())
+                    pass
+
+        except KeyboardInterrupt:
             raise
         except:
-            self.logger.info(f'file: {file}')
             self.logger.info(traceback.format_exc())
             pass
 
