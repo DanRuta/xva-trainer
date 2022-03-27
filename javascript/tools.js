@@ -354,6 +354,15 @@ const tools = {
 }
 
 
+// Brute force progress indicator, for when the WebSockets don't work
+setInterval(() => {
+    if (window.tools_state.taskId && fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
+        let percentDone = parseFloat(fs.readFileSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`, "utf8"))
+        toolProgressInfo.innerHTML = `${parseInt(percentDone*100)/100}%`
+    } else {
+        toolProgressInfo.innerHTML = ""
+    }
+}, 1000)
 
 
 window.tools_state = {
@@ -395,6 +404,10 @@ Object.keys(tools).sort().forEach(toolName => {
         window.tools_state.currentFileElem = toolsCurrentFile
         window.tools_state.isMultiProcessed = false
 
+        try {
+            fs.unlinkSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)
+        } catch (e) {}
+
         if (tool.inputDirectory2) {
             toolsOpenInput2.style.display = "inline-block"
         } else {
@@ -404,7 +417,6 @@ Object.keys(tools).sort().forEach(toolName => {
         if (tool.setupFn) {
             tool.setupFn(tool.taskId)
         }
-
     })
     toolsList.appendChild(button)
 })

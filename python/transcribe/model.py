@@ -29,13 +29,13 @@ import ffmpeg
 import multiprocessing as mp
 
 def transcribeTask (data):
-    [language, PROD, files] = data
+    [language, PROD, worker_i, files] = data
     transcripts = []
 
     from python.transcribe.wav2vec2.model import Wav2Vec2
     wav2vec = Wav2Vec2(None, PROD, "cpu", None, language)
 
-    for file_data in files:
+    for fdi, file_data in enumerate(files):
         [new_name, fpath] = file_data
         transcript = wav2vec.infer(fpath)
 
@@ -84,6 +84,10 @@ def transcribeTask (data):
         transcript = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".") or transcript.endswith(",") else f'{transcript}.'
         transcript_punct = transcript if transcript.endswith("?") or transcript.endswith("!") or transcript.endswith(".")  or transcript.endswith(",") else f'{transcript}.'
         transcripts.append([new_name, transcript_punct])
+
+        if worker_i==0 and fdi%3==0:
+            with open(f'{"./resources/app" if PROD else "."}/python/transcribe/.progress.txt', "w+") as f:
+                f.write(f'{(int(fdi+1)/len(files)*100*100)/100}')
 
     return transcripts
 
@@ -149,8 +153,13 @@ class Wav2Vec2PlusPuncTranscribe(object):
         processes = max(1, int(mp.cpu_count()/2)-5) # TODO, figure out why more processes break the websocket
 
         try:
+            os.remove(f'{"./resources/app" if self.PROD else "."}/python/transcribe/.progress.txt')
+        except:
+            pass
+
+        try:
             if websocket is not None:
-                await websocket.send(json.dumps({"key": "task_info", "data": f'Initializing...'}))
+                await websocket.send(json.dumps({"key": "task_info", "data": f'Transcribing... (can be quite slow)'}))
 
             self.lazy_load_models(language)
 
@@ -161,11 +170,6 @@ class Wav2Vec2PlusPuncTranscribe(object):
             self.logger.info(traceback.format_exc())
             return
 
-
-        if websocket is not None:
-            await websocket.send(json.dumps({"key": "task_info", "data": f'Preparing data...'}))
-        else:
-            self.logger.info("No websocket for: Preparing data...")
 
         finished_transcript = {}
 
@@ -222,12 +226,12 @@ class Wav2Vec2PlusPuncTranscribe(object):
 
             if useMP:
                 num_workers = useMP_num_workers
-                workItems = [[language, self.PROD, []] for _ in range(num_workers)]
+                workItems = [[language, self.PROD, _, []] for _ in range(num_workers)]
                 for fi, file in enumerate(input_files):
                     new_name = file.split("/")[-1].replace(".wem", "") # Helps avoid some issues, later down the line
                     if new_name in list(finished_transcript.keys()):
                         continue
-                    workItems[fi%num_workers][2].append([new_name, file])
+                    workItems[fi%num_workers][3].append([new_name, file])
 
 
                 self.logger.info("[mp ffmpeg] transcribe workers: "+str(num_workers))
@@ -238,6 +242,11 @@ class Wav2Vec2PlusPuncTranscribe(object):
                 results = pool.map(transcribeTask, workItems)
                 pool.close()
                 pool.join()
+                try:
+                    os.remove(f'{"./resources/app" if self.PROD else "."}/python/transcribe/.progress.txt')
+                except:
+                    pass
+
 
                 for result in results:
                     for item in result:
@@ -249,8 +258,9 @@ class Wav2Vec2PlusPuncTranscribe(object):
                 try:
                     for fi, file in enumerate(input_files):
 
-                        if fi%25==0 and websocket is not None:
-                            await websocket.send(json.dumps({"key": "task_info", "data": f'Transcribing audio files: {fi+1}/{len(input_files)}  ({(int(fi+1)/len(input_files)*100*100)/100}%)  - {file.split("/")[-1]} '}))
+                        if fi%3==0 and websocket is not None:
+                            with open(f'{"./resources/app" if self.PROD else "."}/python/transcribe/.progress.txt', "w+") as f:
+                                f.write(f'{(int(fi+1)/len(input_files)*100*100)/100}')
 
                         new_name = file.split("/")[-1].replace(".wem", "") # Helps avoid some issues, later down the line
                         if new_name in list(finished_transcript.keys()):
@@ -341,6 +351,10 @@ class Wav2Vec2PlusPuncTranscribe(object):
         to_delete = [f'{inPath}/{file}' for file in list(os.listdir(inPath)) if "_16khz.wav" in file]
         for fpath in to_delete:
             os.remove(fpath)
+        try:
+            os.remove(f'{"./resources/app" if self.PROD else "."}/python/transcribe/.progress.txt')
+        except:
+            pass
 
 
 
