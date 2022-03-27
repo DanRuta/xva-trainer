@@ -3,9 +3,11 @@
 xVATrainer is the companion app to xVASynth, the AI text-to-speech app using video game voices. xVATrainer is used for creating the voice models for xVASynth, and for curating and pre-processing the datasets used for training these models. With this tool, you can provide new voices for mod authors to use in their projects.
 
 v1.0 Showcase/overview:
+
+
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=PXv_SeTWk2M
 " target="_blank"><img src="https://img.youtube.com/vi/PXv_SeTWk2M/0.jpg"
-alt="xVASynth YouTube demo" width="240" height="180" border="10" /></a>
+alt="xVASynth YouTube demo" width="480" height="360" border="10" /></a>
 
 Links:
 [Steam](https://store.steampowered.com/app/1922750/xVATrainer/)
