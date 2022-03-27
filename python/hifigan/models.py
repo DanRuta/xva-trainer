@@ -103,8 +103,14 @@ class Generator(torch.nn.Module):
         self.ups.apply(init_weights)
         self.conv_post.apply(init_weights)
 
-    def forward(self, x):
+        if h.USE_EMB_CONDITIONING:
+            cond_channels = 512 # SE encoder
+            self.cond_layer = nn.Conv1d(cond_channels, h.upsample_initial_channel, 1)
+
+    def forward(self, x, cond_emb=None):
         x = self.conv_pre(x)
+        if hasattr(self, "cond_layer"):
+            x = x + self.cond_layer(cond_emb)
         for i in range(self.num_upsamples):
             x = F.leaky_relu(x, LRELU_SLOPE)
             x = self.ups[i](x)

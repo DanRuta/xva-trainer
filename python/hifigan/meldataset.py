@@ -305,8 +305,10 @@ def get_dataset_filelist(input_training_file, input_wavs_dir, dm=None):
 class MelDataset(torch.utils.data.Dataset):
     def __init__(self, training_files, segment_size, n_fft, num_mels,
                  hop_size, win_size, sampling_rate,  fmin, fmax, split=True, shuffle=True, n_cache_reuse=1,
-                 device=None, fmax_loss=None):
+                 device=None, fmax_loss=None, h=None):
         self.audio_files = training_files
+        self.h = h
+        self.USE_EMB_CONDITIONING = self.h is not None and self.h.USE_EMB_CONDITIONING
         random.seed(1234)
         if shuffle:
             random.shuffle(self.audio_files)
@@ -354,7 +356,11 @@ class MelDataset(torch.utils.data.Dataset):
         mel = mel_spectrogram(audio, self.n_fft, self.num_mels, self.sampling_rate, self.hop_size, self.win_size, self.fmin, self.fmax, center=False)
         mel_loss = mel_spectrogram(audio, self.n_fft, self.num_mels, self.sampling_rate, self.hop_size, self.win_size, self.fmin, self.fmax_loss, center=False)
 
-        return (mel.squeeze(), audio.squeeze(0), filename, mel_loss.squeeze())
+        cond_emb = 0
+        if self.USE_EMB_CONDITIONING:
+            cond_emb = np.load(filename.replace("/wavs/", "/cond_embs/").replace(".wav", ".npy"))
+
+        return (mel.squeeze(), audio.squeeze(0), filename, mel_loss.squeeze(), cond_emb)
 
 
 

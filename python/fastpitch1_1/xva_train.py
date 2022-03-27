@@ -111,7 +111,7 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         raise
     except RuntimeError as e:
         trainer.running = False
-        stageFinished = trainer.model.training_stage - 1
+        stageFinished = trainer.force_stage or trainer.model.training_stage - 1
         try:
             del trainer.train_loader
             del trainer.dataloader_iterator
@@ -129,7 +129,10 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             data["batch_size"] = data["batch_size"] - 5
             return await handleTrainer(models_manager, data, websocket, gpus)
         elif trainer.JUST_FINISHED_STAGE:
-            trainer.print_and_log(f'Finished training stage {stageFinished}...\n', save_to_file=trainer.dataset_output)
+            if trainer.force_stage:
+                trainer.print_and_log(f'Moving to HiFi-GAN...\n', save_to_file=trainer.dataset_output)
+            else:
+                trainer.print_and_log(f'Finished training stage {stageFinished}...\n', save_to_file=trainer.dataset_output)
             trainer.JUST_FINISHED_STAGE = False
             trainer.is_init = False
             del trainer
@@ -138,7 +141,7 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             except:
                 pass
             gc.collect()
-            if stageFinished==4:
+            if stageFinished==4 or stageFinished==5:
                 models_manager.models_bank["fastpitch1_1"] = "move to hifi"
                 return "move to hifi"
             else:
@@ -327,7 +330,7 @@ class FastPitchTrainer(object):
 
         # Load checkpoint
         self.model.training_stage, start_epoch, start_iter, avg_loss_per_epoch = self.load_checkpoint(ckpt_path)
-        if self.model.training_stage==5:
+        if self.model.training_stage==5 or self.force_stage==5:
             self.END_OF_TRAINING = True
             self.JUST_FINISHED_STAGE = True
             raise

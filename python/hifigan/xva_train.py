@@ -213,6 +213,7 @@ class HiFiTrainer(object):
         self.h = AttrDict(json_config)
         self.h.batch_size = int(self.batch_size * 1.5)
         self.h.num_workers = self.workers
+        self.h.USE_EMB_CONDITIONING = False
 
         torch.cuda.manual_seed(self.h.seed)
 
@@ -297,7 +298,7 @@ class HiFiTrainer(object):
 
         trainset = MelDataset(training_filelist, self.h.segment_size, self.h.n_fft, self.h.num_mels,
                               self.h.hop_size, self.h.win_size, self.h.sampling_rate, self.h.fmin, self.h.fmax, n_cache_reuse=0,
-                              shuffle=True, fmax_loss=self.h.fmax_for_loss, device=self.device)
+                              shuffle=True, fmax_loss=self.h.fmax_for_loss, device=self.device, h=self.h)
 
         # TODO, fix the script randomly dying at set interval when num_workers>0
         # self.train_loader = DataLoader(trainset, num_workers=self.h.num_workers, shuffle=True,
@@ -452,7 +453,7 @@ class HiFiTrainer(object):
         self.msd.zero_grad(set_to_none=True)
 
         start_b = time.time()
-        x, y, _, y_mel = batch
+        x, y, _, y_mel, _ = batch
         del batch
         x = torch.autograd.Variable(x.to(self.device, non_blocking=True))
         y = torch.autograd.Variable(y.to(self.device, non_blocking=True))
