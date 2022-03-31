@@ -356,12 +356,15 @@ const tools = {
 
 // Brute force progress indicator, for when the WebSockets don't work
 setInterval(() => {
-    if (window.tools_state.taskId && fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
-        let percentDone = parseFloat(fs.readFileSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`, "utf8"))
-        toolProgressInfo.innerHTML = `${parseInt(percentDone*100)/100}%`
-    } else {
-        toolProgressInfo.innerHTML = ""
+    if (["transcribe"].includes(window.tools_state.taskId)) {
+        if (window.tools_state.taskId && fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
+            let percentDone = parseFloat(fs.readFileSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`, "utf8"))
+            toolProgressInfo.innerHTML = `${parseInt(percentDone*100)/100}%`
+        } else {
+            toolProgressInfo.innerHTML = ""
+        }
     }
+
 }, 1000)
 
 
@@ -403,6 +406,8 @@ Object.keys(tools).sort().forEach(toolName => {
         window.tools_state.infoElem = toolsInfo
         window.tools_state.currentFileElem = toolsCurrentFile
         window.tools_state.isMultiProcessed = false
+
+        toolProgressInfo.innerHTML = ""
 
         try {
             fs.unlinkSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)
@@ -514,6 +519,10 @@ const doNextTaskItem = () => {
 
     if (window.tools_state.taskFiles[window.tools_state.taskFileIndex].length) {
         window.tools_state.currentFileElem.innerHTML = `File: ${window.tools_state.taskFiles[window.tools_state.taskFileIndex]}`
+
+        let percentDone = parseInt(window.tools_state.taskFileIndex / window.tools_state.taskFiles.length * 100 * 100) / 100
+        toolProgressInfo.innerHTML = `${percentDone}%`
+
     } else {
         window.tools_state.currentFileElem.innerHTML = ""
     }
