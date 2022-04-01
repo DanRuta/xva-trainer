@@ -332,6 +332,8 @@ window.refreshTrainingQueueList = () => {
 
         configButton.addEventListener("click", () => {
             configAnExistingItem = true
+            window.training_state.datasetsQueue[di].dataset_path = window.training_state.datasetsQueue[di].dataset_path.replaceAll(/\\/, "/")
+            window.training_state.datasetsQueue[di].output_path = window.training_state.datasetsQueue[di].output_path.replaceAll(/\\/, "/")
             window.showConfigMenu(window.training_state.datasetsQueue[di], di)
         })
     })
@@ -594,6 +596,9 @@ trainingAddConfigOutputPathInput.addEventListener("keyup", e => {
     trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/")
 })
 acceptConfig.addEventListener("click", () => {
+
+    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/")
+    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/")
 
     if (!trainingAddConfigDatasetPathInput.value.trim().length) {
         return window.errorModal("You need to specify where your dataset is located.", queueItemConfigModalContainer)

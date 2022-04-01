@@ -1368,7 +1368,7 @@ window.setupModal(patreonIcon, patreonContainer, () => {
 window.setupModal(btn_trainmodel, trainContainer, () => {
     if (window.appState.currentDataset) {
         setTimeout(() => {
-            window.showConfigMenu(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}`)
+            window.showConfigMenu(`${window.userSettings.datasetsPath.replaceAll(/\\/, "/")}/${window.appState.currentDataset}`)
         }, 500)
     }
 })
