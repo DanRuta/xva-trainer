@@ -11,13 +11,15 @@ import multiprocessing as mp
 
 
 def processingTask(workItem):
-    [inputPath, outputPath] = workItem
+    [ffmpeg_path, inputPath, outputPath] = workItem
 
     threshold = -40 # tweak based on signal-to-noise ratio
     interval = 1 # ms, increase to speed up
     max_silence = 300 / interval
 
     audio = AudioSegment.from_wav(inputPath)
+
+    AudioSegment.converter = ffmpeg_path
 
     # break into chunks
     chunks = [audio[i:i+interval] for i in range(0, len(audio), interval)]
@@ -64,6 +66,10 @@ class SilenceCutter(object):
 
         self.model = None
         self.isReady = True
+        self.ffmpeg_path = f'{"./resources/app" if self.PROD else "."}/python/ffmpeg.exe'
+
+        AudioSegment.ffmpeg = self.ffmpeg_path
+        AudioSegment.converter = self.ffmpeg_path
 
 
     def load_state_dict (self, ckpt_path, sd):
@@ -79,9 +85,11 @@ class SilenceCutter(object):
 
         inputDirectory, outputDirectory = data["inputDirectory"], data["outputDirectory"]
 
-        workItems = [[f'{inputDirectory}/{file_name}', f'{outputDirectory}/{file_name}'] for file_name in sorted(os.listdir(inputDirectory))]
+        workItems = [[self.ffmpeg_path, f'{inputDirectory}/{file_name}', f'{outputDirectory}/{file_name}'] for file_name in sorted(os.listdir(inputDirectory))]
+        AudioSegment.ffmpeg = self.ffmpeg_path
+        AudioSegment.converter = self.ffmpeg_path
 
-        workers = max(1, int(mp.cpu_count()/2)-5) # TODO
+        workers = max(1, int(mp.cpu_count()/2)-5) # TODO, figure out why more processes break the websocket
         workers = min(len(workItems), workers)
         self.logger.info("[mp silence_cutter] workers: "+str(workers))
 

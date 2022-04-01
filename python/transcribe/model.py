@@ -251,6 +251,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
                 for result in results:
                     for item in result:
                         [new_name, transcript] = item
+                        new_name = new_name.replace("_16khz", "")
                         finished_transcript[new_name] = transcript
 
             else:
@@ -265,6 +266,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
                         new_name = file.split("/")[-1].replace(".wem", "") # Helps avoid some issues, later down the line
                         if new_name in list(finished_transcript.keys()):
                             continue
+                        new_name = new_name.replace("_16khz", "")
 
                         transcript = self.wav2vec.infer(file)
 
