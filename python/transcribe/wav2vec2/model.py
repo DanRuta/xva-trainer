@@ -16,6 +16,8 @@ class Wav2Vec2(object):
 
         torch.backends.cudnn.benchmark = True
 
+        self.ffmpeg_path = f'{"./resources/app" if self.PROD else "."}/python/ffmpeg.exe'
+
         self.init_model(language)
         self.isReady = True
 
@@ -38,7 +40,7 @@ class Wav2Vec2(object):
             stream = ffmpeg.input(audiopath)
             ffmpeg_options = {"ar": "16000", "ac": "1"}
             stream = ffmpeg.output(stream, audiopath.replace(".wav", "_16khz.wav"), **ffmpeg_options)
-            out, err = (ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, overwrite_output=True))
+            out, err = (ffmpeg.run(stream, cmd=self.ffmpeg_path, capture_stdout=True, capture_stderr=True, overwrite_output=True))
             audiopath = audiopath.replace(".wav", "_16khz.wav")
 
         audio_input, sample_rate = sf.read(audiopath)
