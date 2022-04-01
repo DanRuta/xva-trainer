@@ -67,6 +67,6 @@ If you'd like to help improve xVATrainer, get in touch (eg an Issue, though best
 
 A current issue/bug is that I can't get the HiFi-GAN to train with num_workers>0, as the training always cuts out after a deterministic amount of time - maybe something to do with the training loop being inside a secondary thread (FastPitch works fine though). Help with this would be especially welcome.
 
-
+In a similar vein (and maybe caused by the same issue), I can only set tools' maximum number of multi-processing workers to just under half the total CPU thread count, else it can only run once, after which the app needs re-starting to use again.
 
 
