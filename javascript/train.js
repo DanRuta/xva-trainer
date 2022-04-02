@@ -417,7 +417,10 @@ window.updateTrainingGraphs = () => {
 
 const startTrackingFolder = (dataset_path, output_path) => {
     if (!Object.keys(window.training_state.dirs_watching).includes(output_path)) {
-        window.training_state.dirs_watching[output_path] = fs.watch(output_path, {recursive: false, persistent: true}, (eventType, fileName) => {
+        if (!fs.existsSync(output_path)) {
+            fs.mkdirSync(output_path)
+        }
+        const folderWatch = fs.watch(output_path, {recursive: false, persistent: true}, (eventType, fileName) => {
 
             if (window.training_state.currentlyViewedDataset==dataset_path && fileName=="training.log") {
                 window.updateTrainingLogText()
@@ -427,6 +430,7 @@ const startTrackingFolder = (dataset_path, output_path) => {
                 window.updateTrainingGraphs()
             }
         })
+        window.training_state.dirs_watching[output_path] = folderWatch
     }
 }
 
