@@ -10,12 +10,20 @@ import numpy as np
 if __name__ == '__main__':
     multiprocessing.freeze_support()
 
-    APP_VERSION = "1.0.2"
-
     PROD = False
     # PROD = True
     CPU_ONLY = False
     # CPU_ONLY = True
+
+    # Saves me having to do backend re-compilations for every little UI hotfix
+    with open(f'{"./resources/app" if PROD else "."}/javascript/script.js', encoding="utf8") as f:
+        lines = f.read().split("\n")
+        APP_VERSION = lines[1].split('"')[0]
+
+
+    SERVER_PORT = 8002
+    WEBSOCKET_PORT = 8001
+
 
 
 
@@ -110,6 +118,16 @@ if __name__ == '__main__':
 
     print("Models ready")
     logger.info("Models ready")
+
+    try:
+        with open(f'{"./resources/app" if PROD else "."}/ports.txt') as f:
+            lines = f.read().split("\n")
+            SERVER_PORT = int(lines[0].split(",")[1].strip())
+            WEBSOCKET_PORT = int(lines[1].split(",")[1].strip())
+    except:
+        logger.info(traceback.format_exc())
+        pass
+
 
     async def websocket_handler(websocket, path):
         async for message in websocket:
@@ -223,7 +241,7 @@ if __name__ == '__main__':
         try:
             logger.info("Starting websocket")
             get_or_create_eventloop()
-            start_server = websockets.serve(websocket_handler, "localhost", 8001)
+            start_server = websockets.serve(websocket_handler, "localhost", WEBSOCKET_PORT)
             loop = asyncio.get_event_loop()
             loop.run_until_complete(start_server)
             loop.run_forever()
@@ -333,7 +351,7 @@ if __name__ == '__main__':
                 logger.info(traceback.format_exc())
 
     try:
-        server = HTTPServer(("",8002), Handler)
+        server = HTTPServer(("",SERVER_PORT), Handler)
     except:
         with open("./DEBUG_server_error.txt", "w+") as f:
             f.write(traceback.format_exc())
@@ -342,14 +360,18 @@ if __name__ == '__main__':
     try:
         logger.info("About to start websocket")
         _thread.start_new_thread(startWebSocket, ())
-        logger.info("Started websocket")
+        logger.info(f'Started websocket | Port: {WEBSOCKET_PORT}')
 
         # plugin_manager.run_plugins(plist=plugin_manager.plugins["start"]["post"], event="post start", data=None)
         print("Server ready")
-        logger.info("Server ready")
+        logger.info(f'Server ready | Port: {SERVER_PORT}')
         server.serve_forever()
 
 
     except KeyboardInterrupt:
         pass
+    except:
+        with open("./DEBUG_websocket_server_error.txt", "w+") as f:
+            f.write(traceback.format_exc())
+        logger.info(traceback.format_exc())
     server.server_close()

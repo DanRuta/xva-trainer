@@ -1,20 +1,30 @@
 "use strict"
-
 window.appVersion = "1.0.2"
 app_version.innerHTML = "v"+window.appVersion
 window.PRODUCTION = module.filename.includes("resources")
 const path = PRODUCTION ? `${__dirname.replace(/\\/g,"/")}` : `${__dirname.replace(/\\/g,"/")}`
 window.path = path
 window.websocket_handlers = {}
-
 const fs = require("fs")
+
+window.SERVER_PORT = 8002
+window.WEBSOCKET_PORT = 8001
+try {
+    const lines = fs.readFileSync(`${path}/ports.txt`, "utf8").split("\n")
+    window.SERVER_PORT = parseInt(lines[0].split(",")[1].trim())
+    window.WEBSOCKET_PORT = parseInt(lines[1].split(",")[1].trim())
+} catch (e) {console.log(e)}
+console.log(`Server port: ${window.SERVER_PORT}`)
+console.log(`WebSocket port: ${window.WEBSOCKET_PORT}`)
+
+
 window.smi = require('node-nvidia-smi')
 const doFetch = require("node-fetch")
 const {exec} = require("child_process")
 const {shell, ipcRenderer} = require("electron")
 const {xVAAppLogger} = require("./javascript/appLogger.js")
 window.appLogger = new xVAAppLogger(`./app.log`, window.appVersion)
-window.appLogger.log(window.path)
+window.appLogger.log(`Ports | Server: ${window.SERVER_PORT} | WebSocket: ${window.WEBSOCKET_PORT}`)
 process.on(`uncaughtException`, data => window.appLogger.log(`uncaughtException: ${data}`))
 window.onerror = (err, url, lineNum) => window.appLogger.log(`onerror: ${err}`)
 require("./javascript/util.js")
@@ -43,7 +53,7 @@ ipcRenderer.send('updateDiscord', {})
 
 const initWebSocket = () => {
 
-    window.ws = new WebSocket("ws://localhost:8001")
+    window.ws = new WebSocket(`ws://localhost:${window.WEBSOCKET_PORT}`)
 
     ws.onopen = event => {
         console.log("WebSocket open")
@@ -714,7 +724,7 @@ window.refreshRecordsList = (dataset) => {
     const filteredRows = window.searchDatasetRows(window.datasets[window.appState.currentDataset].metadata)
     const numPages = Math.ceil(filteredRows.length/window.userSettings.paginationSize)
 
-    doFetch(`http://localhost:8002/getAudioLengthOfDir`, {
+    doFetch(`http://localhost:${window.SERVER_PORT}/getAudioLengthOfDir`, {
         method: "Post",
         body: JSON.stringify({
             directory: `${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs`

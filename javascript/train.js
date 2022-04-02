@@ -796,7 +796,7 @@ exportSubmitButton.addEventListener("click", () => {
 
 
     window.spinnerModal("Exporting...")
-    doFetch(`http://localhost:8002/exportWav`, {
+    doFetch(`http://localhost:${window.SERVER_PORT}/exportWav`, {
         method: "Post",
         body: JSON.stringify({
             fp_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`,

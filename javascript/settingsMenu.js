@@ -176,7 +176,7 @@ settings_installation.innerHTML = window.userSettings.installation=="cpu" ? `CPU
 setting_change_installation.innerHTML = window.userSettings.installation=="cpu" ? `Change to CPU+GPU` : `Change to CPU`
 setting_change_installation.addEventListener("click", () => {
     spinnerModal("Changing installation sever...")
-    doFetch(`http://localhost:8002/stopServer`, {
+    doFetch(`http://localhost:${window.SERVER_PORT}/stopServer`, {
         method: "Post",
         body: JSON.stringify({})
     }).then(r=>r.text()).then(console.log) // The server stopping should mean this never runs
@@ -187,7 +187,7 @@ setting_change_installation.addEventListener("click", () => {
             settings_installation.innerHTML = `GPU`
             setting_change_installation.innerHTML = `Change to CPU`
         } else {
-            doFetch(`http://localhost:8002/setDevice`, {
+            doFetch(`http://localhost:${window.SERVER_PORT}/setDevice`, {
                 method: "Post",
                 body: JSON.stringify({device: "cpu"})
             })
@@ -224,7 +224,7 @@ window.doWeirdServerStartupCheck = () => {
                         modelsPaths[key.split("_")[1]] = window.userSettings[key]
                     })
 
-                    doFetch(`http://localhost:8002/checkReady`, {
+                    doFetch(`http://localhost:${window.SERVER_PORT}/checkReady`, {
                         method: "Post",
                         body: JSON.stringify({
                             device: (window.userSettings.installation=="gpu")?"gpu":"cpu",
