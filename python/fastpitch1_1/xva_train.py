@@ -265,8 +265,7 @@ class FastPitchTrainer(object):
             ckpt_path = self.checkpoint
             self.print_and_log(f'Checkpoint: {ckpt_path}', save_to_file=self.dataset_output)
 
-        if self.amp:
-            self.print_and_log(f'FP16: {"Enabled" if self.amp else "Disabled"}', save_to_file=self.dataset_output)
+        self.print_and_log(f'FP16: {"Enabled" if self.amp else "Disabled"}', save_to_file=self.dataset_output)
 
 
         # Set-up start
@@ -662,7 +661,7 @@ class FastPitchTrainer(object):
 
             # Maybe TODO, make these configurable
             self.learning_rate = 0.1
-            self.amp = True
+            self.amp = data["use_amp"]=="true" if "use_amp" in data.keys() else True
 
             # Fixed
             self.weight_decay = 1e-6
