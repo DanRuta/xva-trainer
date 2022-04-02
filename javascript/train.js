@@ -790,43 +790,51 @@ exportSubmitButton.addEventListener("click", () => {
     if (!fs.existsSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`)) {
         return window.errorModal("A FastPitch1.1 model file was not found in the given checkpoints directory. Have you trained it yet?")
     }
-    if (!fs.existsSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)) {
-        return window.errorModal("A HiFi-GAN model file was not found in the given checkpoints directory. Have you trained it yet?")
+
+    const doTheRest = () => {
+        window.spinnerModal("Exporting...")
+        doFetch(`http://localhost:${window.SERVER_PORT}/exportWav`, {
+            method: "Post",
+            body: JSON.stringify({
+                fp_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`,
+                hg_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`,
+                out_path: `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.wav`
+            })
+        }).then(r=>r.text()).then((res) => {
+            console.log("Exporting res:", res)
+
+            // Copy over the resemblyzer embedding data, and export the .json metadata
+            const trainingJSON = JSON.parse(fs.readFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.json`, "utf8"))
+            const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
+            metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
+            metadataJSON.games[0].voiceId = window.appState.currentDataset
+            fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON, null, 4))
+
+            // Copy over the model files
+            fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.pt`)
+            fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)
+
+            if (res.length) {
+                window.appLogger.log(res)
+                window.errorModal(res)
+                window.createModal("error", `There was an issue with exporting the preview audio file:<br><br>${res}`).then(() => {
+                    exportModelContainer.click()
+                })
+            } else {
+                window.createModal("error", "Model exported successfully").then(() => {
+                    exportModelContainer.click()
+                })
+            }
+        })
     }
 
-
-    window.spinnerModal("Exporting...")
-    doFetch(`http://localhost:${window.SERVER_PORT}/exportWav`, {
-        method: "Post",
-        body: JSON.stringify({
-            fp_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`,
-            hg_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`,
-            out_path: `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.wav`
+    if (!fs.existsSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)) {
+        return window.confirmModal("A HiFi-GAN model file was not found in the given checkpoints directory. Have you trained it yet?<br>(You can export anyway, without the audio preview or HiFi-GAN vocoder, but this is not yet ready for publishing, and the quality will be lower)").then(resp => {
+            if (resp) {
+                doTheRest()
+            }
         })
-    }).then(r=>r.text()).then((res) => {
-        console.log("Exporting res:", res)
-
-        // Copy over the resemblyzer embedding data, and export the .json metadata
-        const trainingJSON = JSON.parse(fs.readFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.json`, "utf8"))
-        const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
-        metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
-        metadataJSON.games[0].voiceId = window.appState.currentDataset
-        fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON, null, 4))
-
-        // Copy over the model files
-        fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.pt`)
-        fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)
-
-        if (res.length) {
-            window.appLogger.log(res)
-            window.errorModal(res)
-            window.createModal("error", `There was an issue with exporting the preview audio file:<br><br>${res}`).then(() => {
-                exportModelContainer.click()
-            })
-        } else {
-            window.createModal("error", "Model exported successfully").then(() => {
-                exportModelContainer.click()
-            })
-        }
-    })
+    } else {
+        doTheRest()
+    }
 })
