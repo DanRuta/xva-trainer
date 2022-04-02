@@ -156,6 +156,8 @@ def load_filepaths_and_text(dataset_path, fnames, has_speakers=False, split="|",
 
                 # I should do more of the dm repeating, instead of the 13k repeating, as the 13k repeating will imbalance the data more.
 
+            if (actual_num_lines-nope)==0:
+                raise "No audio files were found in the dataset folder. Check your metadata.csv file, to see if the file names match what you have"
             dm *= 13000/(actual_num_lines-nope)
 
 
