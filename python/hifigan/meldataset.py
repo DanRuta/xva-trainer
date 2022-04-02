@@ -329,6 +329,7 @@ class MelDataset(torch.utils.data.Dataset):
 
         self.audio_cache = {}
         self.MAX_CACHE_ITEMS = 10000
+        self.MAX_CACHE_ITEMS = 5000
         self.audio_cache_count = 0
 
 
