@@ -2,5 +2,6 @@
     "1.0.0": "Initial release",
     "1.0.1": "- Fixed leftover '_16khz' in filenames in transcribe tool\n- Fixed global ffmpeg path reference-changed to bundled path\n- Fixed some path issues in the training config\n- Added specific error message for when no audio files are detected for training FastPitch\n- Flushed training graphs to file a bit more often",
     "1.0.2": "- Hotfix for HiFi-GAN training bug; Other HiFiGAN tweaks\n- Better dir watching support, for UI graph refreshing\n- More/Better error logging",
-    "1.0.3": "- Added training config toggle for FP16 use\n- Made base/websocket servers' ports configurable\n- Made the model export accept a choice to do without HiFi-GAN\n- Fixed bug in exporting inference"
+    "1.0.3": "- Added training config toggle for FP16 use\n- Made base/websocket servers' ports configurable\n- Made the model export accept a choice to do without HiFi-GAN\n- Fixed bug in exporting inference",
+    "1.0.4": "- Fixes for Export inference ffmpeg path\n- Lowered max cache size, to lower RAM use during training\n- Improved exporting task order priority"
 }

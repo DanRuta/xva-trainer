@@ -88,7 +88,7 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
 
         gc.collect()
         torch.cuda.empty_cache()
-        if "CUDA out of memory" in str(e):
+        if "CUDA out of memory" in str(e) or "PYTORCH_CUDA_ALLOC_CONF" in str(e):
             trainer.logger.info("CUDA out of memory")
             trainer.print_and_log(f'============= Reducing batch size from {trainer.batch_size} to {trainer.batch_size-5}', save_to_file=trainer.dataset_output)
             data["batch_size"] = data["batch_size"] - 5
