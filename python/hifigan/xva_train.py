@@ -293,7 +293,7 @@ class HiFiTrainer(object):
         input_training_file = f'{self.dataset_input}/metadata.csv'
         input_wavs_dir = f'{self.dataset_input}/wavs'
 
-        training_filelist, not_found, dm = get_dataset_filelist(input_training_file, input_wavs_dir)
+        training_filelist, not_found, dm = get_dataset_filelist(input_training_file, input_wavs_dir, use_embs=self.h.USE_EMB_CONDITIONING)
         self.print_and_log(f'Training items: {int(len(training_filelist)/dm)} | Data multiplier: {dm} | Not found: {not_found} | Total: {len(training_filelist)}', save_to_file=self.dataset_output)
 
         trainset = MelDataset(training_filelist, self.h.segment_size, self.h.n_fft, self.h.num_mels,

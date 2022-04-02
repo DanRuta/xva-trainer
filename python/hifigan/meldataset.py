@@ -265,7 +265,7 @@ def get_group_dataset_filelist(a, voice_dirs):
     print(f'training_files, {len(training_files)}')
     return training_files, None
 
-def get_dataset_filelist(input_training_file, input_wavs_dir, dm=None):
+def get_dataset_filelist(input_training_file, input_wavs_dir, dm=None, use_embs=False):
     with open(input_training_file, 'r', encoding='utf-8') as fi:
         training_files = []
         found = 0
@@ -278,7 +278,8 @@ def get_dataset_filelist(input_training_file, input_wavs_dir, dm=None):
                 if ".wav" not in fname:
                     fname = fname+".wav"
 
-                if os.path.exists(f'{input_wavs_dir}/{fname}'):
+                if os.path.exists(f'{input_wavs_dir}/{fname}') and (not use_embs or os.path.exists(f'{input_wavs_dir.replace("/wavs/", "/cond_embs/")}/{fname.replace(".wav", ".npy")}')):
+                # if os.path.exists(f'{input_wavs_dir}/{fname}'):
                     training_files.append(f'{input_wavs_dir}/{fname}')
                     found += 1
                 else:
@@ -298,7 +299,7 @@ def get_dataset_filelist(input_training_file, input_wavs_dir, dm=None):
         random.shuffle(training_files)
         training_files_total += training_files
 
-    print(f'training_files_total, {len(training_files_total)} ({len(training_files_total) / dm})')
+    # print(f'training_files_total, {len(training_files_total)} ({len(training_files_total) / dm})')
     return training_files_total, int(not_found), dm
 
 
@@ -327,6 +328,8 @@ class MelDataset(torch.utils.data.Dataset):
         self._cache_ref_count = 0
 
         self.audio_cache = {}
+        self.MAX_CACHE_ITEMS = 10000
+        self.audio_cache_count = 0
 
 
     def __getitem__(self, index):
@@ -343,7 +346,9 @@ class MelDataset(torch.utils.data.Dataset):
             audio = torch.FloatTensor(audio)
             audio = audio.unsqueeze(0)
 
-            self.audio_cache[filename] = audio
+            if self.audio_cache_count<self.MAX_CACHE_ITEMS:
+                self.audio_cache[filename] = audio
+                self.audio_cache_count += 1
 
         if self.split:
             if audio.size(1) >= self.segment_size:
