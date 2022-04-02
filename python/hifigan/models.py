@@ -315,6 +315,7 @@ class HiFi_GAN(object):
             data = f.read()
         json_config = json.loads(data)
         h = AttrDict(json_config)
+        h.USE_EMB_CONDITIONING = False
 
         self.model = Generator(h).to(self.device)
         self.isReady = True
