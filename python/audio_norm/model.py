@@ -9,7 +9,7 @@ from lib.ffmpeg_normalize._ffmpeg_normalize import FFmpegNormalize
 
 
 def normalizeTask (data):
-    [inPath, outPath, normalization_hz] = data
+    [ffmpeg_path, inPath, outPath, normalization_hz] = data
 
     sample_rate = normalization_hz
     ffmpeg_normalize = FFmpegNormalize(
@@ -36,9 +36,11 @@ def normalizeTask (data):
             output_format=None,
             dry_run=False,
             progress=False,
+            ffmpeg_exe=ffmpeg_path
         )
 
     try:
+        ffmpeg_normalize.ffmpeg_exe = ffmpeg_path
         ffmpeg_normalize.add_media_file(inPath, outPath)
         ffmpeg_normalize.run_normalization()
     except:
@@ -59,6 +61,7 @@ class AudioNormalizer(object):
 
         self.model = None
         self.isReady = True
+        self.ffmpeg_path = f'{"./resources/app" if self.PROD else "."}/python/ffmpeg.exe'
 
 
     def load_state_dict (self, ckpt_path, sd):
@@ -72,6 +75,7 @@ class AudioNormalizer(object):
 
 
     def normalize_sync(self, inPath, outputPath):
+
         ffmpeg_normalize = FFmpegNormalize(
                 normalization_type="ebu",
                 target_level=-23.0,
@@ -96,8 +100,10 @@ class AudioNormalizer(object):
                 output_format=None,
                 dry_run=False,
                 progress=False,
+                ffmpeg_exe=self.ffmpeg_path
             )
         try:
+            ffmpeg_normalize.ffmpeg_exe = self.ffmpeg_path
             ffmpeg_normalize.add_media_file(inPath, outputPath)
             ffmpeg_normalize.run_normalization()
         except:
@@ -121,7 +127,7 @@ class AudioNormalizer(object):
 
             workItems = []
             for ip, path in enumerate(input_paths):
-                workItems.append([path, output_paths[ip], normalization_hz])
+                workItems.append([self.ffmpeg_path, path, output_paths[ip], normalization_hz])
 
             workers = processes if processes>0 else max(1, mp.cpu_count()-1)
             workers = min(len(workItems), workers)
@@ -168,9 +174,11 @@ class AudioNormalizer(object):
                     output_format=None,
                     dry_run=False,
                     progress=False,
+                    ffmpeg_exe=self.ffmpeg_path
                 )
 
             try:
+                ffmpeg_normalize.ffmpeg_exe = self.ffmpeg_path
                 ffmpeg_normalize.add_media_file(inPath, outputPath)
                 ffmpeg_normalize.run_normalization()
             except:

@@ -63,9 +63,11 @@ class FFmpegNormalize:
         dry_run=False,
         debug=False,
         progress=False,
+        ffmpeg_exe=None
     ):
-        self.ffmpeg_exe = get_ffmpeg_exe()
-        self.has_loudnorm_capabilities = ffmpeg_has_loudnorm()
+        # self.ffmpeg_exe = get_ffmpeg_exe()
+        self.ffmpeg_exe = ffmpeg_exe
+        self.has_loudnorm_capabilities = ffmpeg_has_loudnorm(self.ffmpeg_exe)
 
         self.normalization_type = normalization_type
         if not self.has_loudnorm_capabilities and self.normalization_type == "ebu":

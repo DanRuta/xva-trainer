@@ -124,46 +124,47 @@ def dict_to_filter_opts(opts):
     return ":".join(filter_opts)
 
 
-def get_ffmpeg_exe():
-    """
-    Return path to ffmpeg executable
-    """
-    ffmpeg_path = os.getenv("FFMPEG_PATH")
-    if ffmpeg_path:
-        if os.sep in ffmpeg_path:
-            ffmpeg_exe = ffmpeg_path
-            if not os.path.isfile(ffmpeg_exe):
-                raise FFmpegNormalizeError(f"No file exists at {ffmpeg_exe}")
-        else:
-            ffmpeg_exe = which(ffmpeg_path)
-            if not ffmpeg_exe:
-                raise FFmpegNormalizeError(
-                    f"Could not find '{ffmpeg_path}' in your $PATH."
-                )
-    else:
-        ffmpeg_exe = which("ffmpeg")
+# def get_ffmpeg_exe():
+#     """
+#     Return path to ffmpeg executable
+#     """
+#     ffmpeg_path = os.getenv("FFMPEG_PATH")
+#     if ffmpeg_path:
+#         if os.sep in ffmpeg_path:
+#             ffmpeg_exe = ffmpeg_path
+#             if not os.path.isfile(ffmpeg_exe):
+#                 raise FFmpegNormalizeError(f"No file exists at {ffmpeg_exe}")
+#         else:
+#             ffmpeg_exe = which(ffmpeg_path)
+#             if not ffmpeg_exe:
+#                 raise FFmpegNormalizeError(
+#                     f"Could not find '{ffmpeg_path}' in your $PATH."
+#                 )
+#     else:
+#         ffmpeg_exe = which("ffmpeg")
 
-    if not ffmpeg_exe:
-        if which("avconv"):
-            raise FFmpegNormalizeError(
-                "avconv is not supported. "
-                "Please install ffmpeg from http://ffmpeg.org instead."
-            )
-        else:
-            raise FFmpegNormalizeError(
-                "Could not find ffmpeg in your $PATH or $FFMPEG_PATH. "
-                "Please install ffmpeg from http://ffmpeg.org"
-            )
+#     if not ffmpeg_exe:
+#         if which("avconv"):
+#             raise FFmpegNormalizeError(
+#                 "avconv is not supported. "
+#                 "Please install ffmpeg from http://ffmpeg.org instead."
+#             )
+#         else:
+#             raise FFmpegNormalizeError(
+#                 "Could not find ffmpeg in your $PATH or $FFMPEG_PATH. "
+#                 "Please install ffmpeg from http://ffmpeg.org"
+#             )
 
-    return ffmpeg_exe
+#     return ffmpeg_exe
 
 
-def ffmpeg_has_loudnorm():
+def ffmpeg_has_loudnorm(ffmpeg_path):
     """
     Run feature detection on ffmpeg, returns True if ffmpeg supports
     the loudnorm filter
     """
-    cmd_runner = CommandRunner([get_ffmpeg_exe(), "-filters"])
+    # cmd_runner = CommandRunner([get_ffmpeg_exe(), "-filters"])
+    cmd_runner = CommandRunner([ffmpeg_path, "-filters"])
     cmd_runner.run_command()
     output = cmd_runner.get_output()
     if "loudnorm" in output:
