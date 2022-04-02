@@ -80,6 +80,10 @@ class ModelsManager(object):
                 from python.silence_split.model import SilenceSplit
                 self.models_bank[model_key] = SilenceSplit(self.logger, self.PROD, self.device, self)
 
+            if model_key=="cut_padding":
+                from python.cut_padding.model import CutPadding
+                self.models_bank[model_key] = CutPadding(self.logger, self.PROD, self.device, self)
+
             # Models
             if model_key=="fastpitch1_1":
                 from python.fastpitch1_1.xva_train import FastPitchTrainer

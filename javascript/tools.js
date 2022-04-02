@@ -296,6 +296,47 @@ const tools = {
         outputDirectory: `${window.path}/python/noise_removal/output/`,
         inputFileType: "folder"
     },
+    "Cut padding": {
+        taskId: "cut_padding",
+        description: "Remove starting and ending silence from clips, based on configurable silence detection.",
+        inputDirectory: `${window.path}/python/cut_padding/input`,
+        outputDirectory: `${window.path}/python/cut_padding/output/`,
+        inputFileType: ".wav",
+        isMultiProcessed: false,
+        setupFn: (taskId) => {
+            const ckbxDescription = createElem("div", "Use multi-processing")
+            const ckbx = createElem("input", {type: "checkbox"})
+            ckbx.style.height = "20px"
+            ckbx.style.width = "20px"
+
+            window.tools_state.toolSettings["cut_padding"] = window.tools_state.toolSettings["cut_padding"] || {}
+            window.tools_state.toolSettings["cut_padding"].useMP = false
+
+            ckbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["cut_padding"].useMP = ckbx.checked
+                window.tools_state.toolSettings["cut_padding"].isMultiProcessed = ckbx.checked
+                window.tools_state.isMultiProcessed = ckbx.checked
+            })
+
+            const rowItemUseMp = createElem("div", createElem("div", ckbxDescription), createElem("div", ckbx))
+
+            const cutPaddingSilenceThresholdDescription = createElem("div", "Silence threshold (dB)")
+            const cutPaddingSilenceThresholdInput = createElem("input", {type: "number"})
+            cutPaddingSilenceThresholdInput.style.width = "70%"
+            cutPaddingSilenceThresholdInput.value = "-65"
+            cutPaddingSilenceThresholdInput.addEventListener("change", () => {
+                window.tools_state.toolSettings["cut_padding"].min_dB = cutPaddingSilenceThresholdInput.value
+            })
+            const rowItemcutPaddingSilenceThresholdInputs = createElem("div", cutPaddingSilenceThresholdInput)
+            rowItemcutPaddingSilenceThresholdInputs.style.flexDirection = "row"
+            const rowItemcutPaddingSilenceThreshold = createElem("div", cutPaddingSilenceThresholdDescription, rowItemcutPaddingSilenceThresholdInputs)
+            window.tools_state.toolSettings["cut_padding"].min_dB = cutPaddingSilenceThresholdInput.value
+
+
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp, rowItemcutPaddingSilenceThreshold)
+            toolDescription.appendChild(container)
+        }
+    },
     "Silence split": {
         taskId: "silence_split",
         description: "Split audio based on configurable silence detection. Use the background noise removal tool if there's a constant hiss/hum/noise throughout your clips.",
