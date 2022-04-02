@@ -1,3 +1,5 @@
 {
-    "1.0.0": "Initial release"
+    "1.0.0": "Initial release",
+    "1.0.1": "- Fixed leftover '_16khz' in filenames in transcribe tool\n- Fixed global ffmpeg path reference-changed to bundled path\n- Fixed some path issues in the training config\n- Added specific error message for when no audio files are detected for training FastPitch\n- Flushed training graphs to file a bit more often",
+    "1.0.2": "- Hotfix for HiFi-GAN training bug; Other HiFiGAN tweaks\n- Better dir watching support, for UI graph refreshing\n- More/Better error logging"
 }

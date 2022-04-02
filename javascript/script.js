@@ -1,6 +1,6 @@
 "use strict"
 
-window.appVersion = "1.0"
+window.appVersion = "1.0.2"
 app_version.innerHTML = "v"+window.appVersion
 window.PRODUCTION = module.filename.includes("resources")
 const path = PRODUCTION ? `${__dirname.replace(/\\/g,"/")}` : `${__dirname.replace(/\\/g,"/")}`

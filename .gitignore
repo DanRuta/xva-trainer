@@ -1,8 +1,7 @@
 apex
 xVAEnv
 xVAEnvCPU
-envXVATrainer
-env*
+envXVATrainer*
 node_modules
 *.wav
 *.mp3

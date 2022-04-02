@@ -718,7 +718,7 @@
 
         <!-- Queue config menu -->
         <div id="queueItemConfigModalContainer" style="display: none;z-index: 1000;" >
-            <div class="modal" style="width: 300px;min-height: 500px;height: 500px;min-width: 850px">
+            <div class="modal" style="width: 300px;min-height: 525px;height: 525px;min-width: 850px">
                 <h2>Config</h2>
                 <div class="flexTable" style="width:80%">
 
@@ -788,6 +788,12 @@
                         <div>Epochs per checkpoint</div>
                         <div>
                             <input id="trainingAddConfigEpochsPerCkptInput" type="number" value="3" min="1">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Use FP16 (amp) - turn off if loss is NaN</div>
+                        <div>
+                            <input id="trainingAddConfigUseAmp" type="checkbox" checked="true">
                         </div>
                     </div>
                 </div>

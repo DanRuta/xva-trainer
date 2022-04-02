@@ -10,7 +10,7 @@ import numpy as np
 if __name__ == '__main__':
     multiprocessing.freeze_support()
 
-    APP_VERSION = "1.0.0"
+    APP_VERSION = "1.0.2"
 
     PROD = False
     # PROD = True

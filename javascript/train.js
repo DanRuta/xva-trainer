@@ -549,6 +549,7 @@ window.showConfigMenu = (startingData, di) => {
         "checkpoint": undefined,
         "hifigan_checkpoint": undefined,
 
+        "use_amp": "true",
         "num_workers": 4, // TODO, app-level default settings
         "batch_size": 8, // TODO, app-level default settings
         "epochs_per_checkpoint": 3, // TODO, app-level default settings
@@ -580,6 +581,7 @@ window.showConfigMenu = (startingData, di) => {
     trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
     trainingAddConfigBatchSizeInput.value = parseInt(configData.batch_size)
     trainingAddConfigEpochsPerCkptInput.value = parseInt(configData.epochs_per_checkpoint)
+    trainingAddConfigUseAmp.checked = configData.use_amp ? configData.use_amp=="true" : true
 
     queueItemConfigModalContainer.style.display = "flex"
 }
@@ -637,6 +639,7 @@ acceptConfig.addEventListener("click", () => {
                 "checkpoint": fp_ckpt.replaceAll(/\\/, "/"),
                 "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
 
+                "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
                 "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
                 "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
@@ -657,6 +660,7 @@ acceptConfig.addEventListener("click", () => {
                 "checkpoint": fp_ckpt.replaceAll(/\\/, "/"),
                 "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
 
+                "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
                 "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
                 "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
