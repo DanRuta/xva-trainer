@@ -429,7 +429,7 @@ class FastPitchTrainer(object):
             pass # TODO
         else:
             self.train_sampler, shuffle = None, True
-        self.train_loader = DataLoader(self.trainset, num_workers=self.workers, shuffle=shuffle, sampler=self.train_sampler, batch_size=self.batch_size, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
+        self.train_loader = DataLoader(self.trainset, num_workers=self.workers, shuffle=shuffle, sampler=self.train_sampler, batch_size=self.batch_size, pin_memory=True, persistent_workers=self.workers>0, drop_last=True, collate_fn=collate_fn)
         self.model.train()
 
 

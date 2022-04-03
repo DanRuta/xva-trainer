@@ -718,7 +718,7 @@
 
         <!-- Queue config menu -->
         <div id="queueItemConfigModalContainer" style="display: none;z-index: 1000;" >
-            <div class="modal" style="width: 300px;min-height: 525px;height: 525px;min-width: 850px">
+            <div class="modal" style="width: 300px;min-height: 575px;height: 575px;min-width: 850px">
                 <h2>Config</h2>
                 <div class="flexTable" style="width:80%">
 
@@ -769,12 +769,6 @@
                     <div style="color: gray;display: flex;justify-content: center;">Train configs</div>
                     <hr style="opacity: 0.2;margin: 0;">
 
-                    <div style="display: none;">
-                        <div>Number of CPU workers</div>
-                        <div>
-                            <input id="trainingAddConfigWorkersInput" type="number" value="4" min="1">
-                        </div>
-                    </div>
                     <div style="height: 60px;">
                         <div style="align-items: center;">
                             <span style="margin-bottom: 5px">Base batch size</span>
@@ -794,6 +788,12 @@
                         <div>Use FP16 (amp) - turn off if loss is NaN</div>
                         <div>
                             <input id="trainingAddConfigUseAmp" type="checkbox" checked="true">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Number of CPU workers<br>Lower if stuck after "Workers: x"</div>
+                        <div>
+                            <input id="trainingAddConfigWorkersInput" type="number" value="4" min="0">
                         </div>
                     </div>
                 </div>
