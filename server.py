@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # Saves me having to do backend re-compilations for every little UI hotfix
     with open(f'{"./resources/app" if PROD else "."}/javascript/script.js', encoding="utf8") as f:
         lines = f.read().split("\n")
-        APP_VERSION = lines[1].split('"')[0]
+        APP_VERSION = lines[1].split('"')[1]
 
 
     SERVER_PORT = 8002
