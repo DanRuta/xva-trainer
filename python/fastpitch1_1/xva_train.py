@@ -622,17 +622,17 @@ class FastPitchTrainer(object):
                     param.requires_grad = False
 
         elif self.model.training_stage==4:
-            target_delta = 2e-4
+            target_delta = 25e-5 # 2e-4
             if num_data_lines>4000:
-                target_delta = 3e-5
+                target_delta = 35e-6 # 3e-5
             elif num_data_lines>2000:
-                target_delta = 8e-5
+                target_delta = 1e-4 # 8e-5
 
             if num_data_lines<500:
                 if num_data_lines<250:
-                    target_delta = 1e-3
+                    target_delta = 15e-4 # 1e-3
                 else:
-                    target_delta = 4e-4
+                    target_delta = 45e-5 # 4e-4
 
             for module in [self.model.attention, self.model.duration_predictor, self.model.pitch_predictor, self.model.pitch_emb, self.model.energy_predictor]:
                 for param in module.parameters():

@@ -211,7 +211,7 @@ class HiFiTrainer(object):
 
         json_config = json.loads(data)
         self.h = AttrDict(json_config)
-        self.h.batch_size = int(self.batch_size * 1.5)
+        self.h.batch_size = int(self.batch_size * 1.4)
         self.h.num_workers = self.workers
         self.h.USE_EMB_CONDITIONING = False
 
@@ -251,7 +251,7 @@ class HiFiTrainer(object):
 
 
 
-        self.target_delta = 0.0002
+        self.target_delta = 0.0001
         self.graphs_json["stages"]["5"]["target_delta"] = self.target_delta
 
         self.training_steps = 0
