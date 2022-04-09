@@ -1,5 +1,5 @@
 "use strict"
-window.appVersion = "1.0.4"
+window.appVersion = "1.0.5"
 app_version.innerHTML = "v"+window.appVersion
 window.PRODUCTION = module.filename.includes("resources")
 const path = PRODUCTION ? `${__dirname.replace(/\\/g,"/")}` : `${__dirname.replace(/\\/g,"/")}`
@@ -1472,7 +1472,10 @@ window.setupModal(patreonIcon, patreonContainer, () => {
 window.setupModal(btn_trainmodel, trainContainer, () => {
     if (window.appState.currentDataset) {
         setTimeout(() => {
-            window.showConfigMenu(`${window.userSettings.datasetsPath.replaceAll(/\\/, "/")}/${window.appState.currentDataset}`)
+            const queueItem = window.training_state.datasetsQueue.filter(item => item.dataset_path.includes(window.appState.currentDataset))
+            if (!queueItem.length) {
+                window.showConfigMenu(`${window.userSettings.datasetsPath.replaceAll(/\\/, "/")}/${window.appState.currentDataset}`)
+            }
         }, 500)
     }
 })

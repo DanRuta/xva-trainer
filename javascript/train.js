@@ -778,7 +778,7 @@ btn_exportmodel.addEventListener("click", () => {
 
     // Pre-fill with the checkpoints dir, if the dataset is already in the training queue
     const queueItem = window.training_state.datasetsQueue.filter(item => item.dataset_path.includes(window.appState.currentDataset))
-    if (queueItem) {
+    if (queueItem.length) {
         modelExport_trainningDir.value = queueItem[0].dataset_path
     }
     const cachedOutPath = localStorage.getItem("modelExport_outputDir")
