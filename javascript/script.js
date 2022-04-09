@@ -379,7 +379,12 @@ btn_save.addEventListener("click", () => {
             window.datasets[window.appState.currentDataset].metadata[window.appState.recordFocus][1].children[3].innerHTML = textInput.value.replace(/\|/g,"").replace(/\n/g,"").replace(/\r/g,"").trim()
 
             window.saveDatasetToFile(window.appState.currentDataset)
-            setRecordFocus()
+
+            if (window.appState.recordFocus+1<batchRecordsContainer.childElementCount) {
+                setRecordFocus(window.appState.recordFocus+1)
+            } else {
+                setRecordFocus()
+            }
         }
 
         // Copy over the recorded file, if one exists
