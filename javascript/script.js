@@ -268,6 +268,30 @@ window.refreshDatasets = () => {
                     addmissingmeta_btn_container.style.display = "none"
                 }
 
+                // Check for duplicates
+                const duplicateLines = []
+                const duplicateFileNames = new Set()
+                const existingFilesReferenced = new Set()
+                records.forEach(record => {
+                    if (existingFilesReferenced.has(record.fileName)) {
+                        duplicateFileNames.add(record.fileName)
+                    }
+                    existingFilesReferenced.add(record.fileName)
+                })
+                records.forEach(record => {
+                    if (duplicateFileNames.has(record.fileName)) {
+                        duplicateLines.push(record)
+                    }
+                })
+
+                if (duplicateLines.length) {
+                    totalDataDuplicates.innerHTML = duplicateLines.length
+                    uniqueDataDuplicates.innerHTML = duplicateFileNames.size
+                    datasetDuplicatesWarning.style.display = "flex"
+                } else {
+                    datasetDuplicatesWarning.style.display = "none"
+                }
+
             })
             buttons.push(button)
 
@@ -483,7 +507,7 @@ btn_delete.addEventListener("click", () => {
                 delete window.datasets[window.appState.currentDataset].metadata[recordFocus]
                 window.saveDatasetToFile(window.appState.currentDataset)
 
-                if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${fileName}`)) {
+                if (fileNameSearch.value!="%duplicates%" && fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${fileName}`)) {
                     fs.unlinkSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${fileName}`)
                 }
             }
@@ -708,12 +732,30 @@ window.searchDatasetRows = rows => {
     const transcriptQuery = transcriptSearch.value.trim().toLowerCase()
 
     const filteredRows = []
-    rows.forEach(row => {
-        if (row[0].fileName.toLowerCase().includes(fileNameQuery) && row[0].text.toLowerCase().includes(transcriptQuery)) {
-            row[2] = filteredRows.length
-            filteredRows.push(row)
-        }
-    })
+
+    if (fileNameQuery=="%duplicates%") {
+        const duplicateLines = new Set()
+        const existingFilesReferenced = new Set()
+        rows.forEach(record => {
+            if (existingFilesReferenced.has(record[0].fileName)) {
+                duplicateLines.add(record[0].fileName)
+            }
+            existingFilesReferenced.add(record[0].fileName)
+        })
+        rows.forEach(record => {
+            if (duplicateLines.has(record[0].fileName)) {
+                record[2] = filteredRows.length
+                filteredRows.push(record)
+            }
+        })
+    } else {
+        rows.forEach(row => {
+            if (row[0].fileName.toLowerCase().includes(fileNameQuery) && row[0].text.toLowerCase().includes(transcriptQuery)) {
+                row[2] = filteredRows.length
+                filteredRows.push(row)
+            }
+        })
+    }
     return filteredRows
 }
 fileNameSearch.addEventListener("keyup", () => {
@@ -1194,6 +1236,49 @@ window.setupModal(btn_preprocessAudioButton, preprocessAudioContainer)
 window.setupModal(btn_preprocessTextButton, preprocessTextContainer)
 window.setupModal(btn_cleanAudioText, cleanAudioTextContainer)
 window.setupModal(btn_checkTextQualityBtn, checkTextQualityContainer)
+window.setupModal(datasetDuplicatesWarning, duplicateDatasetContainer)
+
+btnShowAllDataDuplicates.addEventListener("click", () => {
+    fileNameSearch.value = "%duplicates%"
+    window.searchDatasetRows(window.datasets[window.appState.currentDataset].metadata)
+    duplicateDatasetContainer.click()
+    window.refreshRecordsList()
+})
+btnRemoveAllDataDuplicates.addEventListener("click", () => {
+
+    const duplicateLines = []
+    const duplicateFileNames = new Set()
+    const existingFilesReferenced = new Set()
+    window.datasets[window.appState.currentDataset].metadata.forEach(record => {
+        if (existingFilesReferenced.has(record[0].fileName)) {
+            duplicateFileNames.add(record[0].fileName)
+        }
+        existingFilesReferenced.add(record[0].fileName)
+    })
+    window.datasets[window.appState.currentDataset].metadata.forEach(record => {
+        if (duplicateFileNames.has(record[0].fileName)) {
+            duplicateLines.push(record)
+        }
+    })
+
+    window.confirmModal(`Are you sure you'd like to delete ${duplicateLines.length} records from your dataset?`).then(resp => {
+        if (resp) {
+            for (let i=0; i<window.datasets[window.appState.currentDataset].metadata.length; i++) {
+                if (duplicateFileNames.has(window.datasets[window.appState.currentDataset].metadata[i][0].fileName)) {
+                    const fileName = window.datasets[window.appState.currentDataset].metadata[i][0].fileName
+                    if (fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${fileName}`)) {
+                        fs.unlinkSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${fileName}`)
+                    }
+                    window.datasets[window.appState.currentDataset].metadata[i] = undefined
+                }
+            }
+
+            window.datasets[window.appState.currentDataset].metadata = window.datasets[window.appState.currentDataset].metadata.filter(item => item!=undefined)
+            window.saveDatasetToFile(window.appState.currentDataset)
+            duplicateDatasetContainer.click()
+        }
+    })
+})
 
 window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
     datasetMetaTitle.innerHTML = `Edit meta for: ${window.appState.currentDataset}`

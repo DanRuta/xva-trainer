@@ -70,6 +70,7 @@
 
                 <div>
                     <div style="height: 40px;width: calc(98vw - 306px);margin-left: 1vw;margin-right: 1vw;display: flex;justify-content: space-between;align-items: center;background: rgba(75,75,75,0.8);margin-top: 5px;">
+                        <div id="datasetDuplicatesWarning" title="Duplicate file names found in the dataset. Click for more.">&#9888;</div>
                         <div id="totalRecords" style="margin-right: 5px; width: 265px;margin-left: 5px;color: white;"></div>
                         <div style="width: 260px">
                             <input id="fileNameSearch" class="fancySearchInput" style="font-size: 12pt;" placeholder="Search file names..">
@@ -205,6 +206,20 @@
                         <button class="mainPageButton" id="btn_exportmodel" disabled>Export model</button>
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <div id="duplicateDatasetContainer" style="display:none">
+            <div class="modal" style="height: 50vh;min-height: 500px;">
+                <h2>Duplicate lines found in your dataset</h2>
+                <div>
+                    You need to make sure that all the text lines in your transcript point to unique files, otherwise the training will break. There were a total of <span id="totalDataDuplicates">0</span> lines found pointing to <span id="uniqueDataDuplicates">0</span> unique audio files.
+                </div>
+
+                <div style="margin-top: 10px">
+                    <button id="btnShowAllDataDuplicates">Show all duplicates</button>
+                    <button id="btnRemoveAllDataDuplicates">Remove all duplicates</button>
                 </div>
             </div>
         </div>
