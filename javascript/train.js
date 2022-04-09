@@ -182,12 +182,16 @@ window.updateSystemGraphs = () => {
 
 
             // Disk
-            const diskUsage = getDiskTimePercent(disk_drive_select.selectedOptions[0].innerText)
-            disk_chart_object.data.datasets[0].data.push(parseInt(diskUsage))
-            if (disk_chart_object.data.datasets[0].data.length>60) {
-                disk_chart_object.data.datasets[0].data.splice(0,1)
+            try {
+                const diskUsage = getDiskTimePercent(disk_drive_select.selectedOptions[0].innerText)
+                disk_chart_object.data.datasets[0].data.push(parseInt(diskUsage))
+                if (disk_chart_object.data.datasets[0].data.length>60) {
+                    disk_chart_object.data.datasets[0].data.splice(0,1)
+                }
+                disk_chart_object.data.datasets[0].label = `${disk_chart_object.data.datasets[0].label.split(" ")[0]} (${disk_drive_select.selectedOptions[0].innerText}) ${(diskUsage).toFixed(2)}%`
+            } catch (e) {
+
             }
-            disk_chart_object.data.datasets[0].label = `${disk_chart_object.data.datasets[0].label.split(" ")[0]} (${disk_drive_select.selectedOptions[0].innerText}) ${(diskUsage).toFixed(2)}%`
 
 
             cpu_chart_object.update()
