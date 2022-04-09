@@ -204,6 +204,8 @@ window.refreshDatasets = () => {
 
             button.addEventListener("click", event => {
 
+                window.appState.skipRefreshing = false
+
                 Array.from(document.querySelectorAll(".mainPageButton")).forEach(button => button.disabled = false)
 
                 title.innerHTML = `Dataset: ${dataset}`
