@@ -804,8 +804,10 @@ const populateRecordsList = (dataset, records, additive=false) => {
         const rGameElem = createElem("div.rowItem", "")
 
         record.fileName = record.fileName==undefined ? getNextFileName(dataset)+".wav" : record.fileName
-        const rTextElem = createElem("div.rowItem", record.text)
         const rOutPathElem = createElem("div.rowItem", record.fileName)
+        rOutPathElem.title = record.fileName
+        const rTextElem = createElem("div.rowItem", record.text)
+        rTextElem.title = record.text
 
 
         row.appendChild(rNumElem)
