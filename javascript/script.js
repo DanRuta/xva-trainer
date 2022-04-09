@@ -1154,7 +1154,7 @@ const initDatasetMeta = (callback) => {
             callback()
         }
 
-        fs.writeFileSync(`${window.userSettings.datasetsPath}/${composedVoiceId.innerHTML}/dataset_metadata.json`, JSON.stringify({
+        fs.writeFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset||composedVoiceId.innerHTML}/dataset_metadata.json`, JSON.stringify({
             "version": "2.0",
             "modelVersion": parseFloat(datasetMeta_modelVersion.value).toFixed(1),
             "modelType": "FastPitch1.1",
@@ -1190,7 +1190,7 @@ window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
     datasetMetaTitle.innerHTML = `Edit meta for: ${window.appState.currentDataset}`
     fixedFolderName = window.appState.currentDataset
     const datasetMeta = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
-    console.log("datasetMeta", datasetMeta)
+    const voiceId = datasetMeta.games[0].voiceId || fixedFolderName
 
     datasetMeta_voiceName.value = datasetMeta.games[0].voiceName
     datasetMeta_gameId.value = datasetMeta.games[0].gameId
@@ -1201,15 +1201,15 @@ window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
     datasetMeta_gender_male.checked = datasetMeta.games[0].gender=="male"
     datasetMeta_gender_female.checked = datasetMeta.games[0].gender=="female"
     datasetMeta_gender_other.checked = datasetMeta.games[0].gender=="other"
-    composedVoiceId.innerHTML = fixedFolderName
+    composedVoiceId.innerHTML = voiceId
     datasetMeta_author.value = datasetMeta.author
     datasetMeta_license.value = datasetMeta.license || ""
 
     initDatasetMeta(() => {
-        composedVoiceId.innerHTML = fixedFolderName
+        composedVoiceId.innerHTML = voiceId
     })
-    composedVoiceId.innerHTML = window.appState.currentDataset
-    datasetMeta_voiceId.value = window.appState.currentDataset
+    composedVoiceId.innerHTML = voiceId
+    datasetMeta_voiceId.value = voiceId
 })
 
 
@@ -1247,12 +1247,9 @@ datasetMeta_voiceName.addEventListener("keyup", () => {
 })
 
 datasetMeta_voiceId.addEventListener("keyup", () => {
-    if (fixedFolderName) {
-        return
-    }
     voiceIDInputChanged = true
     if (datasetMeta_voiceId.value.trim().length && datasetMeta_gameIdCode.value.trim().length) {
-        composedVoiceId.innerHTML = `${datasetMeta_gameIdCode.value.trim().toLowerCase()}_${datasetMeta_voiceId.value.trim().toLowerCase().replace(/\s/g, "_")}`
+        composedVoiceId.innerHTML = `${datasetMeta_voiceId.value.trim().toLowerCase()}`
     }
 })
 datasetMeta_gameIdCode.addEventListener("keyup", () => {
