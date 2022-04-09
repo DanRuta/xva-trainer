@@ -777,8 +777,16 @@ btn_exportmodel.addEventListener("click", () => {
     if (queueItem) {
         modelExport_trainningDir.value = queueItem[0].dataset_path
     }
+    const cachedOutPath = localStorage.getItem("modelExport_outputDir")
+    if (cachedOutPath) {
+        modelExport_outputDir.value = cachedOutPath
+    }
 
     window._exportModelModalButton.click()
+})
+modelExport_outputDir.addEventListener("keyup", () => {
+    localStorage.setItem("modelExport_outputDir", modelExport_outputDir.value.replaceAll(/\\/g, "/"))
+
 })
 exportSubmitButton.addEventListener("click", () => {
 
