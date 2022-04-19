@@ -445,6 +445,8 @@ class FastPitchTrainer(object):
         self.avg_frames_s = []
 
         self.target_delta = self.get_target_delta(num_data_lines)
+        self.target_patience = 3
+        self.target_patience_count = 0
 
         training_stage = self.model.training_stage
         if len(self.gpus)>1:
@@ -861,7 +863,7 @@ class FastPitchTrainer(object):
             else:
                 avg_losses_print = ""
 
-            print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | iter: {(self.total_iter+1)%self.num_iters}/{self.num_iters} -> {self.total_iter} | loss: {int(self.iter_loss*10000)/10000} | frames/s {int(self.iter_num_frames / self.iter_time)}{avg_losses_print} | Target: {self.target_delta}    '
+            print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | iter: {(self.total_iter+1)%self.num_iters}/{self.num_iters} -> {self.total_iter} | loss: {int(self.iter_loss*10000)/10000} | frames/s {int(self.iter_num_frames / self.iter_time)}{avg_losses_print} | Target: {str(self.target_delta).split("00000")[0]}    '
             self.training_log_live_line = print_line
             self.print_and_log(save_to_file=self.dataset_output)
 
@@ -926,20 +928,24 @@ class FastPitchTrainer(object):
                     self.graphs_json["stages"][str(self.model.training_stage)]["loss_delta"].append([self.total_iter, acc_epoch_deltas_avg20])
 
                     if len(acc_epoch_deltas)>=max(MIN_EPOCHS, (20 if self.model.training_stage==2 else MIN_EPOCHS)) and acc_epoch_deltas_avg20<=self.target_delta:
+                        self.target_patience_count += 1
+                        if self.target_patience_count>=self.target_patience:
+                            fpath_stage = os.path.join(self.dataset_output, f"Stage_{self.model.training_stage}_DONE_FastPitch_checkpoint_{self.epoch}_{self.total_iter}.pt")
 
-                        fpath_stage = os.path.join(self.dataset_output, f"Stage_{self.model.training_stage}_DONE_FastPitch_checkpoint_{self.epoch}_{self.total_iter}.pt")
+                            if self.model.training_stage==4:
+                                self.END_OF_TRAINING = True
 
-                        if self.model.training_stage==4:
-                            self.END_OF_TRAINING = True
+                            self.JUST_FINISHED_STAGE = True
+                            self.logger.info("[Trainer] JUST_FINISHED_STAGE...")
+                            self.model.training_stage += 1
 
-                        self.JUST_FINISHED_STAGE = True
-                        self.logger.info("[Trainer] JUST_FINISHED_STAGE...")
-                        self.model.training_stage += 1
+                            self.avg_loss_per_epoch = []
+                            self.save_checkpoint(force_save=True, frames_s=np.mean(self.avg_frames_s), total_iter=(self.total_iter if self.model.training_stage==4 else self.start_iterations), avg_loss=avg_loss, loss_delta=acc_epoch_deltas_avg20, avg_loss_per_epoch=self.avg_loss_per_epoch, fpath=fpath)
+                            self.save_checkpoint(force_save=True, frames_s=np.mean(self.avg_frames_s), total_iter=(self.total_iter if self.model.training_stage==4 else self.start_iterations), avg_loss=avg_loss, loss_delta=acc_epoch_deltas_avg20, avg_loss_per_epoch=self.avg_loss_per_epoch, fpath=fpath_stage, doPrintLog=False)
 
-                        self.avg_loss_per_epoch = []
-                        self.save_checkpoint(force_save=True, frames_s=np.mean(self.avg_frames_s), total_iter=(self.total_iter if self.model.training_stage==4 else self.start_iterations), avg_loss=avg_loss, loss_delta=acc_epoch_deltas_avg20, avg_loss_per_epoch=self.avg_loss_per_epoch, fpath=fpath)
-                        self.save_checkpoint(force_save=True, frames_s=np.mean(self.avg_frames_s), total_iter=(self.total_iter if self.model.training_stage==4 else self.start_iterations), avg_loss=avg_loss, loss_delta=acc_epoch_deltas_avg20, avg_loss_per_epoch=self.avg_loss_per_epoch, fpath=fpath_stage, doPrintLog=False)
-                        raise
+                            raise
+                    else:
+                        self.target_patience_count = 0
 
             self.last_loss = avg_iter_losses
 

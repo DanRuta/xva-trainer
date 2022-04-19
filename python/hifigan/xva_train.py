@@ -252,6 +252,8 @@ class HiFiTrainer(object):
 
 
         self.target_delta = 0.0001
+        self.target_patience = 3
+        self.target_patience_count = 0
         self.graphs_json["stages"]["5"]["target_delta"] = self.target_delta
 
         self.training_steps = 0
@@ -621,12 +623,16 @@ class HiFiTrainer(object):
                 f.write(json.dumps(self.graphs_json))
 
             if acc_epoch_deltas_avg20 <= self.target_delta and len(acc_epoch_deltas)>=25:
-                self.training_log_live_line = ""
-                if self.logger is not None:
-                    self.logger.info("[HiFi Trainer] END_OF_TRAINING...")
-                self.print_and_log(f'HiFi-GAN training finished', save_to_file=self.dataset_output)
-                self.END_OF_TRAINING = True
-                raise
+                self.target_patience_count += 1
+                if self.target_patience_count>=self.target_patience:
+                    self.training_log_live_line = ""
+                    if self.logger is not None:
+                        self.logger.info("[HiFi Trainer] END_OF_TRAINING...")
+                    self.print_and_log(f'HiFi-GAN training finished', save_to_file=self.dataset_output)
+                    self.END_OF_TRAINING = True
+                    raise
+            else:
+                self.target_patience_count = 0
 
 
 
