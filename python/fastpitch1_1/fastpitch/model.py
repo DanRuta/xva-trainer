@@ -123,7 +123,7 @@ class TemporalPredictor(nn.Module):
 
 
 class FastPitch(nn.Module):
-    def __init__(self):
+    def __init__(self, logger=None):
 
         super(FastPitch, self).__init__()
 
@@ -178,6 +178,8 @@ class FastPitch(nn.Module):
         speaker_emb_weight = 1.0
         pitch_conditioning_formants = 1
         # = FastPitch params end
+
+        self.logger = logger
 
         self.encoder = FFTransformer(
             n_layer=in_fft_n_layers, n_head=in_fft_n_heads,
@@ -320,7 +322,6 @@ class FastPitch(nn.Module):
 
 
 
-    # def forward(self, inputs, use_gt_pitch=True, use_dur_tgt=False, pace=1.0, max_duration=75, KL_ONLY=False, num_data_lines=0):
     def forward(self, inputs_x, use_gt_pitch=True, use_dur_tgt=False, pace=1.0, max_duration=75):
 
         (inputs, input_lens, mel_tgt, mel_lens, pitch_dense, energy_dense,
@@ -345,7 +346,13 @@ class FastPitch(nn.Module):
 
         # Alignment
         if self.training_stage==1 or self.training_stage==-1:
-            attn_hard_dur, attn_soft, attn_hard, attn_logprob = self.get_alignment_durations(inputs, input_lens, mel_tgt, mel_lens, enc_out, attn_prior, max_inp_lengths)
+            # attn_prior = attn_prior * 0.8 # Trade-off between expressiveness and stability during training
+            try:
+                attn_hard_dur, attn_soft, attn_hard, attn_logprob = self.get_alignment_durations(inputs, input_lens, mel_tgt, mel_lens, enc_out, attn_prior, max_inp_lengths)
+            except:
+                if self.logger is not None:
+                    self.logger.info(f'audiopaths: {audiopaths} | input_lens: {input_lens}')
+                raise
 
             if self.training_stage==1:
                 return [None, None, None, None, None,

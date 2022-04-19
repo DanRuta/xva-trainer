@@ -1169,7 +1169,7 @@ class FastPitch1_1(object):
 
     def init_model (self, symbols_alphabet):
         self.symbols_alphabet = symbols_alphabet
-        self.model = FastPitch()
+        self.model = FastPitch(logger=self.logger)
         self.model.eval()
         self.model.device = self.device
 
