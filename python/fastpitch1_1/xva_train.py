@@ -126,7 +126,12 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         torch.cuda.empty_cache()
         if "CUDA out of memory" in str(e) or "PYTORCH_CUDA_ALLOC_CONF" in str(e):
             trainer.print_and_log(f'============= Reducing base batch size from {trainer.batch_size} to {trainer.batch_size-5}', save_to_file=trainer.dataset_output)
-            data["batch_size"] = data["batch_size"] - 5
+            data["batch_size"] = data["batch_size"] - 3
+            del trainer
+            try:
+                del models_manager.models_bank["fastpitch1_1"]
+            except:
+                pass
             return await handleTrainer(models_manager, data, websocket, gpus)
         elif trainer.JUST_FINISHED_STAGE:
             if trainer.force_stage:
@@ -153,6 +158,8 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         else:
             try:
                 trainer.logger.info(str(e))
+                del trainer
+                del models_manager.models_bank["fastpitch1_1"]
             except:
                 pass
             raise
@@ -458,6 +465,7 @@ class FastPitchTrainer(object):
 
         gc.collect()
         # https://github.com/pytorch/pytorch/issues/1917#issuecomment-433698337
+        self.print_and_log(f'Starting training.')
         self.dataloader_iterator = iter(self.train_loader)
         self.start_new_epoch()
 
