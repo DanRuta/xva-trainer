@@ -513,12 +513,14 @@ btn_play.addEventListener("click", () => {
 })
 btn_delete.addEventListener("click", () => {
     if (window.appState.recordFocus!=undefined) {
-        const recordFocus = window.appState.recordFocus
-        const text = window.datasets[window.appState.currentDataset].metadata[recordFocus][0].text
+
+        const text = window.filteredRows[window.appState.recordFocus][0].text
+        const recordFocusIndex = window.datasets[window.appState.currentDataset].metadata.findIndex(record => record[3]==window.filteredRows[window.appState.recordFocus][3])
+
         confirmModal(`Are you sure you'd like to delete this line?<br><br><i>${text}</i>`).then(confirmation => {
             if (confirmation) {
-                const fileName = window.datasets[window.appState.currentDataset].metadata[recordFocus][0].fileName
-                delete window.datasets[window.appState.currentDataset].metadata[recordFocus]
+                const fileName = window.datasets[window.appState.currentDataset].metadata[recordFocusIndex][0].fileName
+                delete window.datasets[window.appState.currentDataset].metadata[recordFocusIndex]
                 window.saveDatasetToFile(window.appState.currentDataset)
 
                 if (fileNameSearch.value!="%duplicates%" && fs.existsSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/wavs/${fileName}`)) {
