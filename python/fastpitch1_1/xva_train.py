@@ -930,6 +930,8 @@ class FastPitchTrainer(object):
                     self.writer.add_scalar(f'meta/stage_{self.model.training_stage}_acc_epoch_deltas_avg20', acc_epoch_deltas_avg20, self.total_iter)
 
                     self.graphs_json["stages"][str(self.model.training_stage)]["loss_delta"].append([self.total_iter, acc_epoch_deltas_avg20])
+                    with open(f'{self.dataset_output}/graphs.json', "w+") as f:
+                        f.write(json.dumps(self.graphs_json))
 
                     if len(acc_epoch_deltas)>=max(MIN_EPOCHS, (20 if self.model.training_stage==2 else MIN_EPOCHS)) and acc_epoch_deltas_avg20<=self.target_delta:
                         self.target_patience_count += 1
