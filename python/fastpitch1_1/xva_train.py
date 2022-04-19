@@ -110,10 +110,14 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         trainer.running = False
         raise
     except RuntimeError as e:
+        running = trainer.running
         trainer.running = False
         stageFinished = trainer.force_stage or trainer.model.training_stage - 1
         try:
             del trainer.train_loader
+        except:
+            pass
+        try:
             del trainer.dataloader_iterator
             del trainer.model
             del trainer.criterion
@@ -125,14 +129,21 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         gc.collect()
         torch.cuda.empty_cache()
         if "CUDA out of memory" in str(e) or "PYTORCH_CUDA_ALLOC_CONF" in str(e):
-            trainer.print_and_log(f'============= Reducing base batch size from {trainer.batch_size} to {trainer.batch_size-5}', save_to_file=trainer.dataset_output)
-            data["batch_size"] = data["batch_size"] - 3
+            torch.cuda.empty_cache()
+            trainer.print_and_log(f'Out of VRAM')
+            if running:
+                trainer.print_and_log(f'============= Reducing base batch size from {trainer.batch_size} to {trainer.batch_size-3}', save_to_file=trainer.dataset_output)
+                data["batch_size"] = data["batch_size"] - 3
             del trainer
             try:
                 del models_manager.models_bank["fastpitch1_1"]
             except:
                 pass
-            return await handleTrainer(models_manager, data, websocket, gpus)
+            if running:
+                gc.collect()
+                torch.cuda.empty_cache()
+                return await handleTrainer(models_manager, data, websocket, gpus)
+
         elif trainer.JUST_FINISHED_STAGE:
             if trainer.force_stage:
                 trainer.print_and_log(f'Moving to HiFi-GAN...\n', save_to_file=trainer.dataset_output)
@@ -493,7 +504,7 @@ class FastPitchTrainer(object):
 
                 collate_fn = self.TTSCollate()
                 collate_fn.training_stage = -1
-                pitchCalcDataloader = DataLoader(pitchCalcDataset, num_workers=1, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
+                pitchCalcDataloader = DataLoader(pitchCalcDataset, num_workers=1, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=False, drop_last=True, collate_fn=collate_fn)
 
                 pitch_vals = []
 
@@ -1114,7 +1125,7 @@ class FastPitchTrainer(object):
             trainset = self.TTSDataset(dataset_path=self.dataset_input, audiopaths_and_text=self.dataset_input+"/metadata.csv", text_cleaners=text_cleaners, n_mel_channels=80, dm=-1, use_file_caching=True, pitch_mean=pitch_mean, pitch_std=pitch_std, training_stage=1, p_arpabet=p_arpabet, max_wav_value=32768.0, sampling_rate=22050, filter_length=1024, hop_length=256, win_length=1024, mel_fmin=0, mel_fmax=8000, betabinomial_online_dir=None, pitch_online_dir=None, cmudict=self.cmudict, pitch_online_method="pyin")
             collate_fn = self.TTSCollate()
             collate_fn.training_stage = 1
-            dataloader = DataLoader(trainset, num_workers=1, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=True, drop_last=True, collate_fn=collate_fn)
+            dataloader = DataLoader(trainset, num_workers=1, shuffle=False, sampler=None, batch_size=1, pin_memory=True, persistent_workers=False, drop_last=True, collate_fn=collate_fn)
 
             os.makedirs(f'{self.dataset_input}/durs_arpabet', exist_ok=True)
             os.makedirs(f'{self.dataset_input}/durs_text', exist_ok=True)

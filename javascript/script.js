@@ -36,6 +36,18 @@ const spawn = require("child_process").spawn
 window.hasCUDA = false
 if (!window.ws || !window.ws.readyState) {
     window.spinnerModal("Waiting for the WebSocket to connect...")
+    const checkIsUp = () => {
+        setTimeout(() => {
+            console.log(window.ws)
+            // console.log(window.ws.readyState)
+            if (window.ws && window.ws.readyState) {
+                window.closeModal()
+            } else {
+                checkIsUp()
+            }
+        }, 500)
+    }
+    checkIsUp()
 }
 smi((err, data) => {
     if (!data || !data.nvidia_smi_log.cuda_version) {

@@ -74,9 +74,13 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         trainer.running = False
         raise
     except RuntimeError as e:
+        running = trainer.running
         trainer.running = False
         try:
             del trainer.train_loader
+        except:
+            pass
+        try:
             del trainer.dataloader_iterator
             del trainer.model
             del trainer.generator
@@ -90,9 +94,19 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         torch.cuda.empty_cache()
         if "CUDA out of memory" in str(e) or "PYTORCH_CUDA_ALLOC_CONF" in str(e):
             trainer.logger.info("CUDA out of memory")
-            trainer.print_and_log(f'============= Reducing batch size from {trainer.batch_size} to {trainer.batch_size-5}', save_to_file=trainer.dataset_output)
-            data["batch_size"] = data["batch_size"] - 5
-            return await handleTrainer(models_manager, data, websocket, gpus)
+            trainer.print_and_log(f'Out of VRAM')
+            if running:
+                trainer.print_and_log(f'============= Reducing batch size from {trainer.batch_size} to {trainer.batch_size-3}', save_to_file=trainer.dataset_output)
+                data["batch_size"] = data["batch_size"] - 3
+            del trainer
+            try:
+                del models_manager.models_bank["hifigan"]
+            except:
+                pass
+            if running:
+                gc.collect()
+                torch.cuda.empty_cache()
+                return await handleTrainer(models_manager, data, websocket, gpus)
         elif trainer.END_OF_TRAINING:
             trainer.logger.info("Finished training HiFi-GAN")
             trainer.print_and_log(f'Finished training HiFi-GAN\n', save_to_file=trainer.dataset_output)

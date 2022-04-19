@@ -4,9 +4,9 @@ import json
 import torch
 import traceback
 
-def returnFalse():
-    return False
-torch.cuda.is_available = returnFalse
+# def returnFalse():
+#     return False
+# torch.cuda.is_available = returnFalse
 
 from scipy.io import wavfile
 
