@@ -398,9 +398,14 @@ window.updateTrainingGraphs = () => {
         try {
             const graphsJson = JSON.parse(jsonString)
             const stageData = graphsJson.stages[window.training_state.stage_viewed]
+
+            if (window.graphs_only_latest) {
+                stageData.loss = stageData.loss.slice(stageData.loss.length-window.graphs_only_latest, stageData.loss.length)
+                stageData.loss_delta = stageData.loss_delta.slice(stageData.loss_delta.length-window.graphs_only_latest, stageData.loss_delta.length)
+            }
+
             window.updateTrainingGraphValues(stageData.loss, window.loss_chart_object)
             window.updateTrainingGraphValues(stageData.loss_delta, window.loss_delta_chart_object)
-
 
 
             // window.loss_delta_chart_object.data.datasets[1].data = stageData.loss_delta.map((_,i)=>0.04)
@@ -412,11 +417,29 @@ window.updateTrainingGraphs = () => {
 
 
         } catch (e) {
-            // console.log(e)
+            console.log(e)
             // console.log(`${datasetConfig.output_path}/graphs.json`)
         }
     }
 }
+graphs_only_latest_chbx.addEventListener("click", () => {
+    window.graphs_only_latest = graphs_only_latest_chbx.checked ? parseInt(graphs_only_latest_val.value) : undefined
+    localStorage.setItem("graphs_only_latest", window.graphs_only_latest)
+    window.updateTrainingGraphs()
+})
+graphs_only_latest_val.addEventListener("keyup", () => {
+    window.graphs_only_latest = graphs_only_latest_chbx.checked ? parseInt(graphs_only_latest_val.value) : undefined
+    localStorage.setItem("graphs_only_latest", window.graphs_only_latest)
+    window.updateTrainingGraphs()
+})
+
+window.graphs_only_latest = localStorage.getItem("graphs_only_latest")
+if (window.graphs_only_latest) {
+    graphs_only_latest_chbx.checked = true
+    graphs_only_latest_val.value = parseInt(window.graphs_only_latest)
+    window.graphs_only_latest = parseInt(window.graphs_only_latest)
+}
+
 
 
 const startTrackingFolder = (dataset_path, output_path) => {
