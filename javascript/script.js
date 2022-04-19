@@ -34,7 +34,9 @@ const execFile = require('child_process').execFile
 const spawn = require("child_process").spawn
 
 window.hasCUDA = false
-window.spinnerModal("Waiting for the WebSocket to connect...")
+if (!window.ws || !window.ws.readyState) {
+    window.spinnerModal("Waiting for the WebSocket to connect...")
+}
 smi((err, data) => {
     if (!data || !data.nvidia_smi_log.cuda_version) {
         return window.errorModal(`CUDA installation not detected. This is required (along with an NVIDIA GPU) for most things to work. Please install it from the NVIDIA website. You can verify its installation by running "nvcc --version" on the command-line.<br>You can switch to a CPU-only installation in the settings, to use the tools, but the training is still GPU only.`)
