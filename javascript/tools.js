@@ -510,7 +510,7 @@ toolsRunTool.addEventListener("click", () => {
     window.tools_state.taskFiles = []
     window.tools_state.progressElem.innerHTML = ""
 
-    window.tools_state.taskFiles = fs.readdirSync(window.tools_state.inputDirectory)
+    window.tools_state.taskFiles = fs.readdirSync(window.tools_state.inputDirectory).filter(f => !f.endsWith(".ini"))
     if (!window.tools_state.taskFiles.length) {
         return window.errorModal(`There are no files in the tool's input directory: <br>${window.tools_state.inputDirectory}`)
     }
