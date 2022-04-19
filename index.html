@@ -827,7 +827,7 @@
 
 
                     <!-- Queue -->
-                    <div style="width: 403px;display: flex;flex-direction: column;margin-left: 10px;height: 85vh;">
+                    <div id="train_queueThird" style="width: 403px;display: flex;flex-direction: column;margin-left: 10px;height: 85vh;">
                         <h3 style="margin-top: 0;">Queue</h3>
                         <div id="trainingQueuePanelContainer">
                             <div id="trainingQueueHeader">
@@ -839,7 +839,7 @@
                             <div id="trainingQueueRecordsContainer"></div>
 
                         </div>
-                        <div style="display: flex;justify-content: space-evenly;height: 40px;margin-top: 10px;">
+                        <div style="display: flex;justify-content: space-evenly;height: 40px;margin-top: 10px;flex-wrap: wrap;">
                             <button id="trainingQueueBtnMoveUp" style="margin-left: 0;" disabled="true">Up</button>
                             <button id="trainingQueueBtnMoveDown" disabled="true">Down</button>
                             <button id="trainingQueueBtnDelete" disabled="true">Delete</button>
@@ -850,7 +850,7 @@
                     </div>
 
                     <!-- Training -->
-                    <div style="width: calc(93vw - 715px);margin-left: 10px;">
+                    <div id="train_trainingThird" style="width: calc(93vw - 715px);margin-left: 10px;">
                         <h3 id="training_title" style="margin-top: 0;">Training</h3>
                         <div id="lossPlotsContainer">
                             <div>
@@ -881,7 +881,7 @@
                         </div>
                     </div>
                     <!-- System -->
-                    <div style="height: 85vh;width: 300px;display: flex;flex-direction: column;">
+                    <div id="train_systemThird" style="height: 85vh;width: 300px;display: flex;flex-direction: column;overflow-y: scroll;">
                         <h3 style="margin-top: 0;">System</h3>
                         <div>
                             <div id="trainingSystemCharts">

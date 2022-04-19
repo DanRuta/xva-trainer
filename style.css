@@ -1131,6 +1131,22 @@ a {
 
 @media screen and (max-width: 1300px) {
     #letterLength {
-        width: 50px;
+        width: 50px !important;
     }
+    #train_trainingThird {
+        width: calc(93vw - 515px) !important;
+    }
+    #train_systemThird {
+        width: 200px !important;
+    }
+    #train_queueThird {
+        width: 303px !important;
+    }
+    #trainingQueuePanelContainer {
+        height: calc(75vh - 40px) !important;
+    }
+}
+
+@media screen and (max-height: 1000px) {
+
 }
