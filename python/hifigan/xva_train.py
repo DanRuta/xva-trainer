@@ -163,7 +163,7 @@ class HiFiTrainer(object):
             print(f'\r{self.training_log_live_line}', end="", flush=True)
         else:
             time_str = str(datetime.datetime.now().time())
-            time_str = time_str.split(":")[0]+":"+time_str.split(":")[1]+":"+time_str.split(":")[2]
+            time_str = time_str.split(":")[0]+":"+time_str.split(":")[1]+":"+time_str.split(":")[2].split(".")[0]
             self.training_log.append(f'{time_str} | {line}')
             print(("\r" if flush else "")+line, end=end, flush=flush)
 
