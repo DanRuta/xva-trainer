@@ -392,15 +392,45 @@ const tools = {
             toolDescription.appendChild(container)
         }
     },
+    "SRT split": {
+        taskId: "srt_split",
+        description: "Split long clips based on their accompanying .srt subtitle file, into short clips with the associated transcript.",
+        inputDirectory: `${window.path}/python/srt_split/input`,
+        outputDirectory: `${window.path}/python/srt_split/output`,
+        inputFileType: "folder",
+        isMultiProcessed: false,
+        setupFn: (taskId) => {
+            const ckbxDescription = createElem("div", "Use multi-processing")
+            const ckbx = createElem("input", {type: "checkbox"})
+            ckbx.style.height = "20px"
+            ckbx.style.width = "20px"
+
+            window.tools_state.toolSettings["srt_split"] = window.tools_state.toolSettings["srt_split"] || {}
+            window.tools_state.toolSettings["srt_split"].useMP = false
+
+            ckbx.addEventListener("click", () => {
+                window.tools_state.toolSettings["srt_split"].useMP = ckbx.checked
+                window.tools_state.toolSettings["srt_split"].isMultiProcessed = ckbx.checked
+                window.tools_state.isMultiProcessed = ckbx.checked
+            })
+            const rowItemUseMp = createElem("div", createElem("div", ckbxDescription), createElem("div", ckbx))
+
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp)
+            toolDescription.appendChild(container)
+        }
+    },
 }
 
 
 // Brute force progress indicator, for when the WebSockets don't work
 setInterval(() => {
-    if (["transcribe"].includes(window.tools_state.taskId)) {
+    if (["transcribe", "srt_split"].includes(window.tools_state.taskId)) {
         if (window.tools_state.taskId && fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
-            let percentDone = parseFloat(fs.readFileSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`, "utf8"))
-            toolProgressInfo.innerHTML = `${parseInt(percentDone*100)/100}%`
+            const fileData = fs.readFileSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`, "utf8")
+            if (fileData.length) {
+                let percentDone = parseFloat(fileData)
+                toolProgressInfo.innerHTML = `${parseInt(percentDone*100)/100}%`
+            }
         } else {
             toolProgressInfo.innerHTML = ""
         }
@@ -532,7 +562,7 @@ toolsRunTool.addEventListener("click", () => {
         if (!fs.existsSync(window.tools_state.outputDirectory)) {
             fs.mkdirSync(window.tools_state.outputDirectory)
         }
-        updateMPProgress()
+        setTimeout(updateMPProgress, 1000)
 
         const toolSettings = window.tools_state.toolSettings[window.tools_state.taskId] || {}
         window.ws.send(JSON.stringify({model: window.tools_state.taskId, task: "runTask", data: {
@@ -584,12 +614,14 @@ const doNextTaskItem = () => {
 const updateMPProgress = () => {
 
     const outputFiles = fs.readdirSync(window.tools_state.outputDirectory)
-
     const filesDone = outputFiles.filter(fname => window.tools_state.taskFiles.map(fname => fname.split(".").reverse().slice(1,1000).reverse().join(".")+".wav").includes(fname)).length
-    const percentDone = parseInt(filesDone/window.tools_state.taskFiles.length*100*100)/100
-    window.tools_state.currentFileElem.innerHTML = `Files done: ${filesDone}/${window.tools_state.taskFiles.length} (${percentDone}%)`
 
-    if (filesDone==window.tools_state.taskFiles.length) {
+    if (!fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
+        const percentDone = parseInt(filesDone/window.tools_state.taskFiles.length*100*100)/100
+        window.tools_state.currentFileElem.innerHTML = `Files done: ${filesDone}/${window.tools_state.taskFiles.length} (${percentDone}%)`
+    }
+
+    if (filesDone==window.tools_state.taskFiles.length && !fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
         window.tools_state.taskFiles = []
         window.tools_state.currentFileElem.innerHTML = ""
         console.log("about to force call tasks_next")

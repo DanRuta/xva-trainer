@@ -84,6 +84,10 @@ class ModelsManager(object):
                 from python.cut_padding.model import CutPadding
                 self.models_bank[model_key] = CutPadding(self.logger, self.PROD, self.device, self)
 
+            if model_key=="srt_split":
+                from python.srt_split.model import SRTSplit
+                self.models_bank[model_key] = SRTSplit(self.logger, self.PROD, self.device, self)
+
             # Models
             if model_key=="fastpitch1_1":
                 from python.fastpitch1_1.xva_train import FastPitchTrainer
