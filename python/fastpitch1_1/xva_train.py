@@ -587,7 +587,7 @@ class FastPitchTrainer(object):
             if num_data_lines<500:
                 target_delta = 4e-4
 
-            target_delta = target_delta * 0.75
+            target_delta = target_delta #* 0.75
 
             for module in [self.model.duration_predictor, self.model.decoder, self.model.pitch_predictor, self.model.pitch_emb, self.model.energy_predictor, self.model.proj]:
                 for param in module.parameters():
@@ -604,6 +604,8 @@ class FastPitchTrainer(object):
 
             if num_data_lines<500:
                 target_delta = 4e-3
+
+            target_delta = target_delta * 1.5
 
             for module in [self.model.attention, self.model.decoder, self.model.pitch_predictor, self.model.pitch_emb, self.model.energy_predictor, self.model.proj]:
                 for param in module.parameters():
@@ -625,7 +627,7 @@ class FastPitchTrainer(object):
                     target_delta = 1e-3
 
 
-            target_delta = target_delta * 2
+            target_delta = target_delta * 2.5
 
             for module in [self.model.attention, self.model.duration_predictor]:
                 for param in module.parameters():
@@ -643,6 +645,8 @@ class FastPitchTrainer(object):
                     target_delta = 15e-4 # 1e-3
                 else:
                     target_delta = 45e-5 # 4e-4
+
+            target_delta = target_delta * 1.5
 
             for module in [self.model.attention, self.model.duration_predictor, self.model.pitch_predictor, self.model.pitch_emb, self.model.energy_predictor]:
                 for param in module.parameters():
