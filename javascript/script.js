@@ -38,8 +38,6 @@ if (!window.ws || !window.ws.readyState) {
     window.spinnerModal("Waiting for the WebSocket to connect...")
     const checkIsUp = () => {
         setTimeout(() => {
-            console.log(window.ws)
-            // console.log(window.ws.readyState)
             if (window.ws && window.ws.readyState) {
                 window.closeModal()
             } else {
@@ -1220,6 +1218,12 @@ const initDatasetMeta = (callback) => {
         if (callback) {
             callback()
         }
+
+        try {
+            fs.makedirSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset||composedVoiceId.innerHTML}`)
+            fs.mkdirSync(`${window.userSettings.datasetsPath}/${composedVoiceId.innerHTML}`)
+            fs.mkdirSync(`${window.userSettings.datasetsPath}/${composedVoiceId.innerHTML}/wavs`)
+        } catch (e) {}
 
         fs.writeFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset||composedVoiceId.innerHTML}/dataset_metadata.json`, JSON.stringify({
             "version": "2.0",
