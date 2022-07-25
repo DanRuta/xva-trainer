@@ -157,6 +157,22 @@ window.initFilePickerButton(modelExport_trainningDirBtn, modelExport_trainningDi
 window.initFilePickerButton(modelExport_outputDirBtn, modelExport_outputDir, undefined, ["openDirectory"], undefined, window.path)
 window.initFilePickerButton(trainingAddConfigCkptPathInputBtn, trainingAddConfigCkptPathInput, undefined, ["openFile"], [{name: "Pytorch checkpoint", extensions: ["pt"]}], window.path)
 
+trainingAddConfigBatchSizeInput.addEventListener("keyup", () => window.localStorage.setItem("training.batch_size", trainingAddConfigBatchSizeInput.value))
+trainingAddConfigBatchSizeInput.addEventListener("change", () => window.localStorage.setItem("training.batch_size", trainingAddConfigBatchSizeInput.value))
+trainingAddConfigBatchSizeInput.value = window.localStorage.getItem("training.batch_size")
+
+trainingAddConfigEpochsPerCkptInput.addEventListener("keyup", () => window.localStorage.setItem("training.epochs_per_ckpt", trainingAddConfigEpochsPerCkptInput.value))
+trainingAddConfigEpochsPerCkptInput.addEventListener("change", () => window.localStorage.setItem("training.epochs_per_ckpt", trainingAddConfigEpochsPerCkptInput.value))
+trainingAddConfigEpochsPerCkptInput.value = window.localStorage.getItem("training.epochs_per_ckpt")
+
+trainingAddConfigUseAmp.addEventListener("keyup", () => window.localStorage.setItem("training.useFP16", trainingAddConfigUseAmp.checked?"1":"0"))
+trainingAddConfigUseAmp.addEventListener("change", () => window.localStorage.setItem("training.useFP16", trainingAddConfigUseAmp.checked?"1":"0"))
+trainingAddConfigUseAmp.checked = !!parseInt(window.localStorage.getItem("training.useFP16"))
+
+trainingAddConfigWorkersInput.addEventListener("keyup", () => window.localStorage.setItem("training.num_workers", trainingAddConfigWorkersInput.value))
+trainingAddConfigWorkersInput.addEventListener("change", () => window.localStorage.setItem("training.num_workers", trainingAddConfigWorkersInput.value))
+trainingAddConfigWorkersInput.value = window.localStorage.getItem("training.num_workers")
+
 
 // Installation sever handling
 // =========================

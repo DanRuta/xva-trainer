@@ -586,10 +586,10 @@ window.showConfigMenu = (startingData, di) => {
         "checkpoint": undefined,
         "hifigan_checkpoint": undefined,
 
-        "use_amp": "true",
-        "num_workers": 4, // TODO, app-level default settings
-        "batch_size": 8, // TODO, app-level default settings
-        "epochs_per_checkpoint": 3, // TODO, app-level default settings
+        // "use_amp": "true",
+        // "num_workers": 4, // TODO, app-level default settings
+        // "batch_size": 8, // TODO, app-level default settings
+        // "epochs_per_checkpoint": 3, // TODO, app-level default settings
         "force_stage": undefined,
     }
     if (typeof startingData == "string") {
@@ -615,10 +615,26 @@ window.showConfigMenu = (startingData, di) => {
     trainingAddConfigCkptPathInput.value = configData.checkpoint || ""
     // trainingAddConfigHiFiCkptPathInput.value = configData.hifigan_checkpoint || ""
 
-    trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
-    trainingAddConfigBatchSizeInput.value = parseInt(configData.batch_size)
-    trainingAddConfigEpochsPerCkptInput.value = parseInt(configData.epochs_per_checkpoint)
-    trainingAddConfigUseAmp.checked = configData.use_amp ? configData.use_amp=="true" : true
+    if (configData.num_workers !== undefined) {
+        trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
+    } else {
+        trainingAddConfigBatchSizeInput.value = window.localStorage.getItem("training.batch_size")
+    }
+    if (configData.batch_size !== undefined) {
+        trainingAddConfigBatchSizeInput.value = parseInt(configData.batch_size)
+    } else {
+        trainingAddConfigEpochsPerCkptInput.value = window.localStorage.getItem("training.epochs_per_ckpt")
+    }
+    if (configData.epochs_per_checkpoint !== undefined) {
+        trainingAddConfigEpochsPerCkptInput.value = parseInt(configData.epochs_per_checkpoint)
+    } else {
+        trainingAddConfigUseAmp.checked = !!parseInt(window.localStorage.getItem("training.useFP16"))
+    }
+    if (configData.use_amp !== undefined) {
+        trainingAddConfigUseAmp.checked = configData.use_amp ? configData.use_amp=="true" : true
+    } else {
+        trainingAddConfigWorkersInput.value = window.localStorage.getItem("training.num_workers")
+    }
 
     queueItemConfigModalContainer.style.display = "flex"
 }
