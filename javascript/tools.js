@@ -3,6 +3,40 @@
 const fs = require("fs-extra")
 const {getAudioDurationInSeconds} = require("get-audio-duration")
 
+const lang_names = {
+    "am": "Amharic",
+    "ar": "Arabic",
+    "da": "Danish",
+    "de": "German",
+    "el": "Greek",
+    "en": "English",
+    "es": "Spanish",
+    "fi": "Finnish",
+    "fr": "French",
+    "ha": "Hausa",
+    "hi": "Hindi",
+    "hu": "Hungarian",
+    "it": "Italian",
+    "jp": "Japanese",
+    "ko": "Korean",
+    "la": "Latin",
+    "mn": "Mongolian",
+    "nl": "Dutch",
+    "pl": "Polish",
+    "pt": "Portuguese",
+    "ro": "Romanian",
+    "ru": "Russian",
+    "sw": "Kiswahili",
+    "sv": "Swedish",
+    "th": "Thai",
+    "tr": "Turkish",
+    "uk": "Ukrainian",
+    "vi": "Vietnamese",
+    "wo": "Wolof",
+    "yo": "Yoruba",
+    "zh": "Chinese Mandarin",
+}
+
 const tools = {
     "Audio formatting": {
         taskId: "formatting",
@@ -248,6 +282,20 @@ const tools = {
             window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = false
             window.tools_state.toolSettings["transcribe"].language = "en"
 
+            const languages = fs.readdirSync(`${window.path}/python/transcribe/wav2vec2`)
+                .filter(name => !name.startsWith("_")&&!name.includes("."))
+                .map(langCode => {return [langCode, lang_names[langCode]]}).sort((a,b) => a[1]<b[1]?-1:1)
+            const selectElem = createElem("select")
+            languages.forEach(lang => {
+                const optionElem = createElem("option", {value: lang[0]})
+                optionElem.innerHTML = lang[1]
+                selectElem.appendChild(optionElem)
+            })
+            selectElem.value = "en"
+            selectElem.addEventListener("change", () => window.tools_state.toolSettings["transcribe"].language=selectElem.value)
+            const langDescription = createElem("div", "Language (Note: Only English training is supported with v2 models. Check v3 models for multi-lingual training.)")
+            const rowItemLang = createElem("div", createElem("div", langDescription), createElem("div", selectElem))
+
             const ckbxDescription = createElem("div", "Use multi-processing")
             const ckbx = createElem("input", {type: "checkbox"})
             ckbx.style.height = "20px"
@@ -276,7 +324,7 @@ const tools = {
 
 
 
-            const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp, rowItemtranscribeMPworkers)
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp, rowItemtranscribeMPworkers, rowItemLang)
             toolDescription.appendChild(container)
         }
     },
