@@ -768,15 +768,29 @@
                         </div>
                     </div>
                     <div>
-                        <div>FastPitch Checkpoint path to fine-tune from</div>
+                        <div>FastPitch Checkpoint path to fine-tune from (built in, or custom)</div>
                         <div>
-                            <input id="trainingAddConfigCkptPathInput" placeholder="[male], [female], or .pt file path">
+                            <div>
+                                <input id="fp_ckpt_option_male" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_male">
+                                <label for="fp_ckpt_option_male">Male</label>
+                                <input id="fp_ckpt_option_female" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_female">
+                                <label for="fp_ckpt_option_female">Female</label>
+                                <input id="fp_ckpt_option_other" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_other">
+                                <label for="fp_ckpt_option_other">Other</label>
+                            </div>
+                            <input id="trainingAddConfigCkptPathInput" placeholder="Full filepath to own ~500Mb .pt file" disabled>
                         </div>
                     </div>
                     <div>
                         <div>HiFi-GAN Checkpoint path to fine-tune from</div>
                         <div>
-                            <input id="trainingAddConfigHiFiCkptPathInput" placeholder="[male], [female], or .pt file path">
+                            <div>
+                                <input id="hifigan_ckpt_option_male" type="radio" name="hifigan_ckpt_option" value="hifigan_ckpt_option_male">
+                                <label for="hifigan_ckpt_option_male">Male</label>
+                                <input id="hifigan_ckpt_option_female" type="radio" name="hifigan_ckpt_option" value="hifigan_ckpt_option_female">
+                                <label for="hifigan_ckpt_option_female">Female</label>
+                            </div>
+                            <!-- <input id="trainingAddConfigHiFiCkptPathInput" placeholder="[male], [female], or .pt file path"> -->
                         </div>
                     </div>
 

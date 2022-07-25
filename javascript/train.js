@@ -568,6 +568,11 @@ stage_select.addEventListener("change", () => {
 
 
 
+fp_ckpt_option_other.addEventListener("click", () => trainingAddConfigCkptPathInput.disabled = !fp_ckpt_option_other.checked)
+fp_ckpt_option_other.addEventListener("change", () => trainingAddConfigCkptPathInput.disabled = !fp_ckpt_option_other.checked)
+fp_ckpt_option_female.addEventListener("change", () => trainingAddConfigCkptPathInput.disabled = !fp_ckpt_option_other.checked)
+fp_ckpt_option_male.addEventListener("change", () => trainingAddConfigCkptPathInput.disabled = !fp_ckpt_option_other.checked)
+
 window.showConfigMenu = (startingData, di) => {
 
     queueItemConfigModalContainer.style.opacity = 1
@@ -644,12 +649,18 @@ acceptConfig.addEventListener("click", () => {
     if (!trainingAddConfigOutputPathInput.value.trim().length) {
         return window.errorModal("You need to specify where to output the intermediate data/models for your dataset.", queueItemConfigModalContainer)
     }
-    if (!trainingAddConfigCkptPathInput.value.trim().length) {
+    if (!fp_ckpt_option_other.checked && !fp_ckpt_option_female.checked && !fp_ckpt_option_male.checked) {
+        return window.errorModal("Please select the FastPitch checkpoint to fine-tune from", queueItemConfigModalContainer)
+    }
+    if (!hifigan_ckpt_option_male.checked && !hifigan_ckpt_option_female.checked ) {
+        return window.errorModal("Please select the HiFi-GAN checkpoint to fine-tune from", queueItemConfigModalContainer)
+    }
+    if (fp_ckpt_option_other.checked && !trainingAddConfigCkptPathInput.value.trim().length) {
         return window.errorModal("You need to specify which FastPitch checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
     }
-    if (!trainingAddConfigHiFiCkptPathInput.value.trim().length) {
-        return window.errorModal("You need to specify which HiFi-GAN checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
-    }
+    // if (!trainingAddConfigHiFiCkptPathInput.value.trim().length) {
+    //     return window.errorModal("You need to specify which HiFi-GAN checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
+    // }
     if (!trainingAddConfigBatchSizeInput.value.trim().length) {
         return window.errorModal("Please enter the base batch size you'd like to use", queueItemConfigModalContainer)
     }
@@ -706,8 +717,18 @@ acceptConfig.addEventListener("click", () => {
         window.refreshTrainingQueueList()
     }
 
-    const fp_ckpt = trainingAddConfigCkptPathInput.value.trim().replaceAll(/\\/, "/")
-    const hg_ckpt = trainingAddConfigHiFiCkptPathInput.value.trim().replaceAll(/\\/, "/")
+    let fp_ckpt = trainingAddConfigCkptPathInput.value.trim().replaceAll(/\\/, "/")
+    if (fp_ckpt_option_female.checked) {
+        fp_ckpt = "[female]"
+    } else if (fp_ckpt_option_male.checked) {
+        fp_ckpt = "[male]"
+    }
+    // const hg_ckpt = trainingAddConfigHiFiCkptPathInput.value.trim().replaceAll(/\\/, "/")
+    const hg_ckpt = hifigan_ckpt_option_male.checked ? "[male]" : "[female]"
+
+    console.log("fp_ckpt", fp_ckpt)
+    console.log("hg_ckpt", hg_ckpt)
+    fdg()
 
     if (fp_ckpt!="[male]" && fp_ckpt!="[female]" && !fs.existsSync(fp_ckpt)) {
         window.confirmModal(`A FastPitch1.1 checkpoint file was not found at the following file/folder location. Continue regardless?<br>${fp_ckpt}`).then(resp => {
