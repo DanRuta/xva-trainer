@@ -20,7 +20,7 @@ if __name__ == '__main__':
         lines = f.read().split("\n")
         APP_VERSION = lines[1].split('"')[1]
 
-
+    # configurable in ports.txt
     SERVER_PORT = 8002
     WEBSOCKET_PORT = 8001
 

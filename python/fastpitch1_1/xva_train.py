@@ -338,7 +338,7 @@ class FastPitchTrainer(object):
 
         pitch_mean, pitch_std = await self.get_or_calculate_pitch_stats(self.training_log, self.dataset_input, self.cmudict, self.p_arpabet)
 
-        self.model = FastPitch().to(self.device)
+        self.model = FastPitch(logger=self.logger).to(self.device)
         self.attention_kl_loss = AttentionBinarizationLoss()
 
         # Store pitch mean/std as params to translate from Hz during inference
@@ -351,7 +351,8 @@ class FastPitchTrainer(object):
 
         # Load checkpoint
         self.model.training_stage, start_epoch, start_iter, avg_loss_per_epoch = self.load_checkpoint(ckpt_path)
-        if self.model.training_stage==5 or self.force_stage==5:
+        # if (self.model.training_stage==5 or self.force_stage==5) and (self.force_stage is not None or self.force_stage==5):
+        if self.model.training_stage==5 and (self.force_stage is None or self.force_stage==5):
             self.END_OF_TRAINING = True
             self.JUST_FINISHED_STAGE = True
             raise
@@ -658,6 +659,7 @@ class FastPitchTrainer(object):
                     target_delta = 45e-5 # 4e-4
 
             target_delta = target_delta * 1.5
+            target_delta = target_delta * 2
 
             for module in [self.model.attention, self.model.duration_predictor, self.model.pitch_predictor, self.model.pitch_emb, self.model.energy_predictor]:
                 for param in module.parameters():
@@ -1147,6 +1149,7 @@ class FastPitchTrainer(object):
                             durs = attn_hard_dur[ai].squeeze().cpu().detach().numpy()
                             np.save(out_path.replace(".pt", ".npy"), durs)
                     except:
+                        self.logger.info(f'Failed for: {x[-1]}')
                         self.print_and_log(f'Failed for: {x[-1]}', save_to_file=self.dataset_output)
                         self.print_and_log(traceback.format_exc(), save_to_file=self.dataset_output)
                         raise
