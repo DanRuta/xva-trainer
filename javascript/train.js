@@ -613,7 +613,7 @@ window.showConfigMenu = (startingData, di) => {
     trainingAddConfigDatasetPathInput.value = configData.dataset_path || ""
     trainingAddConfigOutputPathInput.value = configData.output_path || ""
     trainingAddConfigCkptPathInput.value = configData.checkpoint || ""
-    trainingAddConfigHiFiCkptPathInput.value = configData.hifigan_checkpoint || ""
+    // trainingAddConfigHiFiCkptPathInput.value = configData.hifigan_checkpoint || ""
 
     trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
     trainingAddConfigBatchSizeInput.value = parseInt(configData.batch_size)
@@ -725,10 +725,6 @@ acceptConfig.addEventListener("click", () => {
     }
     // const hg_ckpt = trainingAddConfigHiFiCkptPathInput.value.trim().replaceAll(/\\/, "/")
     const hg_ckpt = hifigan_ckpt_option_male.checked ? "[male]" : "[female]"
-
-    console.log("fp_ckpt", fp_ckpt)
-    console.log("hg_ckpt", hg_ckpt)
-    fdg()
 
     if (fp_ckpt!="[male]" && fp_ckpt!="[female]" && !fs.existsSync(fp_ckpt)) {
         window.confirmModal(`A FastPitch1.1 checkpoint file was not found at the following file/folder location. Continue regardless?<br>${fp_ckpt}`).then(resp => {
