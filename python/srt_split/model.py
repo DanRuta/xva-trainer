@@ -22,7 +22,7 @@ def splitTask (data):
     t1_delta = time_minus(t1, "00:00:01")
     t2_delta = time_diff(t1, t2)
 
-    command = f'{ffmpeg_path} -ss {t1_delta} -i {inPath} -ss 00:00:01 -t {t2_delta} -vn -acodec copy -c copy {outname_temp} -map a -ss 00:00:01 -t 00:00:05 -ar 22050 -ac 1 {outname}'
+    command = f'{ffmpeg_path} -ss {t1_delta} -i {inPath} -ss 00:00:01 -t {t2_delta} -vn -acodec copy -c copy {outname_temp} -map a -ss 00:00:01 -t {t2_delta} -ar 22050 -ac 1 {outname}'
     command_process = subprocess.Popen(command, startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = command_process.communicate()
     stderr = stderr.decode("utf-8")
@@ -91,7 +91,7 @@ def time_diff (t1, t2):
     hour_diff = (hour_diff-1) if min_diff<0 else hour_diff
     final_hour = (24-hour_diff) if hour_diff<0 else hour_diff
 
-    final_stamp = f'{final_hour}:{final_min}:{final_sec}'
+    final_stamp = f'{str(final_hour).zfill(2)}:{str(final_min).zfill(2)}:{str(final_sec).zfill(2)}'
     return final_stamp
 
 
@@ -135,10 +135,13 @@ class SRTSplit(object):
         # t1 = time_minus(t1, "00:00:01")
         # t2 = time_plus(t2, "00:00:01")
 
-        t1_delta = time_minus(t1, "00:00:01")
+        if t1=="00:00:00":
+            t1_delta = t1
+        else:
+            t1_delta = time_minus(t1, "00:00:01")
         t2_delta = time_diff(t1, t2)
 
-        command = f'{ffmpeg_path} -ss {t1_delta} -i {inPath} -ss 00:00:01 -t {t2_delta} -vn -acodec copy -c copy {outname_temp} -map a -ss 00:00:01 -t 00:00:05 -ar 22050 -ac 1 {outname}'
+        command = f'{ffmpeg_path} -ss {t1_delta} -i "{inPath}" -ss 00:00:01 -t {t2_delta} -vn -acodec copy -c copy "{outname_temp}" -map a -ss 00:00:01 -t {t2_delta} -ar 22050 -ac 1 "{outname}"'
         command_process = subprocess.Popen(command, startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = command_process.communicate()
         stderr = stderr.decode("utf-8")

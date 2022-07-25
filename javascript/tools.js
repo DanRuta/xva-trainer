@@ -442,7 +442,7 @@ const tools = {
     },
     "SRT split": {
         taskId: "srt_split",
-        description: "Split long clips based on their accompanying .srt subtitle file, into short clips with the associated transcript.",
+        description: "Split long .mp4 clips based on their accompanying .srt subtitle file, into short clips with the associated transcript.",
         inputDirectory: `${window.path}/python/srt_split/input`,
         outputDirectory: `${window.path}/python/srt_split/output`,
         inputFileType: "folder",
