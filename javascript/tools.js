@@ -238,7 +238,7 @@ const tools = {
             })
 
             const clusterFolderPrefixDescription = createElem("div", "Prefix cluster folder names with something")
-            const clusterFolderPrefixInput = createElem("input", {type: "number"})
+            const clusterFolderPrefixInput = createElem("input")
             clusterFolderPrefixInput.disabled = true
             clusterFolderPrefixInput.style.width = "70%"
             clusterFolderPrefixInput.value = "0001"
