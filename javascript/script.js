@@ -818,6 +818,15 @@ window.refreshRecordsList = (dataset) => {
     for (let ri=startIndex; ri<endIndex; ri++) {
         const recordAndElem = filteredRows[ri]
 
+        if (window.wer_cache[window.appState.currentDataset]) {
+            const score = window.wer_cache[window.appState.currentDataset][ri]
+            const r_col = Math.min(score, 1)
+            const g_col = 1 - r_col
+            recordAndElem[1].children[4].style.background = `rgba(${r_col*255},${g_col*255},50, 0.7)`
+        } else {
+            recordAndElem[1].children[4].style.background = `none`
+        }
+
         fs.exists(recordAndElem[3], exists => {
             if (exists) {
                 const audio = createElem("audio", {controls: true}, createElem("source", {

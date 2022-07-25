@@ -1008,6 +1008,7 @@ prepTextStart.addEventListener("click", () => {
 })
 
 
+window.wer_cache = {}
 
 checkTextQualityBtn.addEventListener("click", () => {
     if (window.appState.currentDataset!=undefined) {
@@ -1058,6 +1059,8 @@ checkTextQualityBtn.addEventListener("click", () => {
                                  wer_key[fname] = score
                             })
 
+                            window.wer_cache[window.appState.currentDataset] = {}
+
                             window.datasets[window.appState.currentDataset].metadata.forEach((sampleItems, si) => {
 
                                 const fileName = sampleItems[0].fileName.toLowerCase()
@@ -1066,15 +1069,17 @@ checkTextQualityBtn.addEventListener("click", () => {
                                     return
                                 }
 
+
                                 const wer_elem = sampleItems[1].children[4]
                                 const score = parseFloat(wer_key[fileName].trim())/2
 
+                                window.wer_cache[window.appState.currentDataset][si] = score
+
                                 window.datasets[window.appState.currentDataset].metadata.wer = score
 
-                                const r_col = Math.min(score, 1)
-                                const g_col = 1 - r_col
-
-                                wer_elem.style.background = `rgba(${r_col*255},${g_col*255},50, 0.7)`
+                                // const r_col = Math.min(score, 1)
+                                // const g_col = 1 - r_col
+                                // wer_elem.style.background = `rgba(${r_col*255},${g_col*255},50, 0.7)`
                             })
 
                             window.refreshRecordsList(window.appState.currentDataset)
