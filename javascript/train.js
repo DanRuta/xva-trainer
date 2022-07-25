@@ -432,6 +432,11 @@ graphs_only_latest_val.addEventListener("keyup", () => {
     localStorage.setItem("graphs_only_latest", window.graphs_only_latest)
     window.updateTrainingGraphs()
 })
+graphs_only_latest_val.addEventListener("change", () => {
+    window.graphs_only_latest = graphs_only_latest_chbx.checked ? parseInt(graphs_only_latest_val.value) : undefined
+    localStorage.setItem("graphs_only_latest", window.graphs_only_latest)
+    window.updateTrainingGraphs()
+})
 
 window.graphs_only_latest = localStorage.getItem("graphs_only_latest")
 if (window.graphs_only_latest) {
