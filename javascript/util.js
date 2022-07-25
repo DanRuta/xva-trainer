@@ -425,6 +425,25 @@ window.formatSecondsToTimeString = totalSeconds => {
     return timeDisplay.join(" ")
 }
 
+window.initFilePickerButton = (button, input, setting, properties, filters=undefined, defaultPath=undefined, callback=undefined) => {
+    button.addEventListener("click", () => {
+        const defaultPath = input.value.replace(/\//g, "\\")
+        let filePath = electron.remote.dialog.showOpenDialog({ properties, filters, defaultPath})
+        if (filePath) {
+            filePath = filePath[0].replace(/\\/g, "/")
+            input.value = filePath.replace(/\\/g, "/")
+            if (setting) {
+                setting = typeof(setting)=="function" ? setting() : setting
+                window.userSettings[setting] = filePath
+                saveUserSettings()
+            }
+            if (callback) {
+                callback()
+            }
+        }
+    })
+}
+
 
 
 // Disable page navigation on badly dropped file

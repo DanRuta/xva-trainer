@@ -598,7 +598,7 @@ window.showConfigMenu = (startingData, di) => {
 
     window.training_state.currentlyConfiguringDatasetI = di
 
-    trainingAddConfigDatasetPathInput.value = ""
+    trainingAddConfigDatasetPathInput.value = window.userSettings.datasetsPath
     trainingAddConfigDatasetPathInput.disabled = !!startingData
 
     trainingAddConfigDoForceStageCkbx.checked = configData.force_stage!=undefined
@@ -610,7 +610,7 @@ window.showConfigMenu = (startingData, di) => {
         trainingAddConfigForceStageNumberSelect.disabled = true
     }
 
-    trainingAddConfigDatasetPathInput.value = configData.dataset_path || ""
+    trainingAddConfigDatasetPathInput.value = configData.dataset_path || window.userSettings.datasetsPath
     trainingAddConfigOutputPathInput.value = configData.output_path || ""
     trainingAddConfigCkptPathInput.value = configData.checkpoint || ""
     // trainingAddConfigHiFiCkptPathInput.value = configData.hifigan_checkpoint || ""

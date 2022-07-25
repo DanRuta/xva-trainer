@@ -517,13 +517,13 @@
                         </div>
                     </div>
                     <div>
-                        <div style="width: 40vw;margin-left: 5vw;">Game ID code follows the naming convention for xVASynth's app name for different games. Eg Skyrim is sk (SKVASynth), Fallout 4 is f4 (F4VASynth), Oblivion is OB (OBVASynth), and so on. You MUST use the correct code for your game. x fits the "other" game ID.</div>
+                        <div style="width: 40vw;margin-left: 5vw;">Game ID code follows the naming convention for xVASynth's app name for different games. Eg Skyrim is sk (SKVASynth), Fallout 4 is f4 (F4VASynth), Oblivion is OB (OBVASynth), and so on. You <span style="color: red;display: contents;">MUST</span> use the correct code for your game. If the short game code is not a prefix in the voice_id, features in xVASynth will not work properly for that voice. x fits the "other" game ID.</div>
                     </div>
                     <div></div>
                     <div>
                         <div>Voice ID</div>
                         <div>
-                            <input id="datasetMeta_voiceId" value="your_voice_name">
+                            <input id="datasetMeta_voiceId" value="shortgamecode_your_voice_name">
                         </div>
                     </div>
                     <div style="font-size: 10pt;color: #999;">
@@ -585,14 +585,16 @@
                 <div class="flexTable">
                     <div>
                         <div>Model checkpoints directory:</div>
-                        <div>
-                            <input id="modelExport_trainningDir" placeholder="The full output folder path specified for training">
+                        <div style="flex-direction: row;">
+                            <input style="width: 75%;" id="modelExport_trainningDir" placeholder="The full output folder path specified for training">
+                            <button id="modelExport_trainningDirBtn" class="svgButton"></button>
                         </div>
                     </div>
                     <div>
                         <div>Export output directory:</div>
-                        <div>
-                            <input id="modelExport_outputDir" placeholder="Where do you want the model to be exported to?">
+                        <div style="flex-direction: row;">
+                            <input style="width: 75%;" id="modelExport_outputDir" placeholder="Where do you want the model to be exported to?">
+                            <button id="modelExport_outputDirBtn" class="svgButton"></button>
                         </div>
                     </div>
 
@@ -735,12 +737,12 @@
         <div id="queueItemConfigModalContainer" style="display: none;z-index: 1000;" >
             <div class="modal" style="width: 300px;min-height: 575px;height: 575px;min-width: 850px">
                 <h2>Config</h2>
-                <div class="flexTable" style="width:80%">
+                <div class="flexTable">
 
                     <div>
                         <div>Force stage</div>
                         <div style="display: flex;flex-direction: row;">
-                            <input id="trainingAddConfigDoForceStageCkbx" type="checkbox">
+                            <input style="width: 50px;" id="trainingAddConfigDoForceStageCkbx" type="checkbox">
                             <select style="width: 100px;margin-right: 50px;" id="trainingAddConfigForceStageNumberSelect">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -756,19 +758,22 @@
                     <hr style="opacity: 0.2;margin: 0;">
 
                     <div>
-                        <div>Dataset path</div>
-                        <div>
-                            <input id="trainingAddConfigDatasetPathInput">
+                        <div>Dataset path (where the metadata.csv file is)</div>
+                        <div style="flex-direction: row;">
+                            <input style="width: 75%;" id="trainingAddConfigDatasetPathInput">
+                            <button id="trainingAddConfigDatasetPathInputBtn" class="svgButton"></button>
                         </div>
                     </div>
                     <div>
                         <div>Output path</div>
-                        <div>
-                            <input id="trainingAddConfigOutputPathInput">
+                        <div style="flex-direction: row;">
+                            <input style="width: 75%;" id="trainingAddConfigOutputPathInput">
+                            <button id="trainingAddConfigOutputPathInputBtn" class="svgButton"></button>
                         </div>
                     </div>
+                    <br>
                     <div>
-                        <div>FastPitch Checkpoint path to fine-tune from (built in, or custom)</div>
+                        <div>FastPitch Checkpoint path to fine-tune from<br>(built in, or custom)</div>
                         <div>
                             <div>
                                 <input id="fp_ckpt_option_male" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_male">
@@ -776,9 +781,12 @@
                                 <input id="fp_ckpt_option_female" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_female">
                                 <label for="fp_ckpt_option_female">Female</label>
                                 <input id="fp_ckpt_option_other" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_other">
-                                <label for="fp_ckpt_option_other">Other</label>
+                                <label for="fp_ckpt_option_other">Custom</label>
                             </div>
-                            <input id="trainingAddConfigCkptPathInput" placeholder="Full filepath to own ~500Mb .pt file" disabled>
+                            <div style="flex-direction: row;width: 95%;display: flex;align-items: center;justify-content: center;">
+                                <input style="width: 80%;" id="trainingAddConfigCkptPathInput" placeholder="Full filepath to own ~500Mb .pt file" disabled>
+                                <button id="trainingAddConfigCkptPathInputBtn" class="svgButton"></button>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -822,7 +830,7 @@
                     <div>
                         <div>Number of CPU workers<br>Lower if stuck after "Workers: x"</div>
                         <div>
-                            <input id="trainingAddConfigWorkersInput" type="number" value="4" min="0">
+                            <input id="trainingAddConfigWorkersInput" type="number" value="3" min="0">
                         </div>
                     </div>
                 </div>

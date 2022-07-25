@@ -97,22 +97,6 @@ const initMenuSetting = (elem, setting, type, callback=undefined, valFn=undefine
         })
     }
 }
-const initFilePickerButton = (button, input, setting, properties, filters=undefined, defaultPath=undefined, callback=undefined) => {
-    button.addEventListener("click", () => {
-        const defaultPath = input.value.replace(/\//g, "\\")
-        let filePath = electron.remote.dialog.showOpenDialog({ properties, filters, defaultPath})
-        if (filePath) {
-            filePath = filePath[0].replace(/\\/g, "/")
-            input.value = filePath.replace(/\\/g, "/")
-            setting = typeof(setting)=="function" ? setting() : setting
-            window.userSettings[setting] = filePath
-            saveUserSettings()
-            if (callback) {
-                callback()
-            }
-        }
-    })
-}
 
 const setPromptTheme = () => {
     if (window.userSettings.darkPrompt) {
@@ -167,7 +151,11 @@ reset_settings_btn.addEventListener("click", () => {
 })
 
 initFilePickerButton(datasetsPathButton, setting_datasets_input, "datasetsPath", ["openDirectory"], undefined, undefined, ()=>window.refreshDatasets())
-
+window.initFilePickerButton(trainingAddConfigDatasetPathInputBtn, trainingAddConfigDatasetPathInput, undefined, ["openDirectory"], undefined, window.userSettings.datasetsPath)
+window.initFilePickerButton(trainingAddConfigOutputPathInputBtn, trainingAddConfigOutputPathInput, undefined, ["openDirectory"], undefined, window.path)
+window.initFilePickerButton(modelExport_trainningDirBtn, modelExport_trainningDir, undefined, ["openDirectory"], undefined, window.path)
+window.initFilePickerButton(modelExport_outputDirBtn, modelExport_outputDir, undefined, ["openDirectory"], undefined, window.path)
+window.initFilePickerButton(trainingAddConfigCkptPathInputBtn, trainingAddConfigCkptPathInput, undefined, ["openFile"], [{name: "Pytorch checkpoint", extensions: ["pt"]}], window.path)
 
 
 // Installation sever handling
