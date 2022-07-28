@@ -1027,7 +1027,7 @@ class FastPitchTrainer(object):
                 "version": "2.0",
                 "modelVersion": "2.0",
                 "modelType": "FastPitch1.1",
-                "author": "DanRuta",
+                "author": "",
                 "lang": "en",
                 "games": [
                     {
