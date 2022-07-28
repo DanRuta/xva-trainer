@@ -880,7 +880,7 @@ class FastPitchTrainer(object):
             else:
                 avg_losses_print = ""
 
-            print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | iter: {(self.total_iter+1)%self.num_iters}/{self.num_iters} -> {self.total_iter} | loss: {int(self.iter_loss*10000)/10000} | frames/s {int(self.iter_num_frames / self.iter_time)}{avg_losses_print} | Target: {str(self.target_delta).split("00000")[0]}    '
+            print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | iter: {(self.total_iter+1)%self.num_iters}/{self.num_iters} -> {self.total_iter} | loss: {(int(self.iter_loss*10000)/10000):.5f} | frames/s {int(self.iter_num_frames / self.iter_time)}{avg_losses_print} | Target: {str(self.target_delta:.5f).split("00000")[0]}    '
             self.training_log_live_line = print_line
             self.print_and_log(save_to_file=self.dataset_output)
 
@@ -985,13 +985,13 @@ class FastPitchTrainer(object):
                 os.remove(f'{self.dataset_output}/{ckpt}')
 
         # Log the epoch summary
-        print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | {self.dataset_output}~{self.epoch}_{self.total_iter}.pt | frames/s: {int(frames_s)}'
+        print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | {self.dataset_output.split("/")[-1]}~{self.epoch}_{self.total_iter}.pt | frames/s: {int(frames_s)}'
 
         if avg_loss is not None:
-            print_line += f' | Loss: {int(avg_loss*100000)/100000}'
+            print_line += f' | Loss: {(int(avg_loss*100000)/100000):.5f}'
         if loss_delta is not None:
-            print_line += f' | Delta: {int(loss_delta*100000)/100000}'
-        print_line += f' | Target: {int(self.target_delta*100000)/100000}'
+            print_line += f' | Delta: {(int(loss_delta*100000)/100000):.5f}'
+        print_line += f' | Target: {(int(self.target_delta*100000)/100000):.5f}'
 
         checkpoint = {
             'epoch': self.epoch,
