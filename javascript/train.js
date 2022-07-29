@@ -612,8 +612,14 @@ window.showConfigMenu = (startingData, di) => {
 
     trainingAddConfigDatasetPathInput.value = configData.dataset_path || window.userSettings.datasetsPath
     trainingAddConfigOutputPathInput.value = configData.output_path || ""
+    fp_ckpt_option_male.checked = configData.checkpoint=="[male]"
+    fp_ckpt_option_female.checked = configData.checkpoint=="[female]"
+    fp_ckpt_option_other.checked = configData.checkpoint!="[female]" && configData.checkpoint!="[male]"
     trainingAddConfigCkptPathInput.value = configData.checkpoint || ""
     // trainingAddConfigHiFiCkptPathInput.value = configData.hifigan_checkpoint || ""
+
+    hifigan_ckpt_option_male.checked = configData.hifigan_checkpoint=="[male]"
+    hifigan_ckpt_option_female.checked = configData.hifigan_checkpoint=="[female]"
 
     if (configData.num_workers !== undefined) {
         trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
@@ -687,6 +693,13 @@ acceptConfig.addEventListener("click", () => {
     const finishUp = () => {
         queueItemConfigModalContainer.style.display = "none"
 
+        let fastpitch_checkpoint = "[male]"
+        if (fp_ckpt_option_female.checked) {
+            fastpitch_checkpoint = "[female]"
+        } else if (fp_ckpt_option_other.checked) {
+            fastpitch_checkpoint = trainingAddConfigCkptPathInput.replaceAll(/\\/, "/")
+        }
+
         // TODO
         if (configAnExistingItem) {
 
@@ -695,7 +708,7 @@ acceptConfig.addEventListener("click", () => {
             const configData = {
                 "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path.replaceAll(/\\/, "/"),
                 "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
-                "checkpoint": fp_ckpt.replaceAll(/\\/, "/"),
+                "checkpoint": fastpitch_checkpoint,
                 "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
 
                 "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
@@ -716,7 +729,7 @@ acceptConfig.addEventListener("click", () => {
 
                 "dataset_path": trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/"),
                 "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
-                "checkpoint": fp_ckpt.replaceAll(/\\/, "/"),
+                "checkpoint": fastpitch_checkpoint,
                 "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
 
                 "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
