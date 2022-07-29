@@ -880,7 +880,9 @@ class FastPitchTrainer(object):
             else:
                 avg_losses_print = ""
 
-            print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | iter: {(self.total_iter+1)%self.num_iters}/{self.num_iters} -> {self.total_iter} | loss: {(int(self.iter_loss*10000)/10000):.5f} | frames/s {int(self.iter_num_frames / self.iter_time)}{avg_losses_print} | Target: {str(self.target_delta:.5f).split("00000")[0]}    '
+            iter_loss = "{:.6f}".format((int(self.iter_loss*10000)/10000))
+            target_delta = "{:.6f}".format(int(self.target_delta*10000)/10000)#.split("00000")[0]
+            print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | iter: {(self.total_iter+1)%self.num_iters}/{self.num_iters} -> {self.total_iter} | loss: {iter_loss} | frames/s {int(self.iter_num_frames / self.iter_time)}{avg_losses_print} | Target: {target_delta}    '
             self.training_log_live_line = print_line
             self.print_and_log(save_to_file=self.dataset_output)
 
