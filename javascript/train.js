@@ -294,6 +294,7 @@ window.refreshTrainingQueueList = () => {
             trainingQueueBtnMoveUp.disabled = false
             trainingQueueBtnMoveDown.disabled = false
             trainingQueueBtnDelete.disabled = false
+            trainingOpenCkpts.disabled = false
 
             if (window.training_state.selectedQueueItem!=di) {
 
@@ -799,6 +800,18 @@ trainingQueueBtnClear.addEventListener("click", () => {
             fs.writeFileSync(`${window.path}/training_queue.json`, JSON.stringify(window.training_state.datasetsQueue, null, 4))
         }
     })
+})
+
+trainingOpenCkpts.addEventListener("click", () => {
+    const output_path = window.training_state.datasetsQueue[window.training_state.selectedQueueItem].output_path
+    if (fs.existsSync(output_path)) {
+        const subItems = fs.readdirSync(output_path)
+        if (subItems.length) {
+            shell.showItemInFolder(`${output_path}/${subItems[0]}`)
+        } else {
+            shell.showItemInFolder(output_path)
+        }
+    }
 })
 
 trainingStartBtn.addEventListener("click", () => {
