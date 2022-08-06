@@ -486,7 +486,7 @@ const tools = {
 // Brute force progress indicator, for when the WebSockets don't work
 setInterval(() => {
     if (["transcribe", "srt_split"].includes(window.tools_state.taskId)) {
-        if (window.tools_state.taskId && fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
+        if (window.tools_state.running && window.tools_state.taskId && fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
             const fileData = fs.readFileSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`, "utf8")
             if (fileData.length) {
                 let percentDone = parseFloat(fileData)

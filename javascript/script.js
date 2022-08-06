@@ -25,7 +25,7 @@ const {shell, ipcRenderer} = require("electron")
 const {xVAAppLogger} = require("./javascript/appLogger.js")
 window.appLogger = new xVAAppLogger(`./app.log`, window.appVersion)
 window.appLogger.log(`Ports | Server: ${window.SERVER_PORT} | WebSocket: ${window.WEBSOCKET_PORT}`)
-process.on(`uncaughtException`, data => window.appLogger.log(`uncaughtException: ${data}`))
+process.on(`uncaughtException`, (data, origin) => {window.appLogger.log(`uncaughtException: ${data}`);window.appLogger.log(`uncaughtException: ${origin}`)})
 window.onerror = (err, url, lineNum) => window.appLogger.log(`[line: ${lineNum}] onerror: ${err}`)
 require("./javascript/util.js")
 require("./javascript/settingsMenu.js")
@@ -140,6 +140,24 @@ const initWebSocket = () => {
                     window.training_state.isBatchTraining = false
                 }
             }
+
+        } else if (event.data.includes("ERROR")) {
+
+            window.appLogger.log(event.data)
+            window.errorModal(event.data).then(() => {
+
+                if (window.tools_state.spinnerElem) {
+                    window.tools_state.spinnerElem.style.display = "none"
+                }
+                window.tools_state.progressElem.innerHTML = ""
+                toolProgressInfo.innerHTML = ""
+                toolsRunTool.disabled = false
+                prepAudioStart.disabled = false
+                toolsList.querySelectorAll("button").forEach(button => button.disabled = false)
+                window.tools_state.infoElem.innerHTML = ""
+                window.tools_state.currentFileElem.innerHTML = ""
+
+            })
 
         } else {
             try {
