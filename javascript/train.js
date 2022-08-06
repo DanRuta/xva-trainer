@@ -625,12 +625,12 @@ window.showConfigMenu = (startingData, di) => {
     if (configData.num_workers !== undefined) {
         trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
     } else {
-        trainingAddConfigBatchSizeInput.value = window.localStorage.getItem("training.batch_size")
+        trainingAddConfigBatchSizeInput.value = window.localStorage.getItem("training.batch_size")||"8"
     }
     if (configData.batch_size !== undefined) {
         trainingAddConfigBatchSizeInput.value = parseInt(configData.batch_size)
     } else {
-        trainingAddConfigEpochsPerCkptInput.value = window.localStorage.getItem("training.epochs_per_ckpt")
+        trainingAddConfigEpochsPerCkptInput.value = window.localStorage.getItem("training.epochs_per_ckpt")||"3"
     }
     if (configData.epochs_per_checkpoint !== undefined) {
         trainingAddConfigEpochsPerCkptInput.value = parseInt(configData.epochs_per_checkpoint)
@@ -640,7 +640,7 @@ window.showConfigMenu = (startingData, di) => {
     if (configData.use_amp !== undefined) {
         trainingAddConfigUseAmp.checked = configData.use_amp ? configData.use_amp=="true" : true
     } else {
-        trainingAddConfigWorkersInput.value = window.localStorage.getItem("training.num_workers")
+        trainingAddConfigWorkersInput.value = window.localStorage.getItem("training.num_workers")||"3"
     }
 
     queueItemConfigModalContainer.style.display = "flex"
