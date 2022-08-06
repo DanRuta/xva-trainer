@@ -95,6 +95,14 @@ class SpeakerSearch(object):
 
 
 
+        if len(embeddings_corpus)==0:
+            await websocket.send(json.dumps({"key": "tasks_error", "data": f'No files given to search over ("corpus" folder)'}))
+            return
+        if len(embeddings_queries)==0:
+            await websocket.send(json.dumps({"key": "tasks_error", "data": f'No query files given to search with ("query" folder)'}))
+            return
+
+
         pool_scores = [0 for _ in range(len(embeddings_corpus))]
 
         pool_features = np.array(embeddings_corpus).astype(np.float32)
