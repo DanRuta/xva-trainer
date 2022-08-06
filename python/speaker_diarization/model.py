@@ -45,10 +45,13 @@ class Diarization(object):
 
         inPath = data["inPath"]
         mergeSameOutput = data["toolSettings"]["mergeSingleOutputFolder"]
+        outputAudacityLabels = data["toolSettings"]["outputAudacityLabels"]
 
 
         if websocket is not None:
             await websocket.send(json.dumps({"key": "task_info", "data": "Reading file"}))
+
+        audacity_file = []
 
         try:
             rate, data = wavfile.read(inPath)
@@ -73,6 +76,9 @@ class Diarization(object):
                 if end_s-start_s < 1:
                     continue
 
+                if outputAudacityLabels:
+                    audacity_file.append('{:.6f}  →  {:.6f}  →  Speaker_{}'.format(start_s, end_s, speaker))
+
                 split_data = data[int(start_s*rate):int(end_s*rate)]
 
                 folder_name = ".".join(inPath.split("/")[-1].split(".")[:-1]).replace(".", "_")
@@ -89,6 +95,10 @@ class Diarization(object):
                 out_file_counter += 1
         except:
             self.logger.info(traceback.format_exc())
+
+        if outputAudacityLabels:
+            with open(f'{out_folder}/audacity.txt', "w+") as f:
+                f.write("\n".join(audacity_file))
 
         if websocket is not None:
             await websocket.send(json.dumps({"key": "tasks_next"}))

@@ -85,23 +85,36 @@ const tools = {
         toolSettings: {},
         inputFileType: ".wav",
         setupFn: (taskId) => {
+            window.tools_state.toolSettings["diarization"] = window.tools_state.toolSettings["diarization"] || {}
+            window.tools_state.toolSettings["diarization"].mergeSingleOutputFolder = false
+            window.tools_state.toolSettings["diarization"].outputAudacityLabels = false
+
             const ckbxDescription = createElem("div", "Merge output into one folder (Only use when you are sure all files have only one voice)")
             const ckbx = createElem("input", {type: "checkbox"})
             ckbx.style.height = "20px"
             ckbx.style.width = "20px"
-
-            window.tools_state.toolSettings["diarization"] = window.tools_state.toolSettings["diarization"] || {}
-            window.tools_state.toolSettings["diarization"].mergeSingleOutputFolder = false
-
             ckbx.addEventListener("click", () => {
                 window.tools_state.toolSettings["diarization"].mergeSingleOutputFolder = ckbx.checked
             })
-
             const container = createElem("div", ckbx, ckbxDescription)
             container.style.display = "flex"
             container.style.justifyContent = "center"
             container.style.alignItems = "center"
+
+            const ckbxAudacityLabelsDescription = createElem("div", "Output labels for Audacity")
+            const ckbxAudacityLabels = createElem("input", {type: "checkbox"})
+            ckbxAudacityLabels.style.height = "20px"
+            ckbxAudacityLabels.style.width = "20px"
+            ckbxAudacityLabels.addEventListener("click", () => {
+                window.tools_state.toolSettings["diarization"].outputAudacityLabels = ckbxAudacityLabels.checked
+            })
+            const containerAudacityLabels = createElem("div", ckbxAudacityLabels, ckbxAudacityLabelsDescription)
+            containerAudacityLabels.style.display = "flex"
+            containerAudacityLabels.style.justifyContent = "center"
+            containerAudacityLabels.style.alignItems = "center"
+
             toolDescription.appendChild(container)
+            toolDescription.appendChild(containerAudacityLabels)
         }
     },
     "AI Source separation": {
