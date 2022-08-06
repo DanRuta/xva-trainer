@@ -77,7 +77,7 @@ class WER_evaluation(object):
 
         os.makedirs(outputDirectory, exist_ok=True)
 
-        with open(f'{outputDirectory}/wer_eval_results.txt', "w+") as f:
+        with open(f'{outputDirectory}/wer_eval_results.txt', "w+", encoding="utf8") as f:
             f.write("\n".join(out))
 
 

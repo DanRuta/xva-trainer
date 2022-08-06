@@ -344,7 +344,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
 
         if outputDirectory:
             os.makedirs(outputDirectory, exist_ok=True)
-        with open(f'{outputDirectory or inPathParent}/metadata.csv', "w+") as f:
+        with open(f'{outputDirectory or inPathParent}/metadata.csv', "w+", encoding="utf8") as f:
             f.write("\n".join(metadata))
 
 
