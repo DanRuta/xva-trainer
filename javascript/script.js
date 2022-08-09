@@ -439,6 +439,7 @@ btn_save.addEventListener("click", () => {
             } else {
                 setRecordFocus()
             }
+            window.appState.skipRefreshing = false
         }
 
         // Copy over the recorded file, if one exists
