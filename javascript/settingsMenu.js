@@ -174,6 +174,19 @@ trainingAddConfigWorkersInput.addEventListener("change", () => window.localStora
 trainingAddConfigWorkersInput.value = window.localStorage.getItem("training.num_workers")
 
 
+
+const currentWindow = require("electron").remote.getCurrentWindow()
+currentWindow.on("move", () => {
+    const bounds = remote.getCurrentWindow().webContents.getOwnerBrowserWindow().getBounds()
+    window.userSettings.customWindowPosition = `${bounds.x},${bounds.y}`
+    saveUserSettings()
+})
+if (window.userSettings.customWindowPosition) {
+    ipcRenderer.send('updatePosition', {details: window.userSettings.customWindowPosition.split(",")})
+}
+
+
+
 // Installation sever handling
 // =========================
 settings_installation.innerHTML = window.userSettings.installation=="cpu" ? `CPU` : "CPU+GPU"
