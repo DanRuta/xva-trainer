@@ -56,7 +56,17 @@ window.createModal = (type, message, keepModals=[]) => {
         } else if (type=="error") {
             const closeButton = createElem("button")
             closeButton.innerHTML = "Close"
-            modal.appendChild(createElem("div", closeButton))
+            const clipboardButton = createElem("button")
+            clipboardButton.innerHTML = "Copy to clipboard"
+            clipboardButton.addEventListener("click", () => {
+                clipboardButton.innerHTML = "Copied"
+                navigator.clipboard.writeText(displayMessage)
+            })
+
+            const buttonsContainer = createElem("div")
+            buttonsContainer.appendChild(closeButton)
+            buttonsContainer.appendChild(clipboardButton)
+            modal.appendChild(buttonsContainer)
 
             closeButton.addEventListener("click", () => {
                 closeModal(modalContainer, keepModals).then(() => {
