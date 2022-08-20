@@ -672,6 +672,21 @@ const doNextTaskItem = () => {
     const inPath = `${window.tools_state.inputDirectory}/${window.tools_state.taskFiles[window.tools_state.taskFileIndex]}`
     const inPath2 = window.tools_state.inputDirectory2
 
+    if (!window.tools_state.taskFiles.length) {
+        return window.errorModal("No input files of the required type were found.").then(() => {
+            if (window.tools_state.spinnerElem) {
+                window.tools_state.spinnerElem.style.display = "none"
+            }
+            window.tools_state.progressElem.innerHTML = ""
+            toolProgressInfo.innerHTML = ""
+            toolsRunTool.disabled = false
+            prepAudioStart.disabled = false
+            toolsList.querySelectorAll("button").forEach(button => button.disabled = false)
+            window.tools_state.infoElem.innerHTML = ""
+            window.tools_state.currentFileElem.innerHTML = ""
+        })
+    }
+
     if (window.tools_state.taskFiles[window.tools_state.taskFileIndex].length) {
         window.tools_state.currentFileElem.innerHTML = `File: ${window.tools_state.taskFiles[window.tools_state.taskFileIndex]}`
 

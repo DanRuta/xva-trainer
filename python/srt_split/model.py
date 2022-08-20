@@ -232,7 +232,7 @@ class SRTSplit(object):
 
                 if dsi%3==0 and websocket is not None:
                     with open(f'{"./resources/app" if self.PROD else "."}/python/srt_split/.progress.txt', "w+") as f:
-                        f.write(f'{(int(dsi+1)/len(data_splits)*100*100)/100}')
+                        f.write(f'{(int(dsi+1)/len(data_splits)*100*100)/100}%')
 
 
             with open(f'{outputDirectory}/metadata.csv', "w+") as f:

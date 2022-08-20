@@ -60,7 +60,7 @@ window.createModal = (type, message, keepModals=[]) => {
             clipboardButton.innerHTML = "Copy to clipboard"
             clipboardButton.addEventListener("click", () => {
                 clipboardButton.innerHTML = "Copied"
-                navigator.clipboard.writeText(displayMessage)
+                navigator.clipboard.writeText(displayMessage.replaceAll("<br>", "\n"))
             })
 
             const buttonsContainer = createElem("div")
