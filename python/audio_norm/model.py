@@ -121,6 +121,7 @@ class AudioNormalizer(object):
         if useMP:
 
             input_paths = sorted(os.listdir(inPath))
+            input_paths = [fpath for fpath in input_paths if not fpath.endswith(".ini")]
             output_paths = [f'{outputDirectory}/{fpath}' for fpath in input_paths]
             input_paths = [f'{inPath}/{fpath}' for fpath in input_paths]
 

@@ -68,6 +68,7 @@ class CutPadding(object):
         if useMP:
 
             input_paths = sorted(os.listdir(inPath))
+            input_paths = [fpath for fpath in input_paths if not fpath.endswith(".ini")]
 
             workItems = []
             for ip, path in enumerate(input_paths):
