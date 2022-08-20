@@ -823,6 +823,7 @@ trainingStartBtn.addEventListener("click", () => {
     window.ws.send(JSON.stringify({
         model: "",
         task: "startTraining",
+        gpus: setting_cudaDevices.value.replaceAll(" ", ""),
         data: window.training_state.datasetsQueue[window.training_state.trainingQueueItem]
     }))
     trainingStartBtn.style.display = "none"

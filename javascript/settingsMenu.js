@@ -45,6 +45,9 @@ if (!Object.keys(window.userSettings).includes("removeNoise")) { // For backward
 if (!Object.keys(window.userSettings).includes("noiseRemStrength")) { // For backwards compatibility
     window.userSettings.noiseRemStrength = 0.25
 }
+if (!Object.keys(window.userSettings).includes("cudaDevices")) { // For backwards compatibility
+    window.userSettings.cudaDevices = 0
+}
 if (!Object.keys(window.userSettings).includes("datasetsPath")) { // For backwards compatibility
     window.userSettings.datasetsPath = `${__dirname.replace(/\\/g,"/")}/datasets/`.replace(/\/\//g, "/").replace("resources/app/resources/app", "resources/app").replace("/javascript", "")
 
@@ -60,6 +63,7 @@ const updateUIWithSettings = () => {
     setting_micVolume_display.innerHTML = `${parseInt(setting_micVolume.value)}%`
     setting_doNoiseRemoval.checked = window.userSettings.removeNoise
     setting_noiseRemStrength.value = window.userSettings.noiseRemStrength
+    setting_cudaDevices.value = window.userSettings.cudaDevices
 
     setting_datasets_input.value = window.userSettings.datasetsPath
 }
@@ -136,6 +140,7 @@ initMenuSetting(setting_micVolume, "micVolume", "number", ()=>{
 }, parseInt)
 initMenuSetting(setting_doNoiseRemoval, "removeNoise", "checkbox")
 initMenuSetting(setting_noiseRemStrength, "noiseRemStrength", "number", parseFloat)
+initMenuSetting(setting_cudaDevices, "cudaDevices", "number", parseFloat)
 initMenuSetting(setting_datasets_input, "datasetsPath", "text")
 
 
