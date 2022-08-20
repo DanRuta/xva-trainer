@@ -77,7 +77,7 @@ class Diarization(object):
                     continue
 
                 if outputAudacityLabels:
-                    audacity_file.append('{:.6f}  →  {:.6f}  →  Speaker_{}'.format(start_s, end_s, speaker))
+                    audacity_file.append('{:.6f}\t{:.6f}\tSpeaker_{}'.format(start_s, end_s, speaker))
 
                 split_data = data[int(start_s*rate):int(end_s*rate)]
 
@@ -97,7 +97,7 @@ class Diarization(object):
             self.logger.info(traceback.format_exc())
 
         if outputAudacityLabels:
-            with open(f'{out_folder}/audacity.txt', "w+") as f:
+            with open(f'{out_folder}/audacity.txt', "w+", encoding="utf8") as f:
                 f.write("\n".join(audacity_file))
 
         if websocket is not None:
