@@ -53,19 +53,22 @@ window.createModal = (type, message, keepModals=[]) => {
                     resolve(false)
                 })
             })
-        } else if (type=="error") {
+        } else if (type=="error" || type=="error_nocopy") {
             const closeButton = createElem("button")
             closeButton.innerHTML = "Close"
-            const clipboardButton = createElem("button")
-            clipboardButton.innerHTML = "Copy to clipboard"
-            clipboardButton.addEventListener("click", () => {
-                clipboardButton.innerHTML = "Copied"
-                navigator.clipboard.writeText(displayMessage.replaceAll("<br>", "\n"))
-            })
-
             const buttonsContainer = createElem("div")
             buttonsContainer.appendChild(closeButton)
-            buttonsContainer.appendChild(clipboardButton)
+
+            if (type=="error") {
+                const clipboardButton = createElem("button")
+                clipboardButton.innerHTML = "Copy to clipboard"
+                clipboardButton.addEventListener("click", () => {
+                    clipboardButton.innerHTML = "Copied"
+                    navigator.clipboard.writeText(displayMessage.replaceAll("<br>", "\n"))
+                })
+                buttonsContainer.appendChild(clipboardButton)
+            }
+
             modal.appendChild(buttonsContainer)
 
             closeButton.addEventListener("click", () => {

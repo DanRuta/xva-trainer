@@ -134,6 +134,7 @@ if __name__ == '__main__':
             try:
                 message = json.loads(message)
                 model = message["model"]
+                gpus = [int(g) for g in message["gpus"].split(",")] if "gpus" in message else [0]
                 task = message["task"] if "task" in message else None
                 data = message["data"] if "data" in message else None
 
@@ -162,7 +163,8 @@ if __name__ == '__main__':
                 if task in ["startTraining", "resume", "pause", "stop"]:
                     try:
                         if task=="startTraining" or task=="resume":
-                            _thread.start_new_thread(between_callback, (models_manager, data, websocket, [0], task=="resume"))
+                            # _thread.start_new_thread(between_callback, (models_manager, data, websocket, [0], task=="resume"))
+                            _thread.start_new_thread(between_callback, (models_manager, data, websocket, gpus, task=="resume"))
                         else:
                             if task=="pause":
                                 logger.info("server.py pause")

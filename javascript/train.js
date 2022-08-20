@@ -932,11 +932,14 @@ exportSubmitButton.addEventListener("click", () => {
             if (res.length) {
                 window.appLogger.log(res)
                 window.errorModal(res)
-                window.createModal("error", `There was an issue with exporting the preview audio file:<br><br>${res}`).then(() => {
+                window.createModal("error", `There was an issue with exporting the preview audio file:<br><br>${res}`).then(resp => {
+                    if (resp) {
+                        shell.showItemInFolder(`${modelExport_outputDir.value.trim()}/${voiceId}.wav`)
+                    }
                     exportModelContainer.click()
                 })
             } else {
-                window.createModal("error", "Model exported successfully").then(() => {
+                window.confirmModal("Model exported successfully. Open output directory?").then(() => {
                     exportModelContainer.click()
                 })
             }
