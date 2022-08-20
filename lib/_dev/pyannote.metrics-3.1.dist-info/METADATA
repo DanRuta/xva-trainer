@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: pyannote.metrics
+Version: 3.1
+Summary: a toolkit for reproducible evaluation, diagnostic, and error analysis of speaker diarization systems
+Home-page: https://pyannote.github.io/pyannote-metrics
+Author: Herve Bredin
+Author-email: bredin@limsi.fr
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering
+License-File: LICENSE
+Requires-Dist: pyannote.core (>=4.1)
+Requires-Dist: pyannote.database (>=4.0.1)
+Requires-Dist: pandas (>=0.19)
+Requires-Dist: scipy (>=1.1.0)
+Requires-Dist: scikit-learn (>=0.17.1)
+Requires-Dist: docopt (>=0.6.2)
+Requires-Dist: tabulate (>=0.7.7)
+Requires-Dist: matplotlib (>=2.0.0)
+Requires-Dist: sympy (>=1.1)
+
+UNKNOWN
+
