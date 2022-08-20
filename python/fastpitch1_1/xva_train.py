@@ -352,7 +352,8 @@ class FastPitchTrainer(object):
         # Load checkpoint
         self.model.training_stage, start_epoch, start_iter, avg_loss_per_epoch = self.load_checkpoint(ckpt_path)
         # if (self.model.training_stage==5 or self.force_stage==5) and (self.force_stage is not None or self.force_stage==5):
-        if self.model.training_stage==5 and (self.force_stage is None or self.force_stage==5):
+        # if self.model.training_stage==5 and (self.force_stage is None or self.force_stage==5):
+        if (self.model.training_stage==5 and self.force_stage is None) or self.force_stage==5:
             self.END_OF_TRAINING = True
             self.JUST_FINISHED_STAGE = True
             raise
@@ -569,7 +570,9 @@ class FastPitchTrainer(object):
         if os.path.exists(f'{dataset_output}/training.log'):
             with open(f'{dataset_output}/training.log') as f:
                 self.training_log = f.read().split("\n")
-            self.training_log.append("\nNew Session")
+            time_str = str(datetime.datetime.now().time())
+            time_str = time_str.split(":")[0]+":"+time_str.split(":")[1]+":"+time_str.split(":")[2].split(".")[0]
+            self.training_log.append(f'\n{time_str} | New Session')
         else:
             self.training_log.append(f'No {dataset_output}/training.log file found. Starting anew.')
             print(self.training_log[0])
