@@ -37,6 +37,22 @@ const lang_names = {
     "zh": "Chinese Mandarin",
 }
 
+const makeLanguageDropdown = () => {
+    const languages = fs.readdirSync(`${window.path}/python/transcribe/wav2vec2`)
+        .filter(name => !name.startsWith("_")&&!name.includes("."))
+        .map(langCode => {return [langCode, lang_names[langCode]]}).sort((a,b) => a[1]<b[1]?-1:1)
+    const selectElem = createElem("select")
+    languages.forEach(lang => {
+        const optionElem = createElem("option", {value: lang[0]})
+        optionElem.innerHTML = lang[1]
+        selectElem.appendChild(optionElem)
+    })
+    selectElem.value = "en"
+    const langDescription = createElem("div", "Language (Note: Only English training is supported with v2 models. Check v3 models for multi-lingual training.)")
+    const rowItemLang = createElem("div", createElem("div", langDescription), createElem("div", selectElem))
+    return [rowItemLang, selectElem]
+}
+
 const tools = {
     "Audio formatting": {
         taskId: "formatting",
@@ -172,6 +188,23 @@ const tools = {
         outputDirectory: `${window.path}/python/wem2ogg/output/`,
         inputFileType: ".wem"
     },
+    "Make .srt": {
+        taskId: "make_srt",
+        description: "Create an .srt for mp4 files, using the speaker diarization and auto-transcript tools. Useful for sanity checking, and easier external tweaking when using data from a video.",
+        inputDirectory: `${window.path}/python/make_srt/input`,
+        outputDirectory: `${window.path}/python/make_srt/output/`,
+        inputFileType: "folder",
+        setupFn: (taskId) => {
+            window.tools_state.toolSettings["make_srt"] = window.tools_state.toolSettings["make_srt"] || {}
+            window.tools_state.toolSettings["make_srt"].language = "en"
+
+            const [rowItemLang, selectElem] = makeLanguageDropdown()
+            selectElem.addEventListener("change", () => window.tools_state.toolSettings["make_srt"].language=selectElem.value)
+
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemLang)
+            toolDescription.appendChild(container)
+        }
+    },
     "Cluster speakers": {
         taskId: "cluster_speakers",
         description: "Group up audio files of one or more speakers into several clusters based on speaking style/identity. Aim for max ~10k files at a time.",
@@ -295,19 +328,9 @@ const tools = {
             window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = false
             window.tools_state.toolSettings["transcribe"].language = "en"
 
-            const languages = fs.readdirSync(`${window.path}/python/transcribe/wav2vec2`)
-                .filter(name => !name.startsWith("_")&&!name.includes("."))
-                .map(langCode => {return [langCode, lang_names[langCode]]}).sort((a,b) => a[1]<b[1]?-1:1)
-            const selectElem = createElem("select")
-            languages.forEach(lang => {
-                const optionElem = createElem("option", {value: lang[0]})
-                optionElem.innerHTML = lang[1]
-                selectElem.appendChild(optionElem)
-            })
-            selectElem.value = "en"
+            const [rowItemLang, selectElem] = makeLanguageDropdown()
             selectElem.addEventListener("change", () => window.tools_state.toolSettings["transcribe"].language=selectElem.value)
-            const langDescription = createElem("div", "Language (Note: Only English training is supported with v2 models. Check v3 models for multi-lingual training.)")
-            const rowItemLang = createElem("div", createElem("div", langDescription), createElem("div", selectElem))
+
 
             const ckbxDescription = createElem("div", "Use multi-processing")
             const ckbx = createElem("input", {type: "checkbox"})
@@ -485,12 +508,11 @@ const tools = {
 
 // Brute force progress indicator, for when the WebSockets don't work
 setInterval(() => {
-    if (["transcribe", "srt_split"].includes(window.tools_state.taskId)) {
+    if (["transcribe", "srt_split", "make_srt"].includes(window.tools_state.taskId)) {
         if (window.tools_state.running && window.tools_state.taskId && fs.existsSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`)) {
             const fileData = fs.readFileSync(`${window.path}/python/${window.tools_state.taskId}/.progress.txt`, "utf8")
             if (fileData.length) {
-                let percentDone = parseFloat(fileData)
-                toolProgressInfo.innerHTML = `${parseInt(percentDone*100)/100}%`
+                toolProgressInfo.innerHTML = fileData
             }
         } else {
             toolProgressInfo.innerHTML = ""
@@ -611,6 +633,7 @@ toolsRunTool.addEventListener("click", () => {
     }
     toolsRunTool.disabled = true
     prepAudioStart.disabled = true
+    window.tools_state.running = true
     toolsList.querySelectorAll("button").forEach(button => button.disabled = true)
     window.deleteFolderRecursive(window.tools_state.outputDirectory, true)
 
