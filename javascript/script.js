@@ -1263,7 +1263,7 @@ const initDatasetMeta = (callback) => {
             "games": [
                 {
                     "gameId": datasetMeta_gameId.value.trim().toLowerCase(),
-                    "voiceId": datasetMeta_voiceId.value.trim().toLowerCase(),
+                    "voiceId": composedVoiceId.innerHTML,
                     "voiceName": datasetMeta_voiceName.value.trim(),
                     "resemblyzer": [],
                     "gender": (datasetMeta_gender_male.checked ? "male" : (datasetMeta_gender_female.checked ? "female" : "other")),
@@ -1336,8 +1336,9 @@ window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
 
     datasetMeta_voiceName.value = datasetMeta.games[0].voiceName
     datasetMeta_gameId.value = datasetMeta.games[0].gameId
-    datasetMeta_gameIdCode.value = datasetMeta.games[0].voiceId.includes("_") ? datasetMeta.games[0].voiceId.split("_")[0] : ""
-    datasetMeta_voiceId.value = datasetMeta.games[0].voiceId
+    // datasetMeta_gameIdCode.value = datasetMeta.games[0].voiceId.includes("_") ? datasetMeta.games[0].voiceId.split("_")[0] : ""
+    datasetMeta_gameIdCode.value = datasetMeta.games[0].voiceId.split("_")[0]
+    datasetMeta_voiceId.value = datasetMeta.games[0].voiceId.split("_").slice(1, 10000).join("_")
     datasetMeta_langcode.value = datasetMeta.lang
     datasetMeta_modelVersion.value = parseFloat(datasetMeta.version.split(".").length==2 ? datasetMeta.version : datasetMeta.version.split(".").splice(0,2).join("."))
     datasetMeta_gender_male.checked = datasetMeta.games[0].gender=="male"
@@ -1348,11 +1349,13 @@ window.setupModal(btn_editdatasetmeta, datasetMetaContainer, () => {
     datasetMeta_license.value = datasetMeta.license || ""
 
     initDatasetMeta(() => {
-        composedVoiceId.innerHTML = voiceId
+        composedVoiceId.innerHTML = `${datasetMeta_gameIdCode.value}_${datasetMeta_voiceId.value}`
     })
-    composedVoiceId.innerHTML = voiceId
-    datasetMeta_voiceId.value = voiceId
+    composedVoiceId.innerHTML = `${datasetMeta_gameIdCode.value}_${datasetMeta_voiceId.value}`
 })
+
+datasetMeta_gameIdCode.addEventListener("keyup", () => composedVoiceId.innerHTML = `${datasetMeta_gameIdCode.value}_${datasetMeta_voiceId.value}`)
+datasetMeta_voiceId.addEventListener("keyup", () => composedVoiceId.innerHTML = `${datasetMeta_gameIdCode.value}_${datasetMeta_voiceId.value}`)
 
 
 window.setupModal(btn_addmissingmeta, datasetMetaContainer, () => {
@@ -1391,7 +1394,7 @@ datasetMeta_voiceName.addEventListener("keyup", () => {
 datasetMeta_voiceId.addEventListener("keyup", () => {
     voiceIDInputChanged = true
     if (datasetMeta_voiceId.value.trim().length && datasetMeta_gameIdCode.value.trim().length) {
-        composedVoiceId.innerHTML = `${datasetMeta_voiceId.value.trim().toLowerCase()}`
+        composedVoiceId.innerHTML = `${datasetMeta_gameIdCode.value}_${datasetMeta_voiceId.value.trim().toLowerCase()}`
     }
 })
 datasetMeta_gameIdCode.addEventListener("keyup", () => {

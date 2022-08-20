@@ -495,7 +495,7 @@
         </div>
 
         <div id="datasetMetaContainer" style="display: none">
-            <div class="modal" style="width: 40vw;height: 40vh;min-height: 650px;">
+            <div class="modal" style="width: 40vw;height: 40vh;min-height: 700px;">
                 <h2 id="datasetMetaTitle">New dataset</h2>
                 <div class="flexTable">
                     <div>
@@ -511,24 +511,27 @@
                         </div>
                     </div>
                     <div>
-                        <div>Game ID code</div>
+                        <div>Game code</div>
                         <div>
                             <input id="datasetMeta_gameIdCode" value="x">
                         </div>
                     </div>
                     <div>
-                        <div style="width: 40vw;margin-left: 5vw;">Game ID code follows the naming convention for xVASynth's app name for different games. Eg Skyrim is sk (SKVASynth), Fallout 4 is f4 (F4VASynth), Oblivion is OB (OBVASynth), and so on. You <span style="color: red;display: contents;">MUST</span> use the correct code for your game. If the short game code is not a prefix in the voice_id, features in xVASynth will not work properly for that voice. x fits the "other" game ID.</div>
+                        <div style="width: 40vw;margin-left: 5vw;">Game code follows the naming convention for xVASynth's app name for different games. Eg Skyrim is sk (SKVASynth), Fallout 4 is f4 (F4VASynth), Oblivion is OB (OBVASynth), and so on. You <span style="color: red;display: contents;">MUST</span> use the correct code for your game. If the short game code is not a prefix in the voice_id, features in xVASynth will not work properly for that voice. "x" fits the "other" game category.</div>
                     </div>
                     <div></div>
                     <div>
                         <div>Voice ID</div>
                         <div>
-                            <input id="datasetMeta_voiceId" value="shortgamecode_your_voice_name">
+                            <input id="datasetMeta_voiceId" value="your_voice_name">
                         </div>
                     </div>
                     <div style="font-size: 10pt;color: #999;">
                         <div>Composed ID:</div>
                         <div id="composedVoiceId">x_your_voice_name</div>
+                    </div>
+                    <div>
+                        <div style="width: 40vw;margin-left: 5vw;">Note: editing the game code or voice ID won't change the folder or file names for your dataset, to avoid breaking things mid-training. Make sure you either put the right code/voice ID in at the start, or rename your final model files to match your new voice ID if you change these</div>
                     </div>
                     <div>
                         <div>Gender</div>
