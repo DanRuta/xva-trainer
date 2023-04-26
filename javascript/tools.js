@@ -37,20 +37,34 @@ const lang_names = {
     "zh": "Chinese Mandarin",
 }
 
-const makeLanguageDropdown = () => {
+const makeTranscriptionModelDropdown = () => {
     const languages = fs.readdirSync(`${window.path}/python/transcribe/wav2vec2`)
         .filter(name => !name.startsWith("_")&&!name.includes("."))
         .map(langCode => {return [langCode, lang_names[langCode]]}).sort((a,b) => a[1]<b[1]?-1:1)
     const selectElem = createElem("select")
-    languages.forEach(lang => {
-        const optionElem = createElem("option", {value: lang[0]})
-        optionElem.innerHTML = lang[1]
+
+    // Whisper
+    const whisperModels = fs.readdirSync(`${window.path}/python/transcribe/whisper`)
+    whisperModels.forEach(modelName => {
+
+        const modelKey = modelName.split(".")[0].toLowerCase()
+        modelName = modelKey[0].toUpperCase() + modelKey.slice(1)
+
+        const optionElem = createElem("option", {value: `whisper_${modelKey}_en`})
+        optionElem.innerHTML = `Whisper (${modelName}): English`
         selectElem.appendChild(optionElem)
     })
-    selectElem.value = "en"
-    const langDescription = createElem("div", "Language (Note: Only English training is supported with v2 models. Check v3 models for multi-lingual training.)")
-    const rowItemLang = createElem("div", createElem("div", langDescription), createElem("div", selectElem))
-    return [rowItemLang, selectElem]
+
+    // Wav2vec2
+    languages.forEach(lang => {
+        const optionElem = createElem("option", {value: `wav2vec2_${lang[0]}`})
+        optionElem.innerHTML = `Wav2vec2: ${lang[1]}`
+        selectElem.appendChild(optionElem)
+    })
+    selectElem.value = "whisper_medium_en"
+    const modelDescription = createElem("div", "Transcription model")
+    const rowItemModel = createElem("div", createElem("div", modelDescription), createElem("div", selectElem))
+    return [rowItemModel, selectElem]
 }
 
 const tools = {
@@ -196,12 +210,12 @@ const tools = {
         inputFileType: "folder",
         setupFn: (taskId) => {
             window.tools_state.toolSettings["make_srt"] = window.tools_state.toolSettings["make_srt"] || {}
-            window.tools_state.toolSettings["make_srt"].language = "en"
+            window.tools_state.toolSettings["make_srt"].transcription_model = "whisper_medium_en"
 
-            const [rowItemLang, selectElem] = makeLanguageDropdown()
-            selectElem.addEventListener("change", () => window.tools_state.toolSettings["make_srt"].language=selectElem.value)
+            const [rowItemModel, selectElem] = makeTranscriptionModelDropdown()
+            selectElem.addEventListener("change", () => window.tools_state.toolSettings["make_srt"].transcription_model=selectElem.value)
 
-            const container = createElem("div.flexTable.toolSettingsTable", rowItemLang)
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemModel)
             toolDescription.appendChild(container)
         }
     },
@@ -326,41 +340,12 @@ const tools = {
         setupFn: (taskId) => {
             window.tools_state.toolSettings["transcribe"] = window.tools_state.toolSettings["transcribe"] || {}
             window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = false
-            window.tools_state.toolSettings["transcribe"].language = "en"
+            window.tools_state.toolSettings["transcribe"].transcription_model = "whisper_medium_en"
 
-            const [rowItemLang, selectElem] = makeLanguageDropdown()
-            selectElem.addEventListener("change", () => window.tools_state.toolSettings["transcribe"].language=selectElem.value)
+            const [rowItemModel, selectElem] = makeTranscriptionModelDropdown()
+            selectElem.addEventListener("change", () => window.tools_state.toolSettings["transcribe"].transcription_model=selectElem.value)
 
-
-            const ckbxDescription = createElem("div", "Use multi-processing")
-            const ckbx = createElem("input", {type: "checkbox"})
-            ckbx.style.height = "20px"
-            ckbx.style.width = "20px"
-
-            window.tools_state.toolSettings["transcribe"] = window.tools_state.toolSettings["transcribe"] || {}
-            window.tools_state.toolSettings["transcribe"].useMP = false
-
-            ckbx.addEventListener("click", () => {
-                window.tools_state.toolSettings["transcribe"].useMP = ckbx.checked
-            })
-            const rowItemUseMp = createElem("div", createElem("div", ckbxDescription), createElem("div", ckbx))
-
-
-            const transcribeMPworkersDescription = createElem("div", "Number of processes (Set low - quite RAM intense)")
-            const transcribeMPworkersInput = createElem("input", {type: "number"})
-            transcribeMPworkersInput.style.width = "70%"
-            transcribeMPworkersInput.value = "2"
-            transcribeMPworkersInput.addEventListener("change", () => {
-                window.tools_state.toolSettings["transcribe"].useMP_num_workers = transcribeMPworkersInput.value
-            })
-            const rowItemtranscribeMPworkersInputs = createElem("div", transcribeMPworkersInput)
-            rowItemtranscribeMPworkersInputs.style.flexDirection = "row"
-            const rowItemtranscribeMPworkers = createElem("div", transcribeMPworkersDescription, rowItemtranscribeMPworkersInputs)
-            window.tools_state.toolSettings["transcribe"].useMP_num_workers = transcribeMPworkersInput.value
-
-
-
-            const container = createElem("div.flexTable.toolSettingsTable", rowItemUseMp, rowItemtranscribeMPworkers, rowItemLang)
+            const container = createElem("div.flexTable.toolSettingsTable", rowItemModel)
             toolDescription.appendChild(container)
         }
     },
@@ -635,7 +620,9 @@ toolsRunTool.addEventListener("click", () => {
     prepAudioStart.disabled = true
     window.tools_state.running = true
     toolsList.querySelectorAll("button").forEach(button => button.disabled = true)
-    window.deleteFolderRecursive(window.tools_state.outputDirectory, true)
+    if (window.tools_state.taskId!="transcribe") {
+        window.deleteFolderRecursive(window.tools_state.outputDirectory, true)
+    }
 
 
     if (window.tools_state.isMultiProcessed) {
@@ -1086,6 +1073,7 @@ checkTextQualityBtn.addEventListener("click", () => {
                     window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = true
 
                     window.tools_state.post_callback = () => {
+
                         window.appState.skipRefreshing = true
 
                         // Copy the two transcript files into the tool directory
@@ -1133,8 +1121,9 @@ checkTextQualityBtn.addEventListener("click", () => {
                                 // wer_elem.style.background = `rgba(${r_col*255},${g_col*255},50, 0.7)`
                             })
 
-                            window.refreshRecordsList(window.appState.currentDataset)
+                            window.tools_state.running = false
                             window.appState.skipRefreshing = false
+                            window.refreshRecordsList(window.appState.currentDataset)
                             closeModal()
                         }
 
