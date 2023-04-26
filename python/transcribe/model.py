@@ -87,7 +87,8 @@ class Wav2Vec2PlusPuncTranscribe(object):
     async def transcribe(self, data, websocket):
 
         ignore_existing_transcript = data["toolSettings"]["ignore_existing_transcript"] if "ignore_existing_transcript" in data["toolSettings"] else False
-        transcription_model = data["toolSettings"]["transcription_model"] if "transcription_model" in data["toolSettings"] else "whisper_medium_en"
+        transcription_model = data["toolSettings"]["transcription_model"] if "transcription_model" in data["toolSettings"] else "whisper_medium"
+        whisper_lang = data["toolSettings"]["whisper_lang"] if "whisper_lang" in data["toolSettings"] else "en"
         # useMP = data["toolSettings"]["useMP"] if "useMP" in data["toolSettings"].keys() else False
         # useMP_num_workers = int(data["toolSettings"]["useMP_num_workers"]) if "useMP_num_workers" in data["toolSettings"].keys() else 2
         # processes = max(1, int(mp.cpu_count()/2)-5) # TODO, figure out why more processes break the websocket
@@ -99,7 +100,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
             pass
 
         if websocket is not None:
-            await websocket.send(json.dumps({"key": "task_info", "data": f'Transcribing (model: {transcription_model})... (can be quite slow)'}))
+            await websocket.send(json.dumps({"key": "task_info", "data": f'Transcribing (model: {transcription_model}{" "+whisper_lang if transcription_model.startswith("whisper_")  else ""})... (can be quite slow)'}))
 
         inPath, outputDirectory = data["inPath"], data["outputDirectory"]
         self.outputDirectory = outputDirectory
@@ -140,7 +141,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
         #
         if transcription_model.startswith("whisper_"):
 
-            _, size, lang = transcription_model.split("_")
+            _, size = transcription_model.split("_")
             # lang = lang_names_to_codes[lang.lower()]
 
             if self.model is None:
@@ -155,7 +156,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
             with open(f'{"./resources/app" if self.PROD else "."}/python/transcribe/.progress.txt', "w+") as f:
                 f.write(f'Setting up whisper model...')
 
-            self.options = whisper.DecodingOptions(language=lang, fp16=False)
+            self.options = whisper.DecodingOptions(language=whisper_lang, fp16=False)
 
 
             try:

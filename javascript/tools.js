@@ -50,10 +50,18 @@ const makeTranscriptionModelDropdown = () => {
         const modelKey = modelName.split(".")[0].toLowerCase()
         modelName = modelKey[0].toUpperCase() + modelKey.slice(1)
 
-        const optionElem = createElem("option", {value: `whisper_${modelKey}_en`})
-        optionElem.innerHTML = `Whisper (${modelName}): English`
+        const optionElem = createElem("option", {value: `whisper_${modelKey}`})
+        optionElem.innerHTML = `Whisper (${modelName})`
         selectElem.appendChild(optionElem)
     })
+
+    const whisperLangSelect = createElem("select")
+    languages.forEach(lang => {
+        const optionElem = createElem("option", {value: `${lang[0]}`})
+        optionElem.innerHTML = `${lang[1]}`
+        whisperLangSelect.appendChild(optionElem)
+    })
+    whisperLangSelect.value = "en"
 
     // Wav2vec2
     languages.forEach(lang => {
@@ -61,10 +69,13 @@ const makeTranscriptionModelDropdown = () => {
         optionElem.innerHTML = `Wav2vec2: ${lang[1]}`
         selectElem.appendChild(optionElem)
     })
-    selectElem.value = "whisper_medium_en"
-    const modelDescription = createElem("div", "Transcription model")
+    selectElem.value = "whisper_medium"
+    const modelDescription = createElem("div", "Transcription model (more available on nexus)")
     const rowItemModel = createElem("div", createElem("div", modelDescription), createElem("div", selectElem))
-    return [rowItemModel, selectElem]
+
+    const whisperLangDescription = createElem("div", "Whisper language")
+    const rowItemWhisperLang = createElem("div", createElem("div", whisperLangDescription), createElem("div", whisperLangSelect))
+    return [rowItemModel, selectElem, rowItemWhisperLang, whisperLangSelect]
 }
 
 const tools = {
@@ -210,13 +221,17 @@ const tools = {
         inputFileType: "folder",
         setupFn: (taskId) => {
             window.tools_state.toolSettings["make_srt"] = window.tools_state.toolSettings["make_srt"] || {}
-            window.tools_state.toolSettings["make_srt"].transcription_model = "whisper_medium_en"
+            window.tools_state.toolSettings["make_srt"].transcription_model = "whisper_medium"
 
-            const [rowItemModel, selectElem] = makeTranscriptionModelDropdown()
+            const [rowItemModel, selectElem, rowItemWhisperLang, whisperLangSelect] = makeTranscriptionModelDropdown()
             selectElem.addEventListener("change", () => window.tools_state.toolSettings["make_srt"].transcription_model=selectElem.value)
+            whisperLangSelect.addEventListener("change", () => window.tools_state.toolSettings["make_srt"].whisper_lang=whisperLangSelect.value)
 
             const container = createElem("div.flexTable.toolSettingsTable", rowItemModel)
+            const container2 = createElem("div.flexTable.toolSettingsTable", rowItemWhisperLang)
+
             toolDescription.appendChild(container)
+            toolDescription.appendChild(container2)
         }
     },
     "Cluster speakers": {
@@ -340,13 +355,16 @@ const tools = {
         setupFn: (taskId) => {
             window.tools_state.toolSettings["transcribe"] = window.tools_state.toolSettings["transcribe"] || {}
             window.tools_state.toolSettings["transcribe"].ignore_existing_transcript = false
-            window.tools_state.toolSettings["transcribe"].transcription_model = "whisper_medium_en"
+            window.tools_state.toolSettings["transcribe"].transcription_model = "whisper_medium"
 
-            const [rowItemModel, selectElem] = makeTranscriptionModelDropdown()
+            const [rowItemModel, selectElem, rowItemWhisperLang, whisperLangSelect] = makeTranscriptionModelDropdown()
             selectElem.addEventListener("change", () => window.tools_state.toolSettings["transcribe"].transcription_model=selectElem.value)
+            whisperLangSelect.addEventListener("change", () => window.tools_state.toolSettings["transcribe"].whisper_lang=whisperLangSelect.value)
 
             const container = createElem("div.flexTable.toolSettingsTable", rowItemModel)
+            const container2 = createElem("div.flexTable.toolSettingsTable", rowItemWhisperLang)
             toolDescription.appendChild(container)
+            toolDescription.appendChild(container2)
         }
     },
     "WER transcript evaluation": {
