@@ -15,13 +15,19 @@ try:
     import scipy.optimize
     # import scipy.optimize.line_search
     import sklearn.utils._cython_blas
-    import sklearn.neighbors.typedefs
-    import sklearn.neighbors.quad_tree
+    try:
+        import sklearn.neighbors.typedefs
+        import sklearn.neighbors.quad_tree
+    except:
+        import sklearn.neighbors
     import sklearn.tree
     import sklearn.tree._utils
     import sklearn.utils._cython_blas
-    import sklearn.neighbors.typedefs
-    import sklearn.neighbors.quad_tree
+    try:
+        import sklearn.neighbors.typedefs
+        import sklearn.neighbors.quad_tree
+    except:
+        import sklearn.neighbors
     import sklearn.tree._utils
 except:
     print("==== scipy")

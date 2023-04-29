@@ -1136,7 +1136,9 @@ class xVAPitchTrainer(object):
         model = xVAPitch(args)
         model = model.to(device)
         try:
-            model = torch.compile(model)
+            print("No torch.compile()") # Waiting for someone to verify this works in linux first
+            # model = torch.compile(model)
+            pass
         except:
             print("No torch.compile()") # Waiting for windows support
             pass
