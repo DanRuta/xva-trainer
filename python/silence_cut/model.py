@@ -51,7 +51,7 @@ def processingTask(workItem):
     combined_sound = sum(spliced_chunks, AudioSegment.empty())
     combined_sound = combined_sound.set_frame_rate(22050)
 
-    combined_sound.export(f'{outputPath}', format="wav", bitrate=22050, parameters=["-ac", "1"])
+    combined_sound.export(f'{outputPath}', format="wav", bitrate="22050", parameters=["-ac", "1"])
 
 
 

@@ -167,9 +167,9 @@
                     </div>
                 </div>
                 <div id="other_buttons">
-                    <div>
+                    <!-- <div>
                         <button class="mainPageButton" id="btn_preprocessAudioButton" disabled>Pre-process audio</button>
-                    </div>
+                    </div> -->
                     <div>
                         <button class="mainPageButton" id="btn_autotranscribe" disabled>Auto-transcribe</button>
                     </div>
@@ -248,7 +248,7 @@
             </div>
         </div>
 
-        <div id="preprocessAudioContainer" style="display:none">
+        <!-- <div id="preprocessAudioContainer" style="display:none">
             <div class="modal" style="height: 50vh;min-height: 500px;">
                 <h2>Pre-process audio</h2>
                 <div style="height: 100%" class="flexTable">
@@ -294,7 +294,7 @@
                     <button id="prepAudioStart">Start</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div id="preprocessTextContainer" style="display:none">
             <div class="modal" style="height: 40vh;min-height: 300px;">
                 <h2>Pre-process text</h2>
@@ -745,7 +745,7 @@
 
         <!-- Queue config menu -->
         <div id="queueItemConfigModalContainer" style="display: none;z-index: 1000;" >
-            <div class="modal" style="width: 300px;min-height: 575px;height: 575px;min-width: 850px">
+            <div class="modal" style="width: 300px;min-height: 625px;height: 625px;min-width: 850px">
                 <h2>Config</h2>
                 <div class="flexTable">
 
@@ -757,8 +757,8 @@
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+<!--                                 <option value="4">4</option>
+                                <option value="5">5</option> -->
                             </select>
                         </div>
                     </div>
@@ -783,15 +783,13 @@
                     </div>
                     <br>
                     <div>
-                        <div>FastPitch Checkpoint path to fine-tune from<br>(built in, or custom)</div>
+                        <div>xVAPitch Checkpoint path to fine-tune from<br>(built in, or custom)</div>
                         <div>
                             <div>
-                                <input id="fp_ckpt_option_male" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_male">
-                                <label for="fp_ckpt_option_male">Male</label>
-                                <input id="fp_ckpt_option_female" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_female">
-                                <label for="fp_ckpt_option_female">Female</label>
-                                <input id="fp_ckpt_option_other" type="radio" name="fp_ckpt_option" value="fp_ckpt_option_other">
-                                <label for="fp_ckpt_option_other">Custom</label>
+                                <input id="xvapitch_ckpt_option_base" type="radio" name="xvapitch_ckpt_option" value="xvapitch_ckpt_option_base" selected>
+                                <label for="xvapitch_ckpt_option_base">Base v3</label>
+                                <input id="xvapitch_ckpt_option_other" type="radio" name="xvapitch_ckpt_option" value="xvapitch_ckpt_option_other">
+                                <label for="xvapitch_ckpt_option_other">Custom</label>
                             </div>
                             <div style="flex-direction: row;width: 95%;display: flex;align-items: center;justify-content: center;">
                                 <input style="width: 80%;" id="trainingAddConfigCkptPathInput" placeholder="Full filepath to own ~500Mb .pt file" disabled>
@@ -799,23 +797,31 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <!-- <div>
                         <div>HiFi-GAN Checkpoint path to fine-tune from</div>
                         <div>
                             <div>
-                                <input id="hifigan_ckpt_option_male" type="radio" name="hifigan_ckpt_option" value="hifigan_ckpt_option_male">
+                                <input id="hifigan_ckpt_option_male" type="radio" name="hifigan_ckpt_option" value="hifigan_ckpt_option_male" selected>
                                 <label for="hifigan_ckpt_option_male">Male</label>
                                 <input id="hifigan_ckpt_option_female" type="radio" name="hifigan_ckpt_option" value="hifigan_ckpt_option_female">
                                 <label for="hifigan_ckpt_option_female">Female</label>
                             </div>
-                            <!-- <input id="trainingAddConfigHiFiCkptPathInput" placeholder="[male], [female], or .pt file path"> -->
                         </div>
-                    </div>
+                    </div> -->
 
                     <hr style="opacity: 0.2;margin: 0;">
                     <div style="color: gray;display: flex;justify-content: center;">Train configs</div>
                     <hr style="opacity: 0.2;margin: 0;">
 
+                    <div style="height: 60px;">
+                        <div style="align-items: center;">
+                            <span style="margin-bottom: 5px">Back up model every x checkpoints</span>
+                            <span style="font-size: 10pt;color: gray;">Be careful to have plenty of empty disk space (20GB+)</span>
+                        </div>
+                        <div>
+                            <input id="trainingAddConfigBackupEveryXInput" type="number" value="3" min="1">
+                        </div>
+                    </div>
                     <div style="height: 60px;">
                         <div style="align-items: center;">
                             <span style="margin-bottom: 5px">Base batch size</span>
@@ -826,11 +832,17 @@
                         </div>
                     </div>
                     <div>
+                        <div>Voice Language</div>
+                        <div>
+                            <select id="trainingConfigLangDropdown"></select>
+                        </div>
+                    </div>
+<!--                     <div>
                         <div>Epochs per checkpoint</div>
                         <div>
                             <input id="trainingAddConfigEpochsPerCkptInput" type="number" value="3" min="1">
                         </div>
-                    </div>
+                    </div> -->
                     <div>
                         <div>Use FP16 (amp) - turn off if loss is NaN</div>
                         <div>
@@ -899,14 +911,12 @@
                                     <option value="stage1">Stage 1</option>
                                     <option value="stage2">Stage 2</option>
                                     <option value="stage3">Stage 3</option>
-                                    <option value="stage4">Stage 4</option>
-                                    <option value="stage5">Stage 5</option>
                                 </select>
                             </div>
-                            <div style="display: flex;align-items: center;justify-content: space-between;width: 160px;">
-                                <input id="graphs_only_latest_chbx" type="checkbox" style="width: 20px;height: 20px;">
-                                <span>Only latest</span>
+                            <div style="display: flex;align-items: center;justify-content: space-between;width: 180px;">
+                                <span style="margin-left: 20px;">Only latest</span>
                                 <input id="graphs_only_latest_val" type="number" style="width: 40px;" value="50" min="1" step="1">
+                                <input id="graphs_only_latest_chbx" type="checkbox" style="width: 20px;height: 20px;">
                             </div>
                         </div>
                         <div id="cmdPanel"></div>

@@ -1,5 +1,5 @@
 "use strict"
-window.appVersion = "1.1.3"
+window.appVersion = "1.2.0"
 app_version.innerHTML = "v"+window.appVersion
 window.PRODUCTION = module.filename.includes("resources")
 const path = PRODUCTION ? `${__dirname.replace(/\\/g,"/")}` : `${__dirname.replace(/\\/g,"/")}`
@@ -152,7 +152,7 @@ const initWebSocket = () => {
                 window.tools_state.progressElem.innerHTML = ""
                 toolProgressInfo.innerHTML = ""
                 toolsRunTool.disabled = false
-                prepAudioStart.disabled = false
+                // prepAudioStart.disabled = false
                 toolsList.querySelectorAll("button").forEach(button => button.disabled = false)
                 window.tools_state.infoElem.innerHTML = ""
                 window.tools_state.currentFileElem.innerHTML = ""
@@ -837,6 +837,7 @@ window.refreshRecordsList = (dataset) => {
     for (let ri=startIndex; ri<endIndex; ri++) {
         const recordAndElem = filteredRows[ri]
 
+        // if (window.wer_cache[window.appState.currentDataset] && (window.wer_cache[window.appState.currentDataset][ri] || window.datasets[window.appState.currentDataset].metadata[ri][1].children[1].innerHTML)) {
         if (window.wer_cache[window.appState.currentDataset]) {
             const score = window.wer_cache[window.appState.currentDataset][ri]
             const r_col = Math.min(score, 1)
@@ -1254,9 +1255,9 @@ const initDatasetMeta = (callback) => {
         } catch (e) {}
 
         fs.writeFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset||composedVoiceId.innerHTML}/dataset_metadata.json`, JSON.stringify({
-            "version": "2.0",
+            "version": "3.0",
             "modelVersion": parseFloat(datasetMeta_modelVersion.value).toFixed(1),
-            "modelType": "FastPitch1.1",
+            "modelType": "xVAPitch",
             "author": datasetMeta_author.value,
             "license": datasetMeta_license.value,
             "lang": datasetMeta_langcode.value.trim().toLowerCase(),
@@ -1280,7 +1281,7 @@ let voiceIDInputChanged = false
 let fixedFolderName = undefined
 
 
-window.setupModal(btn_preprocessAudioButton, preprocessAudioContainer)
+// window.setupModal(btn_preprocessAudioButton, preprocessAudioContainer)
 window.setupModal(btn_preprocessTextButton, preprocessTextContainer)
 window.setupModal(btn_cleanAudioText, cleanAudioTextContainer)
 window.setupModal(btn_checkTextQualityBtn, checkTextQualityContainer)

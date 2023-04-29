@@ -53,6 +53,10 @@ class Diarization(object):
 
         audacity_file = []
 
+        # self.logger.info(f'diarization | {data["inPath"]} | {data["outputAudacityLabels"]} | {data} | {outputAudacityLabels}')
+
+        out_folder = f'{"./resources/app" if self.PROD else "."}/python/speaker_diarization/output/'
+
         try:
             rate, data = wavfile.read(inPath)
 
@@ -82,9 +86,7 @@ class Diarization(object):
                 split_data = data[int(start_s*rate):int(end_s*rate)]
 
                 folder_name = ".".join(inPath.split("/")[-1].split(".")[:-1]).replace(".", "_")
-                if mergeSameOutput:
-                    out_folder = f'{"./resources/app" if self.PROD else "."}/python/speaker_diarization/output/'
-                else:
+                if not mergeSameOutput:
                     out_folder = f'{"./resources/app" if self.PROD else "."}/python/speaker_diarization/output/{folder_name}/speaker {speaker}'
 
                 os.makedirs(out_folder, exist_ok=True)
@@ -95,6 +97,7 @@ class Diarization(object):
                 out_file_counter += 1
         except:
             self.logger.info(traceback.format_exc())
+            raise
 
         if outputAudacityLabels:
             with open(f'{out_folder}/audacity.txt', "w+", encoding="utf8") as f:

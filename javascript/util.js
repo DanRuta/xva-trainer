@@ -102,7 +102,7 @@ window.createModal = (type, message, keepModals=[]) => {
 }
 window.closeModal = (container=undefined, notThisOne=undefined) => {
     return new Promise(resolve => {
-        const allContainers = [settingsContainer, container, modalContainer, toolsContainer, datasetMetaContainer, preprocessAudioContainer, preprocessTextContainer, cleanAudioTextContainer, trainContainer, queueItemConfigModalContainer]
+        const allContainers = [settingsContainer, container, modalContainer, toolsContainer, datasetMetaContainer, preprocessTextContainer, cleanAudioTextContainer, trainContainer, queueItemConfigModalContainer]
         const containers = container==undefined ? allContainers : (Array.isArray(container) ? container.filter(c=>c!=undefined) : [container])
 
         notThisOne = Array.isArray(notThisOne) ? notThisOne : (notThisOne==undefined ? [] : [notThisOne])

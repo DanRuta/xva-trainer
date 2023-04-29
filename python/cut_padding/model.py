@@ -95,7 +95,7 @@ class CutPadding(object):
         else:
             outputPath = f'{outputDirectory}/{".".join(inPath.split("/")[-1].split(".")[:-1])}.wav'
 
-            command = f'{ffmpeg_path} -i "{inPath}" -af "silenceremove=start_periods=1:start_duration=1:start_threshold={min_dB}dB:detection=peak,aformat=dblp,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold={min_dB}dB:detection=peak,aformat=dblp,areverse" {outputPath}'
+            command = f'{ffmpeg_path} -i "{inPath}" -af "silenceremove=start_periods=1:start_duration=1:start_threshold={min_dB}dB:detection=peak,aformat=dblp,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold={min_dB}dB:detection=peak,aformat=dblp,areverse" "{outputPath}"'
             self.logger.info(command)
             command_process = subprocess.Popen(command, startupinfo=startupinfo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = command_process.communicate()

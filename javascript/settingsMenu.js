@@ -166,9 +166,9 @@ trainingAddConfigBatchSizeInput.addEventListener("keyup", () => window.localStor
 trainingAddConfigBatchSizeInput.addEventListener("change", () => window.localStorage.setItem("training.batch_size", trainingAddConfigBatchSizeInput.value))
 trainingAddConfigBatchSizeInput.value = window.localStorage.getItem("training.batch_size")
 
-trainingAddConfigEpochsPerCkptInput.addEventListener("keyup", () => window.localStorage.setItem("training.epochs_per_ckpt", trainingAddConfigEpochsPerCkptInput.value))
-trainingAddConfigEpochsPerCkptInput.addEventListener("change", () => window.localStorage.setItem("training.epochs_per_ckpt", trainingAddConfigEpochsPerCkptInput.value))
-trainingAddConfigEpochsPerCkptInput.value = window.localStorage.getItem("training.epochs_per_ckpt")
+// trainingAddConfigEpochsPerCkptInput.addEventListener("keyup", () => window.localStorage.setItem("training.epochs_per_ckpt", trainingAddConfigEpochsPerCkptInput.value))
+// trainingAddConfigEpochsPerCkptInput.addEventListener("change", () => window.localStorage.setItem("training.epochs_per_ckpt", trainingAddConfigEpochsPerCkptInput.value))
+// trainingAddConfigEpochsPerCkptInput.value = window.localStorage.getItem("training.epochs_per_ckpt")
 
 trainingAddConfigUseAmp.addEventListener("keyup", () => window.localStorage.setItem("training.useFP16", trainingAddConfigUseAmp.checked?"1":"0"))
 trainingAddConfigUseAmp.addEventListener("change", () => window.localStorage.setItem("training.useFP16", trainingAddConfigUseAmp.checked?"1":"0"))

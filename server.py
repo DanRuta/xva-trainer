@@ -10,10 +10,7 @@ import numpy as np
 if __name__ == '__main__':
     multiprocessing.freeze_support()
 
-    PROD = False
-    # PROD = True
-    CPU_ONLY = False
-    # CPU_ONLY = True
+    PROD = 'xVATrainer.exe' in os.listdir(".")
 
     # Saves me having to do backend re-compilations for every little UI hotfix
     with open(f'{"./resources/app" if PROD else "."}/javascript/script.js', encoding="utf8") as f:
@@ -61,6 +58,7 @@ if __name__ == '__main__':
         with open("./DEBUG_err_import_torch.txt", "w+") as f:
             f.write(traceback.format_exc())
     # ================
+    CPU_ONLY = not torch.cuda.is_available()
 
     try:
         logger = logging.getLogger('serverLog')
@@ -134,7 +132,8 @@ if __name__ == '__main__':
             try:
                 message = json.loads(message)
                 model = message["model"]
-                gpus = [int(g) for g in message["gpus"].split(",")] if "gpus" in message else [0]
+                # gpus = [int(g) for g in message["gpus"].split(",")] if "gpus" in message else [0]
+                gpus = [0]
                 task = message["task"] if "task" in message else None
                 data = message["data"] if "data" in message else None
 
@@ -168,16 +167,16 @@ if __name__ == '__main__':
                         else:
                             if task=="pause":
                                 logger.info("server.py pause")
-                                if "fastpitch1_1" not in models_manager.models_bank.keys() or models_manager.models_bank["fastpitch1_1"]=="move to hifi":
-                                    if "hifigan" in models_manager.models_bank.keys():
-                                        models_manager.models_bank["hifigan"].pause()
-                                else:
-                                    models_manager.models_bank["fastpitch1_1"].pause()
+                                # if "fastpitch1_1" not in models_manager.models_bank.keys() or models_manager.models_bank["fastpitch1_1"]=="move to hifi":
+                                #     if "hifigan" in models_manager.models_bank.keys():
+                                #         models_manager.models_bank["hifigan"].pause()
+                                # else:
+                                models_manager.models_bank["xvapitch"].pause()
                             if task=="stop":
-                                if "fastpitch1_1" in models_manager.models_bank.keys():
-                                    del models_manager.models_bank["fastpitch1_1"]
-                                if "hifigan" in models_manager.models_bank.keys():
-                                    del models_manager.models_bank["hifigan"]
+                                if "xvapitch" in models_manager.models_bank.keys():
+                                    del models_manager.models_bank["xvapitch"]
+                                # if "hifigan" in models_manager.models_bank.keys():
+                                #     del models_manager.models_bank["hifigan"]
 
                                 gc.collect()
                                 torch.cuda.empty_cache()
@@ -211,19 +210,19 @@ if __name__ == '__main__':
 
     async def handleTrainingLoop(models_manager, data, websocket, gpus, resume):
         try:
-            if ("fastpitch1_1" in models_manager.models_bank.keys() and models_manager.models_bank["fastpitch1_1"] == "move to hifi") or (data is not None and "force_stage" in data.keys() and data["force_stage"]==5) or ("fastpitch1_1" not in models_manager.models_bank.keys() and "hifigan" in models_manager.models_bank.keys()):
-                from python.hifigan.xva_train import handleTrainer as handleTrainer_hifi
-                result = await handleTrainer_hifi(models_manager, data, websocket, gpus=gpus, resume=resume)
-                if result == "done":
-                    logger.info("server.py done training hifigan")
-            else:
-                if not ("hifigan" in models_manager.models_bank.keys() and resume):
-                    from python.fastpitch1_1.xva_train import handleTrainer as handleTrainer_fp
-                    result = await handleTrainer_fp(models_manager, data, websocket, gpus=gpus, resume=resume)
+            # if ("fastpitch1_1" in models_manager.models_bank.keys() and models_manager.models_bank["fastpitch1_1"] == "move to hifi") or (data is not None and "force_stage" in data.keys() and data["force_stage"]==5) or ("fastpitch1_1" not in models_manager.models_bank.keys() and "hifigan" in models_manager.models_bank.keys()):
+            #     from python.hifigan.xva_train import handleTrainer as handleTrainer_hifi
+            #     result = await handleTrainer_hifi(models_manager, data, websocket, gpus=gpus, resume=resume)
+            #     if result == "done":
+            #         logger.info("server.py done training hifigan")
+            # else:
+            #     if not ("hifigan" in models_manager.models_bank.keys() and resume):
+            from python.xvapitch.xva_train import handleTrainer
+            result = await handleTrainer(models_manager, data, websocket, gpus=gpus, resume=resume)
 
-                if result == "move to hifi":
-                    logger.info("server.py moving on to HiFi training")
-                    return await handleTrainingLoop(models_manager, data, websocket, gpus, False)
+                # if result == "move to hifi":
+                #     logger.info("server.py moving on to HiFi training")
+                #     return await handleTrainingLoop(models_manager, data, websocket, gpus, False)
         except:
             logger.info(f'TRAINING_ERROR:{traceback.format_exc()}')
             await websocket.send(f'TRAINING_ERROR:{traceback.format_exc()}')
@@ -307,16 +306,15 @@ if __name__ == '__main__':
 
                 if self.path == "/exportWav":
 
-                    fp_ckpt = post_data["fp_ckpt"]
-                    hg_ckpt = post_data["hg_ckpt"]
+                    xvap_ckpt = post_data["xvap_ckpt"]
+                    emb = post_data["emb"]
                     out_path = post_data["out_path"]
                     out_path_intermediate = out_path.replace(".wav", "_temp.wav")
 
-                    models_manager.load_model("infer_fastpitch1_1", fp_ckpt)
-                    models_manager.load_model("infer_hifigan", hg_ckpt)
+                    models_manager.load_model("infer_xvapitch", xvap_ckpt)
                     logger.info(f'Generating audio preview...')
 
-                    req_response = models_manager.models("infer_fastpitch1_1").infer(None, "This is what my voice sounds like", out_path_intermediate, vocoder="infer_hifigan", speaker_i=None)
+                    req_response = models_manager.models("infer_xvapitch").infer("This is what my voice sounds like", out_path_intermediate, embedding=emb)
 
 
                     logger.info(f'Normalizing audio preview...')

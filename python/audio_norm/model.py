@@ -32,7 +32,7 @@ def normalizeTask (data):
             metadata_disable=False,
             chapters_disable=False,
             extra_input_options=[],
-            extra_output_options=[],
+            extra_output_options=["-ac", "1"],
             output_format=None,
             dry_run=False,
             progress=False,
@@ -74,7 +74,7 @@ class AudioNormalizer(object):
         return self.normalize(data, websocket)
 
 
-    def normalize_sync(self, inPath, outputPath):
+    def normalize_sync(self, inPath, outputPath, sample_rate=22050):
 
         ffmpeg_normalize = FFmpegNormalize(
                 normalization_type="ebu",
@@ -86,7 +86,7 @@ class AudioNormalizer(object):
                 dual_mono=False,
                 audio_codec=None,
                 audio_bitrate=None,
-                sample_rate=22050,
+                sample_rate=sample_rate,
                 keep_original_audio=False,
                 pre_filter=None,
                 post_filter=None,
@@ -96,7 +96,7 @@ class AudioNormalizer(object):
                 metadata_disable=False,
                 chapters_disable=False,
                 extra_input_options=[],
-                extra_output_options=[],
+                extra_output_options=["-ac", "1"],
                 output_format=None,
                 dry_run=False,
                 progress=False,
@@ -149,41 +149,43 @@ class AudioNormalizer(object):
         else:
 
             outputPath = f'{outputDirectory}/{inPath.split("/")[-1].split(".")[0]}.wav'
+            self.normalize_sync(inPath, outputPath, normalization_hz)
 
-            sample_rate = normalization_hz
-            ffmpeg_normalize = FFmpegNormalize(
-                    normalization_type="ebu",
-                    target_level=-23.0,
-                    print_stats=False,
-                    loudness_range_target=7.0,
-                    true_peak=-2.0,
-                    offset=0.0,
-                    dual_mono=False,
-                    audio_codec=None,
-                    audio_bitrate=None,
-                    sample_rate=sample_rate,
-                    keep_original_audio=False,
-                    pre_filter=None,
-                    post_filter=None,
-                    video_codec="copy",
-                    video_disable=False,
-                    subtitle_disable=False,
-                    metadata_disable=False,
-                    chapters_disable=False,
-                    extra_input_options=[],
-                    extra_output_options=[],
-                    output_format=None,
-                    dry_run=False,
-                    progress=False,
-                    ffmpeg_exe=self.ffmpeg_path
-                )
 
-            try:
-                ffmpeg_normalize.ffmpeg_exe = self.ffmpeg_path
-                ffmpeg_normalize.add_media_file(inPath, outputPath)
-                ffmpeg_normalize.run_normalization()
-            except:
-                self.logger.info(traceback.format_exc())
+            # sample_rate = normalization_hz
+            # ffmpeg_normalize = FFmpegNormalize(
+            #         normalization_type="ebu",
+            #         target_level=-23.0,
+            #         print_stats=False,
+            #         loudness_range_target=7.0,
+            #         true_peak=-2.0,
+            #         offset=0.0,
+            #         dual_mono=False,
+            #         audio_codec=None,
+            #         audio_bitrate=None,
+            #         sample_rate=sample_rate,
+            #         keep_original_audio=False,
+            #         pre_filter=None,
+            #         post_filter=None,
+            #         video_codec="copy",
+            #         video_disable=False,
+            #         subtitle_disable=False,
+            #         metadata_disable=False,
+            #         chapters_disable=False,
+            #         extra_input_options=[],
+            #         extra_output_options=["-ac", "1"],
+            #         output_format=None,
+            #         dry_run=False,
+            #         progress=False,
+            #         ffmpeg_exe=self.ffmpeg_path
+            #     )
+
+            # try:
+            #     ffmpeg_normalize.ffmpeg_exe = self.ffmpeg_path
+            #     ffmpeg_normalize.add_media_file(inPath, outputPath)
+            #     ffmpeg_normalize.run_normalization()
+            # except:
+            #     self.logger.info(traceback.format_exc())
 
             if websocket is not None:
                 await websocket.send(json.dumps({"key": "tasks_next"}))
