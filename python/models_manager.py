@@ -80,6 +80,20 @@ class ModelsManager(object):
                 from python.silence_split.model import SilenceSplit
                 self.models_bank[model_key] = SilenceSplit(self.logger, self.PROD, self.device, self)
 
+            if model_key=="cut_padding":
+                from python.cut_padding.model import CutPadding
+                self.models_bank[model_key] = CutPadding(self.logger, self.PROD, self.device, self)
+
+            if model_key=="srt_split":
+                from python.srt_split.model import SRTSplit
+                self.models_bank[model_key] = SRTSplit(self.logger, self.PROD, self.device, self)
+
+            if model_key=="make_srt":
+                from python.make_srt.model import MakeSRT
+                await self.init_model("diarization")
+                await self.init_model("transcribe")
+                self.models_bank[model_key] = MakeSRT(self.logger, self.PROD, self.device, self)
+
             # Models
             if model_key=="fastpitch1_1":
                 from python.fastpitch1_1.xva_train import FastPitchTrainer
@@ -87,6 +101,9 @@ class ModelsManager(object):
             if model_key=="hifigan":
                 from python.hifigan.model import HiFi_GAN
                 self.models_bank[model_key] = HiFi_GAN(self.logger, self.PROD, self.device, self)
+            if model_key=="xvapitch":
+                from python.xvapitch.xva_train import xVAPitchTrainer
+                self.models_bank[model_key] = xVAPitchTrainer(self.logger, self.PROD, self.device, self)
 
             try:
                 self.models_bank[model_key].model = self.models_bank[model_key].model.to(self.device)
@@ -104,6 +121,9 @@ class ModelsManager(object):
             if model_key=="hifigan" and "hifigan" not in list(self.models_bank.keys()):
                 from python.hifigan.xva_train import HiFiTrainer
                 self.models_bank[model_key] = HiFiTrainer(self.logger, self.PROD, gpus, self, websocket=websocket)
+            if model_key=="xvapitch" and "xvapitch" not in list(self.models_bank.keys()):
+                from python.xvapitch.xva_train import xVAPitchTrainer
+                self.models_bank[model_key] = xVAPitchTrainer(self.logger, self.PROD, gpus, self, websocket=websocket)
         except:
             self.logger.info(traceback.format_exc())
 
@@ -117,6 +137,9 @@ class ModelsManager(object):
             if model_key=="infer_hifigan":
                 from python.hifigan.models import HiFi_GAN
                 self.models_bank[model_key] = HiFi_GAN(self.logger, self.PROD, self.device, self)
+            if model_key=="infer_xvapitch":
+                from python.xvapitch.xva_train import xVAPitchModel
+                self.models_bank[model_key] = xVAPitchModel(self.logger, self.PROD, self.device, self)
 
         if not os.path.exists(ckpt_path):
             return "ENOENT"

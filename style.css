@@ -318,7 +318,7 @@ a {
  }
 
 
- #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #exportModelContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #checkTextQualityContainer, #patreonContainer, #infoContainer, #updatesContainer {
+ #modalContainer, #settingsContainer, #toolsContainer, #datasetMetaContainer, #exportModelContainer, #preprocessAudioContainer, #preprocessTextContainer, #cleanAudioTextContainer, #trainContainer, #queueItemConfigModalContainer, #duplicateDatasetContainer, #checkTextQualityContainer, #patreonContainer, #infoContainer, #updatesContainer {
      display: flex;
      justify-content: center;
      align-items: center;
@@ -376,7 +376,7 @@ a {
      width: 25vw;
      text-align: center;
  }
- #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #exportModelContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #checkTextQualityContainer > .modal, #patreonContainer > .modal, #infoContainer > .modal, #updatesContainer > .modal {
+ #settingsContainer > .modal, #toolsContainer > .modal, #datasetMetaContainer > .modal, #exportModelContainer > .modal, #preprocessAudioContainer > .modal, #preprocessTextContainer > .modal, #cleanAudioTextContainer > .modal, #trainContainer > .modal, #queueItemConfigModalContainer > .modal, #duplicateDatasetContainer > .modal, #checkTextQualityContainer > .modal, #patreonContainer > .modal, #infoContainer > .modal, #updatesContainer > .modal {
      height: 65vh;
      width: 45vw;
      min-height: 500px;
@@ -516,6 +516,24 @@ a {
 .svgButton > svg {
    filter: drop-shadow( 1px 1px 1px rgba(0, 0, 0, 1))
 }
+
+#datasetDuplicatesWarning {
+    display: none;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    color: red;
+    padding: 2px;
+    background: yellow;
+    margin-left: 5px;
+    height: 20px;
+    width: 20px;
+    font-weight: bold;
+    font-size: 16pt;
+    padding-top: 1px;
+    cursor: pointer;
+}
+
 
  /*===========================================================================*/
  /*======================== Pitch editor =====================================*/
@@ -1113,6 +1131,22 @@ a {
 
 @media screen and (max-width: 1300px) {
     #letterLength {
-        width: 50px;
+        width: 50px !important;
     }
+    #train_trainingThird {
+        width: calc(93vw - 515px) !important;
+    }
+    #train_systemThird {
+        width: 200px !important;
+    }
+    #train_queueThird {
+        width: 303px !important;
+    }
+    #trainingQueuePanelContainer {
+        height: calc(75vh - 40px) !important;
+    }
+}
+
+@media screen and (max-height: 1000px) {
+
 }

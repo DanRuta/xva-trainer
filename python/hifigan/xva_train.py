@@ -74,9 +74,13 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         trainer.running = False
         raise
     except RuntimeError as e:
+        running = trainer.running
         trainer.running = False
         try:
             del trainer.train_loader
+        except:
+            pass
+        try:
             del trainer.dataloader_iterator
             del trainer.model
             del trainer.generator
@@ -90,9 +94,19 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
         torch.cuda.empty_cache()
         if "CUDA out of memory" in str(e) or "PYTORCH_CUDA_ALLOC_CONF" in str(e):
             trainer.logger.info("CUDA out of memory")
-            trainer.print_and_log(f'============= Reducing batch size from {trainer.batch_size} to {trainer.batch_size-5}', save_to_file=trainer.dataset_output)
-            data["batch_size"] = data["batch_size"] - 5
-            return await handleTrainer(models_manager, data, websocket, gpus)
+            trainer.print_and_log(f'Out of VRAM')
+            if running:
+                trainer.print_and_log(f'============= Reducing batch size from {trainer.batch_size} to {trainer.batch_size-3}', save_to_file=trainer.dataset_output)
+                data["batch_size"] = data["batch_size"] - 3
+            del trainer
+            try:
+                del models_manager.models_bank["hifigan"]
+            except:
+                pass
+            if running:
+                gc.collect()
+                torch.cuda.empty_cache()
+                return await handleTrainer(models_manager, data, websocket, gpus)
         elif trainer.END_OF_TRAINING:
             trainer.logger.info("Finished training HiFi-GAN")
             trainer.print_and_log(f'Finished training HiFi-GAN\n', save_to_file=trainer.dataset_output)
@@ -163,7 +177,7 @@ class HiFiTrainer(object):
             print(f'\r{self.training_log_live_line}', end="", flush=True)
         else:
             time_str = str(datetime.datetime.now().time())
-            time_str = time_str.split(":")[0]+":"+time_str.split(":")[1]
+            time_str = time_str.split(":")[0]+":"+time_str.split(":")[1]+":"+time_str.split(":")[2].split(".")[0]
             self.training_log.append(f'{time_str} | {line}')
             print(("\r" if flush else "")+line, end=end, flush=flush)
 
@@ -211,7 +225,7 @@ class HiFiTrainer(object):
 
         json_config = json.loads(data)
         self.h = AttrDict(json_config)
-        self.h.batch_size = int(self.batch_size * 1.5)
+        self.h.batch_size = int(self.batch_size * 1.4)
         self.h.num_workers = self.workers
         self.h.USE_EMB_CONDITIONING = False
 
@@ -251,7 +265,9 @@ class HiFiTrainer(object):
 
 
 
-        self.target_delta = 0.0002
+        self.target_delta = 0.0001
+        self.target_patience = 3
+        self.target_patience_count = 0
         self.graphs_json["stages"]["5"]["target_delta"] = self.target_delta
 
         self.training_steps = 0
@@ -621,12 +637,16 @@ class HiFiTrainer(object):
                 f.write(json.dumps(self.graphs_json))
 
             if acc_epoch_deltas_avg20 <= self.target_delta and len(acc_epoch_deltas)>=25:
-                self.training_log_live_line = ""
-                if self.logger is not None:
-                    self.logger.info("[HiFi Trainer] END_OF_TRAINING...")
-                self.print_and_log(f'HiFi-GAN training finished', save_to_file=self.dataset_output)
-                self.END_OF_TRAINING = True
-                raise
+                self.target_patience_count += 1
+                if self.target_patience_count>=self.target_patience:
+                    self.training_log_live_line = ""
+                    if self.logger is not None:
+                        self.logger.info("[HiFi Trainer] END_OF_TRAINING...")
+                    self.print_and_log(f'HiFi-GAN training finished', save_to_file=self.dataset_output)
+                    self.END_OF_TRAINING = True
+                    raise
+            else:
+                self.target_patience_count = 0
 
 
 

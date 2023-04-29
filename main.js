@@ -28,7 +28,7 @@ const createWindow = () => {
         frame: false,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false
+            // contextIsolation: false
         },
         icon: `${__dirname}/assets/x-icon.png`
     })
@@ -36,11 +36,21 @@ const createWindow = () => {
     mainWindow.loadFile("index.html")
     mainWindow.shell = shell
 
+    mainWindow.on("ready-to-show", () => {
+        mainWindow.show()
+    })
+
     mainWindow.on("closed", () => mainWindow = null)
 }
 
 ipcMain.on("resize", (event, arg) => {
     mainWindow.setSize(arg.width, arg.height)
+})
+ipcMain.on("updatePosition", (event, arg) => {
+    const bounds = mainWindow.getBounds()
+    bounds.x = parseInt(arg.details[0])
+    bounds.y = parseInt(arg.details[1])
+    mainWindow.setBounds(bounds)
 })
 ipcMain.on("updateDiscord", (event, arg) => {
 

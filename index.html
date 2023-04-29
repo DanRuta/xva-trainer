@@ -70,6 +70,7 @@
 
                 <div>
                     <div style="height: 40px;width: calc(98vw - 306px);margin-left: 1vw;margin-right: 1vw;display: flex;justify-content: space-between;align-items: center;background: rgba(75,75,75,0.8);margin-top: 5px;">
+                        <div id="datasetDuplicatesWarning" title="Duplicate file names found in the dataset. Click for more.">&#9888;</div>
                         <div id="totalRecords" style="margin-right: 5px; width: 265px;margin-left: 5px;color: white;"></div>
                         <div style="width: 260px">
                             <input id="fileNameSearch" class="fancySearchInput" style="font-size: 12pt;" placeholder="Search file names..">
@@ -166,9 +167,9 @@
                     </div>
                 </div>
                 <div id="other_buttons">
-                    <div>
+                    <!-- <div>
                         <button class="mainPageButton" id="btn_preprocessAudioButton" disabled>Pre-process audio</button>
-                    </div>
+                    </div> -->
                     <div>
                         <button class="mainPageButton" id="btn_autotranscribe" disabled>Auto-transcribe</button>
                     </div>
@@ -209,6 +210,20 @@
             </div>
         </div>
 
+        <div id="duplicateDatasetContainer" style="display:none">
+            <div class="modal" style="height: 50vh;min-height: 500px;">
+                <h2>Duplicate lines found in your dataset</h2>
+                <div>
+                    You need to make sure that all the text lines in your transcript point to unique files, otherwise the training will break. There were a total of <span id="totalDataDuplicates">0</span> lines found pointing to <span id="uniqueDataDuplicates">0</span> unique audio files.
+                </div>
+
+                <div style="margin-top: 10px">
+                    <button id="btnShowAllDataDuplicates">Show all duplicates</button>
+                    <button id="btnRemoveAllDataDuplicates">Remove all duplicates</button>
+                </div>
+            </div>
+        </div>
+
         <div id="checkTextQualityContainer" style="display:none">
             <div class="modal" style="height: 50vh;min-height: 500px;">
                 <h2>Check text transcript quality</h2>
@@ -233,53 +248,6 @@
             </div>
         </div>
 
-        <div id="preprocessAudioContainer" style="display:none">
-            <div class="modal" style="height: 50vh;min-height: 500px;">
-                <h2>Pre-process audio</h2>
-                <div style="height: 100%" class="flexTable">
-                    <div>
-                        <div>Create a backup of the audio files</div>
-                        <div>
-                            <input id="prepAudioBackup" type="checkbox" checked>
-                        </div>
-                    </div>
-                    <div>
-                        <div>Convert all audio to mono 22050Hz .wav</div>
-                        <div>
-                            <input id="prepAudioConvert" type="checkbox" checked>
-                        </div>
-                    </div>
-                    <div>
-                        <div>Trim and splice out silence</div>
-                        <div>
-                            <input id="prepAudioTrimSilence" type="checkbox" checked>
-                        </div>
-                    </div>
-                    <div>
-                        <div>Remove audio files shorter than 1 second</div>
-                        <div>
-                            <input id="prepAudioDelShort" type="checkbox" checked>
-                        </div>
-                    </div>
-                    <div>
-                        <div>Remove audio files longer than 10 seconds</div>
-                        <div>
-                            <input id="prepAudioDelLong" type="checkbox" checked>
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top: 10px">
-                    <div id="prepAudioCurrentTask"></div>
-                    <div id="prepAudioInfo"></div>
-                    <div id="prepAudioProgress"></div>
-                    <div id="prepAudioCurrentFile"></div>
-                    <div id="prepAudioSpinner" class="spinner" style="display: none;margin-top: 10px;"></div>
-                </div>
-                <div style="margin-top: 10px">
-                    <button id="prepAudioStart">Start</button>
-                </div>
-            </div>
-        </div>
         <div id="preprocessTextContainer" style="display:none">
             <div class="modal" style="height: 40vh;min-height: 300px;">
                 <h2>Pre-process text</h2>
@@ -323,18 +291,6 @@
             <div class="modal">
                 <h2 id="i18n_settings">Settings</h2>
                 <div id="settingsOptionsContainer" class="flexTable">
-                    <!-- <div>
-                        <div id="i18n_setting_autoplay">Autoplay generated audio</div>
-                        <div>
-                            <input id="setting_autoplaygenCbx" type="checkbox" name="">
-                        </div>
-                    </div> -->
-                    <!-- <div>
-                        <div id="i18n_setting_darkmode">Dark mode text prompt</div>
-                        <div>
-                            <input id="setting_darkprompt" type="checkbox" name="">
-                        </div>
-                    </div> -->
                     <div>
                         <div style="flex-direction: row;justify-content: flex-end;">
                             <span id="i18n_settings_curr_install">Current installation:</span>
@@ -356,22 +312,6 @@
                             <input id="setting_outpathwidth" type="number" min="100" step="1">
                         </div>
                     </div>
-                    <!-- <div>
-                        <div id="i18n_setting_seqnumbering">Use sequential numbering for file names</div>
-                        <div>
-                            <input id="setting_output_num_seq" type="checkbox" name="">
-                        </div>
-                    </div>
-                    <div>
-                        <div id="i18n_setting_base_speaker">Base app output device</div>
-                        <div>
-                            <select id="setting_base_speaker">
-                            </select>
-                        </div>
-                    </div> -->
-
-                    <!-- <hr style="width:100%"> -->
-
 
                     <div>
                         <div id="i18n_setting_microphone">Microphone</div>
@@ -411,26 +351,14 @@
                         </div>
                     </div>
 
-                    <!-- <div style="min-height: 65px;">
-                        <div id="i18n_setting_s2s_bgnoise">Remove background noise from microphone. You need to record a background noise clip first. (requires sox >= v14.4.2) </div>
+
+                    <hr style="width:100%;display: none;">
+                    <div style="display: none;"> <!-- WIP feature -->
+                        <div>CUDA devices, comma separated (leave this as 0, if unsure)</div>
                         <div>
-                            <div style="display: flex;align-items: center;">
-                                <input style="margin-right: 20px;" id="setting_s2s_removeNoise" type="checkbox" name="">
-                                <button id="s2s_settingsRecNoiseBtn">Record noise</button>
-                            </div>
+                            <input id="setting_cudaDevices"  value="0">
                         </div>
                     </div>
-
-                    <div>
-                        <div id="i18n_setting_s2s_bgnoise_strength">Noise removal strength (0.2-0.3 recommended)</div>
-                        <div>
-                            <input id="setting_s2s_noiseRemStrength" name="" placeholder="0.25" type="number" step=0.01 min=0 max=1>
-                        </div>
-                    </div> -->
-
-
-
-
                     <hr style="width:100%">
                     <div>
                         <div>Datasets location</div>
@@ -438,23 +366,16 @@
                             <input id="setting_datasets_input" name="">
                         </div>
                     </div>
-<!--                     <div id="setting_out_path_container" style="display: none">
-                        <div id="setting_out_path_label"></div>
-                        <div>
-                            <input id="setting_out_path_input" name="">
-                        </div>
-                    </div> -->
                 </div>
                 <div id="resetBtnsContainer" style="width:100%;height: 30px;">
                     <button style="padding: 0px;" id="reset_settings_btn">Reset Settings</button>
-                    <!-- <button style="padding: 0px;" id="reset_paths_btn">Reset Paths</button> -->
                 </div>
                 <div id="app_version">v1.0.0</div>
             </div>
         </div>
 
         <div id="toolsContainer" style="display:none">
-            <div class="modal" style="width: 72.5vw;height: 60vh;">
+            <div class="modal" style="width: 72.5vw;height: 65vh;">
                 <h1>Tools</h1>
                 <div style="display:flex;width: 70vw;height: 70vh;">
                     <div id="toolsList" style="display: flex;flex-direction: column;background: rgb(75,75,75);height: 100%;width: 300px;overflow-y: auto;"></div>
@@ -480,7 +401,7 @@
         </div>
 
         <div id="datasetMetaContainer" style="display: none">
-            <div class="modal" style="width: 40vw;height: 40vh;min-height: 650px;">
+            <div class="modal" style="width: 40vw;height: 40vh;min-height: 700px;">
                 <h2 id="datasetMetaTitle">New dataset</h2>
                 <div class="flexTable">
                     <div>
@@ -496,13 +417,13 @@
                         </div>
                     </div>
                     <div>
-                        <div>Game ID code</div>
+                        <div>Game code</div>
                         <div>
                             <input id="datasetMeta_gameIdCode" value="x">
                         </div>
                     </div>
                     <div>
-                        <div style="width: 40vw;margin-left: 5vw;">Game ID code follows the naming convention for xVASynth's app name for different games. Eg Skyrim is sk (SKVASynth), Fallout 4 is f4 (F4VASynth), Oblivion is OB (OBVASynth), and so on. You MUST use the correct code for your game. x fits the "other" game ID.</div>
+                        <div style="width: 40vw;margin-left: 5vw;">Game code follows the naming convention for xVASynth's app name for different games. Eg Skyrim is sk (SKVASynth), Fallout 4 is f4 (F4VASynth), Oblivion is OB (OBVASynth), and so on. You <span style="color: red;display: contents;">MUST</span> use the correct code for your game. If the short game code is not a prefix in the voice_id, features in xVASynth will not work properly for that voice. "x" fits the "other" game category.</div>
                     </div>
                     <div></div>
                     <div>
@@ -514,6 +435,9 @@
                     <div style="font-size: 10pt;color: #999;">
                         <div>Composed ID:</div>
                         <div id="composedVoiceId">x_your_voice_name</div>
+                    </div>
+                    <div>
+                        <div style="width: 40vw;margin-left: 5vw;">Note: editing the game code or voice ID won't change the folder or file names for your dataset, to avoid breaking things mid-training. Make sure you either put the right code/voice ID in at the start, or rename your final model files to match your new voice ID if you change these</div>
                     </div>
                     <div>
                         <div>Gender</div>
@@ -570,14 +494,16 @@
                 <div class="flexTable">
                     <div>
                         <div>Model checkpoints directory:</div>
-                        <div>
-                            <input id="modelExport_trainningDir" placeholder="The full output folder path specified for training">
+                        <div style="flex-direction: row;">
+                            <input style="width: 75%;" id="modelExport_trainningDir" placeholder="The full output folder path specified for training">
+                            <button id="modelExport_trainningDirBtn" class="svgButton"></button>
                         </div>
                     </div>
                     <div>
                         <div>Export output directory:</div>
-                        <div>
-                            <input id="modelExport_outputDir" placeholder="Where do you want the model to be exported to?">
+                        <div style="flex-direction: row;">
+                            <input style="width: 75%;" id="modelExport_outputDir" placeholder="Where do you want the model to be exported to?">
+                            <button id="modelExport_outputDirBtn" class="svgButton"></button>
                         </div>
                     </div>
 
@@ -637,7 +563,7 @@
             color: rgba(255,255,255,0.8);
             overflow: auto;
             text-align: left;
-            font-size: 10pt;
+            font-size: 9pt;
             line-height: 20px;
         }
         #trainingQueueHeader {
@@ -718,20 +644,20 @@
 
         <!-- Queue config menu -->
         <div id="queueItemConfigModalContainer" style="display: none;z-index: 1000;" >
-            <div class="modal" style="width: 300px;min-height: 525px;height: 525px;min-width: 850px">
+            <div class="modal" style="width: 300px;min-height: 625px;height: 625px;min-width: 850px">
                 <h2>Config</h2>
-                <div class="flexTable" style="width:80%">
+                <div class="flexTable">
 
                     <div>
                         <div>Force stage</div>
                         <div style="display: flex;flex-direction: row;">
-                            <input id="trainingAddConfigDoForceStageCkbx" type="checkbox">
+                            <input style="width: 50px;" id="trainingAddConfigDoForceStageCkbx" type="checkbox">
                             <select style="width: 100px;margin-right: 50px;" id="trainingAddConfigForceStageNumberSelect">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+<!--                                 <option value="4">4</option>
+                                <option value="5">5</option> -->
                             </select>
                         </div>
                     </div>
@@ -741,27 +667,33 @@
                     <hr style="opacity: 0.2;margin: 0;">
 
                     <div>
-                        <div>Dataset path</div>
-                        <div>
-                            <input id="trainingAddConfigDatasetPathInput">
+                        <div>Dataset path (where the metadata.csv file is)</div>
+                        <div style="flex-direction: row;">
+                            <input style="width: 75%;" id="trainingAddConfigDatasetPathInput">
+                            <button id="trainingAddConfigDatasetPathInputBtn" class="svgButton"></button>
                         </div>
                     </div>
                     <div>
                         <div>Output path</div>
-                        <div>
-                            <input id="trainingAddConfigOutputPathInput">
+                        <div style="flex-direction: row;">
+                            <input style="width: 75%;" id="trainingAddConfigOutputPathInput">
+                            <button id="trainingAddConfigOutputPathInputBtn" class="svgButton"></button>
                         </div>
                     </div>
+                    <br>
                     <div>
-                        <div>FastPitch Checkpoint path to fine-tune from</div>
+                        <div>xVAPitch Checkpoint path to fine-tune from<br>(built in, or custom)</div>
                         <div>
-                            <input id="trainingAddConfigCkptPathInput" placeholder="[male], [female], or .pt file path">
-                        </div>
-                    </div>
-                    <div>
-                        <div>HiFi-GAN Checkpoint path to fine-tune from</div>
-                        <div>
-                            <input id="trainingAddConfigHiFiCkptPathInput" placeholder="[male], [female], or .pt file path">
+                            <div>
+                                <input id="xvapitch_ckpt_option_base" type="radio" name="xvapitch_ckpt_option" value="xvapitch_ckpt_option_base" selected>
+                                <label for="xvapitch_ckpt_option_base">Base v3</label>
+                                <input id="xvapitch_ckpt_option_other" type="radio" name="xvapitch_ckpt_option" value="xvapitch_ckpt_option_other">
+                                <label for="xvapitch_ckpt_option_other">Custom</label>
+                            </div>
+                            <div style="flex-direction: row;width: 95%;display: flex;align-items: center;justify-content: center;">
+                                <input style="width: 80%;" id="trainingAddConfigCkptPathInput" placeholder="Full filepath to own ~500Mb .pt file" disabled>
+                                <button id="trainingAddConfigCkptPathInputBtn" class="svgButton"></button>
+                            </div>
                         </div>
                     </div>
 
@@ -769,10 +701,13 @@
                     <div style="color: gray;display: flex;justify-content: center;">Train configs</div>
                     <hr style="opacity: 0.2;margin: 0;">
 
-                    <div style="display: none;">
-                        <div>Number of CPU workers</div>
+                    <div style="height: 60px;">
+                        <div style="align-items: center;">
+                            <span style="margin-bottom: 5px">Back up model every x checkpoints</span>
+                            <span style="font-size: 10pt;color: gray;">Be careful to have plenty of empty disk space (20GB+)</span>
+                        </div>
                         <div>
-                            <input id="trainingAddConfigWorkersInput" type="number" value="4" min="1">
+                            <input id="trainingAddConfigBackupEveryXInput" type="number" value="3" min="1">
                         </div>
                     </div>
                     <div style="height: 60px;">
@@ -785,15 +720,21 @@
                         </div>
                     </div>
                     <div>
-                        <div>Epochs per checkpoint</div>
+                        <div>Voice Language</div>
                         <div>
-                            <input id="trainingAddConfigEpochsPerCkptInput" type="number" value="3" min="1">
+                            <select id="trainingConfigLangDropdown"></select>
                         </div>
                     </div>
                     <div>
                         <div>Use FP16 (amp) - turn off if loss is NaN</div>
                         <div>
                             <input id="trainingAddConfigUseAmp" type="checkbox" checked="true">
+                        </div>
+                    </div>
+                    <div>
+                        <div>Number of CPU workers - Leave as is.<br>If training is stuck after "Workers: x", lower the value</div>
+                        <div>
+                            <input id="trainingAddConfigWorkersInput" type="number" value="3" min="0">
                         </div>
                     </div>
                 </div>
@@ -807,12 +748,12 @@
 
         <div id="trainContainer" style="display:none">
 
-            <div class="modal" style="height: 85vh;width: 93vw;min-height: 500px;">
+            <div class="modal" style="height: 85vh;width: 96vw;min-height: 500px;">
                 <div style="display: flex;">
 
 
                     <!-- Queue -->
-                    <div style="width: 403px;display: flex;flex-direction: column;margin-left: 10px;height: 85vh;">
+                    <div id="train_queueThird" style="width: 403px;display: flex;flex-direction: column;margin-left: 10px;height: 85vh;">
                         <h3 style="margin-top: 0;">Queue</h3>
                         <div id="trainingQueuePanelContainer">
                             <div id="trainingQueueHeader">
@@ -824,7 +765,7 @@
                             <div id="trainingQueueRecordsContainer"></div>
 
                         </div>
-                        <div style="display: flex;justify-content: space-evenly;height: 40px;margin-top: 10px;">
+                        <div style="display: flex;justify-content: space-evenly;height: 40px;margin-top: 10px;flex-wrap: wrap;">
                             <button id="trainingQueueBtnMoveUp" style="margin-left: 0;" disabled="true">Up</button>
                             <button id="trainingQueueBtnMoveDown" disabled="true">Down</button>
                             <button id="trainingQueueBtnDelete" disabled="true">Delete</button>
@@ -835,7 +776,7 @@
                     </div>
 
                     <!-- Training -->
-                    <div style="width: calc(93vw - 715px);margin-left: 10px;">
+                    <div id="train_trainingThird" style="width: calc(96vw - 715px);margin-left: 10px;">
                         <h3 id="training_title" style="margin-top: 0;">Training</h3>
                         <div id="lossPlotsContainer">
                             <div>
@@ -852,9 +793,12 @@
                                     <option value="stage1">Stage 1</option>
                                     <option value="stage2">Stage 2</option>
                                     <option value="stage3">Stage 3</option>
-                                    <option value="stage4">Stage 4</option>
-                                    <option value="stage5">Stage 5</option>
                                 </select>
+                            </div>
+                            <div style="display: flex;align-items: center;justify-content: space-between;width: 180px;">
+                                <span style="margin-left: 20px;">Only latest</span>
+                                <input id="graphs_only_latest_val" type="number" style="width: 40px;" value="50" min="1" step="1">
+                                <input id="graphs_only_latest_chbx" type="checkbox" style="width: 20px;height: 20px;">
                             </div>
                         </div>
                         <div id="cmdPanel"></div>
@@ -863,10 +807,11 @@
                             <button id="trainingPauseBtn" style="display: none;">Pause</button>
                             <button id="trainingResumeBtn" style="display: none;">Resume</button>
                             <button id="trainingStopBtn" style="display: none;">Stop</button>
+                            <button id="trainingOpenCkpts" disabled>Open checkpoints</button>
                         </div>
                     </div>
                     <!-- System -->
-                    <div style="height: 85vh;width: 300px;display: flex;flex-direction: column;">
+                    <div id="train_systemThird" style="height: 85vh;width: 300px;display: flex;flex-direction: column;overflow-y: scroll;">
                         <h3 style="margin-top: 0;">System</h3>
                         <div>
                             <div id="trainingSystemCharts">
@@ -1041,20 +986,37 @@ chromeMax.addEventListener("click", () => {
     const w = remote.getCurrentWindow()
     w.isMaximized() ? w.unmaximize() : w.maximize()
 })
-chromeQuit.addEventListener("click", () => doFetch(`http://localhost:8002/stopServer`, {
-    method: "Post",
-    body: JSON.stringify({})
-}).then(r=>r.text()).then(() => {
-    try {
-        window.pythonProcess.kill()
-    } catch (e) {}
-    remote.getCurrentWindow().close()
-}).catch(e => {
-    try {
-        window.pythonProcess.kill()
-    } catch (e) {}
-    remote.getCurrentWindow().close()
-}))
+chromeQuit.addEventListener("click", () => {
+    const isTraining = trainingStartBtn.style.display == "none"
+
+    const doRest = () => {
+        doFetch(`http://localhost:8002/stopServer`, {
+            method: "Post",
+            body: JSON.stringify({})
+        }).then(r=>r.text()).then(() => {
+            try {
+                window.pythonProcess.kill()
+            } catch (e) {}
+            remote.getCurrentWindow().close()
+        }).catch(e => {
+            try {
+                window.pythonProcess.kill()
+            } catch (e) {}
+            remote.getCurrentWindow().close()
+        })
+
+    }
+
+    if (isTraining) {
+        window.confirmModal("You are currently training a model. Are you sure you'd like to close the app?").then(resp => {
+            if (resp) {
+                doRest()
+            }
+        })
+    } else {
+        doRest()
+    }
+})
 </script>
 <style id="pluginsCSS" type="text/css"></style>
 <script src="lib/recorder.js"></script>

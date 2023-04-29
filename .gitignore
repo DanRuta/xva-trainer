@@ -40,3 +40,4 @@ batch
 pytorch_model.bin
 *.csv
 *.noise_profile_file
+python/xvapitch/PRIORS

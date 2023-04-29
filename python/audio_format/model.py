@@ -67,6 +67,7 @@ class AudioFormatter(object):
 
         if useMP:
             input_paths = sorted(os.listdir(inPath))
+            input_paths = [fpath for fpath in input_paths if not fpath.endswith(".ini")]
             output_paths = [f'{outputDirectory}/{".".join(fpath.split(".")[:-1])+".wav"}' for fpath in input_paths]
             input_paths = [f'{inPath}/{fpath}' for fpath in input_paths]
             ffmpeg_path = f'{"./resources/app" if self.PROD else "."}/python/ffmpeg.exe'

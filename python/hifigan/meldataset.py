@@ -273,7 +273,11 @@ def get_dataset_filelist(input_training_file, input_wavs_dir, dm=None, use_embs=
         lines = fi.read().split("\n")
         for line in lines:
             if len(line):
-                fname = line.split("|")[0].replace("wavs", "").split("/")[-1]
+                # fname = line.split("|")[0].replace("wavs", "").split("/")[-1]
+                fname = line.split("|")[0].split("/")[-1]
+
+                if len(fname.strip())==0:
+                    continue
 
                 if ".wav" not in fname:
                     fname = fname+".wav"

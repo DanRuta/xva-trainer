@@ -1,0 +1,1 @@
+I'm putting the lib files for pydub here, because a lot of custom work needed to go into making it not forcefully using models downloaded from the web. use this instead of any pip installed files. Put in your virtualenv site-packages folder

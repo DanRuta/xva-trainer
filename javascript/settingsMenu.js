@@ -45,6 +45,9 @@ if (!Object.keys(window.userSettings).includes("removeNoise")) { // For backward
 if (!Object.keys(window.userSettings).includes("noiseRemStrength")) { // For backwards compatibility
     window.userSettings.noiseRemStrength = 0.25
 }
+if (!Object.keys(window.userSettings).includes("cudaDevices")) { // For backwards compatibility
+    window.userSettings.cudaDevices = 0
+}
 if (!Object.keys(window.userSettings).includes("datasetsPath")) { // For backwards compatibility
     window.userSettings.datasetsPath = `${__dirname.replace(/\\/g,"/")}/datasets/`.replace(/\/\//g, "/").replace("resources/app/resources/app", "resources/app").replace("/javascript", "")
 
@@ -60,6 +63,7 @@ const updateUIWithSettings = () => {
     setting_micVolume_display.innerHTML = `${parseInt(setting_micVolume.value)}%`
     setting_doNoiseRemoval.checked = window.userSettings.removeNoise
     setting_noiseRemStrength.value = window.userSettings.noiseRemStrength
+    setting_cudaDevices.value = window.userSettings.cudaDevices
 
     setting_datasets_input.value = window.userSettings.datasetsPath
 }
@@ -96,22 +100,6 @@ const initMenuSetting = (elem, setting, type, callback=undefined, valFn=undefine
             if (callback) callback()
         })
     }
-}
-const initFilePickerButton = (button, input, setting, properties, filters=undefined, defaultPath=undefined, callback=undefined) => {
-    button.addEventListener("click", () => {
-        const defaultPath = input.value.replace(/\//g, "\\")
-        let filePath = electron.remote.dialog.showOpenDialog({ properties, filters, defaultPath})
-        if (filePath) {
-            filePath = filePath[0].replace(/\\/g, "/")
-            input.value = filePath.replace(/\\/g, "/")
-            setting = typeof(setting)=="function" ? setting() : setting
-            window.userSettings[setting] = filePath
-            saveUserSettings()
-            if (callback) {
-                callback()
-            }
-        }
-    })
 }
 
 const setPromptTheme = () => {
@@ -152,6 +140,7 @@ initMenuSetting(setting_micVolume, "micVolume", "number", ()=>{
 }, parseInt)
 initMenuSetting(setting_doNoiseRemoval, "removeNoise", "checkbox")
 initMenuSetting(setting_noiseRemStrength, "noiseRemStrength", "number", parseFloat)
+initMenuSetting(setting_cudaDevices, "cudaDevices", "number", parseFloat)
 initMenuSetting(setting_datasets_input, "datasetsPath", "text")
 
 
@@ -167,6 +156,39 @@ reset_settings_btn.addEventListener("click", () => {
 })
 
 initFilePickerButton(datasetsPathButton, setting_datasets_input, "datasetsPath", ["openDirectory"], undefined, undefined, ()=>window.refreshDatasets())
+window.initFilePickerButton(trainingAddConfigDatasetPathInputBtn, trainingAddConfigDatasetPathInput, undefined, ["openDirectory"], undefined, window.userSettings.datasetsPath)
+window.initFilePickerButton(trainingAddConfigOutputPathInputBtn, trainingAddConfigOutputPathInput, undefined, ["openDirectory"], undefined, window.path)
+window.initFilePickerButton(modelExport_trainningDirBtn, modelExport_trainningDir, undefined, ["openDirectory"], undefined, window.path)
+window.initFilePickerButton(modelExport_outputDirBtn, modelExport_outputDir, undefined, ["openDirectory"], undefined, window.path)
+window.initFilePickerButton(trainingAddConfigCkptPathInputBtn, trainingAddConfigCkptPathInput, undefined, ["openFile"], [{name: "Pytorch checkpoint", extensions: ["pt"]}], window.path)
+
+trainingAddConfigBatchSizeInput.addEventListener("keyup", () => window.localStorage.setItem("training.batch_size", trainingAddConfigBatchSizeInput.value))
+trainingAddConfigBatchSizeInput.addEventListener("change", () => window.localStorage.setItem("training.batch_size", trainingAddConfigBatchSizeInput.value))
+trainingAddConfigBatchSizeInput.value = window.localStorage.getItem("training.batch_size")
+
+// trainingAddConfigEpochsPerCkptInput.addEventListener("keyup", () => window.localStorage.setItem("training.epochs_per_ckpt", trainingAddConfigEpochsPerCkptInput.value))
+// trainingAddConfigEpochsPerCkptInput.addEventListener("change", () => window.localStorage.setItem("training.epochs_per_ckpt", trainingAddConfigEpochsPerCkptInput.value))
+// trainingAddConfigEpochsPerCkptInput.value = window.localStorage.getItem("training.epochs_per_ckpt")
+
+trainingAddConfigUseAmp.addEventListener("keyup", () => window.localStorage.setItem("training.useFP16", trainingAddConfigUseAmp.checked?"1":"0"))
+trainingAddConfigUseAmp.addEventListener("change", () => window.localStorage.setItem("training.useFP16", trainingAddConfigUseAmp.checked?"1":"0"))
+trainingAddConfigUseAmp.checked = !!parseInt(window.localStorage.getItem("training.useFP16"))
+
+trainingAddConfigWorkersInput.addEventListener("keyup", () => window.localStorage.setItem("training.num_workers", trainingAddConfigWorkersInput.value))
+trainingAddConfigWorkersInput.addEventListener("change", () => window.localStorage.setItem("training.num_workers", trainingAddConfigWorkersInput.value))
+trainingAddConfigWorkersInput.value = window.localStorage.getItem("training.num_workers")
+
+
+
+const currentWindow = require("electron").remote.getCurrentWindow()
+currentWindow.on("move", () => {
+    const bounds = remote.getCurrentWindow().webContents.getOwnerBrowserWindow().getBounds()
+    window.userSettings.customWindowPosition = `${bounds.x},${bounds.y}`
+    saveUserSettings()
+})
+if (window.userSettings.customWindowPosition) {
+    ipcRenderer.send('updatePosition', {details: window.userSettings.customWindowPosition.split(",")})
+}
 
 
 

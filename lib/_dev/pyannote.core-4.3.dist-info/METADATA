@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: pyannote.core
+Version: 4.3
+Summary: Advanced data structures for handling temporal segments with attached labels.
+Home-page: http://pyannote.github.io/
+Author: Hervé Bredin
+Author-email: bredin@limsi.fr
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Topic :: Scientific/Engineering
+License-File: LICENSE
+Requires-Dist: sortedcontainers (>=2.0.4)
+Requires-Dist: numpy (>=1.10.4)
+Requires-Dist: scipy (>=1.1)
+Requires-Dist: simplejson (>=3.8.1)
+Requires-Dist: typing-extensions (>=3.7.4.1)
+Requires-Dist: dataclasses (>=0.7) ; python_version < "3.7"
+Provides-Extra: doc
+Requires-Dist: matplotlib (>=2.0.0) ; extra == 'doc'
+Requires-Dist: pandas (>=0.17.1) ; extra == 'doc'
+Requires-Dist: Sphinx (==2.2.2) ; extra == 'doc'
+Requires-Dist: ipython (==7.10.1) ; extra == 'doc'
+Requires-Dist: sphinx-rtd-theme (==0.4.3) ; extra == 'doc'
+Provides-Extra: notebook
+Requires-Dist: matplotlib (>=2.0.0) ; extra == 'notebook'
+Provides-Extra: testing
+Requires-Dist: pytest ; extra == 'testing'
+Requires-Dist: pandas (>=0.17.1) ; extra == 'testing'
+Requires-Dist: flake8 (==3.7.9) ; extra == 'testing'
+
+UNKNOWN
+

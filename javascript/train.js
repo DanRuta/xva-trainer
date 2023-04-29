@@ -72,7 +72,7 @@ window.initChart = (canvasId, title, colour, {boundsMax=100, startingData=undefi
 
 const startingData = []
 window.loss_chart_object = window.initChart("loss_plot", "Loss", "255,112,67", {startingData: startingData, max: 100000, minY: null, boundsMax: null})
-window.loss_delta_chart_object = window.initChart("loss_delta_plot", "Loss Delta", "255,112,67", {startingData: startingData, max: 100000, boundsMax: null, extradataset: {
+window.loss_delta_chart_object = window.initChart("loss_delta_plot", "Ckpt Loss Delta", "255,112,67", {startingData: startingData, max: 100000, boundsMax: null, extradataset: {
         label: "Target",
         borderColor: `rgb(50,50,250)`,
         data: Array.from(Array(60)).map((_,i)=>0),
@@ -182,12 +182,16 @@ window.updateSystemGraphs = () => {
 
 
             // Disk
-            const diskUsage = getDiskTimePercent(disk_drive_select.selectedOptions[0].innerText)
-            disk_chart_object.data.datasets[0].data.push(parseInt(diskUsage))
-            if (disk_chart_object.data.datasets[0].data.length>60) {
-                disk_chart_object.data.datasets[0].data.splice(0,1)
+            try {
+                const diskUsage = getDiskTimePercent(disk_drive_select.selectedOptions[0].innerText)
+                disk_chart_object.data.datasets[0].data.push(parseInt(diskUsage))
+                if (disk_chart_object.data.datasets[0].data.length>60) {
+                    disk_chart_object.data.datasets[0].data.splice(0,1)
+                }
+                disk_chart_object.data.datasets[0].label = `${disk_chart_object.data.datasets[0].label.split(" ")[0]} (${disk_drive_select.selectedOptions[0].innerText}) ${(diskUsage).toFixed(2)}%`
+            } catch (e) {
+
             }
-            disk_chart_object.data.datasets[0].label = `${disk_chart_object.data.datasets[0].label.split(" ")[0]} (${disk_drive_select.selectedOptions[0].innerText}) ${(diskUsage).toFixed(2)}%`
 
 
             cpu_chart_object.update()
@@ -247,7 +251,7 @@ window.saveTrainingQueueJSON = () => {
         filteredJSON.epochs_per_checkpoint = dataset.epochs_per_checkpoint
         filteredJSON.force_stage = dataset.force_stage
         filteredJSON.status = dataset.status
-        filteredJSON.hifigan_checkpoint = dataset.hifigan_checkpoint
+        // filteredJSON.hifigan_checkpoint = dataset.hifigan_checkpoint
         return filteredJSON
     })
 
@@ -290,6 +294,7 @@ window.refreshTrainingQueueList = () => {
             trainingQueueBtnMoveUp.disabled = false
             trainingQueueBtnMoveDown.disabled = false
             trainingQueueBtnDelete.disabled = false
+            trainingOpenCkpts.disabled = false
 
             if (window.training_state.selectedQueueItem!=di) {
 
@@ -394,9 +399,14 @@ window.updateTrainingGraphs = () => {
         try {
             const graphsJson = JSON.parse(jsonString)
             const stageData = graphsJson.stages[window.training_state.stage_viewed]
+
+            if (window.graphs_only_latest) {
+                stageData.loss = stageData.loss.slice(stageData.loss.length-window.graphs_only_latest, stageData.loss.length)
+                stageData.loss_delta = stageData.loss_delta.slice(stageData.loss_delta.length-window.graphs_only_latest, stageData.loss_delta.length)
+            }
+
             window.updateTrainingGraphValues(stageData.loss, window.loss_chart_object)
             window.updateTrainingGraphValues(stageData.loss_delta, window.loss_delta_chart_object)
-
 
 
             // window.loss_delta_chart_object.data.datasets[1].data = stageData.loss_delta.map((_,i)=>0.04)
@@ -408,11 +418,34 @@ window.updateTrainingGraphs = () => {
 
 
         } catch (e) {
-            // console.log(e)
+            console.log(e)
             // console.log(`${datasetConfig.output_path}/graphs.json`)
         }
     }
 }
+graphs_only_latest_chbx.addEventListener("click", () => {
+    window.graphs_only_latest = graphs_only_latest_chbx.checked ? parseInt(graphs_only_latest_val.value) : undefined
+    localStorage.setItem("graphs_only_latest", window.graphs_only_latest)
+    window.updateTrainingGraphs()
+})
+graphs_only_latest_val.addEventListener("keyup", () => {
+    window.graphs_only_latest = graphs_only_latest_chbx.checked ? parseInt(graphs_only_latest_val.value) : undefined
+    localStorage.setItem("graphs_only_latest", window.graphs_only_latest)
+    window.updateTrainingGraphs()
+})
+graphs_only_latest_val.addEventListener("change", () => {
+    window.graphs_only_latest = graphs_only_latest_chbx.checked ? parseInt(graphs_only_latest_val.value) : undefined
+    localStorage.setItem("graphs_only_latest", window.graphs_only_latest)
+    window.updateTrainingGraphs()
+})
+
+window.graphs_only_latest = localStorage.getItem("graphs_only_latest")
+if (window.graphs_only_latest) {
+    graphs_only_latest_chbx.checked = true
+    graphs_only_latest_val.value = parseInt(window.graphs_only_latest)
+    window.graphs_only_latest = parseInt(window.graphs_only_latest)
+}
+
 
 
 const startTrackingFolder = (dataset_path, output_path) => {
@@ -536,6 +569,11 @@ stage_select.addEventListener("change", () => {
 
 
 
+xvapitch_ckpt_option_other.addEventListener("click", () => trainingAddConfigCkptPathInput.disabled = !xvapitch_ckpt_option_other.checked)
+xvapitch_ckpt_option_other.addEventListener("change", () => trainingAddConfigCkptPathInput.disabled = !xvapitch_ckpt_option_other.checked)
+xvapitch_ckpt_option_base.addEventListener("change", () => trainingAddConfigCkptPathInput.disabled = !xvapitch_ckpt_option_other.checked)
+
+
 window.showConfigMenu = (startingData, di) => {
 
     queueItemConfigModalContainer.style.opacity = 1
@@ -547,12 +585,13 @@ window.showConfigMenu = (startingData, di) => {
         "dataset_path": undefined,
         "output_path": undefined,
         "checkpoint": undefined,
-        "hifigan_checkpoint": undefined,
+        "lang": undefined,
 
-        "use_amp": "true",
-        "num_workers": 4, // TODO, app-level default settings
-        "batch_size": 8, // TODO, app-level default settings
-        "epochs_per_checkpoint": 3, // TODO, app-level default settings
+        // "use_amp": "true",
+        "num_workers": 2, // TODO, app-level default settings
+        // "batch_size": 8, // TODO, app-level default settings
+        // "epochs_per_checkpoint": 3, // TODO, app-level default settings
+        "bkp_every_x": 3,
         "force_stage": undefined,
     }
     if (typeof startingData == "string") {
@@ -561,7 +600,7 @@ window.showConfigMenu = (startingData, di) => {
 
     window.training_state.currentlyConfiguringDatasetI = di
 
-    trainingAddConfigDatasetPathInput.value = ""
+    trainingAddConfigDatasetPathInput.value = window.userSettings.datasetsPath
     trainingAddConfigDatasetPathInput.disabled = !!startingData
 
     trainingAddConfigDoForceStageCkbx.checked = configData.force_stage!=undefined
@@ -573,15 +612,36 @@ window.showConfigMenu = (startingData, di) => {
         trainingAddConfigForceStageNumberSelect.disabled = true
     }
 
-    trainingAddConfigDatasetPathInput.value = configData.dataset_path || ""
+    trainingAddConfigDatasetPathInput.value = configData.dataset_path || window.userSettings.datasetsPath
     trainingAddConfigOutputPathInput.value = configData.output_path || ""
+    xvapitch_ckpt_option_other.checked = configData.checkpoint && configData.checkpoint!="[base]"
+    xvapitch_ckpt_option_base.checked = configData.checkpoint=="[base]" || !configData.checkpoint
     trainingAddConfigCkptPathInput.value = configData.checkpoint || ""
-    trainingAddConfigHiFiCkptPathInput.value = configData.hifigan_checkpoint || ""
 
-    trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
-    trainingAddConfigBatchSizeInput.value = parseInt(configData.batch_size)
-    trainingAddConfigEpochsPerCkptInput.value = parseInt(configData.epochs_per_checkpoint)
-    trainingAddConfigUseAmp.checked = configData.use_amp ? configData.use_amp=="true" : true
+    if (configData.num_workers !== undefined) {
+        trainingAddConfigWorkersInput.value = parseInt(configData.num_workers)
+    } else {
+        trainingAddConfigWorkersInput.value = window.localStorage.getItem("training.num_workers")||"2"
+    }
+
+    if (configData.batch_size !== undefined) {
+        trainingAddConfigBatchSizeInput.value = parseInt(configData.batch_size)
+    }
+
+    if (configData.bkp_every_x !== undefined) {
+        trainingAddConfigBackupEveryXInput.value = parseInt(configData.bkp_every_x)
+    }
+
+    if (configData.lang !== undefined) {
+        trainingConfigLangDropdown.value = configData.lang
+    }
+
+    trainingAddConfigUseAmp.checked = !!parseInt(window.localStorage.getItem("training.useFP16"))
+    if (configData.use_amp !== undefined) {
+        trainingAddConfigUseAmp.checked = configData.use_amp ? configData.use_amp=="true" : true
+    } else {
+        trainingAddConfigWorkersInput.value = window.localStorage.getItem("training.num_workers")||"3"
+    }
 
     queueItemConfigModalContainer.style.display = "flex"
 }
@@ -612,21 +672,35 @@ acceptConfig.addEventListener("click", () => {
     if (!trainingAddConfigOutputPathInput.value.trim().length) {
         return window.errorModal("You need to specify where to output the intermediate data/models for your dataset.", queueItemConfigModalContainer)
     }
-    if (!trainingAddConfigCkptPathInput.value.trim().length) {
-        return window.errorModal("You need to specify which FastPitch checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
+    if (!xvapitch_ckpt_option_other.checked && !xvapitch_ckpt_option_base.checked) {
+        return window.errorModal("Please select the xVAPitch checkpoint to fine-tune from", queueItemConfigModalContainer)
     }
-    if (!trainingAddConfigHiFiCkptPathInput.value.trim().length) {
-        return window.errorModal("You need to specify which HiFi-GAN checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
+    // if (!hifigan_ckpt_option_male.checked && !hifigan_ckpt_option_female.checked ) {
+    //     return window.errorModal("Please select the HiFi-GAN checkpoint to fine-tune from", queueItemConfigModalContainer)
+    // }
+    if (xvapitch_ckpt_option_other.checked && !trainingAddConfigCkptPathInput.value.trim().length) {
+        return window.errorModal("You need to specify which xVAPitch checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
     }
+    // if (!trainingAddConfigHiFiCkptPathInput.value.trim().length) {
+    //     return window.errorModal("You need to specify which HiFi-GAN checkpoint to resume training from (fine-tuning only is supported, right now)", queueItemConfigModalContainer)
+    // }
     if (!trainingAddConfigBatchSizeInput.value.trim().length) {
         return window.errorModal("Please enter the base batch size you'd like to use", queueItemConfigModalContainer)
     }
-    if (!trainingAddConfigEpochsPerCkptInput.value.trim().length) {
-        return window.errorModal("Please enter how many epochs to train for, between outputting checkpoints", queueItemConfigModalContainer)
+    if (!trainingAddConfigBackupEveryXInput.value.trim().length) {
+        return window.errorModal("Please enter how often you'd like to output/backup models, respective to checkpoints (Default: 2)", queueItemConfigModalContainer)
     }
+    // if (!trainingAddConfigEpochsPerCkptInput.value.trim().length) {
+    //     return window.errorModal("Please enter how many epochs to train for, between outputting checkpoints", queueItemConfigModalContainer)
+    // }
 
     const finishUp = () => {
         queueItemConfigModalContainer.style.display = "none"
+
+        let xvapitch_checkpoint = "[base]"
+        if (xvapitch_ckpt_option_other.checked) {
+            xvapitch_checkpoint = trainingAddConfigCkptPathInput.replaceAll(/\\/, "/")
+        }
 
         // TODO
         if (configAnExistingItem) {
@@ -636,13 +710,15 @@ acceptConfig.addEventListener("click", () => {
             const configData = {
                 "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path.replaceAll(/\\/, "/"),
                 "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
-                "checkpoint": fp_ckpt.replaceAll(/\\/, "/"),
-                "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
+                "checkpoint": xvapitch_checkpoint,
+                // "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
 
                 "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
                 "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
-                "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
+                "bkp_every_x": parseInt(trainingAddConfigBackupEveryXInput.value),
+                "lang": trainingConfigLangDropdown.value,
+                // "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
                 "force_stage": trainingAddConfigDoForceStageCkbx.checked ? trainingAddConfigForceStageNumberSelect.value : undefined
             }
 
@@ -657,13 +733,15 @@ acceptConfig.addEventListener("click", () => {
 
                 "dataset_path": trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/"),
                 "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
-                "checkpoint": fp_ckpt.replaceAll(/\\/, "/"),
-                "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
+                "checkpoint": xvapitch_checkpoint,
+                // "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
 
                 "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
                 "batch_size": parseInt(trainingAddConfigBatchSizeInput.value),
-                "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
+                "bkp_every_x": parseInt(trainingAddConfigBackupEveryXInput.value),
+                "lang": trainingConfigLangDropdown.value,
+                // "epochs_per_checkpoint": parseInt(trainingAddConfigEpochsPerCkptInput.value),
                 "force_stage": trainingAddConfigDoForceStageCkbx.checked ? trainingAddConfigForceStageNumberSelect.value : undefined
             }
 
@@ -674,35 +752,20 @@ acceptConfig.addEventListener("click", () => {
         window.refreshTrainingQueueList()
     }
 
-    const fp_ckpt = trainingAddConfigCkptPathInput.value.trim().replaceAll(/\\/, "/")
-    const hg_ckpt = trainingAddConfigHiFiCkptPathInput.value.trim().replaceAll(/\\/, "/")
+    let xvap_ckpt = trainingAddConfigCkptPathInput.value.trim().replaceAll(/\\/, "/")
+    if (xvapitch_ckpt_option_base.checked) {
+        xvap_ckpt = "[base]"
+    }
 
-    if (fp_ckpt!="[male]" && fp_ckpt!="[female]" && !fs.existsSync(fp_ckpt)) {
-        window.confirmModal(`A FastPitch1.1 checkpoint file was not found at the following file/folder location. Continue regardless?<br>${fp_ckpt}`).then(resp => {
+    if (xvap_ckpt!="[base]" && !fs.existsSync(xvap_ckpt)) {
+        window.confirmModal(`An xVAPitch checkpoint file was not found at the following file/folder location. Continue regardless?<br>${xvap_ckpt}`).then(resp => {
             if (resp) {
-                setTimeout(() => {
-                    if (hg_ckpt!="[male]" && hg_ckpt!="[female]" && !fs.existsSync(hg_ckpt)) {
-                        window.confirmModal(`A HiFi-GAN checkpoint file was not found at the following file/folder location. Continue regardless?<br>${hg_ckpt}`).then(resp2 => {
-                            if (resp2) {
-                                finishUp()
-                            }
-                        })
-                    } else {
-                        finishUp()
-                    }
-                }, 500)
+                finishUp()
             }
         })
-    } else {
-        if (hg_ckpt!="[male]" && hg_ckpt!="[female]" && !fs.existsSync(hg_ckpt)) {
-            window.confirmModal(`A HiFi-GAN checkpoint file was not found at the following file/folder location. Continue regardless?<br>${hg_ckpt}`).then(resp2 => {
-                if (resp2) {
-                    finishUp()
-                }
-            })
-        } else {
-            finishUp()
-        }
+    }
+    else {
+        finishUp()
     }
 })
 
@@ -723,6 +786,18 @@ trainingQueueBtnClear.addEventListener("click", () => {
     })
 })
 
+trainingOpenCkpts.addEventListener("click", () => {
+    const output_path = window.training_state.datasetsQueue[window.training_state.selectedQueueItem].output_path
+    if (fs.existsSync(output_path)) {
+        const subItems = fs.readdirSync(output_path)
+        if (subItems.length) {
+            shell.showItemInFolder(`${output_path}/${subItems[0]}`)
+        } else {
+            shell.showItemInFolder(output_path)
+        }
+    }
+})
+
 trainingStartBtn.addEventListener("click", () => {
     if (window.userSettings.installation != "gpu") {
         window.errorModal("The CPU-only installation is enabled. Switch to the GPU installation if you can, or run training on a CUDA-compatible machine if not. It is not practical to run the training on the CPU, it would take forever.")
@@ -732,6 +807,7 @@ trainingStartBtn.addEventListener("click", () => {
     window.ws.send(JSON.stringify({
         model: "",
         task: "startTraining",
+        gpus: setting_cudaDevices.value.replaceAll(" ", ""),
         data: window.training_state.datasetsQueue[window.training_state.trainingQueueItem]
     }))
     trainingStartBtn.style.display = "none"
@@ -772,9 +848,24 @@ btn_exportmodel.addEventListener("click", () => {
         return window.errorModal("Please first add the dataset metadata")
     }
 
+    // Pre-fill with the checkpoints dir, if the dataset is already in the training queue
+    const queueItem = window.training_state.datasetsQueue.filter(item => item.dataset_path.includes(window.appState.currentDataset))
+    if (queueItem.length) {
+        modelExport_trainningDir.value = queueItem[0].output_path+"/"+queueItem[0].dataset_path.split("/").reverse()[0]
+    }
+    const cachedOutPath = localStorage.getItem("modelExport_outputDir")
+    if (cachedOutPath) {
+        modelExport_outputDir.value = cachedOutPath
+    }
+
     window._exportModelModalButton.click()
 })
+modelExport_outputDir.addEventListener("keyup", () => {
+    localStorage.setItem("modelExport_outputDir", modelExport_outputDir.value.replaceAll(/\\/g, "/"))
+
+})
 exportSubmitButton.addEventListener("click", () => {
+
     if (!modelExport_trainningDir.value) {
         return window.errorModal("Please enter the output folder used during training, where all the checkpoints and intermediate files are")
     }
@@ -787,56 +878,98 @@ exportSubmitButton.addEventListener("click", () => {
     if (!fs.existsSync(modelExport_outputDir.value)) {
         return window.errorModal("The export path was not found. Make sure you specify it from the drive letter. Eg C:/...")
     }
-    if (!fs.existsSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`)) {
-        return window.errorModal("A FastPitch1.1 model file was not found in the given checkpoints directory. Have you trained it yet?")
+    let ckptFileFolder = `${modelExport_trainningDir.value.trim()}`
+    if (!fs.existsSync(`${ckptFileFolder}/${window.appState.currentDataset}.pt`)) {
+        if (fs.existsSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}/${window.appState.currentDataset}.pt`)) {
+            ckptFileFolder = `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}`
+        } else {
+            return window.errorModal(`An xVAPitch model file (${window.appState.currentDataset}.pt) was not found in the given checkpoints directory. Have you trained it yet?`)
+        }
     }
 
     const doTheRest = () => {
         window.spinnerModal("Exporting...")
 
         // Copy over the resemblyzer embedding data, and export the .json metadata
-        const trainingJSON = JSON.parse(fs.readFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.json`, "utf8"))
+        const trainingJSON = JSON.parse(fs.readFileSync(`${ckptFileFolder}/${window.appState.currentDataset}.json`, "utf8"))
         const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
+        const voiceId = metadataJSON.games[0].voiceId
+
         metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
-        metadataJSON.games[0].voiceId = window.appState.currentDataset
-        fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.json`, JSON.stringify(metadataJSON, null, 4))
+        metadataJSON.games[0].voiceId = voiceId//window.appState.currentDataset
+        fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${voiceId}.json`, JSON.stringify(metadataJSON, null, 4))
+
+
 
         // Copy over the model files
-        fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.pt`)
-        fs.copyFileSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`, `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)
+        fs.copyFileSync(`${ckptFileFolder}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${voiceId}.pt`)
 
         doFetch(`http://localhost:${window.SERVER_PORT}/exportWav`, {
             method: "Post",
             body: JSON.stringify({
-                fp_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.pt`,
-                hg_ckpt: `${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`,
-                out_path: `${modelExport_outputDir.value.trim()}/${window.appState.currentDataset}.wav`
+                xvap_ckpt: `${ckptFileFolder}/${window.appState.currentDataset}.pt`,
+                emb: trainingJSON.games[0].base_speaker_emb,
+                out_path: `${modelExport_outputDir.value.trim()}/${voiceId}.wav`
             })
         }).then(r=>r.text()).then((res) => {
             console.log("Exporting res:", res)
 
-
             if (res.length) {
                 window.appLogger.log(res)
                 window.errorModal(res)
-                window.createModal("error", `There was an issue with exporting the preview audio file:<br><br>${res}`).then(() => {
+                window.createModal("error", `There was an issue with exporting the preview audio file:<br><br>${res}`).then(resp => {
+                    if (resp) {
+                        shell.showItemInFolder(`${modelExport_outputDir.value.trim()}/${voiceId}.wav`)
+                    }
                     exportModelContainer.click()
                 })
             } else {
-                window.createModal("error", "Model exported successfully").then(() => {
+                window.confirmModal("Model exported successfully. Open output directory?").then(() => {
                     exportModelContainer.click()
                 })
             }
         })
     }
 
-    if (!fs.existsSync(`${modelExport_trainningDir.value.trim()}/${window.appState.currentDataset}.hg.pt`)) {
-        return window.confirmModal("A HiFi-GAN model file was not found in the given checkpoints directory. Have you trained it yet?<br>(You can export anyway, without the audio preview or HiFi-GAN vocoder, but this is not yet ready for publishing, and the quality will be lower)").then(resp => {
-            if (resp) {
-                doTheRest()
-            }
-        })
-    } else {
-        doTheRest()
-    }
+    doTheRest()
 })
+
+// Populate the languages dropdown
+window.supportedLanguages = {
+    // "am": "Amharic",
+    "ar": "Arabic",
+    "da": "Danish",
+    "de": "German",
+    "el": "Greek",
+    "en": "English",
+    "es": "Spanish",
+    "fi": "Finnish",
+    "fr": "French",
+    "ha": "Hausa",
+    "hi": "Hindi",
+    "hu": "Hungarian",
+    "it": "Italian",
+    "jp": "Japanese",
+    "ko": "Korean",
+    "la": "Latin",
+    "nl": "Dutch",
+    "pl": "Polish",
+    "pt": "Portuguese",
+    "ro": "Romanian",
+    "ru": "Russian",
+    "sv": "Swedish",
+    "sw": "Swahili",
+    // "th": "Thai",
+    "tr": "Turkish",
+    "uk": "Ukrainian",
+    "vi": "Vietnamese",
+    "wo": "Wolof",
+    "yo": "Yoruba",
+    "zh": "Chinese"
+}
+Object.keys(window.supportedLanguages).sort((a,b)=>window.supportedLanguages[a]<window.supportedLanguages[b]?-1:1).forEach(key => {
+    const opt = createElem("option", window.supportedLanguages[key])
+    opt.value = key
+    trainingConfigLangDropdown.appendChild(opt)
+})
+trainingConfigLangDropdown.value = "en"

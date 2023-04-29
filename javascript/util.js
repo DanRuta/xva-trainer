@@ -53,10 +53,23 @@ window.createModal = (type, message, keepModals=[]) => {
                     resolve(false)
                 })
             })
-        } else if (type=="error") {
+        } else if (type=="error" || type=="error_nocopy") {
             const closeButton = createElem("button")
             closeButton.innerHTML = "Close"
-            modal.appendChild(createElem("div", closeButton))
+            const buttonsContainer = createElem("div")
+            buttonsContainer.appendChild(closeButton)
+
+            if (type=="error") {
+                const clipboardButton = createElem("button")
+                clipboardButton.innerHTML = "Copy to clipboard"
+                clipboardButton.addEventListener("click", () => {
+                    clipboardButton.innerHTML = "Copied"
+                    navigator.clipboard.writeText(displayMessage.replaceAll("<br>", "\n"))
+                })
+                buttonsContainer.appendChild(clipboardButton)
+            }
+
+            modal.appendChild(buttonsContainer)
 
             closeButton.addEventListener("click", () => {
                 closeModal(modalContainer, keepModals).then(() => {
@@ -89,7 +102,7 @@ window.createModal = (type, message, keepModals=[]) => {
 }
 window.closeModal = (container=undefined, notThisOne=undefined) => {
     return new Promise(resolve => {
-        const allContainers = [settingsContainer, container, modalContainer, toolsContainer, datasetMetaContainer, preprocessAudioContainer, preprocessTextContainer, cleanAudioTextContainer, trainContainer, queueItemConfigModalContainer]
+        const allContainers = [settingsContainer, container, modalContainer, toolsContainer, datasetMetaContainer, preprocessTextContainer, cleanAudioTextContainer, trainContainer, queueItemConfigModalContainer]
         const containers = container==undefined ? allContainers : (Array.isArray(container) ? container.filter(c=>c!=undefined) : [container])
 
         notThisOne = Array.isArray(notThisOne) ? notThisOne : (notThisOne==undefined ? [] : [notThisOne])
@@ -136,6 +149,9 @@ window.addEventListener("resize", e => {
 window.addEventListener("keyup", event => {
     if (!event.ctrlKey) {
         window.ctrlKeyIsPressed = false
+    }
+    if (!event.shiftKey) {
+        window.shiftKeyIsPressed = false
     }
 })
 
@@ -420,6 +436,25 @@ window.formatSecondsToTimeString = totalSeconds => {
     }
 
     return timeDisplay.join(" ")
+}
+
+window.initFilePickerButton = (button, input, setting, properties, filters=undefined, defaultPath=undefined, callback=undefined) => {
+    button.addEventListener("click", () => {
+        const defaultPath = input.value.replace(/\//g, "\\")
+        let filePath = electron.remote.dialog.showOpenDialog({ properties, filters, defaultPath})
+        if (filePath) {
+            filePath = filePath[0].replace(/\\/g, "/")
+            input.value = filePath.replace(/\\/g, "/")
+            if (setting) {
+                setting = typeof(setting)=="function" ? setting() : setting
+                window.userSettings[setting] = filePath
+                saveUserSettings()
+            }
+            if (callback) {
+                callback()
+            }
+        }
+    })
 }
 
 
