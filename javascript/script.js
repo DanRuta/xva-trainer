@@ -1117,34 +1117,6 @@ const outputRecording = (outPath, callback) => {
         window.recordingState.recorder.clear()
     })
 }
-// function downsampleBuffer(buffer, rate) {
-//     if (rate == window.recordingState.audio_context.sampleRate) {
-//         return buffer;
-//     }
-//     if (rate > window.recordingState.audio_context.sampleRate) {
-//         throw "downsampling rate show be smaller than original sample rate";
-//     }
-//     var sampleRateRatio = window.recordingState.audio_context.sampleRate / rate;
-//     var newLength = Math.round(buffer.length / sampleRateRatio);
-//     var result = new Float32Array(newLength);
-//     var offsetResult = 0;
-//     var offsetBuffer = 0;
-//     while (offsetResult < result.length) {
-//         var nextOffsetBuffer = Math.round((offsetResult + 1) * sampleRateRatio);
-//          // Use average value of skipped samples
-//         var accum = 0, count = 0;
-//         for (var i = offsetBuffer; i < nextOffsetBuffer && i < buffer.length; i++) {
-//             accum += buffer[i];
-//             count++;
-//         }
-//         result[offsetResult] = accum / count;
-//         // Or you can simply get rid of the skipped samples:
-//         // result[offsetResult] = buffer[nextOffsetBuffer];
-//         offsetResult++;
-//         offsetBuffer = nextOffsetBuffer;
-//     }
-//     return result;
-// }
 
 // =========
 

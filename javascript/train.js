@@ -636,14 +636,6 @@ window.showConfigMenu = (startingData, di) => {
         trainingConfigLangDropdown.value = configData.lang
     }
 
-    // else {
-    //     trainingAddConfigEpochsPerCkptInput.value = window.localStorage.getItem("training.epochs_per_ckpt")||"3"
-    // }
-    // if (configData.epochs_per_checkpoint !== undefined) {
-    //     trainingAddConfigEpochsPerCkptInput.value = parseInt(configData.epochs_per_checkpoint)
-    // } else {
-    //     trainingAddConfigUseAmp.checked = !!parseInt(window.localStorage.getItem("training.useFP16"))
-    // }
     trainingAddConfigUseAmp.checked = !!parseInt(window.localStorage.getItem("training.useFP16"))
     if (configData.use_amp !== undefined) {
         trainingAddConfigUseAmp.checked = configData.use_amp ? configData.use_amp=="true" : true
@@ -764,42 +756,15 @@ acceptConfig.addEventListener("click", () => {
     if (xvapitch_ckpt_option_base.checked) {
         xvap_ckpt = "[base]"
     }
-    // if (xvap_ckpt_option_female.checked) {
-    //     xvap_ckpt = "[female]"
-    // } else if (xvap_ckpt_option_male.checked) {
-    //     xvap_ckpt = "[male]"
-    // }
-    // const hg_ckpt = trainingAddConfigHiFiCkptPathInput.value.trim().replaceAll(/\\/, "/")
-    // const hg_ckpt = hifigan_ckpt_option_male.checked ? "[male]" : "[female]"
 
     if (xvap_ckpt!="[base]" && !fs.existsSync(xvap_ckpt)) {
         window.confirmModal(`An xVAPitch checkpoint file was not found at the following file/folder location. Continue regardless?<br>${xvap_ckpt}`).then(resp => {
             if (resp) {
-                // setTimeout(() => {
-                //     if (hg_ckpt!="[male]" && hg_ckpt!="[female]" && !fs.existsSync(hg_ckpt)) {
-                //         window.confirmModal(`A HiFi-GAN checkpoint file was not found at the following file/folder location. Continue regardless?<br>${hg_ckpt}`).then(resp2 => {
-                //             if (resp2) {
-                //                 finishUp()
-                //             }
-                //         })
-                //     } else {
-                //         finishUp()
-                //     }
-                // }, 500)
                 finishUp()
             }
         })
     }
     else {
-    //     if (hg_ckpt!="[male]" && hg_ckpt!="[female]" && !fs.existsSync(hg_ckpt)) {
-    //         window.confirmModal(`A HiFi-GAN checkpoint file was not found at the following file/folder location. Continue regardless?<br>${hg_ckpt}`).then(resp2 => {
-    //             if (resp2) {
-    //                 finishUp()
-    //             }
-    //         })
-    //     } else {
-    //         finishUp()
-    //     }
         finishUp()
     }
 })
@@ -938,13 +903,11 @@ exportSubmitButton.addEventListener("click", () => {
 
         // Copy over the model files
         fs.copyFileSync(`${ckptFileFolder}/${window.appState.currentDataset}.pt`, `${modelExport_outputDir.value.trim()}/${voiceId}.pt`)
-        // fs.copyFileSync(`${ckptFileFolder}/${window.appState.currentDataset}.hg.pt`, `${modelExport_outputDir.value.trim()}/${voiceId}.hg.pt`)
 
         doFetch(`http://localhost:${window.SERVER_PORT}/exportWav`, {
             method: "Post",
             body: JSON.stringify({
                 xvap_ckpt: `${ckptFileFolder}/${window.appState.currentDataset}.pt`,
-                // hg_ckpt: `${ckptFileFolder}/${window.appState.currentDataset}.hg.pt`,
                 emb: trainingJSON.games[0].base_speaker_emb,
                 out_path: `${modelExport_outputDir.value.trim()}/${voiceId}.wav`
             })
@@ -968,15 +931,6 @@ exportSubmitButton.addEventListener("click", () => {
         })
     }
 
-    // if (!fs.existsSync(`${ckptFileFolder}/${window.appState.currentDataset}.hg.pt`)) {
-    //     return window.confirmModal("A HiFi-GAN model file was not found in the given checkpoints directory. Have you trained it yet?<br>(You can export anyway, without the audio preview or HiFi-GAN vocoder, but this is not yet ready for publishing, and the quality will be lower)").then(resp => {
-    //         if (resp) {
-    //             doTheRest()
-    //         }
-    //     })
-    // } else {
-    //     doTheRest()
-    // }
     doTheRest()
 })
 

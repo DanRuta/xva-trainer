@@ -77,6 +77,7 @@ pb-bss-eval==0.0.2
 pbr==5.8.0
 pefile==2021.9.3
 pescador==2.1.0
+pesq==0.0.3
 phonemizer==2.1
 Pillow==8.4.0
 pooch==1.5.2
@@ -135,9 +136,12 @@ tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.0
 threadpoolctl==3.0.0
 tokenizers==0.10.3
+torch==1.11.0
 torch-optimizer==0.1.0
 torch-stoi==0.1.2
+torchaudio==0.11.0
 torchmetrics==0.6.2
+torchvision==0.12.0
 tqdm==4.62.3
 transformers==4.15.0
 typer==0.4.0
