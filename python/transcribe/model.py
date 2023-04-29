@@ -59,6 +59,8 @@ class Wav2Vec2PlusPuncTranscribe(object):
         self.isReady = True
         self.lazy_loaded = False
 
+        self.ffmpeg_path = f'{"./resources/app" if PROD else "."}/python/ffmpeg.exe'
+
         self.model = None
 
 
@@ -117,7 +119,7 @@ class Wav2Vec2PlusPuncTranscribe(object):
             # inPathParent = "/".join(inPath.split("/")[:-2])
             inPathParent = "/".join(self.outputDirectory.split("/")[:-2])
             # potential_metadata_path = inPathParent+"/metadata.csv"
-            potential_metadata_path = f'{self.outputDirectory or self.inPathParent}/metadata.csv'
+            potential_metadata_path = f'{self.outputDirectory or inPathParent}/metadata.csv'
             self.logger.info(f"[WHISPER] potential_metadata_path: {potential_metadata_path}")
             if os.path.exists(potential_metadata_path):
                 with open(potential_metadata_path, encoding="utf8") as f:
@@ -232,7 +234,8 @@ class Wav2Vec2PlusPuncTranscribe(object):
                 continue
 
             # load audio and pad/trim it to fit 30 seconds
-            audio = whisper.load_audio(file)
+
+            audio = whisper.load_audio(file, ffmpeg_path=self.ffmpeg_path)
             audio = whisper.pad_or_trim(audio)
 
             # make log-Mel spectrogram and move to the same device as the model
