@@ -831,7 +831,7 @@ class xVAPitchTrainer(object):
                                 raise
                     else:
                         self.target_patience_count = 0
-                    round(loss_delta*100, 3)
+                    # round(loss_delta*100, 3)
 
 
                 else:
@@ -960,7 +960,7 @@ class xVAPitchTrainer(object):
 
         if avg_loss is not None:
             print_line += f' | Loss: {(int(avg_loss*100000)/100000):.5f}'
-        if loss_delta is not None and loss_delta>0:
+        if loss_delta is not None:# and loss_delta>0:
             # print_line += f' | Delta: {(int(loss_delta*100000)/100000):.5f}'
             print_line += f' | Delta: {round(loss_delta*100, 3)}'
         if self.model.training_stage<=2 and loss_delta is not None and loss_delta>0:
