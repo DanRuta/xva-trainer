@@ -174,7 +174,7 @@ class TTSDataset(Dataset):
         # print("Loading text processors...")
         self.tp = {}
         for lang_code in lang_names.keys():
-            base_dir = "/".join(os.path.abspath(__file__).split("\\")[:-1])+f'/text'
+            base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'text')
             self.tp[lang_code] = get_text_preprocessor(lang_code, base_dir, override_useAnyG2P=False)
 
 
@@ -983,7 +983,7 @@ def pre_cache_g2p (dataset_roots, lang=None):
 
     # tp = get_text_preprocessor(lang_code, base_dir)
     tp = {}
-    base_dir = "/".join(os.path.abspath(__file__).split("\\")[:-1])+f'/text'
+    base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'text')
     for lang_code in languages:
         tp[lang_code] = get_text_preprocessor(lang_code, base_dir, override_useAnyG2P=True)
 

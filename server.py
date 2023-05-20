@@ -6,6 +6,11 @@ import multiprocessing
 import wave
 import contextlib
 import numpy as np
+import platform
+
+if platform.system() == 'Linux':
+    import pyximport
+    pyximport.install(setup_args={"script_args" : ["--verbose"]})
 
 if __name__ == '__main__':
     multiprocessing.freeze_support()
