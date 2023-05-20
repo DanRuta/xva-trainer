@@ -161,7 +161,7 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             torch.cuda.empty_cache()
             trainer.print_and_log(f'Out of VRAM', save_to_file=trainer.dataset_output)
 
-            DO_LOWER_BATCHSIZE_REATTEMPT = False # This doesn't seem to work. I guess the cache isn't being cleared properly
+            DO_LOWER_BATCHSIZE_REATTEMPT = False # This doesn't seem to work. I guess the cache isn't being cleared properly, or takes too long
             if DO_LOWER_BATCHSIZE_REATTEMPT:
                 if running:
                     trainer.print_and_log(f'============= Reducing base batch size from {trainer.batch_size} to {trainer.batch_size-3}', save_to_file=trainer.dataset_output)
@@ -187,7 +187,6 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             trainer.print_and_log(f'Finished training stage {stageFinished}...\n', save_to_file=trainer.dataset_output)
             trainer.JUST_FINISHED_STAGE = False
             trainer.is_init = False
-            del trainer
             try:
                 del models_manager.models_bank["xvapitch"]
             except:
@@ -197,6 +196,8 @@ async def handleTrainer (models_manager, data, websocket, gpus, resume=False):
             #     models_manager.models_bank["xvapitch"] = "move to hifi"
             #     return "move to hifi"
             # else:
+            await trainer.websocket.send(f'Finished training\n')
+            del trainer
             return #await handleTrainer(models_manager, data, websocket, gpus)
         else:
             try:
@@ -598,6 +599,7 @@ class xVAPitchTrainer(object):
 
         if not self.is_init:
             await self.init()
+
 
 
         # Sample the next data point, either from the finetune dataset, or the priors dataset

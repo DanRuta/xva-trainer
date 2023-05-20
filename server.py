@@ -171,7 +171,8 @@ if __name__ == '__main__':
                                 #     if "hifigan" in models_manager.models_bank.keys():
                                 #         models_manager.models_bank["hifigan"].pause()
                                 # else:
-                                models_manager.models_bank["xvapitch"].pause()
+                                if "xvapitch" in models_manager.models_bank.keys():
+                                    models_manager.models_bank["xvapitch"].pause()
                             if task=="stop":
                                 if "xvapitch" in models_manager.models_bank.keys():
                                     del models_manager.models_bank["xvapitch"]

@@ -100,7 +100,7 @@ const initWebSocket = () => {
             window.errorModal(errorMessage).then(() => {
                 trainingStopBtn.click()
             })
-        } else if (event.data.includes("Finished training HiFi-GAN")) {
+        } else if (event.data.includes("Finished training")) {
 
             window.training_state.datasetsQueue[window.training_state.trainingQueueItem].status = `Finished`
             const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))
