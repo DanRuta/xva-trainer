@@ -181,6 +181,8 @@ class TextPreprocessor():
         return pron_dict
 
     def read_json_dict (self, dict_path, pron_dict):
+        if not os.path.exists(dict_path):
+            return pron_dict
         with codecs.open(dict_path, encoding="utf-8") as f:
             json_data = json.load(f)
 
@@ -1496,8 +1498,6 @@ class ChineseTextPreprocessor(TextPreprocessor):
                         pass
                         # if phone not in ["5"]:
                         #     self.TEMP_unhandled.append(f'{orig_text}: {phone}')
-                            # with open(f'F:/Speech/xVA-Synth/python/xvapitch/text/DEBUG.txt', "w+") as f:
-                            #     f.write("\n".join(self.TEMP_unhandled))
 
                 # Add a space character between each symbol
                 # if pi is not len(phonemes)-1:
