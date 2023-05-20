@@ -895,9 +895,15 @@ exportSubmitButton.addEventListener("click", () => {
         const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
         const voiceId = metadataJSON.games[0].voiceId
 
-        metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
-        metadataJSON.games[0].voiceId = voiceId//window.appState.currentDataset
-        fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${voiceId}.json`, JSON.stringify(metadataJSON, null, 4))
+        trainingJSON.author = metadataJSON.author
+        trainingJSON.license = metadataJSON.license
+        trainingJSON.lang = metadataJSON.lang
+        trainingJSON.games[0].gameId = metadataJSON.games[0].gameId
+        trainingJSON.games[0].voiceId = metadataJSON.games[0].voiceId
+        trainingJSON.games[0].gender = metadataJSON.games[0].gender
+        trainingJSON.games[0].voiceName = metadataJSON.games[0].voiceName
+
+        fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${voiceId}.json`, JSON.stringify(trainingJSON, null, 4))
 
 
 
