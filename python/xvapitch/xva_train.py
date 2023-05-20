@@ -502,12 +502,12 @@ class xVAPitchTrainer(object):
         # Will refine with more voices trained and evaluated
         NATE_DELTA = 0.0002
         NATE_NUMFILES = 8000
-        mult = NATE_NUMFILES/num_data_lines
+        mult = NATE_NUMFILES/(num_data_lines*1.25)
         if (mult-1) < 1:
             target_delta = NATE_DELTA * math.sqrt(mult)/1.5
         else:
             target_delta = NATE_DELTA * math.sqrt((mult-1))/1.5
-        target_delta *= 0.5
+        target_delta *= 0.3
         target_deltas.append(target_delta)
 
         return target_deltas
