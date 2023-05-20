@@ -588,7 +588,7 @@ btn_deleteall.addEventListener("click", () => {
 })
 btn_autotranscribe.addEventListener("click", () => {
     if (window.appState.currentDataset!=undefined) {
-        confirmModal(`Are you sure you'd like to kick off the auto-transcription process?<br>This will run for all 22050Hz audio with no text transcript.`).then(confirmation => {
+        confirmModal(`Are you sure you'd like to kick off the auto-transcription process?<br>This will run for all 22050Hz audio with no text transcript.<br><br>Configure the transcription model and language in the tools setting first.`).then(confirmation => {
             if (confirmation) {
                 setTimeout(() => {
                     createModal("spinner", "Auto-transcribing...<br>This may take a few minutes if there are hundreds of lines.<br>Audio files must be mono 22050Hz<br><br>This window will close if there is an error.")
