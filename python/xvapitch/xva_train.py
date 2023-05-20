@@ -1359,6 +1359,12 @@ class xVAPitchTrainer(object):
 
 
     async def preprocess_audio(self):
+        if os.path.exists(self.dataset_input+"/wavs_postprocessed"):
+            post_processed_files = os.listdir(self.dataset_input+"/wavs_postprocessed")
+            orig_files = os.listdir(self.dataset_input+"/wavs")
+            if len(post_processed_files) == len(orig_files):
+                return
+
         self.print_and_log(f'Pre-processing audio ', save_to_file=self.dataset_output)
 
         if os.path.exists(self.dataset_input+"/wavs_postprocessed"):
