@@ -440,6 +440,7 @@ class xVAPitchTrainer(object):
         self.gam_num_frames = 0
         self.finetune_counter = 0
         self.training_iters = 0
+        self.do_samples_output = False
         self.start_new_epoch()
 
         if self.websocket:
@@ -838,7 +839,8 @@ class xVAPitchTrainer(object):
 
 
                 output_path = f'{self.dataset_output}/xVAPitch_{self.total_steps_done}.pt'
-                self.output_samples(f'{self.dataset_output}/viz/{self.total_steps_done}')
+                self.do_samples_output = True # Don't do here, as there's still stuff loaded in VRAM at this point, and adding the visualizations on top might OOM unnecessarily
+
                 if not has_saved:
                     self.save_checkpoint(frames_s=frames_per_second, avg_loss=avg_loss, loss_delta=loss_delta, fpath=output_path, ckpt_time=ckpt_time, doPrintLog=True)
 
@@ -883,6 +885,9 @@ class xVAPitchTrainer(object):
 
         del batch, loss_dict
 
+        if self.do_samples_output:
+            self.do_samples_output = False
+            self.output_samples(f'{self.dataset_output}/viz/{self.total_steps_done}')
 
         if self.running:
             await self.iteration()
@@ -912,6 +917,7 @@ class xVAPitchTrainer(object):
 
 
     def save_checkpoint (self, frames_s=0, avg_loss=None, loss_delta=None, fpath="out.pt", ckpt_time=None, doPrintLog=True):
+        torch.cuda.empty_cache()
 
         # Clear out the oldest checkpoint(s), to only keep a rolling window of the latest few checkpoints
         old_ckpts = sorted([fname for fname in os.listdir(self.dataset_output) if fname.startswith("xVAPitch_") and " - " not in fname], key=sort_xvap)
@@ -1326,8 +1332,7 @@ class xVAPitchTrainer(object):
 
         embeddings = []
         embeddings.append(torch.tensor(self.ft_dataset_emb).squeeze().to(self.device).float()) # Add the main voice embedding style
-        # Add a few more so there's 5 in total
-        for emb in self.other_centroids[:4]:
+        for emb in self.other_centroids:
             embeddings.append(torch.tensor(emb).squeeze().to(self.device).float())
 
 
@@ -1354,7 +1359,10 @@ class xVAPitchTrainer(object):
 
                     out_path = f'{output_folder}/{lang}_{ei}_tts.wav'
                     scipy.io.wavfile.write(out_path, 22050, wav_norm.astype(np.int16))
+                    del wav
+                del language_id_tensor, text_inputs
 
+        del embeddings
         torch.cuda.empty_cache()
 
 
