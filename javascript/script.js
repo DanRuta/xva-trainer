@@ -1481,14 +1481,8 @@ window.showUpdates()
 // Patreon
 // =======
 window.setupModal(patreonIcon, patreonContainer, () => {
-    const data = fs.readFileSync(`${path}/patreon.txt`, "utf8")
-    const names = new Set()
-    data.split("\r\n").forEach(name => names.add(name))
-
-    let content = ``
-    creditsList.innerHTML = ""
-    names.forEach(name => content += `<br>${name}`)
-    creditsList.innerHTML = content
+    const data = fs.readFileSync(`${path}/patreon.txt`, "utf8") + ", minermanb"
+    creditsList.innerHTML = data
 })
 
 // Training
