@@ -210,9 +210,9 @@ class Wav2Vec2PlusPuncTranscribe(object):
         for fname in list(transcript.keys()):
             metadata.append(f'{fname if ".wav" in fname else fname+".wav"}|{transcript[fname]}')
 
-        if self.outputDirectory:
+        if self.outputDirectory and len(self.outputDirectory):
             os.makedirs(self.outputDirectory, exist_ok=True)
-        with open(f'{self.outputDirectory or self.inPathParent}/metadata.csv', "w+", encoding="utf8") as f:
+        with open(f'{self.outputDirectory if self.outputDirectory and len(self.outputDirectory) else self.inPathParent}/metadata.csv', "w+", encoding="utf8") as f:
             f.write("\n".join(metadata))
 
 

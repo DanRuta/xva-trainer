@@ -599,7 +599,7 @@ btn_autotranscribe.addEventListener("click", () => {
 
                     window.tools_state.taskId = "transcribe"
                     window.tools_state.inputDirectory = inputDirectory
-                    window.tools_state.outputDirectory = ""
+                    window.tools_state.outputDirectory = `${window.userSettings.datasetsPath}/${window.appState.currentDataset}`
                     window.tools_state.inputFileType = "folder"
 
                     window.tools_state.spinnerElem = toolsSpinner
