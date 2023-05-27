@@ -373,6 +373,8 @@ class xVAPitchTrainer(object):
 
         # Set up the dataloaders
         priors_datasets_root = "./PRIORS" if self.cmd_training else f'{"./resources/app" if self.PROD else "."}/python/xvapitch/PRIORS'
+        if not os.path.exists(priors_datasets_root) or len(os.listdir(priors_datasets_root))==0:
+            raise Exception("No priors datasets found. Please download the priors datasets from Nexusmods")
         self.print_and_log(f'Workers: {self.workers}', save_to_file=self.dataset_output)
         self.train_loader, self.finetune_loader, batch_num_steps, ft_dataset_num_files = self.setup_dataloaders(self.args, priors_datasets_root, self.device)
         self.target_deltas = self.get_target_delta(ft_dataset_num_files)
