@@ -678,8 +678,7 @@ class xVAPitchTrainer(object):
             else:
                 last_loss = loss_dict_it["loss"].mean()
                 last_loss.backward()
-                # last_loss = last_loss.item()
-                del last_loss
+            del last_loss
 
             loss_dict_it["loss"] = loss_dict_it["loss"].mean().item()
 
@@ -844,6 +843,9 @@ class xVAPitchTrainer(object):
                 self.do_samples_output = True # Don't do here, as there's still stuff loaded in VRAM at this point, and adding the visualizations on top might OOM unnecessarily
 
                 if not has_saved:
+                    del batch, loss_dict
+                    batch = None
+                    loss_dict = None
                     self.save_checkpoint(frames_s=frames_per_second, avg_loss=avg_loss, loss_delta=loss_delta, fpath=output_path, ckpt_time=ckpt_time, doPrintLog=True)
 
                 if self.args.analyze_loss:
@@ -858,7 +860,6 @@ class xVAPitchTrainer(object):
                 loss_delta = round(loss_delta*100, 3)
                 avg_losses_print = f' | Avg loss % delta: {loss_delta} '
                 if self.model.training_stage<=2:
-                    # target_delta = round(self.target_deltas[self.model.training_stage-1]*100, 3) # Make the number bigger, as it's easier to read. The actual value doesn't matter as long as it maintains relative comparison to the delta
                     target_delta = round(self.target_deltas[self.model.training_stage-1]*100, 3)
                     avg_losses_print += f'| Target: {target_delta} '
                 if self.target_patience_count>0:
@@ -867,7 +868,6 @@ class xVAPitchTrainer(object):
             else:
                 avg_losses_print = "                                                                   "
             iter_loss = round(np.mean(self.keep_avg_train["loss_disc"][-10:]), 4) # Average over the last 10 steps' losses (use the disc loss as that's the one that the deltas operate over)
-            # print_line = f'Stage: {self.model.training_stage} | Epoch: {self.epoch} | Steps: {(self.total_steps_done)} | Ckpt: {self.training_iters%self.save_step}/{self.save_step} | Loss: {iter_loss} | frames/s {frames_per_second}{avg_losses_print}   '
             print_line = f'Stage: {self.model.training_stage} | Steps: {(self.total_steps_done)} | Ckpt: {self.training_iters%self.save_step}/{self.save_step} | Loss: {iter_loss} | frames/s {frames_per_second}{avg_losses_print}   '
 
 
@@ -883,13 +883,13 @@ class xVAPitchTrainer(object):
                 self.finetune_counter = 0
             self.total_steps_done += self.gam
             self.training_log_live_line = print_line
-            # self.iter_start_time = time.perf_counter()
 
         del batch, loss_dict
 
         if self.do_samples_output:
             self.do_samples_output = False
-            self.output_samples(f'{self.dataset_output}/viz/{self.total_steps_done}')
+            with torch.cuda.amp.autocast(enabled=self.amp):
+                self.output_samples(f'{self.dataset_output}/viz/{self.total_steps_done}')
 
         if self.running:
             await self.iteration()
@@ -942,6 +942,7 @@ class xVAPitchTrainer(object):
 
 
         sd = {k.replace('module.', ''): v for k, v in model_state.items()}
+        del model_state
         sd["avg_disc_loss_per_epoch"] = self.avg_disc_loss_per_epoch
         sd["avg_disc_loss_per_epoch_deltas"] = self.avg_disc_loss_per_epoch_deltas
 
@@ -957,13 +958,13 @@ class xVAPitchTrainer(object):
             "avg_disc_loss_per_epoch_deltas": self.avg_disc_loss_per_epoch_deltas,
             "training_stage": self.model.training_stage,
         }
+        del optimizer_state, scaler_state
 
 
 
         if avg_loss is not None:
             print_line += f' | Loss: {(int(avg_loss*100000)/100000):.5f}'
         if loss_delta is not None:# and loss_delta>0:
-            # print_line += f' | Delta: {(int(loss_delta*100000)/100000):.5f}'
             print_line += f' | Delta: {round(loss_delta*100, 3)}'
         if self.model.training_stage<=2 and loss_delta is not None and loss_delta>0:
             target_delta = round(self.target_deltas[self.model.training_stage-1]*100, 3) # Make the number bigger, as it's easier to read. The actual value doesn't matter as long as it maintains relative comparison to the delta
@@ -1019,7 +1020,6 @@ class xVAPitchTrainer(object):
         del checkpoint
         self.training_log_live_line = ""
         if doPrintLog:
-            # self.print_and_log(print_line+"      ", end="", flush=True, save_to_file=self.dataset_output)
             self.print_and_log(print_line+"      ", end="", flush=True, save_to_file=self.dataset_output)
 
 
@@ -1169,9 +1169,6 @@ class xVAPitchTrainer(object):
         self.print_and_log(f'Fine-tune dataset files: {base_num_ft_samples}', save_to_file=self.dataset_output)
 
         # Priors datasets
-        priors_datasets = [f'D:/xVASpeech/DATASETS', f'D:/xVASpeech/GAME_DATA']
-        priors_datasets = [f'D:/xVASpeech/DATASETS_GOOD']
-        priors_datasets = [f'D:/DATA_DEBUG']
         priors_datasets = [priors_datasets_root]
 
         if not os.path.exists(priors_datasets_root):
@@ -1180,7 +1177,6 @@ class xVAPitchTrainer(object):
 
         if not os.path.exists(f'{priors_datasets_root}/.has_precached_g2p'):
             pre_cache_g2p(priors_datasets)
-            # pre_cache_g2p([priors_datasets_root])
             with open(f'{priors_datasets_root}/.has_precached_g2p', "w+") as f: # TODO, detect dataset changes, to invalidate this? md5?
                 f.write("")
         do_preExtract_embs = os.path.exists(f'{priors_datasets_root}/.has_extracted_embs') # TODO, detect dataset changes, to invalidate this? md5?
@@ -1207,7 +1203,6 @@ class xVAPitchTrainer(object):
         train_loader = DataLoader(
             train_dataset,
             batch_size=self.batch_size,
-            # shuffle=False,
             shuffle=args.hifi_only,
             collate_fn=train_dataset.collate_fn,
             drop_last=True,
@@ -1219,12 +1214,9 @@ class xVAPitchTrainer(object):
         finetune_loader = DataLoader(
             finetune_dataset,
             batch_size=self.batch_size,
-            # shuffle=False,
             shuffle=args.hifi_only,
             collate_fn=train_dataset.collate_fn,
-            # drop_last=True,
             drop_last=False,
-            # sampler=sampler,
             persistent_workers=args.workers>0,
             num_workers=args.workers,
             pin_memory=args.workers>0,
@@ -1278,8 +1270,6 @@ class xVAPitchTrainer(object):
         with torch.no_grad():
             it_count = 0
             for batch in loss_sorting_init_loader:
-                # print(, end="", flush=True)
-                # print(f'\rInitializing data losses... {it_count}/{len(finetune_loader.dataset)} ', end="", flush=True)
                 self.training_log_live_line = f'\rInitializing data losses... {it_count}/{len(loss_sorting_init_loader.dataset)} '
                 self.print_and_log(save_to_file=self.dataset_output)
 
@@ -1347,7 +1337,6 @@ class xVAPitchTrainer(object):
                 tp = self.train_loader.dataset.tp[lang]
                 language_id = language_id_mapping[lang]
 
-                # tp = get_text_preprocessor(lang, base_dir)
                 text_inputs, _ = tp.text_to_sequence(texts[lang])
 
                 text_inputs = torch.tensor(text_inputs).to(self.device).unsqueeze(dim=0)
@@ -1356,6 +1345,7 @@ class xVAPitchTrainer(object):
                 for ei,emb in enumerate(embeddings):
 
                     print(f'\rOutputting visualization samples. Language: {li+1}/{len(langs)} | Style: {ei+1}/{len(embeddings)}  ', end="", flush=True)
+                    torch.cuda.empty_cache()
 
                     output = self.model.infer(text_inputs, language_id_tensor, emb, pacing=1)
                     wav = output.squeeze().cpu().detach().numpy()
