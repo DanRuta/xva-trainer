@@ -195,7 +195,7 @@ class TTSDataset(Dataset):
         # self.MAX_CACHE_SAMPLES = 3000
         self.MAX_CACHE_SAMPLES = 30000
         self.MAX_CACHE_SAMPLES = 10000
-        # self.MAX_CACHE_SAMPLES = 50000
+        self.MAX_CACHE_SAMPLES = 0 # costs RAM
         # self.MAX_CACHE_SAMPLES = 100000
         # self.MAX_CACHE_SAMPLES = 0
 
