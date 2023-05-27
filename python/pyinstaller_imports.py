@@ -8,6 +8,10 @@ import numpy.core
 import numpy.core.overrides
 
 try:
+    from pyannote.audio.features import Pretrained as _Pretrained
+except:
+    pass
+try:
     import scipy
     import scipy.linalg
     import scipy.linalg.blas

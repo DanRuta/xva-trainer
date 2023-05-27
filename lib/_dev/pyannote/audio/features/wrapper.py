@@ -193,44 +193,11 @@ class Wrapper:
             # `torch.hub` model, wrap the corresponding `Pretrained`.
             else:
                 try:
-                    # import torch
+                    import torch
 
-                    # print(f'wrappable, {wrappable}')
-                    # print(f'params, {params}')
-
-                    import os
-                    from pyannote.audio.features import Pretrained as _Pretrained
-                    pretrained_subdir = os.path.dirname(os.path.realpath(__file__)).replace("\\", "/")
-                    # print(f'[wrapper.py] pretrained_subdir, {pretrained_subdir}')
-                    # params_yml, = pretrained_subdir.glob('*/*/*/*/params.yml')
-                    # scorer =  _Pretrained(validate_dir=params_yml.parent,
-
-
-                    wrappable_paths = {
-                        "sad_dihard": "/hub/models/sad_dihard/train/X.SpeakerDiarization.DIHARD_Official.train/validate_detection_fscore/X.SpeakerDiarization.DIHARD_Official.development",
-                        "scd_dihard": "/hub/models/scd_dihard/train/X.SpeakerDiarization.DIHARD_Official.train/validate_segmentation_fscore/X.SpeakerDiarization.DIHARD_Official.development",
-                        "emb_voxceleb": "/hub/models/emb_voxceleb/train/X.SpeakerDiarization.VoxCeleb.train/validate_equal_error_rate/VoxCeleb.SpeakerVerification.VoxCeleb1_X.development",
-                    }
-
-                    # %-%-%-%-
-                    if "F:/Speech/xva-trainer" in pretrained_subdir:
-                        prefix = "F:/Speech/xva-trainer/python/speaker_diarization"
-                    else:
-                        prefix = pretrained_subdir.split("cpython_")[0]+"python/speaker_diarization"
-
-                    # print(f'prefix, {prefix}')
-
-                    scorer =  _Pretrained(validate_dir=f'{prefix}/{wrappable_paths[wrappable]}',
-                                              duration=params["duration"],
-                                              step=params["step"],
-                                              batch_size=32,
-                                              device=None)
-
-
-                    # _ = torch.hub.load(
-                    #     "pyannote/pyannote-audio", wrappable, **params
-                    # )
-                    # print(f'scorer, {scorer}')
+                    scorer = torch.hub.load(
+                        "pyannote/pyannote-audio", wrappable, **params
+                    )
                     if not isinstance(scorer, Pretrained):
                         msg = (
                             f'"{wrappable}" exists on torch.hub but does not '
