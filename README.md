@@ -56,6 +56,26 @@ You don't need any programming or machine learning experience. The only required
 
 
 
+# Setting up the development environment
+
+Note: these installation instructions are for Windows. Use the requirements_linux_py3_10_6.txt file for Linux installation.
+
+Create the environment using virtualenv and python 3.10 (pre-requisite: Python 3.10)
+`virtualenv envXVATrainerP310 --python=C:\Users\Dan\AppData\Local\Programs\Python\Python310\python.exe`
+
+Activate your environment. Do this every time you launch a new terminal to work with xVATrainer
+`envXVATrainerP310\Scripts\activate`
+
+Install PyTorch v2.0.x with CUDA. Get the v2.0 link from the pytorch website (pre-requisite: CUDA drivers from nvidia)
+eg (might be outdated): pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+Install the dependencies through pip: pip install -r reqs_gpu.txt
+
+Copy the folders from ./lib/\_dev into the environment (into envXVATrainerP310/Lib/site-packages). These are some library files which needed custom modifications/bug fixes to integrate with everything else. Overwrite as necessary
+
+Make sure that you're using librosa==0.8.1 (check with pip list. uninstall and re-install with this version if not)
+
+
 # Contribuiting
 
 If you'd like to help improve xVATrainer, get in touch (eg an Issue, though best on Discord), and let me know. The main areas of interest for community contributions are (though let me know your ideas!):
