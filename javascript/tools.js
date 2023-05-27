@@ -76,6 +76,7 @@ const makeTranscriptionModelDropdown = () => {
     return [rowItemModel, selectElem, rowItemWhisperLang, whisperLangSelect]
 }
 
+
 const tools = {
     "Audio formatting": {
         taskId: "formatting",
@@ -505,7 +506,7 @@ const tools = {
         }
     },
 }
-
+delete tools["AI speaker diarization"] // TEMPORARY, until pyannote dep is fixed
 
 // Brute force progress indicator, for when the WebSockets don't work
 setInterval(() => {
