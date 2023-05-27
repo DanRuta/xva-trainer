@@ -249,6 +249,7 @@ class xVAPitchTrainer(object):
         self.gpus = gpus
         self.pretrained_ckpt = f'{"./resources/app" if self.PROD else "."}/python/xvapitch/pretrained_models/xVAPitch_5820651.pt'
         self.cmd_training = cmd_training
+        self.priors_languages_loaded = []
         if self.cmd_training:
             self.pretrained_ckpt = f'./pretrained_models/xVAPitch_5820651.pt'
 
@@ -511,7 +512,7 @@ class xVAPitchTrainer(object):
             target_delta = NATE_DELTA * math.sqrt(mult)/1.5
         else:
             target_delta = NATE_DELTA * math.sqrt((mult-1))/1.5
-        target_delta *= 0.3
+        target_delta *= 0.2
         target_deltas.append(target_delta)
 
         return target_deltas
@@ -1007,6 +1008,7 @@ class xVAPitchTrainer(object):
                 "modelType": "xVAPitch",
                 "author": "",
                 "lang": "en", # TODO, add UI setting for this
+                "lang_capabilities": list(self.priors_languages_loaded),
                 "games": [
                     {
                         "gameId": "other",
@@ -1166,7 +1168,7 @@ class xVAPitchTrainer(object):
             with open(f'{self.dataset_input}/.has_precached_g2p', "w+") as f: # TODO, detect dataset changes, to invalidate this? md5?
                 f.write("")
         do_preExtract_embs = os.path.exists(f'{self.dataset_input}/.has_extracted_embs') # TODO, detect dataset changes, to invalidate this? md5?
-        train_samples_finetune, _, _ = read_datasets(languages, [self.dataset_input], extract_embs=do_preExtract_embs, device=device, data_mult=args.data_mult_ft, trainer=self, cmd_training=self.cmd_training, is_ft=True)
+        train_samples_finetune, _, _, _ = read_datasets(languages, [self.dataset_input], extract_embs=do_preExtract_embs, device=device, data_mult=args.data_mult_ft, trainer=self, cmd_training=self.cmd_training, is_ft=True)
         base_num_ft_samples = int(len(train_samples_finetune)/args.data_mult_ft)
         self.print_and_log(f'Fine-tune dataset files: {base_num_ft_samples}', save_to_file=self.dataset_output)
 
@@ -1182,7 +1184,8 @@ class xVAPitchTrainer(object):
             with open(f'{priors_datasets_root}/.has_precached_g2p', "w+") as f: # TODO, detect dataset changes, to invalidate this? md5?
                 f.write("")
         do_preExtract_embs = os.path.exists(f'{priors_datasets_root}/.has_extracted_embs') # TODO, detect dataset changes, to invalidate this? md5?
-        train_samples, total_num_speakers, _ = read_datasets(languages, priors_datasets, extract_embs=do_preExtract_embs, device=device, data_mult=args.data_mult, trainer=self, cmd_training=self.cmd_training, is_ft=False)
+        train_samples, total_num_speakers, _, languages_loaded = read_datasets(languages, priors_datasets, extract_embs=do_preExtract_embs, device=device, data_mult=args.data_mult, trainer=self, cmd_training=self.cmd_training, is_ft=False)
+        self.priors_languages_loaded = languages_loaded
         self.print_and_log(f'Priors datasets files: {len(train_samples)} | Number of datasets: {total_num_speakers}', save_to_file=self.dataset_output)
 
 
@@ -1244,7 +1247,7 @@ class xVAPitchTrainer(object):
 
     def init_data_losses(self, fname, device):
         languages = ["de", "en", "it", "fr", "ro", "jp", "es", "ru", "ar", "da", "el", "fi", "ha", "hi", "hu", "ko", "la", "nl", "pl", "pt", "sw", "sv", "tr", "uk", "vi", "wo", "yo", "zh"]
-        loss_sorting_init_train_samples_finetune, _, _ = read_datasets(languages, [self.dataset_input], extract_embs=False, device=device, data_mult=1, trainer=self, cmd_training=self.cmd_training, is_ft=True)
+        loss_sorting_init_train_samples_finetune, _, _, _ = read_datasets(languages, [self.dataset_input], extract_embs=False, device=device, data_mult=1, trainer=self, cmd_training=self.cmd_training, is_ft=True)
         loss_sorting_init_finetune_dataset = TTSDataset(
             self.args,
             meta_data=loss_sorting_init_train_samples_finetune,

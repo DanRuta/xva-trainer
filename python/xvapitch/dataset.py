@@ -587,6 +587,8 @@ def normalize_pitch(pitch, mean, std):
 
 def read_datasets (languages, dataset_roots, extract_embs, device, data_mult=1, trainer=None, cmd_training=True, is_ft=False):
 
+    languages_loaded = set()
+
     # if extract_embs:
     if device is None:
         device = torch.device("cpu")
@@ -609,6 +611,7 @@ def read_datasets (languages, dataset_roots, extract_embs, device, data_mult=1, 
         for fname in sub_files:
             if "." not in fname and "_" in fname and fname.split("_")[0] in languages and os.path.exists(f'{root}/{fname}/metadata.csv'):
                 all_datasets.append(f'{root}/{fname}')
+                languages_loaded.add(fname.split("_")[0])
     # print(f'all_datasets, {len(all_datasets)}')
 
     # Go through each dataset's metadata.csv file, and read in the lines. Optionally extract embeddings for the wav files
@@ -678,7 +681,7 @@ def read_datasets (languages, dataset_roots, extract_embs, device, data_mult=1, 
 
     with open(f'{dataset_roots[0]}/.has_extracted_embs', "w+") as f: # TODO, detect dataset changes, to invalidate this? md5?
         f.write("")
-    return all_metadata, len(all_datasets), data_mult
+    return all_metadata, len(all_datasets), data_mult, sorted(languages_loaded)
 
 
 def pre_cache_g2p (dataset_roots, lang=None):
