@@ -780,6 +780,7 @@ trainingQueueBtnClear.addEventListener("click", () => {
     window.confirmModal("Are you sure you'd like to clear the training queue, losing all configured model training runs?").then(resp => {
         if (resp) {
             window.training_state.datasetsQueue = []
+            window.training_state.selectedQueueItem = undefined
             window.refreshTrainingQueueList()
             fs.writeFileSync(`${window.path}/training_queue.json`, JSON.stringify(window.training_state.datasetsQueue, null, 4))
         }
