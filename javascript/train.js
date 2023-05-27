@@ -337,8 +337,8 @@ window.refreshTrainingQueueList = () => {
 
         configButton.addEventListener("click", () => {
             configAnExistingItem = true
-            window.training_state.datasetsQueue[di].dataset_path = window.training_state.datasetsQueue[di].dataset_path.replaceAll(/\\/, "/")
-            window.training_state.datasetsQueue[di].output_path = window.training_state.datasetsQueue[di].output_path.replaceAll(/\\/, "/")
+            window.training_state.datasetsQueue[di].dataset_path = window.training_state.datasetsQueue[di].dataset_path.replace(/\\/g, "/")
+            window.training_state.datasetsQueue[di].output_path = window.training_state.datasetsQueue[di].output_path.replace(/\\/g, "/")
             window.showConfigMenu(window.training_state.datasetsQueue[di], di)
         })
     })
@@ -656,15 +656,15 @@ cancelConfig.addEventListener("click", () => {
     queueItemConfigModalContainer.style.display = "none"
 })
 trainingAddConfigDatasetPathInput.addEventListener("keyup", e => {
-    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/")
+    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replace(/\\/g, "/")
 })
 trainingAddConfigOutputPathInput.addEventListener("keyup", e => {
-    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/")
+    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replace(/\\/g, "/")
 })
 acceptConfig.addEventListener("click", () => {
 
-    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/")
-    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/")
+    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replace(/\\/g, "/")
+    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replace(/\\/g, "/")
 
     if (!trainingAddConfigDatasetPathInput.value.trim().length) {
         return window.errorModal("You need to specify where your dataset is located.", queueItemConfigModalContainer)
@@ -699,7 +699,7 @@ acceptConfig.addEventListener("click", () => {
 
         let xvapitch_checkpoint = "[base]"
         if (xvapitch_ckpt_option_other.checked) {
-            xvapitch_checkpoint = trainingAddConfigCkptPathInput.replaceAll(/\\/, "/")
+            xvapitch_checkpoint = trainingAddConfigCkptPathInput.replace(/\\/g, "/")
         }
 
         // TODO
@@ -708,10 +708,10 @@ acceptConfig.addEventListener("click", () => {
             const queueIndex = window.training_state.currentlyConfiguringDatasetI
 
             const configData = {
-                "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path.replaceAll(/\\/, "/"),
-                "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
+                "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path.replace(/\\/g, "/"),
+                "output_path": trainingAddConfigOutputPathInput.value.replace(/\\/g, "/"),
                 "checkpoint": xvapitch_checkpoint,
-                // "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
+                // "hifigan_checkpoint": hg_ckpt.replace(/\\/g, "/"),
 
                 "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
@@ -731,10 +731,10 @@ acceptConfig.addEventListener("click", () => {
             const configData = {
                 "status": "Ready",
 
-                "dataset_path": trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/"),
-                "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
+                "dataset_path": trainingAddConfigDatasetPathInput.value.replace(/\\/g, "/"),
+                "output_path": trainingAddConfigOutputPathInput.value.replace(/\\/g, "/"),
                 "checkpoint": xvapitch_checkpoint,
-                // "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
+                // "hifigan_checkpoint": hg_ckpt.replace(/\\/g, "/"),
 
                 "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
@@ -752,7 +752,7 @@ acceptConfig.addEventListener("click", () => {
         window.refreshTrainingQueueList()
     }
 
-    let xvap_ckpt = trainingAddConfigCkptPathInput.value.trim().replaceAll(/\\/, "/")
+    let xvap_ckpt = trainingAddConfigCkptPathInput.value.trim().replace(/\\/g, "/")
     if (xvapitch_ckpt_option_base.checked) {
         xvap_ckpt = "[base]"
     }
