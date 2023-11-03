@@ -5,45 +5,62 @@ from sklearn.cluster import KMeans
 
 def get_emb(dataset_embs_path, main_emb_outpath, other_embs_outpath):
 
-    embs = sorted(os.listdir(dataset_embs_path))
-    embs_fnames = [emb for emb in embs if emb.endswith(".npy")]
+    if os.path.exists(main_emb_outpath) and os.path.exists(other_embs_outpath):
+        with open(main_emb_outpath, "r") as f:
+            centroid_emb = np.array([float(v) for v in f.read().split(",")])
+        with open(other_embs_outpath, "r") as f:
+            other_centroids = []
+            for line in f.read().split("\n"):
+                other_centroids.append(np.array([float(v) for v in line.split(",")]))
 
-    embs = []
-    for ei,emb in enumerate(embs_fnames):
-        print(f'\rLoading embeddings {ei+1}/{len(embs_fnames)}  ', end="", flush=True)
-        embs.append(np.load(f'{dataset_embs_path}/{emb}'))
-    print("")
+    else:
+        embs = sorted(os.listdir(dataset_embs_path))
+        embs_fnames = [emb for emb in embs if emb.endswith(".npy")]
 
-    n_clusters = 10
-    kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(embs)
+        embs = []
+        for ei,emb in enumerate(embs_fnames):
+            print(f'\rLoading embeddings {ei+1}/{len(embs_fnames)}  ', end="", flush=True)
+            embs.append(np.load(f'{dataset_embs_path}/{emb}'))
+        print("")
 
-    clusters = kmeans.labels_
-    cluster_centers_ = kmeans.cluster_centers_
+        try:
+            n_clusters = 10
+            if len(embs)>5000:
+                embs = random.sample(embs, 5000) # This should be enough - reduce memory limitations on some systems
+            kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(embs)
 
-    cluster_counts = {}
+            clusters = kmeans.labels_
+            cluster_centers_ = kmeans.cluster_centers_
 
-    for vi,val in enumerate(clusters):
-        if val not in cluster_counts.keys():
-            cluster_counts[val] = []
-        cluster_counts[val].append(val)
+            cluster_counts = {}
 
-    largest_cluster = 0
-    largest_cluster_count = 0
-    for ki,key in enumerate(sorted(cluster_counts.keys())):
-        if len(cluster_counts[key])>largest_cluster_count:
-            largest_cluster_count = len(cluster_counts[key])
-            largest_cluster = ki
+            for vi,val in enumerate(clusters):
+                if val not in cluster_counts.keys():
+                    cluster_counts[val] = []
+                cluster_counts[val].append(val)
 
-    centroid_emb = cluster_centers_[largest_cluster]
-    other_centroids = [cluster_centers_[i] for i in range(len(cluster_centers_)) if i!=largest_cluster]
+            largest_cluster = 0
+            largest_cluster_count = 0
+            for ki,key in enumerate(sorted(cluster_counts.keys())):
+                if len(cluster_counts[key])>largest_cluster_count:
+                    largest_cluster_count = len(cluster_counts[key])
+                    largest_cluster = ki
 
-    with open(main_emb_outpath, "w+") as f:
-        f.write(",".join([str(val) for val in centroid_emb]))
-    with open(other_embs_outpath, "w+") as f:
-        out_text = []
-        for emb in other_centroids:
-            out_text.append(",".join([str(val) for val in emb]))
-        f.write("\n".join(out_text))
+            centroid_emb = cluster_centers_[largest_cluster]
+            other_centroids = [cluster_centers_[i] for i in range(len(cluster_centers_)) if i!=largest_cluster]
+
+        except BaseException:
+            centroid_emb = random.sample(embs, 1)[0]
+            other_centroids = random.sample(embs, 10)
+
+
+        with open(main_emb_outpath, "w+") as f:
+            f.write(",".join([str(val) for val in centroid_emb]))
+        with open(other_embs_outpath, "w+") as f:
+            out_text = []
+            for emb in other_centroids:
+                out_text.append(",".join([str(val) for val in emb]))
+            f.write("\n".join(out_text))
 
     return centroid_emb, other_centroids
 

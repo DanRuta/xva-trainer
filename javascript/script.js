@@ -1,5 +1,5 @@
 "use strict"
-window.appVersion = "1.2.0"
+window.appVersion = "1.2.1"
 app_version.innerHTML = "v"+window.appVersion
 window.PRODUCTION = module.filename.includes("resources")
 const path = PRODUCTION ? `${__dirname.replace(/\\/g,"/")}` : `${__dirname.replace(/\\/g,"/")}`
@@ -100,7 +100,7 @@ const initWebSocket = () => {
             window.errorModal(errorMessage).then(() => {
                 trainingStopBtn.click()
             })
-        } else if (event.data.includes("Finished training HiFi-GAN")) {
+        } else if (event.data.includes("Finished training")) {
 
             window.training_state.datasetsQueue[window.training_state.trainingQueueItem].status = `Finished`
             const allRowElems = Array.from(document.querySelectorAll("#trainingQueueRecordsContainer>div"))
@@ -588,7 +588,7 @@ btn_deleteall.addEventListener("click", () => {
 })
 btn_autotranscribe.addEventListener("click", () => {
     if (window.appState.currentDataset!=undefined) {
-        confirmModal(`Are you sure you'd like to kick off the auto-transcription process?<br>This will run for all 22050Hz audio with no text transcript.`).then(confirmation => {
+        confirmModal(`Are you sure you'd like to kick off the auto-transcription process?<br>This will run for all 22050Hz audio with no text transcript.<br><br>Configure the transcription model and language in the tools setting first.`).then(confirmation => {
             if (confirmation) {
                 setTimeout(() => {
                     createModal("spinner", "Auto-transcribing...<br>This may take a few minutes if there are hundreds of lines.<br>Audio files must be mono 22050Hz<br><br>This window will close if there is an error.")
@@ -599,7 +599,7 @@ btn_autotranscribe.addEventListener("click", () => {
 
                     window.tools_state.taskId = "transcribe"
                     window.tools_state.inputDirectory = inputDirectory
-                    window.tools_state.outputDirectory = ""
+                    window.tools_state.outputDirectory = `${window.userSettings.datasetsPath}/${window.appState.currentDataset}`
                     window.tools_state.inputFileType = "folder"
 
                     window.tools_state.spinnerElem = toolsSpinner
@@ -1481,14 +1481,8 @@ window.showUpdates()
 // Patreon
 // =======
 window.setupModal(patreonIcon, patreonContainer, () => {
-    const data = fs.readFileSync(`${path}/patreon.txt`, "utf8")
-    const names = new Set()
-    data.split("\r\n").forEach(name => names.add(name))
-
-    let content = ``
-    creditsList.innerHTML = ""
-    names.forEach(name => content += `<br>${name}`)
-    creditsList.innerHTML = content
+    const data = fs.readFileSync(`${path}/patreon.txt`, "utf8") + ", minermanb"
+    creditsList.innerHTML = data
 })
 
 // Training

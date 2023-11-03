@@ -1,6 +1,7 @@
 import os
 import json
 import traceback
+import platform
 
 # Not a model, but it was easier to just integrate the code this way
 
@@ -62,6 +63,8 @@ class AudioNormalizer(object):
         self.model = None
         self.isReady = True
         self.ffmpeg_path = f'{"./resources/app" if self.PROD else "."}/python/ffmpeg.exe'
+        if platform.system() != 'Windows':
+            self.ffmpeg_path = 'ffmpeg'
 
 
     def load_state_dict (self, ckpt_path, sd):

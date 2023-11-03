@@ -1560,6 +1560,8 @@
 'family|f ˈæ m ɪ l i
 'farewell|f ɛɹ w ˈɛ l
 'fascists'|f ˈæ ʃ ɪ s t s
+'fat|f ˈæ t
+'fated'big|f ˈeɪ t d b ɪ ɡ
 'fear'|f ˈɪɹ
 'fled'|f l ˈɛ d
 'flight'|f l ˈaɪ t
@@ -1735,12 +1737,14 @@
 'let's|l ˈɛ t s
 'liberals'|l ˈɪ b ɚ ɹ əl z
 'life|l ˈaɪ f
+'like|l ˈaɪ k
 'links|l ˈɪ ŋ k s
 'lion|l ˈaɪə n
 'lites|l ˈaɪ t s
 'living'|l ˈɪ v ɪ ŋ
 'll|ˌɛ l ˈɛ l
 'lldo|ˌɛ l ˌɛ l d ˌiː  ˈoʊ
+'llneed|ˌɛ l ˈɛ l n ˈiː d
 'local|l ˈoʊ k əl
 'lolita|l ə l ˈiː ɾ ə
 'long|l ˈɔ ŋ
@@ -1760,6 +1764,7 @@
 'lurk|l ˈɜː k
 'lurks|l ˈɜː k s
 'm|ˈɛ m
+'ma|m ˈɑː
 'made|m ˈeɪ d
 'magical'|m ˈæ dʒ ɪ k əl
 'maharaji'|m ˈæ h ɐ ɹ ˌæ dʒ i
@@ -1783,6 +1788,7 @@
 'member|m ˈɛ m b ɚ
 'merry|m ˈɛ ɹ i
 'messenger|m ˈɛ s ɪ n dʒ ɚ
+'mhardard|ˈɛ m h ˈɑːɹ d ɚ d
 'microcrystalline|m ˌaɪ k ɹ oʊ k ɹ ˈɪ s t ɐ l ˌaɪ n
 'midst|m ˈɪ d s t
 'might|m ˈaɪ t
@@ -2282,6 +2288,7 @@
 +a+aall|p l ˈʌ s ɐ p l ˈʌ s ˈɑː l
 +alead|p l ˈʌ s ɐ l ˈiː d
 />|s l ˈæ ʃ
+<<ila| ˈɪ l ə
 <battle|b ˈæ ɾ əl
 <breathing|b ɹ ˈiː ð ɪ ŋ
 <burp>|b ˈɜː p
@@ -2363,6 +2370,7 @@ aabboard|ˈɑː b b oːɹ d
 aabbridge|ˈɑː b ɹ ɪ dʒ
 aackhh|ˈɑː k
 aacs|ˈɑː k s
+aaddon'tlaugh|ˈɑː d ə n t l ˌæ f
 aadine|ˈɑː d iː n
 aadjustment|ˈɑː dʒ ʌ s t m ə n t
 aafford|ˈɑː f ɚ d
@@ -2433,6 +2441,8 @@ abbernaththey|ˈæ b ɚ n ˌæ θ θ i
 abbes|ˈæ b z
 abbess|ˈæ b ɛ s
 abbeys|ˈæ b i z
+abbia|ˈæ b i  ə
+abbiamo|æ b ˈɪ  ə m ˌoʊ
 abbigated|ˈæ b ᵻ ɡ ˌeɪ ɾ ᵻ d
 abbit|ˈæ b ɪ t
 abblation|æ b l ˈeɪ ʃ ə n
@@ -3174,6 +3184,8 @@ aggghhhh|ˈæ ɡ ɡ
 aggh|ˈæ ɡ
 agghh|ˈæ ɡ
 agghhh|ˈæ ɡ
+aggiata|ɐ ɡ ɪ  ˈɑː ɾ ə
+aggiatta|ɐ ɡ ˈɪ  æ ɾ ə
 aggravated|ˈæ ɡ ɹ ɐ v ˌeɪ ɾ ᵻ d
 aggravating|ˈæ ɡ ɹ ɐ v ˌeɪ ɾ ɪ ŋ
 aggregated|ˈæ ɡ ɹ ɪ ɡ ˌeɪ ɾ ᵻ d
@@ -3354,8 +3366,10 @@ aiming|ˈeɪ m ɪ ŋ
 aimmortality|ˌeɪ m ɔːɹ t ˈæ l ᵻ ɾ i
 ain|ˈeɪ n
 ain'|ˈeɪ n
+ain's|ˈeɪ n z
 ain't|ˈeɪ n t
 ain'tcha|ˈeɪ n t tʃ ə
+ain'ttoo|ˈeɪ n t uː
 aina|ˈeɪ n ə
 ainait|ˈeɪ n eɪ t
 ainethach|ˈeɪ n ɪ θ ˌæ tʃ
@@ -3384,6 +3398,7 @@ airing|ˈɛ ɹ ɪ ŋ
 airness|ˈɛɹ n ə s
 airopay|ˈɛ ɹ ə p ˌeɪ
 airpods|ˈɛɹ p ɑː d z
+airre|ˈɛ ɹ ə
 airtel|ˈɛɹ ɾ əl
 airtght|ˈɛɹ t t
 airwalk|ˈɛɹ w ɔː k
@@ -3489,6 +3504,7 @@ alagiri|ɐ l ɐ dʒ ˈiə ɹ i
 alakasee|ɐ l ˈæ k ɐ s ˌiː
 alakazam|ɐ l ˈæ k ɐ z ˌæ m
 alaknanda|ɐ l ɐ k n ˈæ n d ə
+alall|ɐ l ˈɔː l
 alamagan|ɐ l ˈæ m æ ɡ ə n
 alance|ɐ l ˈæ n s
 alannah|ɐ l ˈæ n ə
@@ -3635,6 +3651,9 @@ alkcaldos|æ l k k ˈæ l d oʊ z
 alkhalil|ˈæ l k h ɐ l ˌɪ l
 alkosh|ˈæ l k ɑː ʃ
 all|ˈɔː l
+all'ipotrope|ɐ l ˈɪ p ə t ɹ ˌoʊ p
+all'ipotropo|ɐ l ˌɪ p ə t ɹ ˈoʊ p oʊ
+all'ipotrovo|ɐ l ˌɪ p ə t ɹ ˈoʊ v oʊ
 all'khe|ɐ l k ˈɛ
 allagash|ˈæ l ɐ ɡ ˌæ ʃ
 allah|ˈæ l ə
@@ -3643,6 +3662,8 @@ allakows|ˈæ l ɐ k ˌaʊ z
 allalright|ˈæ l ɐ l ɹ ˌaɪ t
 allan|ˈæ l ə n
 allardice|ˈæ l ɑːɹ d ɪ s
+allargo|æ l ˈɑːɹ ɡ oʊ
+alle|ɐ l ˈɛ
 alle'ghe|ɐ l ˈɛ ɡ h
 alle'khe|ɐ l ˈɛ k
 alled|ˈɔː l d
@@ -3678,6 +3699,7 @@ alllll|ˈæ l l əl
 allocution|ˌæ l ə k j ˈuː ʃ ə n
 allogene|ˈæ l oʊ dʒ ˌiː n
 allong|ˈæ l ɔ ŋ
+allora|ˈæ l oː ɹ ə
 alloruring|ˈæ l oː ɹ ˌɪ ɹ ɪ ŋ
 allow|ɐ l ˈaʊ
 allowed|ɐ l ˈaʊ d
@@ -3700,6 +3722,7 @@ allv|ˈæ l v
 allvel|ɔː l v ˈɛ l
 all’an|ɐ l ˈæ n
 all…|ˈɔː l
+almaho|ɔ l m ˈɑː h oʊ
 almalexia's|ˌɔ l m eɪ l ˈiː k s iə z
 almanac|ˈɔ l m ɐ n ˌæ k
 almanah|ˈɔ l m æ n ə
@@ -3796,6 +3819,8 @@ alyeiner|ˈæ l ɪ  ˌiː n ɚ
 alyn|ˈæ l ɪ n
 alyson|ˈæ l ɪ s ə n
 alysse|ˈæ l ɪ s
+alzando|ɐ l z ˈæ n d oʊ
+alzato|ɐ l z ˈɑː ɾ oʊ
 am|ˈæ m
 am'mall|ˈæ m m ɔː l
 amadio|æ m ˈeɪ d ɪ  ˌoʊ
@@ -3819,6 +3844,7 @@ amativ|ˈæ m ɐ t ˌɪ v
 amatongas|ˈæ m ɐ t ˌɑː ŋ ɡ ə z
 amatongo|ˌæ m ɐ t ˈɑː ŋ ɡ oʊ
 amatory|ˈæ m ə t ˌoː ɹ i
+amava|æ m ˈɑː v ə
 amavet|ˈæ m æ v ɪ t
 amazed|ɐ m ˈeɪ z d
 amazedly|ɐ m ˈeɪ z ᵻ d l i
@@ -3827,6 +3853,7 @@ amazin'|ɐ m ˈeɪ z ɪ n
 amazing|ɐ m ˈeɪ z ɪ ŋ
 amazingness|ɐ m ˈeɪ z ɪ ŋ n ə s
 amazon|ˈæ m ɐ z ˌɑː n
+amazoniche|ˈæ m ə z ˌɑː n ɪ ʃ
 amazu|ɐ m ˈeɪ z uː
 amb|ˈæ m
 ambala|æ m b ˈɑː l ə
@@ -4022,6 +4049,7 @@ ance|ˈæ n s
 ancelotti|ˌæ n s ɪ l ˈɑː ɾ i
 ancestor|ˈæ n s ɛ s t ɚ
 ancharia|æ n tʃ ˈɛ ɹ iə
+anche|ˈæ n tʃ
 anchor|ˈæ ŋ k ɚ
 anchorite|ˈæ ŋ k ɚ ɹ ˌaɪ t
 anchorite's|ˈæ ŋ k ɚ ɹ ˌaɪ t z
@@ -4030,6 +4058,7 @@ anchovy|ˈæ n tʃ oʊ v i
 ancient|ˈeɪ n tʃ ə n t
 ancient's|ˈeɪ n tʃ ə n t s
 anciian|æ n s ˈɪ  iə n
+ancora|ˈæ ŋ k oː ɹ ə
 ancotar|ˈæ ŋ k ɑː ɾ ɚ
 and|ˈæ n d
 and'|ˈæ n d
@@ -4038,19 +4067,25 @@ and'not|ˈæ n d n ɑː t
 and're|ˈæ n d ɚ
 and's|ˈæ n d z
 and't|ˈæ n d t
+and'tyou|ˈæ n d t ɪ  ˌuː
 anda|ˈæ n d ə
 andah|ˈæ n d ə
 andale|ˈæ n d eɪ l
 andaless|ˈæ n d ə l ə s
 andalucia|ˌæ n d ɐ l ˈuː ʃ ə
 andalucian|ˈæ n d ɐ l ˌuː ʃ iə n
+andando|æ n d ˈæ n d oʊ
+andare|ˈæ n d ɛɹ
 andaren|ˈæ n d æ ɹ ə n
 andated|ˈæ n d eɪ ɾ ᵻ d
+andato|æ n d ˈɑː ɾ oʊ
+andavo|æ n d ˈɑː v oʊ
 anddam|ˈæ n d ə m
 anddiagnostics|ˌæ n d ɪ  ɐ ɡ n ˈɑː s t ɪ k s
 andeight|ˈæ n d eɪ t
 andembothered|ˈæ n d ɪ m b ˌɑː ð ɚ d
 andenjoy|ˈæ n d ə n dʒ ˌɔɪ
+andere|ˈæ n d ɪɹ
 andered|ˈæ n d ɚ d
 anderlecht|ˈæ n d ɚ l ˌɛ x t
 anderlecht's|ˈæ n d ɚ l ˌɛ x t s
@@ -4068,6 +4103,7 @@ andindeeat|ˈæ n d ɪ n d ˌiː  æ t
 andinsit|ˈæ n d ɪ n s ˌɪ t
 andirons|ˈæ n d aɪɚ n z
 andm|ˈæ n d ə m
+andnesomeone|ˌæ n d n ɪ s ˈoʊ m ɪ  ˌoʊ n
 andor's|ˈæ n d oːɹ z
 andoril|ˈæ n d oː ɹ əl
 andp|ˈæ n d p
@@ -4199,6 +4235,7 @@ annes|ˈæ n z
 annexe|ˈæ n ɛ k s
 annexus'|æ n ˈɛ k s ə s
 anngh|ˈæ ŋ ŋ
+anni|ˈæ n i
 annie|ˈæ n i
 annihilated|ɐ n ˈaɪ ə l ˌeɪ ɾ ᵻ d
 annihilation|ɐ n ˌaɪ ə l ˈeɪ ʃ ə n
@@ -4446,6 +4483,7 @@ appending|ɐ p ˈɛ n d ɪ ŋ
 appertain|ɐ p ˈɜː t eɪ n
 appertaining|ɐ p ˈɜː t eɪ n ɪ ŋ
 appertains|ɐ p ˈɜː t eɪ n z
+appet|ɐ p ˈɛ t
 appetit|ˌæ p ɪ t ˈiː t
 appetite|ˈæ p ɪ t ˌaɪ t
 appetizingly|ˈæ p ɪ t ˌaɪ z ɪ ŋ l i
@@ -4832,6 +4870,7 @@ arrear|ɚ ɹ ˈɪɹ
 arrease|ɚ ɹ ˈiː s
 arred|ˈɑːɹ d
 arredible|ɚ ɹ ˈɛ d ᵻ b əl
+arreey|ɚ ɹ ˈiː  i
 arreguin's|ɚ ɹ ˈɛ ɡ w ɪ n z
 arrenemies|ɚ ɹ ˈɛ n ə m i z
 arrest|ɚ ɹ ˈɛ s t
@@ -4846,6 +4885,7 @@ arriba's|ɚ ɹ ˈiː b ə z
 arrius|ɚ ɹ ˈɪ  ə s
 arrival|ɚ ɹ ˈaɪ v əl
 arrivals|ɚ ɹ ˈaɪ v əl z
+arrivati|ɚ ɹ ɪ v ˈɑː ɾ i
 arrive|ɚ ɹ ˈaɪ v
 arrived|ɚ ɹ ˈaɪ v d
 arriving|ɚ ɹ ˈaɪ v ɪ ŋ
@@ -5001,6 +5041,7 @@ ashlands|ˈæ ʃ l ə n d z
 ashlar|ˈæ ʃ l ɚ
 ashlation|æ ʃ l ˈeɪ ʃ ə n
 ashleigh|ˈæ ʃ l iː
+asho|ɐ ʃ ˈoʊ
 ashook|ɐ ʃ ˈʊ k
 ashoort|ɐ ʃ ˈoːɹ t
 ashore|ɐ ʃ ˈoːɹ
@@ -5113,6 +5154,7 @@ assface|ɐ s f ˈeɪ s
 asshol|ˈæ s h ɑː l
 asshole's|ˈæ s h oʊ l z
 assholes'll|ˈæ s h oʊ l z əl
+assidi|ɐ s ˈɪ d i
 assiduity|ɐ s ɪ d j ˈuː ɪ ɾ i
 assignable|ɐ s ˈaɪ n ə b əl
 assignation|ɐ s ɪ ɡ n ˈeɪ ʃ ə n
@@ -5140,6 +5182,7 @@ associated|ɐ s ˈoʊ s ɪ  ˌeɪ ɾ ᵻ d
 association|ɐ s ˌoʊ s ɪ  ˈeɪ ʃ ə n
 associations|ɐ s ˌoʊ s ɪ  ˈeɪ ʃ ə n z
 associiety|ɐ s ˌoʊ s ɪ  ˈaɪə ɾ i
+assoluta|ɐ s ə l ˈuː ɾ ə
 assoon|ɐ s ˈuː n
 assor|ɐ s ˈoːɹ
 assori|ɐ s ˈɔː ɹ i
@@ -5157,6 +5200,7 @@ assuming|ɐ s ˈuː m ɪ ŋ
 assur|ə ʃ ˈʊɹ
 assurance|ə ʃ ˈʊɹ ɹ ə n s
 assurbanipal|ə ʃ ˈʊɹ b ɐ n ˌɪ p əl
+assureance|ə ʃ ˈʊɹ ɹ iː n s
 assured|ə ʃ ˈʊɹ d
 assuredly|ə ʃ ˈʊɹ ɹ ᵻ d l i
 assurers|ə ʃ ˈʊɹ ɹ ɚ z
@@ -5281,6 +5325,7 @@ atronach's|ˈæ t ɹ ə n ˌæ k s
 atropine|ˈæ t ɹ ə p ˌaɪ n
 atropos|ˈæ t ɹ ə p ˌɑː s
 ats|ˈæ t s
+att|ˈæ t
 atta|ˈæ ɾ ə
 attaa|ɐ t ˈɑː
 attaaaaack|ɐ t ˈææ ɐɐ ˌæ k
@@ -5324,6 +5369,8 @@ attila|ɐ t ˈɪ l ə
 attire's|ɐ t ˈaɪɚ z
 attires|ɐ t ˈaɪɚ z
 attiring|ɐ t ˈaɪɚ ɹ ɪ ŋ
+attor|ɐ t ˈoːɹ
+attore|ɐ ɾ ˈɚ
 attorney|ɐ t ˈɜː n i
 attorneys|ɐ t ˈɜː n i z
 attractest|ɐ t ɹ ˈæ k t ɪ s t
@@ -5332,6 +5379,7 @@ attre|ɐ t ɹ ˈɛ
 attre's|ɐ t ɹ ˈɛ z
 attrust|ɐ t ɹ ˈʌ s t
 atttect|ɐ t ˈɛ k t
+atttext|ɐ t ˈɛ k s t
 attuning|ɐ t ˈuː n ɪ ŋ
 atub|ˈæ ɾ ʌ b
 atue|ˈæ ɾ uː
@@ -5481,11 +5529,16 @@ aventer|ˈæ v ɛ n t ɚ
 aventus|æ v ˈɛ n t ə s
 avenza|ˈæ v ɛ n z ə
 average|ˈæ v  ɹ ɪ dʒ
+avere|ˈæ v ɚ
 averred|ɐ v ˈɜː d
 averse|ɐ v ˈɜː s
 averseness|ɐ v ˈɜː s n ə s
 aversion|ɐ v ˈɜː ʒ ə n
 avesta|ˈæ v ɛ s t ə
+avete|ˈæ v iː t
+aveva|ˈæ v ɛ v ə
+avevamo|æ v ˈɛ v ə m ˌoʊ
+avevo|æ v ˈiː v oʊ
 avg|ˌeɪ v ˌiː dʒ ˈiː
 avianca|ˌeɪ v ɪ  ˈæ ŋ k ə
 avida|ˈæ v ɪ d ə
@@ -5514,6 +5567,8 @@ avrus|ˈæ v ɹ ə s
 avs|ˈæ v
 avulstein|ˈæ v ə l s t ˌaɪ n
 avulstein's|ˈæ v ə l s t ˌaɪ n z
+avuta|ˈæ v j uː ɾ ə
+avuto|æ v j ˈuː ɾ oʊ
 avv|ˈæ v
 avy|ˈæ v i
 awafalagahuka|ɐ w ˈæ f ɐ l ˌæ ɡ ɐ h j ˌuː k ə
@@ -5622,6 +5677,7 @@ azhrukhal|ˈæ ʒ ɹ ʌ k h əl
 aziam|ˈæ z iə m
 azikiwe|ˈæ z ɪ k ˌɪ w
 azinge|ˈæ z ɪ n dʒ
+azioni|ˈæ z aɪə n i
 azjon|ˈæ z dʒ ɑː n
 azmi|ˈæ z m i
 azoospermia|æ z ˈuː s p ɚ m ˌiə
@@ -5801,6 +5857,7 @@ babulal|b ˈæ b j ʊ l əl
 baby|b ˈeɪ b i
 babyfaces|b ˈeɪ b ɪ f ˌeɪ s ᵻ z
 babygrow|b ˈeɪ b ɪ ɡ ɹ ˌoʊ
+babyies|b ˈeɪ b ɪ  i z
 babylon|b ˈæ b ɪ l ə n
 babylonia|b ˌæ b ɪ l ˈoʊ n iə
 babylonians|b ˌæ b ɪ l ˈoʊ n iə n z
@@ -6234,6 +6291,7 @@ barbershop'|b ˈɑːɹ b ɚ ʃ ˌɑː p
 barbershops|b ˈɑːɹ b ɚ ʃ ˌɑː p s
 barbet|b ˈɑːɹ b ɪ t
 barbieux|b ˈɑːɹ b ɪ  ˌʌ
+barboni|b ɑːɹ b ˈoʊ n i
 barca's|b ˈɑːɹ k ə z
 barcelona|b ˌɑːɹ s ɪ l ˈoʊ n ə
 barcelona's|b ˌɑːɹ s ɪ l ˈoʊ n ə z
@@ -6886,6 +6944,7 @@ behoveth|b ᵻ h ˈoʊ v ə θ
 behrhorst|b ˈeɪ ɹ oːɹ s t
 behrouz|b ˈeɪ ɹ uː z
 bei|b ˈeɪ
+bei'll|b ˈeɪ əl
 beijing|b eɪ dʒ ˈɪ ŋ
 beilby|b ˈeɪ l b i
 beilein|b ˈeɪ l iː n
@@ -6962,6 +7021,7 @@ bellegarcie|b ˈɛ l ɪ ɡ ˌɑːɹ s i
 bellerin|b ˈɛ l ɚ ɹ ˌɪ n
 belleteyn|b ˈɛ l ɪ t ˌaɪ n
 bellevue|b ˈɛ l ɪ v j ˌuː
+bellezza|b ˈɛ l ɛ z ə
 bellied|b ˈɛ l ɪ d
 belliere|b ˌɛ l i  ˈɛɹ
 belliere's|b ˌɛ l i  ˈɛɹ z
@@ -6976,6 +7036,7 @@ bells|b ˈɛ l z
 belly|b ˈɛ l i
 belly's|b ˈɛ l ɪ z
 bellyacher|b ˈɛ l ɪ  ˌæ tʃ ɚ
+bellyfor|b ˈɛ l ɪ f ɚ
 bellyful|b ˈɛ l ɪ f əl
 belmont|b ˈɛ l m ɔ n t
 belmore|b ˈɛ l m oːɹ
@@ -7211,6 +7272,7 @@ beta's|b ˈeɪ ɾ ə z
 betahaloperidol|b ˌeɪ ɾ ə h ˈæ l oʊ p ɹ ˌɪ d ɑː l
 betaken|b ˌeɪ ɾ ə k ˈɛ n
 betano|b ˈeɪ t ə n ˌoʊ
+betat|b ˈeɪ ɾ ə t
 betdies|b ˈɛ t d i z
 bete|b ᵻ t ˈɛ
 betfred|b ˈɛ t f ɹ ɪ d
@@ -7264,6 +7326,7 @@ betwixt|b ᵻ t w ˈɪ k s t
 bevensee|b ˈɛ v ə n s ˌiː
 beverage|b ˈɛ v ɚ ɹ ɪ dʒ
 beverley's|b ˈɛ v ɚ l i z
+bevevo|b ɛ v ˈiː v oʊ
 bevies|b ˈɛ v i z
 beving|b ˈɛ v ɪ ŋ
 bewail|b ᵻ w ˈeɪ l
@@ -7411,6 +7474,7 @@ bihone|b aɪ h ˈoʊ n
 biio|b ˈɪ  ɪ  ˌoʊ
 bijoy|b ˈɪ dʒ ɔɪ
 bike|b ˈaɪ k
+bikeand|b ˈaɪ k æ n d
 bikes|b ˈaɪ k s
 bikewalkkc|b aɪ k w ˈɔː k k
 bilal|b ˈɪ l əl
@@ -7537,6 +7601,7 @@ birna's|b ˈɜː n ə z
 birokeraasi|b aɪ ɹ ˈoʊ k ɹ ɑː s i
 birowe|b aɪ ɹ ˈoʊ
 birowoce|b aɪ ɹ ˈoʊ oʊ s
+birra|b ˈɜː ɹ ə
 birria|b ˈɜː ɹ i  ə
 birrong|b ˈɜː ɹ ɔ ŋ
 birth|b ˈɜː θ
@@ -7562,6 +7627,7 @@ bishopric|b ˈɪ ʃ ə p ɹ ˌɪ k
 bisina|b aɪ s ˈɪ n ə
 biskra|b ˈɪ s k ɹ ə
 biskupic|b aɪ s k j ˈuː p ɪ k
+bisogno|b aɪ s ˈɑː ɡ n oʊ
 bissaka|b ɪ s ˈɑː k ə
 bissau|b ˈɪ s aʊ
 bit|b ˈɪ t
@@ -7592,6 +7658,8 @@ bitid|b ˈɪ ɾ ɪ d
 bitiding|b aɪ t ˈaɪ d ɪ ŋ
 bitin'|b ˈɪ t ɪ n
 biting|b ˈaɪ ɾ ɪ ŋ
+bititch|b ˈɪ ɾ ɪ tʃ
+bitits|b ɪ t ˈiː t s
 bitrium|b ˈɪ t ɹ iə m
 bits|b ˈɪ t s
 bitshares|b ˈɪ t ʃ ɛɹ z
@@ -7628,6 +7696,7 @@ bjp|b ˌiː dʒ ˌeɪ p ˈiː
 bjp's|b ˌiː dʒ ˈeɪ p ˈiː z
 bjr|b ˌiː dʒ ˌeɪ ˈɑːɹ
 bk|b ˌiː k ˈeɪ
+bke|b ˌiː k ˌeɪ ˈiː
 bkeards|b ˈiː k ˈɪɹ d z
 bkla|b ˈiː k l ˈɑː
 bl|b ˌiː  ˈɛ l
@@ -7822,6 +7891,7 @@ blittering|b l ˈɪ ɾ ɚ ɹ ɪ ŋ
 blizzard's|b l ˈɪ z ɚ d z
 bll|b ˌiː  ˌɛ l ˈɛ l
 blllist|b ˌiː  ˈɛ l l ˈɪ s t
+bllover|b ˈiː l ˈʌ v ɚ
 blls|b ˌiː  ˌɛ l ˌɛ l ˈɛ s
 blm|b ˌiː  ˌɛ l ˈɛ m
 blm's|b ˌiː  ˌɛ l ˈɛ m z
@@ -8128,6 +8198,7 @@ bonede|b ˈoʊ n d
 bonemold|b ˈoʊ n m oʊ l d
 bones|b ˈoʊ n z
 boneset|b ˈoʊ n s ɛ t
+boness|b ˈoʊ n ə s
 bonettis|b ˈoʊ n t i z
 bonewalkers|b ˈoʊ n w ɔː k ɚ z
 boneyard|b ˈoʊ n j ɑːɹ d
@@ -8227,6 +8298,7 @@ borede|b ˈoːɹ d
 boredo|b ˈoːɹ d oʊ
 borgas|b ˈoːɹ ɡ ə z
 borged|b ˈoːɹ dʒ d
+borghese|b ˈoːɹ ɡ iː z
 borgias|b ˈoːɹ dʒ ə z
 borgne|b ˈoːɹ ɡ n i
 bori|b ˈɔː ɹ i
@@ -8492,10 +8564,12 @@ brandis'|b ɹ ˈæ n d i z
 brandlive|b ɹ ˈæ n d l ɪ v
 brandon|b ɹ ˈæ n d ə n
 brandr|b ɹ ˈæ n d ɚ
+brandwho|b ɹ ˈæ n d h uː
 brandy|b ɹ ˈæ n d i
 brandy's|b ɹ ˈæ n d i z
 branwen|b ɹ ˈæ n w ə n
 brashly|b ɹ ˈæ ʃ l i
+brasile|b ɹ ˈæ s aɪ l
 brass|b ɹ ˈæ s
 brass's|b ɹ ˈæ s ᵻ z
 brassil|b ɹ ˈæ s əl
@@ -8559,6 +8633,7 @@ breakfasting|b ɹ ˈɛ k f ə s t ɪ ŋ
 breakin|b ɹ ˈeɪ k ɪ n
 breakin'|b ɹ ˈeɪ k ɪ n
 breaking|b ɹ ˈeɪ k ɪ ŋ
+breakking|b ɹ ˈeɪ k ɪ ŋ
 breakout|b ɹ ˈeɪ k aʊ t
 breaks|b ɹ ˈeɪ k s
 breakthrough|b ɹ ˈeɪ k θ ɹ uː
@@ -8625,6 +8700,7 @@ brequet|b ɹ ˈɛ k eɪ
 breress|b ɹ ˈɛ ɹ ə s
 brereton|b ɹ ˈɛ ɹ ɛ t ə n
 breriars|b ɹ ˈɪ ɹ i  ˌɑːɹ z
+breright|b ɹ ˈɛ ɹ aɪ t
 brerithe|b ɹ ˈɛ ɹ aɪ ð
 brerow|b ɹ ˈɛ ɹ oʊ
 bresoth|b ɹ ˈɛ s ɑː θ
@@ -9139,6 +9215,7 @@ bunyan's|b ˈʌ n j ə n z
 bunyangabu|b ʌ n j ˈɑː ŋ ˈɑː b uː
 bunye|b ˈʌ n aɪ
 bunyoro|b ˌʌ n ɪ  ˈoː ɹ oʊ
+buona|b j uː ˈoʊ n ə
 buoyantly|b ˈɔɪ ə n t l i
 buoyed|b ˈɔɪ d
 bupd|b ˈʌ p d
@@ -9234,6 +9311,7 @@ bushido|b ʊ ʃ ˈiː d oʊ
 bushiri|b ʊ ʃ ˈiə ɹ i
 bushland|b ˈʊ ʃ l ə n d
 bushmeat|b ˈʊ ʃ m iː t
+bushshe|b ˈʊ ʃ ʃ
 bushu|b ˈʊ ʃ uː
 bushwick|b ˈʊ ʃ w ɪ k
 bushwood|b ˈʊ ʃ w ʊ d
@@ -9253,6 +9331,7 @@ bust|b ˈʌ s t
 bustled|b ˈʌ s əl d
 bustles|b ˈʌ s əl z
 busulfan|b j ˈuː s ʌ l f ə n
+busust|b j ˈuː s ʌ s t
 busy|b ˈɪ z i
 busybody|b ˈɪ z ɪ b ˌɑː d i
 busying|b ˈɪ z i  ɪ ŋ
@@ -9266,6 +9345,7 @@ butchered|b ˈʊ tʃ ɚ d
 butchers|b ˈʊ tʃ ɚ z
 butchers'|b ˈʊ tʃ ɚ z
 butchie|b ˈʊ tʃ i
+butck|b ˈʌ t k
 butden|b ˈʌ t d ə n
 bute|b j ˈuː t
 butel|b j ˈuː ɾ əl
@@ -9373,6 +9453,10 @@ byutv|b ˈaɪ  ə t ˌiː v iː
 byy|b ˈaɪ i
 bzzzt|b ˌiː z ˌiː z ˈiː z ˌiː t ˈiː
 c|s ˈiː
+c'|s ˈiː
+c'e|s ˈiː  ˈɛ
+c'era|s ˈiː  ˈiə ɹ ə
+c'erano|s ˈiː  ə ɹ ˈɑː n oʊ
 c'marie|s ˈiː m ɚ ɹ ˈaɪ
 c'mere|s ˈiː m ˈɪɹ
 c'mooon|s ˈiː m ˈuː ɑː n
@@ -9562,6 +9646,7 @@ calling's|k ˈɔː l ɪ ŋ z
 callings|k ˈɔː l ɪ ŋ z
 callipers|k ˈæ l ɪ p ɚ z
 callisto|k æ l ˈɪ s t oʊ
+callol|k ˈæ l ɑː l
 callonetta|k ˌæ l oʊ n ˈɛ ɾ ə
 calls|k ˈɔː l z
 callumn|k ˈæ l ʌ m
@@ -9586,6 +9671,7 @@ cam|k ˈæ m
 cam'll|k ˈæ m əl
 camas|k ˈɑː m ə z
 camberwell|k ˈæ m b ɚ w ˌɛ l
+cambiali|k ˌæ m b ɪ  ˈɑː l i
 camborne|k ˈæ m b oːɹ n
 cambray|k ˈæ m b ɹ eɪ
 cambric|k ˈæ m b ɹ ɪ k
@@ -9609,6 +9695,7 @@ camest|k ˈeɪ m ɪ s t
 camila|k æ m ˈɪ l ə
 camilla's|k æ m ˈɪ l ə z
 camlet|k ˈæ m l ɪ t
+cammina|k ˈæ m ɪ n ə
 camo|k ˈɑː m oʊ
 camopi|k æ m ˈoʊ p i
 camoran's|k ˈæ m oː ɹ ə n z
@@ -9628,6 +9715,7 @@ campbellton|k ˈæ m p b ɛ l t ə n
 campbelltown|k ˈæ m b ə l t ˌaʊ n
 campfooge|k ˈæ m p f uː dʒ
 camphor|k ˈæ m f ɚ
+campiani|k ˈæ m p iə n i
 camping|k ˈæ m p ɪ ŋ
 camps|k ˈæ m p s
 campsite's|k ˈæ m p s aɪ t z
@@ -9641,6 +9729,8 @@ camryn|k ˈæ m ɹ ɪ n
 cams|k ˈæ m z
 can|k ˈæ n
 can'|k ˈæ n
+can'believe|k ˈæ n b ᵻ l ˌiː v
+can'bet|k ˈæ n b ɪ t
 can'p|k ˈæ n p
 can'see|k ˈæ n s iː
 can't|k ˈæ n t
@@ -9750,6 +9840,7 @@ canu|k ˈɑː n uː
 canute|k ˈæ n uː t
 canvas|k ˈæ n v ə s
 canwe|k ˈæ n w i
+canyou|k ˈæ n ɪ  ˌuː
 caoimhe|k ˈiː v ə
 cap|k ˈæ p
 capa|k ˈɑː p ə
@@ -9766,12 +9857,14 @@ caparisons|k ˈæ p ɐ ɹ ˌɪ s ə n z
 capatitalism|k ˈæ p ɐ t ˌɪ ɾ ə l ˌɪ z ə m
 capering|k ˈeɪ p ɚ ɹ ɪ ŋ
 capias|k ˈeɪ p iə z
+capire|k ˈæ p aɪɚ
 capit|k ˈæ p ɪ t
 capital|k ˈæ p ɪ ɾ əl
 capitalise|k ˈæ p ɪ ɾ ə l ˌaɪ z
 capitalization|k ˌæ p ɪ ɾ ə l ᵻ z ˈeɪ ʃ ə n
 capitalized|k ˈæ p ɪ ɾ əl ˌaɪ z d
 capitally|k ˈæ p ɪ ɾ əl i
+capiti|k æ p ˈiː ɾ i
 capitulations|k ɐ p ˈɪ tʃ ʊ l ˈeɪ ʃ ə n z
 capless|k ˈæ p l ə s
 capons|k ˈeɪ p ɑː n z
@@ -10304,6 +10397,7 @@ celebrity|s ə l ˈɛ b ɹ ᵻ ɾ i
 celedaen|s ˈɛ l ɪ d ˌiː n
 celeme|s ˈɛ l iː m
 celeste's|s ə l ˈɛ s t s
+celesti|s ə l ˈɛ s t i
 celestia|s ə l ˈɛ s tʃ ə
 celestials|s ə l ˈɛ s t j əl z
 celgene|s ˈɛ l dʒ iː n
@@ -10391,6 +10485,7 @@ cerb|s ˈɜː b
 cerberus|s ˈɜː b ɚ ɹ ə s
 cerberus's|s ˈɜː b ɚ ɹ ə s ᵻ z
 cerbin|s ˈɜː b ɪ n
+cercato|s ɜː k ˈɑː ɾ oʊ
 cerebellum|s ˌɛ ɹ ɪ b ˈɛ l ə m
 cerebrospinal|s ɚ ɹ ˌiː b ɹ ə s p ˈaɪ n əl
 cerebrum|s ɚ ɹ ˈiː b ɹ ə m
@@ -10404,6 +10499,7 @@ ceremony's|s ˈɛ ɹ ᵻ m ə n i z
 cerotaa|s ˈɛ ɹ oʊ t ˌɑː
 cerrone's|s ˈɛ ɹ oʊ n z
 cersei|s ˈɜː s eɪ
+certa|s ˈɜː ɾ ə
 certain|s ˈɜː ʔ n̩
 certainarchgy|s ˈɜː t ə n ˌɑːɹ tʃ dʒ i
 certainly|s ˈɜː ʔ n̩ l i
@@ -10452,6 +10548,7 @@ chaanaa|tʃ ˈɑː n ɑː
 chaanu|tʃ ˈɑː n uː
 chaare|tʃ ˈɑːɹ
 chaarinate|tʃ ˈɑːɹ ɹ ᵻ n ˌeɪ t
+chaaseto|tʃ ɑː s ˈiː ɾ oʊ
 chaate|tʃ ˈɑː t
 chaawataa|tʃ ˈɑː w ɐ t ˌɑː
 chaawatawe|tʃ ˈɑː w ɐ t ˌɔː
@@ -10809,6 +10906,7 @@ cheiff|tʃ ˈeɪ f
 cheikh|tʃ ˈeɪ k
 cheill|tʃ ˈeɪ l
 cheious|tʃ ˈeɪ ə s
+cheit|tʃ ˈaɪ t
 cheke|tʃ ˈiː k
 chelamaa|tʃ ˈɛ l ɐ m ˌɑː
 chelsea|tʃ ˈɛ l s iː
@@ -10890,6 +10988,8 @@ chhota|s ˌiː  ˈeɪ tʃ h ˈoʊ ɾ ə
 chi|k ˈaɪ
 chi's|k ˈaɪ z
 chiagkouris|tʃ ˈaɪ ə ɡ k ˌuː ɹ ɪ s
+chiama|tʃ ˈaɪ ə m ə
+chiamato|tʃ ˌaɪ ə m ˈɑː ɾ oʊ
 chiaroscuro|tʃ ˌaɪɚ ɹ ə s k j ˈʊɹ ɹ oʊ
 chiarot|tʃ ˈaɪɚ ɹ ɑː t
 chiaverini|tʃ ˌaɪ ə v ɚ ɹ ˈiː n i
@@ -10927,6 +11027,7 @@ chieftainship|tʃ ˈiː f t ə n ʃ ˌɪ p
 chieftan|tʃ ˈiː f t ə n
 chieften|tʃ ˈiː f ə n
 chiengi|tʃ ˈiː ŋ ɡ i
+chiero|tʃ ˈɪ ɹ oʊ
 chifundo|tʃ ɪ f ˈʌ n d oʊ
 chihards|tʃ ˈɪ h ɑːɹ d z
 chihepo|tʃ ɪ h ˈiː p oʊ
@@ -11140,6 +11241,7 @@ choudry|tʃ ˈaʊ d ɹ i
 chouhan|tʃ ˈaʊ h æ n
 chouhan's|tʃ ˈaʊ h æ n z
 choules|tʃ ˈuː l z
+choump|tʃ j ˈuː m p
 choupannejad|tʃ ˈuː p ɐ n ˌɛ dʒ æ d
 chowing|tʃ ˈaʊ ɪ ŋ
 chowk|tʃ ˈaʊ k
@@ -11289,6 +11391,8 @@ cindiri|s ɪ n d ˈiə ɹ i
 cine|s ˈɪ n
 cinemablend|s ˈɪ n ɪ m ˌeɪ b əl n d
 cinemagoers|s ˈɪ n ɪ m ˌæ ɡ oʊ ɚ z
+cinematografico|s ˌɪ n ɪ m ˌæ ɾ ə ɡ ɹ ˈæ f ɪ k ˌoʊ
+cinemino|s ˌɪ n ɪ m ˈiː n oʊ
 cinent|s ˈɪ n ə n t
 cineplexes|s ˈɪ n ɪ p l ˌɛ k s ᵻ z
 cingor|s ˈɪ ŋ ɡ ɚ
@@ -11503,6 +11607,7 @@ claws'|k l ˈɔː z
 claws'll|k l ˈɔː z əl
 clay|k l ˈeɪ
 claytop|k l ˈeɪ t ɑː p
+clck|s ˌiː  ˌɛ l s ˌiː k ˈeɪ
 cle|k l ˈiː
 clean|k l ˈiː n
 cleancutness|k l ˈiː ŋ k ʌ t n ə s
@@ -11806,6 +11911,7 @@ cocoa|k ˈoʊ k oʊ
 cocoanut|k ˈoʊ k oʊ n ˌʌ t
 cocobod|k ˈɑː k ə b ˌɑː d
 cocodrie|k ˈɑː k ɑː d ɹ i
+cocolato|k ˌɑː k ə l ˈɑː ɾ oʊ
 cocopeat|k ˈɑː k oʊ p ˌæ t
 codam|k ˈoʊ d ə m
 coddiac|k ˈɑː d i  ˌæ k
@@ -11838,6 +11944,7 @@ coexists|k ˌoʊ ɛ ɡ z ˈɪ s t s
 cof|k ˈɑː f
 cofelice|k ˈoʊ f l ɪ s
 coffee|k ˈɔ f i
+coffeeand|k ˈɔ f i  ˌæ n d
 coffers|k ˈɑː f ɚ z
 coffers're|k ˈɔ f ɚ z ɚ
 coffins|k ˈɔ f ɪ n z
@@ -11882,6 +11989,7 @@ col|k ˈɑː l
 colac|k ˈɑː l æ k
 colada|k ə l ˈɑː d ə
 colaron|k ˈoʊ l æ ɹ ə n
+colato|k ə l ˈɑː ɾ oʊ
 colbert|k ˈoʊ l b ɚ t
 colbert's|k ˈoʊ l b ɚ t s
 colbourne|k ˈoʊ l b oːɹ n
@@ -11911,6 +12019,7 @@ colicchio's|k ə l ˈɪ k ɪ  ˌoʊ z
 colin'|k ˈɑː l ɪ n
 colin's|k ˈɑː l ɪ n z
 colitis|k ə l ˈaɪ ɾ ɪ s
+colizzi|k ə l ˈɪ z i
 collaborates|k ə l ˈæ b ɚ ɹ ˌeɪ t s
 collapse|k ə l ˈæ p s
 collapsed|k ə l ˈæ p s t
@@ -11923,6 +12032,7 @@ collated|k ˈoʊ l eɪ ɾ ᵻ d
 collateral|k ə l ˈæ ɾ ɚ ɹ əl
 collates|k ˈoʊ l eɪ t s
 collation|k ə l ˈeɪ ʃ ə n
+collato|k ə l ˈɑː ɾ oʊ
 colleagues|k ˈɑː l iː ɡ z
 collecteth|k ə l ˈɛ k t ə θ
 collectin'|k ə l ˈɛ k t ɪ n
@@ -11939,9 +12049,12 @@ college|k ˈɑː l ɪ dʒ
 collegemoved|k ˈɑː l ɪ dʒ ˌɛ m uː v d
 collegians|k ə l ˈiː dʒ ə n z
 collegium|k ə l ˈiː dʒ ə m
+collegna|k ˈɑː l ɛ ɡ n ə
 collie's|k ˈɑː l i z
 collied|k ˈɑː l i d
 collieries|k ˈɑː l ɪ  ɚ ɹ i z
+collina|k ə l ˈiː n ə
+collineo|k ˈɑː l aɪ n ɪ  ˌoʊ
 collingwood's|k ˈɑː l ɪ ŋ w ˌʊ d z
 collins'|k ˈɑː l ᵻ n z
 collision|k ə l ˈɪ ʒ ə n
@@ -11949,6 +12062,7 @@ collocations|k ˌɑː l oʊ k ˈeɪ ʃ ə n z
 colloquialism|k ə l ˈoʊ k w ɪ  ə l ˌɪ z ə m
 colloquially|k ə l ˈoʊ k w ɪ  əl i
 colloquies|k ˈɑː l ə k w ˌɪ z
+colloquio|k ə l ˈoʊ k w ɪ  ˌoʊ
 collosus|k ˈɑː l ɑː s ə s
 collusion|k ə l ˈuː ʒ ə n
 colom|k ˈɑː l ə m
@@ -11973,6 +12087,7 @@ colorway|k ˈʌ l ɚ w ˌeɪ
 colorways|k ˈʌ l ɚ w ˌeɪ z
 colos|k ˈoʊ l oʊ z
 colossal|k ə l ˈɔ s əl
+colosseo|k ə l ɔ s ˈeɪ oʊ
 colossus'|k ə l ˈɔ s ə s
 colossus's|k ə l ˈɔ s ə s ᵻ z
 colour|k ˈʌ l ɚ
@@ -12050,6 +12165,11 @@ comicbook|k ˈɑː m ɪ k b ˌʊ k
 comics|k ˈɑː m ɪ k s
 comics'|k ˈɑː m ɪ k s
 comin'|k ˈɑː m ɪ n
+cominciamo|k ˌɑː m ɪ n s ˈɪ  ə m ˌoʊ
+cominciarono|k ˌɑː m ɪ n s aɪɚ ɹ ˈoʊ n oʊ
+cominciato|k ˌɑː m ɪ n s ɪ  ˈɑː ɾ oʊ
+cominciavo|k ˌɑː m ɪ n s ɪ  ˈɑː v oʊ
+comincio|k ɑː m ˈɪ n s ɪ  ˌoʊ
 coming|k ˈʌ m ɪ ŋ
 comitting|k ˈɑː m ɪ ɾ ɪ ŋ
 comjoyful|k ə m dʒ ˈɔɪ f əl
@@ -12085,6 +12205,7 @@ commercialization|k ə m ˌɜː ʃ əl ᵻ z ˈeɪ ʃ ə n
 commercializes|k ə m ˈɜː ʃ əl ˌaɪ z ᵻ z
 commes|k ə m ˈɛ z
 comminations|k ɑː m ᵻ n ˈeɪ ʃ ə n z
+commiser|k ə m ˈaɪ z ɚ
 commiserated|k ə m ˈɪ s ɚ ɹ ˌeɪ ɾ ᵻ d
 commiseratingly|k ə m ˈɪ s ɚ ɹ ˌeɪ ɾ ɪ ŋ l i
 commiseration|k ə m ˌɪ s ɚ ɹ ˈeɪ ʃ ə n
@@ -12185,6 +12306,7 @@ compatible|k ə m p ˈæ ɾ ᵻ b əl
 compatriot|k ə m p ˈeɪ t ɹ ɪ  ə t
 compbarely|k ə m p b ˈɛɹ l i
 compecky|k ə m p ˈɛ k i
+comped|k ˈɑː m p t
 compeer|k ə m p ˈɪɹ
 compeers|k ə m p ˈɪɹ z
 compeesza|k ə m p ˈiː s z ə
@@ -12363,6 +12485,7 @@ conditioning|k ə n d ˈɪ ʃ ə n ɪ ŋ
 conditions|k ə n d ˈɪ ʃ ə n z
 conditions'|k ə n d ˈɪ ʃ ə n z
 conditions're|k ə n d ˈɪ ʃ ə n z ɚ
+condiviso|k ɑː n d ᵻ v ˈaɪ z oʊ
 condole|k ə n d ˈoʊ l
 condoled|k ə n d ˈoʊ l d
 condottieri|k ˈɑː n d ə t ˌɪ ɹ i
@@ -12473,6 +12596,7 @@ connected|k ə n ˈɛ k t ᵻ d
 connectedly|k ə n ˈɛ k t ᵻ d l i
 connectedness|k ə n ˈɛ k t ᵻ d n ə s
 connection|k ə n ˈɛ k ʃ ə n
+conneexerc|k ə n ˈiː k s ɜː k
 conneive|k ə n ˈiː v
 connellan|k ə n ˈɛ l ə n
 connemara|k ɑː n ɪ m ˈɑːɹ ɹ ə
@@ -12482,6 +12606,7 @@ connived|k ə n ˈaɪ v d
 connives|k ə n ˈaɪ v z
 connoisseurship|k ˌɑː n ə s ˈʊɹ ʃ ɪ p
 cononico|k ə n ˈɑː n ɪ k ˌoʊ
+conosceva|k ə n ˈɑː s ɛ v ə
 conpssule|k ə n p s j ˈuː l
 conqueer|k ɑː ŋ k w ˈɪɹ
 conquer|k ˈɑː ŋ k ɚ
@@ -12584,6 +12709,7 @@ construction|k ə n s t ɹ ˈʌ k ʃ ə n
 constructs'll|k ə n s t ɹ ˈʌ k t s əl
 construing|k ə n s t ɹ ˈuː ɪ ŋ
 constt|k ˈɑː n s t
+consuetudine|k ə n s ˈuː ɾ uː d ˌiː n
 consul's|k ˈɑː n s əl z
 consulate|k ˈɑː n s j ʊ l ə t
 consule|k ˈɑː n s j uː l
@@ -12607,6 +12733,7 @@ containers|k ə n t ˈeɪ n ɚ z
 containing|k ə n t ˈeɪ n ɪ ŋ
 contaminations|k ə n t ˌæ m ᵻ n ˈeɪ ʃ ə n z
 contangions|k ə n t ˈæ ŋ ɡ ə n z
+contatto|k ə n t ˈæ ɾ oʊ
 conte's|k ˈɑː n t z
 conteacts|k ə n t ˈiː k t s
 contemned|k ə n t ˈɛ m d
@@ -12636,6 +12763,7 @@ contingence|k ə n t ˈɪ n dʒ ə n s
 contingency|k ə n t ˈɪ n dʒ ə n s i
 continuae|k ə n t ˈɪ n j uː ˌiː
 continuations|k ə n t ˌɪ n j uː ˈeɪ ʃ ə n z
+continuato|k ə n t ˌɪ n j uː ˈɑː ɾ oʊ
 continue|k ə n t ˈɪ n j uː
 continued|k ə n t ˈɪ n j uː d
 continues|k ə n t ˈɪ n j uː z
@@ -12644,6 +12772,7 @@ continuin'|k ə n t ˈɪ n j uː ˌɪ n
 continuing|k ə n t ˈɪ n j uː ɪ ŋ
 continuities|k ɑː n t ɪ n j ˈuː ᵻ ɾ i z
 continuous|k ə n t ˈɪ n j uː ə s
+conto|k ˈɑː n t oʊ
 contouring|k ˈɑː n t ʊɹ ɹ ɪ ŋ
 contract|k ˈɑː n t ɹ æ k t
 contractile|k ə n t ɹ ˈæ k t aɪ l
@@ -12655,6 +12784,7 @@ contradictory|k ˌɑː n t ɹ ə d ˈɪ k t ɚ ɹ i
 contradistinction|k ˌɑː n t ɹ ə d ɪ s t ˈɪ ŋ k ʃ ə n
 contradistinguished|k ˌɑː n t ɹ ə d ɪ s t ˈɪ ŋ ɡ w ɪ ʃ t
 contraire|k ˌɑː n t ɹ ə ˈaɪɚ
+contraria|k ˌɑː n t ɹ ɚ ɹ ˈiə
 contraries|k ˈɑː n t ɹ ɛ ɹ i z
 contrary|k ˈɑː n t ɹ ɛ ɹ i
 contreras'|k ˈɑː n t ɹ ɚ ɹ ə z
@@ -12745,6 +12875,7 @@ coob|k ˈuː b
 coober|k ˈuː b ɚ
 coocian|k ˈuː ʃ iə n
 coodde|k ˈuː d
+cooffid|k ˈuː f ɪ d
 coofpby|k ˈuː f p b i
 cooger|k ˈuː ɡ ɚ
 coogler's|k ˈuː ɡ l ɚ z
@@ -12778,6 +12909,7 @@ coonene|k ˈuː n iː n
 cooperate|k oʊ ˈɑː p ɚ ɹ ˌeɪ t
 cooperating|k oʊ ˈɑː p ɚ ɹ ˌeɪ ɾ ɪ ŋ
 cooperation|k oʊ ˈɑː p ɚ ɹ ˈeɪ ʃ ə n
+cooperativa|k oʊ ˈɑː p ɚ ɹ ˌæ ɾ ɪ v ə
 cooperative|k oʊ ˈɑː p ɚ ɹ ə t ˌɪ v
 coops|k ˈuː p s
 coordin|k oʊ ˈɔːɹ d ɪ n
@@ -12799,7 +12931,10 @@ copiousness|k ˈoʊ p iə s n ə s
 copos|k ˈoʊ p oʊ z
 copper|k ˈɑː p ɚ
 copperbelt|k ˈɑː p ɚ b ˌɛ l t
+coppi|k ˈɑː p i
+coppia|k ˈɑː p i  ə
 coppice|k ˈɑː p ɪ s
+coppie|k ˈɑː p i
 coppointed|k ˈɑː p ɔɪ n t ᵻ d
 copse|k ˈɑː p s
 copungoes|k ə p ˈʌ ŋ ɡ oʊ z
@@ -12818,6 +12953,8 @@ coquettishly|k ə k ˈɛ ɾ ɪ ʃ l i
 coquitlam|k ˈɑː k w ɪ t l ˌæ m
 cor|k ˈoːɹ
 coracles|k ˈɔː ɹ ə k əl z
+coract|k ˈɔː ɹ æ k t
+coraggioso|k ˌɔː ɹ ɐ ɡ ɪ  ˈoʊ s oʊ
 coranotto|k ˌɔː ɹ ɐ n ˈɑː ɾ oʊ
 corardds|k ˈɔː ɹ ɑːɹ d z
 corarreans|k ˈɔː ɹ ɐ ɹ ˌiə n z
@@ -13020,6 +13157,8 @@ costco's|k ˈɔ s t k oʊ z
 costelloe|k ˈɔ s t ɪ l ˌoʊ
 costless|k ˈɔ s t l ə s
 costliness|k ˈɔ s t l i n ə s
+costruire|k ˈɔ s t ɹ uː ˌaɪɚ
+costruiva|k ˈɔ s t ɹ uː ˌɪ v ə
 costs|k ˈɔ s t s
 costume|k ˈɔ s t uː m
 costumes|k ˈɔ s t uː m z
@@ -13397,6 +13536,7 @@ creos|k ɹ ɪ  ˈoʊ z
 creree|k ɹ ˈɛ ɹ iː
 crerenades|k ɹ ˈɛ ɹ ə n ˌeɪ d z
 crescent|k ɹ ˈɛ s ə n t
+crescere|k ɹ ɛ s ˈɪɹ
 crescius|k ɹ ˈɛ s ɪ  ə s
 crescius's|k ɹ ˈɛ s ɪ  ə s ᵻ z
 crespi's|k ɹ ˈɛ s p i z
@@ -13405,6 +13545,7 @@ crestie|k ɹ ˈɛ s t i
 crestron|k ɹ ˈɛ s t ɹ ɑː n
 crete|k ɹ ˈiː t
 crete's|k ɹ ˈiː t s
+cretino|k ɹ ɛ t ˈiː n oʊ
 cretins|k ɹ ˈiː ʔ n̩ z
 creus|k ɹ ˈuː z
 crevasses|k ɹ ˈɛ v ə s ᵻ z
@@ -13451,6 +13592,7 @@ cringeworthy|k ɹ ˈɪ n dʒ j uː ˌɜː ð i
 crinkled|k ɹ ˈɪ ŋ k əl d
 crinkling|k ɹ ˈɪ ŋ k l ɪ ŋ
 crino|k ɹ ˈiː n oʊ
+cripp|k ɹ ˈɪ p
 crippen|k ɹ ˈɪ p ə n
 cripple|k ɹ ˈɪ p əl
 crisis|k ɹ ˈaɪ s ɪ s
@@ -13684,6 +13826,7 @@ cublahan's|k ˈʌ b l ɐ h ˌæ n z
 cubs|k ˈʌ b z
 cuccioli|k ˌuː tʃ ɪ  ˈoʊ l i
 cuckold|k ˈʌ k oʊ l d
+cucurro|k j uː k ˈɜː ɹ oʊ
 cud|k ˈʌ d
 cuddler|k ˈʌ d l ɚ
 cuddy|k ˈʌ d i
@@ -13780,6 +13923,7 @@ curin'|k j ˈʊɹ ɹ ɪ n
 curing|k j ˈʊɹ ɹ ɪ ŋ
 curiosity|k j ˌʊɹ ɹ ɪ  ˈɔ s ᵻ ɾ i
 curiosity's|k j ˌʊɹ ɹ ɪ  ˈɔ s ᵻ ɾ i z
+curioso|k j ˌʊɹ ɹ ɪ  ˈoʊ s oʊ
 curious|k j ˈʊɹ ɹ iə s
 curioushow|k j ˈʊɹ ɹ iə s h ˌoʊ
 curl|k ˈɜː l
@@ -14071,10 +14215,12 @@ dad'|d ˈæ d
 dad'd|d ˈæ d d
 dadar|d ˈæ d ɑːɹ
 daddy|d ˈæ d i
+daddyhe|d ˈæ d ɪ h
 dade|d ˈeɪ d
 dadekotopon|d ˈeɪ d k ə t ˌɑː p ɑː n
 dadgummed|d ˈæ d ɡ ʌ m d
 dadis|d ˈæ d i z
+dadting|d ˈæ ɾ ɪ ŋ
 dadu|d ˈɑː d uː
 daduut|d ˈæ d uː t
 daedra|d ˈiː d ɹ ə
@@ -14526,6 +14672,7 @@ dauten|d ˈɔː ʔ n̩
 dauterman|d ˈɔː ɾ ɚ m ə n
 davacre|d ˈæ v æ k ɚ
 davante|d æ v ˈɑː n t eɪ
+davanti|d ˈæ v æ n t i
 dave|d ˈeɪ v
 daven|d ˈæ v ə n
 david|d ˈeɪ v ɪ d
@@ -14579,6 +14726,7 @@ db|d ˌiː b ˈiː
 dba|d ˌiː b ˌiː  ˈeɪ
 dbb|d ˌiː b ˌiː b ˈiː
 dbj|d ˌiː b ˌiː dʒ ˈeɪ
+dble|d ˈiː b l ˈiː
 dbmr|d ˌiː b ˌiː  ˌɛ m ˈɑːɹ
 dbo's|d ˈiː b ˈoʊ z
 dbpsshit|d ˌiː b ˌiː p ˌiː  ˈɛ s ʃ ˈɪ t
@@ -14762,6 +14910,7 @@ december|d ᵻ s ˈɛ m b ɚ
 decencies|d ˈiː s ə n s i z
 decending|d ᵻ s ˈɛ n d ɪ ŋ
 decent|d ˈiː s ə n t
+decente|d ᵻ s ˈɛ n t
 decenter|d ᵻ s ˈɛ n t ɚ
 decentius|d ᵻ s ˈɛ n t ɪ  ə s
 decently|d ˈiː s ə n t l i
@@ -14773,8 +14922,10 @@ decid|d ᵻ s ˈɪ d
 decide|d ᵻ s ˈaɪ d
 decided|d ᵻ s ˈaɪ d ᵻ d
 decidedly|d ᵻ s ˈaɪ d ɪ d l i
+decidi|d ᵻ s ˈɪ d i
 decieve|d ᵻ s ˈiː v
 decieving|d ᵻ s ˈiː v ɪ ŋ
+decine|d ᵻ s ˈiː n
 decipherable|d ᵻ s ˈaɪ f ɚ ɹ ə b əl
 decipherers|d ᵻ s ˈaɪ f ɚ ɹ ɚ z
 deciphers|d ᵻ s ˈaɪ f ɚ z
@@ -14829,6 +14980,7 @@ decryptify|d ᵻ k ɹ ˈɪ p t ᵻ f ˌaɪ
 decryption|d ᵻ k ɹ ˈɪ p ʃ ə n
 dectves|d ᵻ k t v ˈɛ z
 decypher|d ᵻ s ˈɪ f ɚ
+dedad|d ˈɛ d æ d
 dedication|d ˌɛ d ɪ k ˈeɪ ʃ ə n
 deducing|d ᵻ d ˈuː s ɪ ŋ
 deductible|d ᵻ d ˈʌ k t ᵻ b əl
@@ -15166,6 +15318,7 @@ denied|d ᵻ n ˈaɪ d
 denier|d ᵻ n ˈaɪɚ
 deniers|d ᵻ n ˈaɪɚ z
 deniest|d ᵻ n ˈaɪ ɪ s t
+deniny|d ˈɛ n ɪ n i
 denis|d ˈɛ n i z
 denison|d ˈɛ n ɪ s ə n
 denji|d ˈɛ n dʒ i
@@ -15406,6 +15559,7 @@ destine|d ˈɛ s t ɪ n
 destines|d ˈɛ s t ɪ n z
 destiny|d ˈɛ s t ɪ n i
 destitute|d ˈɛ s t ɪ t ˌuː t
+destro|d ᵻ s t ɹ ˈoʊ
 destroy|d ᵻ s t ɹ ˈɔɪ
 destroy's|d ᵻ s t ɹ ˈɔɪ z
 destroyed|d ᵻ s t ɹ ˈɔɪ d
@@ -15465,6 +15619,7 @@ detroit|d ɪ t ɹ ˈɔɪ t
 dettlaff|d ˈɛ t l æ f
 dettlaff'll|d ˈɛ t l æ f əl
 dettlaff's|d ˈɛ t l æ f s
+detto|d ˈɛ ɾ oʊ
 dettol|d ˈɛ ɾ ɑː l
 dettori|d ɛ t ˈɔː ɹ i
 deubrook|d j ˈuː b ɹ ʊ k
@@ -15628,6 +15783,8 @@ dicationbutidon't|d ɪ k ˈeɪ ʃ ə n b j ˌuː ɾ ɪ d ˌɑː n t
 dice|d ˈaɪ s
 diced|d ˈaɪ s t
 diceicy|d ˈaɪ s ɪ s i
+diceva|d ˈaɪ s v ə
+dicevo|d ˈaɪ s v oʊ
 dick|d ˈɪ k
 dickersons|d ˈɪ k ɚ s ə n z
 dickey|d ˈɪ k i
@@ -15637,6 +15794,8 @@ dickslit|d ˈɪ k s l ɪ t
 dickspurt|d ˈɪ k s p ɜː t
 dickweed|d ˈɪ k w iː d
 dickwipe|d ˈɪ k w aɪ p
+dico|d ˈiː k oʊ
+dicono|d ɪ k ˈoʊ n oʊ
 dictators|d ɪ k t ˈeɪ ɾ ɚ z
 dictionary|d ˈɪ k ʃ ə n ˌɛ ɹ i
 dictums|d ˈɪ k t ə m z
@@ -15669,6 +15828,7 @@ didot|d ˈɪ d ɑː t
 didst|d ˈɪ d s t
 didthe|d ˈɪ d ð
 die|d ˈaɪ
+dieci|d ˈaɪ s aɪ
 died|d ˈaɪ d
 diefenthel|d ˈiː f ɛ n θ əl
 diego|d ɪ  ˈeɪ ɡ oʊ
@@ -15698,6 +15858,7 @@ different'll|d ˈɪ f ɹ ə n t əl
 differently|d ˈɪ f ɹ ə n t l i
 differentlybut|d ˈɪ f ɚ ɹ ˌɛ n t l ɪ b ˌʌ t
 differently…|d ˈɪ f ɹ ə n t l i
+differenza|d ˈɪ f ɚ ɹ ˌɛ n z ə
 difficult|d ˈɪ f ɪ k əl t
 difficulties|d ˈɪ f ɪ k ˌʌ l t i z
 difficultty|d ˈɪ f ɪ k ˌʌ l t i
@@ -15853,6 +16014,7 @@ dipelomaatike|d ˈaɪ p l ə m ˌɑː ɾ aɪ k
 dipelomaato|d ˌaɪ p l ə m ˈɑː ɾ oʊ
 dipelomaatoce|d ˈaɪ p l ə m ˌɑː ɾ oʊ s
 dipelomaatu|d ˈaɪ p l ə m ˌɑː ɾ uː
+dipingere|d ˈɪ p ɪ ŋ ɡ ɚ
 diplatic|d ɪ p l ˈæ ɾ ɪ k
 diploidia|d ɪ p l ˈɔɪ d iə
 diplomacy|d ɪ p l ˈoʊ m ə s i
@@ -15878,6 +16040,7 @@ direful|d ˈaɪɚ f əl
 direfully|d ˈaɪɚ f ə l i
 direly|d ˈaɪɚ l i
 direres|d ˈaɪɚ ɹ ə z
+direttamente|d ˈaɪɚ ɾ ə m ˌɛ n t
 dirge|d ˈɜː dʒ
 diri|d ˈiə ɹ i
 dirlewanger|d ˈɜː l uː ˌæ ŋ ɚ
@@ -15888,6 +16051,7 @@ dirtboy|d ˈɜː t b ɔɪ
 dirty|d ˈɜː ɾ i
 dirtying|d ˈɜː ɾ i  ɪ ŋ
 dirtyits|d ˈɜː t j ɪ t s
+dis|d ˈɪ s
 disa|d ɪ s ˈæ
 disabable|d ˌɪ s ɐ b ˈeɪ b əl
 disaccord|d ˌɪ s ɐ k ˈoːɹ d
@@ -15923,6 +16087,7 @@ disbeliever|d ˌɪ s b ᵻ l ˈiː v ɚ
 disbelieves|d ˌɪ s b ᵻ l ˈiː v z
 disburden|d ɪ s b ˈɜː d ə n
 disburdens|d ɪ s b ˈɜː d ə n z
+disby|d ɪ s b ˈaɪ
 discarded|d ɪ s k ˈɑːɹ d ᵻ d
 discern|d ɪ s ˈɜː n
 discernable|d ɪ s ˈɜː n ə b əl
@@ -16102,6 +16267,7 @@ disporting|d ɪ s p ˈoːɹ ɾ ɪ ŋ
 disposal|d ɪ s p ˈoʊ z əl
 disposed|d ɪ s p ˈoʊ z d
 disposition|d ˌɪ s p ə z ˈɪ ʃ ə n
+disppose|d ɪ s p ˈoʊ z
 disproportionality|d ˌɪ s p ɹ ə p ˌoːɹ ʃ ə n ˈæ l ᵻ ɾ i
 disproportionally|d ˌɪ s p ɹ ə p ˈoːɹ ʃ ə n əl i
 disproportionate|d ˌɪ s p ɹ ə p ˈoːɹ ʃ ə n ə t
@@ -16131,6 +16297,7 @@ dissantry|d ɪ s ˈæ n t ɹ i
 dissapointment|d ɪ s ˈæ p ɔɪ n t m ə n t
 dissatisfied|d ɪ s ˈæ ɾ ɪ s f ˌaɪ d
 dissatisfies|d ɪ s ˈæ ɾ ɪ s f ˌaɪ z
+disse|d ɪ s ˈɛ
 dissecting|d ˈaɪ s ɛ k t ɪ ŋ
 dissemble|d ɪ s ˈɛ m b əl
 dissembled|d ɪ s ˈɛ m b əl d
@@ -16190,6 +16357,7 @@ distresses|d ɪ s t ɹ ˈɛ s ᵻ z
 distributable|d ˈɪ s t ɹ ɪ b j ˌuː ɾ ə b əl
 distribute|d ˈɪ s t ɹ ɪ b j ˌuː t
 distributest|d ˈɪ s t ɹ ɪ b j ˌuː ɾ ɪ s t
+distributori|d ɪ s t ɹ ˈɪ b j uː t ˈɔː ɹ i
 district|d ˈɪ s t ɹ ɪ k t
 districted|d ˈɪ s t ɹ ɪ k t ᵻ d
 districts|d ˈɪ s t ɹ ɪ k t s
@@ -16213,15 +16381,21 @@ disused|d ɪ s j ˈuː z d
 ditch|d ˈɪ tʃ
 ditches|d ˈɪ tʃ ᵻ z
 dithered|d ˈɪ ð ɚ d
+dition|d ˈɪ ʃ ə n
+ditta|d ˈɪ ɾ ə
 div|d ˈɪ v
 diva|d ˈiː v ə
 divalicious|d ˌɪ v ɐ l ˈɪ ʃ ə s
 divans|d ᵻ v ˈæ n z
+diventare|d ˈaɪ v ə n t ˌɛɹ
+diventato|d ˌaɪ v ə n t ˈɑː ɾ oʊ
 diverged|d aɪ v ˈɜː dʒ d
 divers'|d ˈaɪ v ɚ z
+diversi|d aɪ v ˈɜː s i
 diversifies|d aɪ v ˈɜː s ᵻ f ˌaɪ z
 diversion|d aɪ v ˈɜː ʒ ə n
 diversity|d aɪ v ˈɜː s ᵻ ɾ i
+diverso|d aɪ v ˈɜː s oʊ
 diversyfund|d aɪ v ˈɜː s ɪ f ˌʌ n d
 dives's|d ˈaɪ v z ᵻ z
 divide|d ᵻ v ˈaɪ d
@@ -16441,6 +16615,7 @@ dom't|d ˈɑː m t
 domaa|d ə m ˈɑː
 domain|d ə m ˈeɪ n
 domains|d ə m ˈeɪ n z
+domandarvi|d ə m ˈæ n d ɑːɹ v i
 dombo|d ˈɑː m b oʊ
 dombroski|d ə m b ɹ ˈɑː s k i
 dombrovskis|d ə m b ɹ ˈɑː v s k ɪ z
@@ -16467,13 +16642,16 @@ dompoase|d ˈɑː m p oʊ s
 don|d ˈɑː n
 don'|d ˈɑː n
 don'dont|d ˈɑː n d ɔ n t
+don'for|d ˈɑː n f ɚ
 don'll|d ˈɑː n əl
 don'one|d ˈɑː n oʊ n
 don't|d ˈoʊ n t
 don't'|d ˈoʊ n t
 don'tcha|d ˈɑː n t tʃ ə
 don'tdoubt|d ˈɑː n t d aʊ t
+don'tfor|d ˈɑː n t f ɚ
 don'tknow|d ˈɑː n t n oʊ
+don'tlet|d ˈɑː n t l ɪ t
 don'tsee|d ˈɑː n t s iː
 don'tstopf|d ˈɑː n t s t ɑː p f
 don'twant|d ˈɑː n t w ɔ n t
@@ -16508,9 +16686,11 @@ dongwon|d ˈɑː ŋ w ʌ n
 donimir|d ˈɑː n ɪ m ˌɪɹ
 donk's|d ˈɔ ŋ k s
 donkey|d ˈɔ ŋ k i
+donman|d ˈɑː n m ə n
 donmez|d ˈɑː n m ɛ z
 donnel|d ˈɑː n əl
 donnot|d ˈɑː n ɑː t
+donomme|d ˈɑː n ɑː m
 donor|d ˈoʊ n ɚ
 donors'|d ˈoʊ n ɚ z
 donowitz|d ˈɑː n oʊ v ˌɪ t s
@@ -16553,6 +16733,7 @@ dopehead|d ˈoʊ p h ɛ d
 doper|d ˈoʊ p ɚ
 dopinege|d ˈɑː p aɪ n dʒ
 doping|d ˈoʊ p ɪ ŋ
+dopo|d ˈoʊ p oʊ
 dopoe|d ˈɑː p oʊ
 doppelgangers|d ˈɑː p əl ɡ ˌæ ŋ ɚ z
 doppler|d ˈɑː p l ɚ
@@ -16574,6 +16755,7 @@ dork|d ˈoːɹ k
 dormers|d ˈoːɹ m ɚ z
 dormitiloo|d ˈoːɹ m ɪ t ˌɪ l uː
 dormitory|d ˈoːɹ m ɪ t ˌoː ɹ i
+dormiva|d ˈoːɹ m ɪ v ə
 dorndal|d ˈoːɹ n d əl
 dorne|d ˈoːɹ n
 dornenburg|d ˈoːɹ n ə n b ˌɜː ɡ
@@ -16608,9 +16790,12 @@ dotmobiletm|d ˈɑː t m ə b ˌiː l t ə m
 dotrice|d ˈɑː t ɹ ɪ s
 dots|d ˈɑː t s
 dotted|d ˈɑː ɾ ᵻ d
+dottore|d ˈɑː ɾ ɚ
+dottori|d ə t ˈɔː ɹ i
 doubl|d ˈʌ b əl
 double|d ˈʌ b əl
 doubleheader|d ˈʌ b əl h ˌɛ d ɚ
+doublein|d ˈʌ b l aɪ n
 doubleness|d ˈʌ b əl n ə s
 doubleplay|d ˈʌ b əl p l ˌeɪ
 doublest|d ˈʌ b əl ɪ s t
@@ -16658,6 +16843,7 @@ dovesi|d ˈʌ v s i
 dovesi's|d ˈʌ v s i z
 dovetail|d ˈʌ v t eɪ l
 doveton|d ˈʌ v t ə n
+doveva|d ˈʌ v v ə
 dovey|d ˈʌ v i
 doviverata|d ˌɑː v aɪ v ɚ ɹ ˈɑː ɾ ə
 dovon|d ˈɑː v ɑː n
@@ -17251,6 +17437,7 @@ dzongkhag|d ˈiː z ˈɑː ŋ k h æ ɡ
 dzvanga|d ˌiː z ˈiː v ˈæ ŋ ɡ ə
 dzvukamanja|d ˌiː z ˈiː v j ˌuː k ɐ m ˈæ n j ə
 e|ˈiː
+e'|ˈiː
 e'ai|ˈɛ aɪ
 e'er|ˈɛɹ
 e'tah|ˈɛ ɾ ə
@@ -17401,6 +17588,7 @@ ec|ˈɛ k
 eca|ˈɛ k ə
 ecb|ˈɛ k b
 ecb's|ˈɛ k b z
+eccetera|ˈɛ k s ɪ ɾ ɚ ɹ ə
 ecclesiastics|ᵻ k l ˌiː z ɪ  ˈæ s t ɪ k s
 ecclestone|ˈɛ k əl s t ˌoʊ n
 ecdysiast|ˈɛ k d ɪ s ˌɪ  æ s t
@@ -18214,6 +18402,7 @@ ennoblement|ɛ n ˈoʊ b əl m ə n t
 ennodius|ɛ n ˈoʊ d ɪ  ə s
 enny|ɛ n ˈi
 enola|ɪ n ˈoʊ l ə
+enorme|ɪ n ˈoːɹ m
 enormities|ɪ n ˈoːɹ m ᵻ ɾ i z
 enough|ɪ n ˈʌ f
 enoughbut|ɪ n ˈʌ f b ʌ t
@@ -18381,6 +18570,7 @@ eradicator's|ɪ ɹ ˈæ d ᵻ k ˌeɪ ɾ ɚ z
 eraksoy|ɪ ɹ ˈæ k s ɔɪ
 eralt|ɪ ɹ ˈɔ l t
 erandur|ɪ ɹ ˈæ n d j ʊɹ
+erano|ɪ ɹ ˈɑː n oʊ
 erar|ɪ ɹ ˈɑːɹ
 erares|ɪ ɹ ˈɛɹ z
 eraring|ɪ ɹ ˈɛ ɹ ɪ ŋ
@@ -18461,6 +18651,7 @@ ersand|ˈɜː s æ n d
 erson'earth|ˈɜː s ə n ˌɜː θ
 erss|ˈɜː s
 erst|ˈɜː s t
+ert|ˈɜː t
 erthor|ˈɜː θ ɚ
 eruption|ɪ ɹ ˈʌ p ʃ ə n
 erus|ɪ ɹ ˈuː z
@@ -18493,6 +18684,7 @@ escape|ɛ s k ˈeɪ p
 escaped|ɛ s k ˈeɪ p t
 escapeth|ɛ s k ˈeɪ p ə θ
 escapist|ɛ s k ˈeɪ p ɪ s t
+esce|ˈɛ s
 escom|ˈɛ s k ɑː m
 escooter|ˈɛ s k uː ɾ ɚ
 escorpioncing|ˈɛ s k oːɹ p ɪ  ˌɑː n s ɪ ŋ
@@ -18534,6 +18726,7 @@ essayed|ˈɛ s eɪ d
 essayists|ˈɛ s eɪ ˌɪ s t s
 essays|ˈɛ s eɪ z
 essences|ˈɛ s ə n s ᵻ z
+essendo|ɛ s ˈɛ n d oʊ
 essendon|ˈɛ s ɛ n d ə n
 essentia|ɛ s ˈɛ n ʃ ə
 essential|ᵻ s ˈɛ n ʃ əl
@@ -18749,6 +18942,7 @@ evidence|ˈɛ v ɪ d ə n s
 evidenced|ˈɛ v ɪ d ə n s t
 evidences|ˈɛ v ɪ d ə n s ᵻ z
 evident|ˈɛ v ɪ d ə n t
+evidentemente|ˈɛ v ɪ d ˌɛ n t ɪ m ˌɛ n t
 evie|ˈɛ v i
 evik|ˈɛ v ɪ k
 evil|ˈiː v əl
@@ -19127,6 +19321,7 @@ ezzor|ˈɛ z ɚ
 f|ˈɛ f
 f'ing|ˈɛ f ˈɪ ŋ
 fa|f ˈɑː
+fa'|f ˈɑː
 fa's|f ˈɑː z
 faa|f ˈɑː
 faaa|f ˈææ ə
@@ -19171,9 +19366,12 @@ fabricius|f ˈæ b ɹ ɪ ʃ ə s
 fabrics|f ˈæ b ɹ ɪ k s
 fabulous|f ˈæ b j ʊ l ə s
 facachy|f ˈæ k ɐ k i
+facciare|f ˈæ k s aɪɚ
+faccio|f ˈæ k s ɪ  ˌoʊ
 face|f ˈeɪ s
 face's|f ˈeɪ s ᵻ z
 facebook|f ˈeɪ s b ʊ k
+facebut|f ˈeɪ s b ʌ t
 faced|f ˈeɪ s d
 faceletit's|f ˌeɪ s l ɪ t ˈiː t s
 facemasks|f ˈeɪ s m æ s k s
@@ -19183,6 +19381,8 @@ faces|f ˈeɪ s ᵻ z
 faceted|f ˈæ s ɪ ɾ ᵻ d
 facetime|f ˈeɪ s t aɪ m
 facetiousness|f ɐ s ˈiː ʃ ə s n ə s
+faceva|f ˈeɪ s v ə
+facevo|f ˈeɪ s v oʊ
 fachie|f ˈæ tʃ i
 facial|f ˈeɪ ʃ əl
 facian|f ˈeɪ ʃ iə n
@@ -19192,6 +19392,7 @@ facility|f ə s ˈɪ l ᵻ ɾ i
 facinating|f ˈæ s ᵻ n ˌeɪ ɾ ɪ ŋ
 facing|f ˈeɪ s ɪ ŋ
 fact|f ˈæ k t
+factat|f ˈæ k t æ t
 factcheck|f ˈæ k t tʃ ɛ k
 faction's|f ˈæ k ʃ ə n z
 factitious|f æ k t ˈɪ ʃ ə s
@@ -19229,6 +19430,7 @@ fagged|f ˈæ ɡ d
 fagging|f ˈæ ɡ ɪ ŋ
 faggof|f ˈæ ɡ ɑː f
 faggots|f ˈæ ɡ ə t s
+fagioli|f ˌæ dʒ ɪ  ˈoʊ l i
 fagot|f ˈæ ɡ ə t
 fagots|f ˈæ ɡ ə t s
 fah|f ˈɑː
@@ -19328,6 +19530,7 @@ fall|f ˈɔː l
 falled|f ˈɔː l d
 fallen|f ˈɔː l ə n
 falleth|f ˈɔː l ə θ
+falliamo|f ɔː l ˈɪ  ə m ˌoʊ
 fallin'|f ˈɔː l ᵻ n
 falling|f ˈɔː l ɪ ŋ
 fallly|f ˈɔː l i
@@ -19359,6 +19562,7 @@ fame's|f ˈeɪ m z
 fament|f ˈɑː m ə n t
 famer|f ˈeɪ m ɚ
 fameye|f ˈeɪ m aɪ
+famiglia|f ɐ m ˈiː ɡ l iə
 familes|f ˈæ m ɪ l z
 famili|f ˈæ m ɪ l i
 familiar|f ə m ˈɪ l ɪɹ
@@ -19433,6 +19637,7 @@ fantasma|f ˈæ n t æ z m ə
 fantastic|f æ n t ˈæ s t ɪ k
 fantastic's|f æ n t ˈæ s t ɪ k z
 fantastical|f æ n t ˈæ s t ɪ k əl
+fantastico|f æ n t ˈæ s t ɪ k ˌoʊ
 fantasy|f ˈæ n t ə s i
 fantomex|f ˈæ n t oʊ m ˌɛ k s
 faoiltiarna|f ˈiː l ʃ aɪɚ n ə
@@ -19498,12 +19703,14 @@ farke|f ˈɑːɹ k
 farked|f ˈɑːɹ k t
 farker|f ˈɑːɹ k ɚ
 farking|f ˈɑːɹ k ɪ ŋ
+farla|f ˈɑːɹ l ə
 farm|f ˈɑːɹ m
 farmbox|f ˈɑːɹ m b ɑː k s
 farmer|f ˈɑːɹ m ɚ
 farmers|f ˈɑːɹ m ɚ z
 farmers'|f ˈɑːɹ m ɚ z
 farmhand's|f ˈɑːɹ m h æ n d z
+farmi|f ˈɑːɹ m i
 farmin'|f ˈɑːɹ m ɪ n
 farming|f ˈɑːɹ m ɪ ŋ
 farms|f ˈɑːɹ m z
@@ -19623,6 +19830,7 @@ fatted|f ˈæ ɾ ᵻ d
 fattened|f ˈæ ʔ n̩ d
 fatter|f ˈæ ɾ ɚ
 fattier|f ˈæ ɾ ɪ  ɚ
+fatto|f ˈæ ɾ oʊ
 fatu|f ˈɑː ɾ uː
 fatuity|f æ t j ˈuː ɪ ɾ i
 faty|f ˈeɪ ɾ i
@@ -19717,6 +19925,8 @@ februar|f ˈɛ b ɹ uː ˌɑːɹ
 february|f ˈɛ b ɹ uː ˌɛ ɹ i
 fec|f ˈɛ k
 fecafoot|f ˈɛ k ɐ f ˌʊ t
+fecero|f ɛ s ˈɛ ɹ oʊ
+feci|f ˈɛ s aɪ
 fecking|f ˈɛ k ɪ ŋ
 fecklessness|f ˈɛ k l ə s n ə s
 fect|f ˈɛ k t
@@ -19773,8 +19983,10 @@ fees|f ˈiː z
 fees'|f ˈiː z
 feeshenaa|f ˈiː ʃ ə n ˌɑː
 feet|f ˈiː t
+feeten|f ˈiː ʔ n̩
 feetwet|f ˈiː t w ɪ t
 feeze|f ˈiː z
+fefalls|f ˈɛ f ɔː l z
 fei|f ˈeɪ
 feigned|f ˈeɪ n d
 feigneth|f ˈeɪ n ə θ
@@ -20058,6 +20270,7 @@ fightin'|f ˈaɪ t ɪ n
 fighting|f ˈaɪ ɾ ɪ ŋ
 fights|f ˈaɪ t s
 fighty|f ˈaɪ ɾ i
+figlia|f ˈɪ ɡ l i  ə
 figred|f ˈɪ ɡ ɹ ɪ d
 figs|f ˈɪ ɡ z
 figueres|f ˈiː ɡ ɚ z
@@ -20103,6 +20316,7 @@ films|f ˈɪ l m z
 filmy|f ˈɪ l m i
 filnjar|f ˈɪ l n dʒ ɑːɹ
 filok|f ˈaɪ l ɑː k
+fils|f ˈɪ l z
 filter'|f ˈɪ l t ɚ
 filth|f ˈɪ l θ
 filthier|f ˈɪ l θ i  ɚ
@@ -20162,6 +20376,7 @@ fingers'|f ˈɪ ŋ ɡ ɚ z
 fingers're|f ˈɪ ŋ ɡ ɚ z ɚ
 finial|f ˈɪ n ɪ  ə l
 finine|f ˈɪ n aɪ n
+finis|f ˈɪ n i z
 finish|f ˈɪ n ɪ ʃ
 finished|f ˈɪ n ɪ ʃ t
 finishedish|f ˈɪ n ɪ ʃ ˌɛ d ɪ ʃ
@@ -20169,6 +20384,7 @@ finisher|f ˈɪ n ɪ ʃ ɚ
 finishing|f ˈɪ n ɪ ʃ ɪ ŋ
 finishings|f ˈɪ n ɪ ʃ ɪ ŋ z
 finishthe|f ˈɪ n ɪ ʃ ð
+finito|f ɪ n ˈiː ɾ oʊ
 finkton|f ˈɪ ŋ k t ə n
 finma's|f ˈɪ n m ə z
 finna|f ˈɪ n ə
@@ -20178,6 +20394,7 @@ finsbury|f ˈɪ n z b ɛ ɹ i
 fintan|f ˈɪ n t ə n
 fintech|f ˈɪ n t ɛ k
 fintechs|f ˈɪ n t ɛ k z
+finthis|f ˈɪ n θ aɪ z
 finulator|f ˈɪ n uː l ˌeɪ ɾ ɚ
 fiorano|f ɪ  oː ɹ ˈɑː n oʊ
 fiord|f ˈiː  ɔːɹ d
@@ -20260,6 +20477,7 @@ fishstick|f ˈɪ ʃ s t ɪ k
 fishwhores|f ˈɪ ʃ h oːɹ z
 fishwife|f ˈɪ ʃ w aɪ f
 fishwives|f ˈɪ ʃ w aɪ v z
+fisicamente|f ˈɪ s ɪ k ə m ˌɛ n t
 fisker|f ˈɪ s k ɚ
 fisseha|f ˈɪ s ɛ h ə
 fisstech|f ˈɪ s t ɛ k
@@ -20278,6 +20496,7 @@ fitenase|f ˈaɪ t n eɪ s
 fitfordy|f ˈɪ t f oːɹ d i
 fithragaer|f ˈɪ θ ɹ ɐ ɡ ˌɛɹ
 fitly|f ˈɪ t l i
+fitnesses|f ˈɪ t n ə s ᵻ z
 fits|f ˈɪ t s
 fitsnews|f ˈɪ t s n uː z
 fitsz|f ˈɪ t s z
@@ -20579,6 +20798,7 @@ fo'c's'le|f ˈɑː k s l
 foah|f ˈoʊ
 foakes|f ˈoʊ k s
 foaled|f ˈoʊ l d
+foall|f ˈoʊ l
 foam|f ˈoʊ m
 foamed|f ˈoʊ m d
 foaming|f ˈoʊ m ɪ ŋ
@@ -20590,6 +20810,7 @@ focalled|f ˈoʊ k əl d
 foccusly|f ˈɑː k ə s l i
 foce|f ˈoʊ s
 fock|f ˈɑː k
+fockall|f ˈɑː k ɔː l
 focon|f ˈoʊ k ə n
 focus|f ˈoʊ k ə s
 focus'|f ˈoʊ k ə s
@@ -20632,6 +20853,7 @@ foists|f ˈɔɪ s t s
 fok|f ˈɑː k
 fokaakaru|f ˈɑː k ɑː k ˌɑːɹ ɹ uː
 fokaru|f ˈɑː k ɑːɹ ɹ ˌuː
+foked|f ˈoʊ k t
 foken|f ˈoʊ k ə n
 fokin|f ˈɑː k ɪ n
 fol|f ˈɑː l
@@ -21008,6 +21230,7 @@ fpga|ˌɛ f p ˌiː dʒ ˌiː  ˈeɪ
 fpis|ˈɛ f p ˈɪ s
 fqm|ˌɛ f k j ˌuː ˈɛ m
 fr|ˌɛ f ˈɑːɹ
+fra|f ɹ ˈɑː
 frabbi|f ɹ ˈæ b i
 frabelle|f ɹ eɪ b ˈɛ l
 frabelle's|f ɹ eɪ b ˈɛ l z
@@ -21411,8 +21634,10 @@ funnily|f ˈʌ n ɪ l i
 funny|f ˈʌ n i
 funt|f ˈʌ n t
 funta|f ˈʌ n t ə
+funziona|f ˈʌ n z aɪə n ə
 fuok|f j ˈuː ɑː k
 fuoked|f j ˈuː oʊ k t
+fuori|f j uː ˈɔː ɹ i
 fur|f ˈɜː
 fura|f j ˈʊɹ ɹ ə
 furball|f ˈɜː b ɔː l
@@ -21607,6 +21832,7 @@ gafawe|ɡ ˈæ f ɔː
 gafe|ɡ ˈeɪ f
 gaff|ɡ ˈæ f
 gaffer|ɡ ˈæ f ɚ
+gafful|ɡ ˈæ f f əl
 gafu|ɡ ˈɑː f uː
 gafubate|ɡ ˈæ f j uː b ˌeɪ t
 gage|ɡ ˈeɪ dʒ
@@ -21799,6 +22025,7 @@ gangers|ɡ ˈæ n dʒ ɚ z
 gangers'|ɡ ˈæ n dʒ ɚ z
 ganggoons|ɡ æ ŋ ɡ ˈuː n z
 ganggroup|ɡ ˈæ ŋ ɡ ɹ uː p
+gangks|ɡ ˈæ ŋ k s
 gangly|ɡ ˈæ ŋ l i
 gangoons|ɡ æ ŋ ɡ ˈuː n z
 gangplanks|ɡ ˈæ ŋ p l æ ŋ k s
@@ -22340,6 +22567,7 @@ gesticulations|dʒ ˌɛ s t ɪ k j ʊ l ˈeɪ ʃ ə n z
 gesture|dʒ ˈɛ s tʃ ɚ
 get|ɡ ˈɛ t
 get'em|ɡ ˈɛ ɾ ə m
+get'll|ɡ ˈɛ ɾ əl
 get's|ɡ ˈɛ t s
 get't|ɡ ˈɛ t t
 getafe|ɡ ˈɛ ɾ eɪ f
@@ -22459,6 +22687,8 @@ ghrrrrrr|dʒ ˌiː  ˌeɪ tʃ ˈɑːɹ ɹ ˌɑːɹ ɹ ˌɑːɹ ɹ ˈɑːɹ ɹ ˌ
 ght|dʒ ˌiː  ˌeɪ tʃ t ˈiː
 ghunzul|ɡ ʌ n z ˈuː l
 gi|ɡ ˈiː
+gia|dʒ ˈiə
+giada|dʒ ˈaɪ ə d ə
 giagos|dʒ ˈaɪ ə ɡ ˌoʊ z
 giammattei|dʒ ɐ m ˈæ ɾ eɪ
 gianbattista|dʒ ɐ n b ˈæ ɾ ɪ s t ə
@@ -22540,11 +22770,14 @@ ginormous|dʒ ˈɪ n oːɹ m ə s
 gins|dʒ ˈɪ n z
 gint|dʒ ˈɪ n t
 ginyu|dʒ ˈɪ n ɪ  ˌuː
+giocare|dʒ ɪ  ˈɑː k ɛɹ
+gioissi|dʒ ɪ  ˈɔɪ s i
 giolito|dʒ ɪ  ə l ˈiː ɾ oʊ
 giolito's|dʒ ɪ  ə l ˈiː ɾ oʊ z
 gionee|dʒ ə n ˈiː
 giordano's|dʒ ɪ  oːɹ d ˈɑː n oʊ z
 giorgis|dʒ ɪ  ˈoːɹ ɡ ɪ z
+giovane|dʒ ɪ  ˈɑː v eɪ n
 giovinazzi|dʒ ɪ  ˈɑː v ɪ n ˌæ z i
 gippsland|dʒ ˈɪ p s l ə n d
 gipsies|dʒ ˈɪ p s i z
@@ -22554,6 +22787,7 @@ gipsy's|dʒ ˈɪ p s i z
 gir|ɡ ˈɜː
 gir's|ɡ ˈɜː z
 giraldi|dʒ ɜː ɹ ˈæ l d i
+girato|dʒ ɜː ɹ ˈɑː ɾ oʊ
 girded|ɡ ˈɜː d ᵻ d
 girdershade|ɡ ˈɜː d ɚ ʃ ˌeɪ d
 girdle|ɡ ˈɜː d əl
@@ -22564,6 +22798,7 @@ girith|dʒ ˈɪ ɹ ɪ θ
 girl|ɡ ˈɜː l
 girl'|ɡ ˈɜː l
 girlfriend's|ɡ ˈɜː l f ɹ ɛ n d z
+girli|ɡ ˈɪ  ə l i
 girlish|ɡ ˈɜː l ɪ ʃ
 girlishness|ɡ ˈɜː l ɪ ʃ n ə s
 girlnamed|ɡ ˈɜː l n eɪ m d
@@ -22574,6 +22809,8 @@ girls's|ɡ ˈɜː l z ᵻ z
 giro|dʒ ˈaɪ ɹ oʊ
 giron|dʒ ˈaɪɚ n
 girona|dʒ ˈaɪɚ n ə
+gironel|dʒ ˈaɪɚ n əl
+girotti|dʒ aɪ ɹ ˈɑː ɾ i
 giroud|dʒ ˈaɪ ɹ aʊ d
 girt|ɡ ˈɜː t
 girthed|ɡ ˈɜː θ t
@@ -22585,9 +22822,14 @@ gisli|dʒ ˈɪ s l i
 gissur|dʒ ˈɪ ʃ ɚ
 git's|ɡ ˈɪ t s
 gitwe|ɡ ˈɪ t w i
+giu|dʒ ˈɪ  uː
 giuded|dʒ ˈɪ j uː d ᵻ d
+giugno|dʒ ɪ  ˈʌ ɡ n oʊ
 giulia|dʒ ɪ j ˈuː l iə
 giuliani|dʒ ɪ j ˈuː l iə n i
+giungle|dʒ ˈɪ  ʌ ŋ ɡ əl
+giustamente|dʒ ˈɪ  ə s t ə m ˌɛ n t
+giustizia|dʒ ˌɪ  ə s t ˈɪ z iə
 give|ɡ ˈɪ v
 give'|ɡ ˈɪ v
 givea|ɡ ˈɪ v iə
@@ -22681,6 +22923,7 @@ glenmark|ɡ l ˈɛ n m ɑːɹ k
 glenmoril|ɡ l ˈɛ n m oː ɹ əl
 glenroy|ɡ l ˈɛ n ɹ ɔɪ
 glenroy's|ɡ l ˈɛ n ɹ ɔɪ z
+gli|ɡ l ˈaɪ
 glibly|ɡ l ˈɪ b l i
 glided|ɡ l ˈaɪ d ᵻ d
 glideth|ɡ l ˈaɪ d ə θ
@@ -22778,6 +23021,8 @@ gnbs|dʒ ˌiː  ˌɛ n b ˌiː  ˈɛ s
 gnn|dʒ ˌiː  ˌɛ n ˈɛ n
 gnr|dʒ ˌiː  ˌɛ n ˈɑːɹ
 go|ɡ ˈoʊ
+go'get|ɡ ˈɑː ɡ ɪ t
+go't|ɡ ˈɑː t
 goaded|ɡ ˈoʊ d ᵻ d
 goads|ɡ ˈoʊ d z
 goag|ɡ ˈoʊ ɡ
@@ -22794,11 +23039,13 @@ goalscoring|ɡ ˈoʊ l s k ɚ ɹ ɪ ŋ
 goaltending|ɡ ˈoʊ l t ɛ n d ɪ ŋ
 goalwards|ɡ ˈoʊ l w ɚ d z
 goards|ɡ ˈoːɹ d z
+goaswell|ɡ ˈoʊ s w ɛ l
 goat|ɡ ˈoʊ t
 goatherd|ɡ ˈoʊ ð ɜː d
 goatherds|ɡ ˈoʊ ð ɜː d z
 goats|ɡ ˈoʊ t s
 goavo|ɡ ˈoʊ v oʊ
+goaway|ɡ ˈoʊ w eɪ
 gobbie|ɡ ˈɑː b i
 gobbo's|ɡ ˈɑː b oʊ z
 gobelin|ɡ ˈoʊ b l ɪ n
@@ -22870,6 +23117,7 @@ goget|ɡ ˈɑː dʒ ɪ t
 gogeta|ɡ ˈoʊ dʒ t ə
 gogogoi|ɡ ˈɑː ɡ ə ɡ ˌɔɪ
 gogoi|ɡ ˈɑː ɡ ɔɪ
+gogoing|ɡ ˈoʊ ɡ oʊ ɪ ŋ
 gogot|ɡ ˈɑː ɡ ə t
 gogots|ɡ ˈɑː ɡ ə t s
 gogron|ɡ ˈɑː ɡ ɹ ɑː n
@@ -23052,6 +23300,7 @@ gossipings|ɡ ˈɑː s ɪ p ɪ ŋ z
 gossipit|ɡ ˈɑː s ɪ p ˌɪ t
 goswami|ɡ ə s w ˈɑː m i
 got|ɡ ˈɑː t
+got'don|ɡ ˈɑː t d ɑː n
 got's|ɡ ˈɑː t s
 gota|ɡ ˈoʊ ɾ ə
 gotabaya|ɡ ˈɑː ɾ ɐ b ˌeɪ ə
@@ -23214,6 +23463,7 @@ grandees|ɡ ɹ ˈæ n d iː z
 grandeurs|ɡ ɹ æ n d ˈʊɹ z
 grandfather|ɡ ɹ ˈæ n d f ɑː ð ɚ
 grandgate|ɡ ɹ ˈæ n d ɡ eɪ t
+grandissimo|ɡ ɹ æ n d ˈɪ s ɪ m ˌoʊ
 grandma|ɡ ɹ ˈæ n d m ɑː
 grandmamma|ɡ ɹ ˈæ n d m æ m ə
 grandmother|ɡ ɹ ˈæ n d m ʌ ð ɚ
@@ -23367,6 +23617,7 @@ greeting|ɡ ɹ ˈiː ɾ ɪ ŋ
 greetings|ɡ ɹ ˈiː ɾ ɪ ŋ z
 greg|ɡ ɹ ˈɛ ɡ
 gregory|ɡ ɹ ˈɛ ɡ ɚ ɹ i
+greit|ɡ ɹ ˈeɪ t
 grelka|ɡ ɹ ˈɛ l k ə
 grelod|ɡ ɹ ˈɛ l ɑː d
 gremist|ɡ ɹ ˈɛ m ɪ s t
@@ -23487,9 +23738,11 @@ groovetastic|ɡ ɹ ˌuː v ɪ t ˈeɪ s t ɪ k
 grooving|ɡ ɹ ˈuː v ɪ ŋ
 gropings|ɡ ɹ ˈoʊ p ɪ ŋ z
 grosgrain|ɡ ɹ ˈɑː s ɡ ɹ eɪ n
+grossa|ɡ ɹ ˈoʊ s ə
 grossbart|ɡ ɹ ˈoʊ s b ɑːɹ t
 grossest|ɡ ɹ ˈoʊ s ɪ s t
 grossing|ɡ ɹ ˈoʊ s ɪ ŋ
+grossissimo|ɡ ɹ oʊ s ˈɪ s ɪ m ˌoʊ
 grossly|ɡ ɹ ˈoʊ s l i
 grossmont|ɡ ɹ ˈoʊ s m ɔ n t
 grossness|ɡ ɹ ˈoʊ s n ə s
@@ -24047,6 +24300,7 @@ hadst|h ˈæ d s t
 hadto|h ˈæ d t oʊ
 hadvar's|h ˈæ d v ɑːɹ z
 hadzovic|h æ d z ˈɑː v ɪ k
+hae|h ˈiː
 haeasy|h ˈiː  ə s i
 haeckel|h ˈiː k əl
 hael|h ˈeɪ l
@@ -24297,6 +24551,7 @@ handprint|h ˈæ n d p ɹ ɪ n t
 handprinting|h ˈæ n d p ɹ ɪ n t ɪ ŋ
 hands|h ˈæ n d z
 hands're|h ˈæ n d z ɚ
+handsall|h ˈæ n d s ɔː l
 handsel|h ˈæ n d s əl
 handsfull|h ˈæ n d s f ʊ l
 handsfulll|h ˈæ n d s f ʊ l əl
@@ -24358,6 +24613,7 @@ hannago|h æ n ˈeɪ ɡ oʊ
 hannah|h ˈæ n ə
 hannah's|h ˈæ n ə z
 hannibal's|h ˈæ n ɪ b əl z
+hanno|h ˈæ n oʊ
 hannons|h ˈæ n ə n z
 hannukah|h ˈæ n uː k ə
 hanor|h ˈæ n ɚ
@@ -24445,6 +24701,7 @@ hardist|h ˈɑːɹ d ɪ s t
 hardliners|h ˈɑːɹ d l aɪ n ɚ z
 hardly|h ˈɑːɹ d l i
 hardred|h ˈɑːɹ d ɹ ɪ d
+hardshe|h ˈɑːɹ d ʃ
 hardship|h ˈɑːɹ d ʃ ɪ p
 hardware's|h ˈɑːɹ d w ɛɹ z
 hardwares|h ˈɑːɹ d w ɛɹ z
@@ -24624,6 +24881,7 @@ havaianas|h ˌæ v eɪ ˈɑː n ə z
 have|h ˈæ v
 have'|h ˈæ v
 have's|h ˈæ v z
+have't|h ˈeɪ v t
 havea|h ˈeɪ v iə
 havebeen|h ˈeɪ v b iː n
 havehappened|h ˈeɪ v h æ p ə n d
@@ -24957,6 +25215,7 @@ heidy|h ˈaɪ d i
 heifnir's|h ˈaɪ f n ɪɹ z
 height|h ˈaɪ t
 heill|h ˈaɪ l
+heillll|h ˈaɪ l əl
 heims'|h ˈaɪ m z
 heimvar|h ˈaɪ m v ɑːɹ
 heinemeyer|h ˈaɪ n ɪ m ˌaɪɚ
@@ -25252,6 +25511,7 @@ hfea|ˈeɪ tʃ f ˈiː
 hff|ˌeɪ tʃ ˌɛ f ˈɛ f
 hfpa|ˌeɪ tʃ ˌɛ f p ˌiː  ˈeɪ
 hfpa's|ˌeɪ tʃ ˈɛ f p ˈɑː z
+hgr|ˌeɪ tʃ dʒ ˌiː  ˈɑːɹ
 hgrrh|ˌeɪ tʃ dʒ ˌiː  ˈɑːɹ ɹ ˌɑːɹ ɹ ˈeɪ tʃ
 hgtv's|ˌeɪ tʃ dʒ ˌiː t ˌiː v ˈiː z
 hgv|ˌeɪ tʃ dʒ ˌiː v ˈiː
@@ -25266,6 +25526,7 @@ hhhhhhhaaaaaa|ˌeɪ tʃ ˌeɪ tʃ ˈeɪ tʃ ˌeɪ tʃ ˌeɪ tʃ ˈeɪ tʃ h ˈæ
 hhhhhhuuuuuuaaaaaa|ˌeɪ tʃ ˌeɪ tʃ ˈeɪ tʃ ˌeɪ tʃ ˈeɪ tʃ h ˈuː uː ˌuː ɐɐ ˌææ ææ
 hhhhhuuuuuzzzzzaaaaahhhhh|ˌeɪ tʃ ˌeɪ tʃ ˌeɪ tʃ ˈeɪ tʃ h ˈuː uː ˌʌ z ɐɐ ˌææ ɑː
 hhisburry|ˈeɪ tʃ h ˈɪ s b ɜː ɹ i
+hhome|ˈeɪ tʃ h ˈoʊ m
 hhs|ˌeɪ tʃ ˌeɪ tʃ ˈɛ s
 hhyyaarargghhhh|ˈeɪ tʃ h aɪ j ˈɑːɹ ɹ ɑːɹ ɡ
 hhyyaarrgghh|ˈeɪ tʃ h aɪ j ˈɑːɹ ɹ ə ɡ
@@ -25479,6 +25740,7 @@ hitler|h ˈɪ t l ɚ
 hitless|h ˈɪ t l ə s
 hitmaka|h ɪ t m ˈɑː k ə
 hitmaker|h ˈɪ t m eɪ k ɚ
+hitneme|h ˈɪ t n iː m
 hitney|h ˈɪ t n i
 hits|h ˈɪ t s
 hitsa|h ˈɪ t s ə
@@ -25538,6 +25800,7 @@ hnestlely|ˈeɪ tʃ n ˈɛ s əl l i
 hnh|ˌeɪ tʃ ˌɛ n ˈeɪ tʃ
 hnnys|ˌeɪ tʃ ˈɛ n n ˈaɪ z
 ho|h ˈoʊ
+hoall|h ˈoʊ l
 hoarder|h ˈoːɹ d ɚ
 hoarders|h ˈoːɹ d ɚ z
 hoardings|h ˈoːɹ d ɪ ŋ z
@@ -25604,11 +25867,13 @@ holdeth|h ˈoʊ l d ə θ
 holdin'|h ˈoʊ l d ɪ n
 holding|h ˈoʊ l d ɪ ŋ
 holdled|h ˈoʊ l d əl d
+holdles|h ˈoʊ l d əl z
 holdll|h ˈoʊ l d l əl
 holdout's|h ˈoʊ l d aʊ t s
 holdvon|h ˈoʊ l d v ɑː n
 hole|h ˈoʊ l
 holed|h ˈoʊ l d
+holely|h ˈoʊ l l i
 holer|h ˈoʊ l ɚ
 holes|h ˈoʊ l z
 holgeir|h ˈɑː l dʒ ɛɹ
@@ -25666,6 +25931,7 @@ holt|h ˈoʊ l t
 holtby|h ˈoʊ l t b i
 holy|h ˈoʊ l i
 holyrood|h ˈɑː l ɪ ɹ ˌuː d
+holywoall|h ˈɑː l ɪ w ˌoʊ l
 homage|h ˈɑː m ɪ dʒ
 home|h ˈoʊ m
 home'|h ˈoʊ m
@@ -25682,6 +25948,7 @@ homelessness|h ˈoʊ m l ə s n ə s
 homeliness|h ˈoʊ m l i n ə s
 homely|h ˈoʊ m l i
 homem|h ˈoʊ m ə m
+homeom|h ˈoʊ m iː  ə m
 homeome|h ˈoʊ m iː  ˌoʊ m
 homepagevoya|h ˌoʊ m p eɪ dʒ v ˈɔɪ ə
 homered|h ˈoʊ m ɚ d
@@ -25820,6 +26087,7 @@ hopland|h ˈɑː p l ə n d
 hopped|h ˈɑː p t
 hoppin'|h ˈɑː p ɪ n
 hoppmann|h ˈɑː p m ə n
+hor|h ˈoːɹ
 horcrux|h ˈoːɹ k ɹ ʌ k s
 horde|h ˈoːɹ d
 hore|h ˈoːɹ
@@ -26172,6 +26440,7 @@ humaraa|h j ˈuː m ɐ ɹ ˌɑː
 humble|h ˈʌ m b əl
 humbugging|h ˈʌ m b ʌ ɡ ɪ ŋ
 humbugs|h ˈʌ m b ʌ ɡ z
+humg|h ˈʌ m ɡ
 humiliated|h j uː m ˈɪ l ɪ  ˌeɪ ɾ ᵻ d
 humiliating|h j uː m ˈɪ l ɪ  ˌeɪ ɾ ɪ ŋ
 humiliation|h j ˌuː m ɪ l ɪ  ˈeɪ ʃ ə n
@@ -26218,6 +26487,8 @@ hunger|h ˈʌ ŋ ɡ ɚ
 hungered|h ˈʌ ŋ ɡ ɚ d
 hungers|h ˈʌ ŋ ɡ ɚ z
 hungery|h ˈʌ n dʒ ɚ ɹ i
+hungr|h ˈʌ ŋ ɡ ɚ
+hungrha|h ˈʌ ŋ ɡ ɹ ə
 hungriest|h ˈʌ ŋ ɡ ɹ i  ɪ s t
 hungry|h ˈʌ ŋ ɡ ɹ i
 hunh|h ˈʌ n
@@ -26243,6 +26514,7 @@ huntsman|h ˈʌ n t s m ə n
 huntsman's|h ˈʌ n t s m ə n z
 huntsmen|h ˈʌ n t s m ɛ n
 hunu|h ˈuː n uː
+huny|h ˈʌ n i
 huobi|h j uː ˈoʊ b aɪ
 huracan|h j ˈʊɹ ɹ æ k ə n
 hurage|h j ˈʊɹ ɹ ɪ dʒ
@@ -26334,6 +26606,7 @@ hyena|h aɪ ˈiː n ə
 hyened|h ˈaɪ ə n d
 hyggen|h ˈɪ ɡ ə n
 hygienic|h aɪ dʒ ˈiː n ɪ k
+hyh|h ˈɪ
 hyliion|h aɪ l ˈɪ  iə n
 hym|h ˈɪ m
 hym'll|h ˈɪ m əl
@@ -26370,12 +26643,15 @@ hyung|h ˈaɪ  ʌ ŋ
 i|ˈaɪ
 i'|ˈaɪ
 i'am|aɪ ˈæ m
+i'appreciate|aɪ ɐ p ɹ ˈiː ʃ ɪ  ˌeɪ t
 i'bsl's|aɪ b s ˈəl z
 i'd|ˈaɪ d
 i'd've|aɪ d ˈə v
 i'da|aɪ d ˈæ
 i'don't|aɪ d ˈɑː n t
+i'got|aɪ ɡ ˈɑː t
 i'have|aɪ h ˈeɪ v
+i'investig|aɪ ˈɪ n v ɪ s t ˌɪ ɡ
 i'just|aɪ dʒ ˈʌ s t
 i'l|ˈaɪ l
 i'like|aɪ l ˈaɪ k
@@ -26387,9 +26663,12 @@ i'mdone|aɪ m d ˈoʊ n
 i'mfinalizing|aɪ m f ˈaɪ n əl ˌaɪ z ɪ ŋ
 i'mi'm|aɪ m ˈaɪ m
 i'mmore|aɪ m ˈoːɹ
+i'of|aɪ  ˈɑː f
 i'pe|aɪ p ˈɛ
+i'player|aɪ p l ˈeɪ ɚ
 i're|aɪ ɹ ˈɛ
 i't|ˈaɪ t
+i'tell|aɪ t ˈɛ l
 i've|ˈaɪ v
 i've've|ˈaɪ v ə v
 i'was|aɪ w ˈæ z
@@ -26411,6 +26690,7 @@ iand|ˈiə n d
 ianiaist|ˈiə n ɪ  ˌaɪ s t
 ians|ˈiː  ə n z
 iany|ˈiə n i
+iapologiz|ˌaɪ ɐ p ˈɑː l ə dʒ ˌɪ z
 iapologize|ˌaɪ ɐ p ˈɑː l ə dʒ ˌaɪ z
 iappreciated|ˌaɪ ɐ p ɹ ˈiː ʃ ɪ  ˌeɪ ɾ ᵻ d
 iaquinto|ˌaɪ ɐ k w ˈɪ n t oʊ
@@ -26461,6 +26741,7 @@ icici|ˈaɪ s ɪ s ˌaɪ
 icist|ˈaɪ s ɪ s t
 ick|ˈaɪ k
 icke's|ˈaɪ k s
+ickggid|ˈaɪ k ɡ ɪ d
 icky|ˈaɪ k i
 icln|ˈaɪ k l n
 icmr|ˈaɪ k m ɚ
@@ -26585,6 +26866,7 @@ ight|ˈaɪ t
 ighting|ˈaɪ ɾ ɪ ŋ
 igis|ˈɪ ɡ ɪ z
 igive|ˈɪ ɡ ɪ v
+igjustestion|ˈɪ ɡ dʒ ə s t ˌɛ s tʃ ə n
 igmund|ˈɪ ɡ m ʌ n d
 igmund's|ˈɪ ɡ m ʌ n d z
 ign|ˈaɪ n
@@ -26685,6 +26967,7 @@ illium|ɪ l ˈɪ  ə m
 illll|ˈɪ l əl
 illnesses|ˈɪ l n ə s ᵻ z
 illogically|ɪ l ˈɑː dʒ ɪ k l i
+illtake|ɪ l t ˈeɪ k
 illuminate|ɪ l ˈuː m ᵻ n ˌeɪ t
 illuminati|ɪ l ˌuː m ɪ n ˈɑː ɾ i
 illumination|ɪ l ˌuː m ᵻ n ˈeɪ ʃ ə n
@@ -26740,6 +27023,8 @@ imlach|ɪ m l ˈæ tʃ
 imlerith|ɪ m l ˈɛ ɹ ɪ θ
 imlerith's|ɪ m l ˈɛ ɹ ɪ θ z
 imma|ɪ m ˈæ
+immaginabile|ɪ m ˈæ dʒ ɪ n ˌæ b aɪ l
+immaginabili|ɪ m ˈæ dʒ ɪ n ˌæ b ɪ l i
 immateriality|ˌɪ m ə t ˈɪ ɹ i  ˈæ l ᵻ ɾ i
 immature|ˌɪ m ə tʃ ˈʊɹ
 immaturely|ˌɪ m ə tʃ ˈʊɹ l i
@@ -26843,6 +27128,7 @@ importance|ɪ m p ˈoːɹ t ə n s
 importanly|ɪ m p ˈoːɹ t ə n l i
 important|ɪ m p ˈoːɹ t ə n t
 important's|ɪ m p ˈoːɹ t ə n t s
+importante|ɪ m p oːɹ t ˈɑː n t eɪ
 importantly|ɪ m p ˈoːɹ t ə n t l i
 importantwe'be|ɪ m p ˈoːɹ t ɐ n t w ˌɛ b
 importations|ɪ m p oːɹ t ˈeɪ ʃ ə n z
@@ -27126,6 +27412,7 @@ individualities|ˌɪ n d ᵻ v ˌɪ d uː ˈæ l ᵻ ɾ i z
 individualization|ˌɪ n d ᵻ v ˌɪ d uː ə l ᵻ z ˈeɪ ʃ ə n
 individuals|ˌɪ n d ᵻ v ˈɪ dʒ uː əl z
 individuals'|ˌɪ n d ᵻ v ˈɪ dʒ uː əl z
+individuato|ˌɪ n d ᵻ v ˌɪ dʒ uː ˈɑː ɾ oʊ
 indivisual|ˌɪ n d ᵻ v ˈɪ ʒ uː əl
 indo|ˈɪ n d oʊ
 indocility|ɪ n d oʊ s ˈɪ l ᵻ ɾ i
@@ -27280,6 +27567,7 @@ ingredient'|ɪ ŋ ɡ ɹ ˈiː d iə n t
 ingredient's|ɪ ŋ ɡ ɹ ˈiː d iə n t s
 ingredients're|ɪ ŋ ɡ ɹ ˈiː d iə n t s ɚ
 ingress|ˈɪ ŋ ɡ ɹ ɛ s
+ingresso|ɪ ŋ ɡ ɹ ˈɛ s oʊ
 ingrid's|ˈɪ ŋ ɡ ɹ ɪ d z
 ings|ˈɪ ŋ z
 inguanez|ɪ ŋ ɡ w ˈɑː n ɛ z
@@ -27327,6 +27615,7 @@ injustices|ɪ n dʒ ˈʌ s t ɪ s ᵻ z
 ink|ˈɪ ŋ k
 inked|ˈɪ ŋ k t
 inkeeper|ɪ ŋ k ˈiː p ɚ
+inkind|ɪ ŋ k ˈaɪ n d
 inkiness|ɪ ŋ k ˈaɪ n ə s
 inkpot|ɪ ŋ k p ˈɑː t
 inkstand|ɪ ŋ k s t ˈæ n d
@@ -27401,6 +27690,8 @@ insectoid|ˌɪ n s ˈɛ k t ɔɪ d
 insectoids|ˌɪ n s ˈɛ k t ɔɪ d z
 insecure|ˌɪ n s ᵻ k j ˈʊɹ
 inseego|ɪ n s ˈiː ɡ oʊ
+insegnamenti|ɪ n s ˌɛ ɡ n ə m ˈɛ n t i
+insegnamento|ɪ n s ˌɛ ɡ n ə m ˈɛ n t oʊ
 insensate|ɪ n s ˈɛ n s eɪ t
 insensately|ɪ n s ˈɛ n s eɪ t l i
 insensibility|ɪ n s ˌɛ n s ə b ˈɪ l ᵻ ɾ i
@@ -27429,6 +27720,7 @@ insole|ˈɪ n s oʊ l
 insolence|ˈɪ n s ə l ə n s
 insolently|ˈɪ n s ə l ə n t l i
 insolvable|ɪ n s ˈɑː l v ə b əl
+insomma|ɪ n s ˈɑː m ə
 insomuch|ˈɪ n s ə m ˌʌ tʃ
 insorbed|ɪ n s ˈoːɹ b d
 inspanned|ɪ n s p ˈæ n d
@@ -27510,6 +27802,7 @@ intellectuality|ˌɪ n t ə l ˌɛ k tʃ uː ˈæ l ᵻ ɾ i
 intelligence|ɪ n t ˈɛ l ɪ dʒ ə n s
 intelligences|ɪ n t ˈɛ l ɪ dʒ ə n s ᵻ z
 intelligent|ɪ n t ˈɛ l ɪ dʒ ə n t
+intelligente|ɪ n t ˈɛ l ɪ dʒ ˌɛ n t
 intelligible|ɪ n t ˈɛ l ɪ dʒ ə b əl
 intelligibleness|ɪ n t ˈɛ l ɪ dʒ ə b əl n ə s
 intelll|ɪ n t ˈɛ l əl
@@ -27573,6 +27866,7 @@ internationalsocialist|ˌɪ n t ɚ n ˈæ ʃ ə n ə l s ˌoʊ ʃ əl ˌɪ s t
 internet|ˈɪ n t ɚ n ˌɛ t
 internet'|ˈɪ n t ɚ n ˌɛ t
 interneurons|ˌɪ n t ɚ n ˈʊɹ ɹ ɑː n z
+intero|ˌɪ n t ɚ ɹ ˈoʊ
 interoperability|ˌɪ n t ɚ ɹ ˌɑː p ɚ ɹ ə b ˈɪ l ᵻ ɾ i
 interpenetrated|ˌɪ n t ɚ p ˈɛ n ɪ t ɹ ˌeɪ ɾ ᵻ d
 interpenetrates|ˌɪ n t ɚ p ˈɛ n ɪ t ɹ ˌeɪ t s
@@ -27743,7 +28037,9 @@ ioniq's|ˈaɪ  ə n ˌɪ k z
 ionised|ˈaɪ  ə n ˌaɪ z d
 ioro|aɪ  ˈoː ɹ oʊ
 iorveth|ˈaɪ  oːɹ v ə θ
+iose|ˈaɪ oʊ s
 iot|ˈɪ  ə t
+iour|j ˈɚ
 iourll|j ɚ l ˈəl
 ipa|ˌaɪ p ˌiː  ˈeɪ
 ipac|ˈɪ p æ k
@@ -27760,6 +28056,7 @@ ipid|ˈɪ p ɪ d
 ipl|ˈɪ p əl
 ipo|ˈaɪ p oʊ
 ipolitics|ˌaɪ p ə l ˈɪ ɾ ɪ k s
+ipotemi|ˈaɪ p oʊ t m i
 ipp's|ˈɪ p s
 ips|ˈɪ p s
 ipswich|ˈɪ p s w ɪ tʃ
@@ -28146,6 +28443,7 @@ jacke's|dʒ ˈæ k ɪ s
 jackes|dʒ ˈæ k ɪ s
 jacket|dʒ ˈæ k ɪ t
 jacket's|dʒ ˈæ k ɪ t s
+jacketplaner|dʒ ˈæ k ɪ t p l ˌeɪ n ɚ
 jackets|dʒ ˈæ k ɪ t s
 jackets'|dʒ ˈæ k ɪ t s
 jackie'|dʒ ˈæ k i
@@ -28410,6 +28708,7 @@ jebb|dʒ ˈɛ b
 jebba|dʒ ˈɛ b ə
 jebha|dʒ ˈɛ b h ə
 jebuti|dʒ ˈɛ b j uː ɾ i
+ject|dʒ ˈɛ k t
 jedaa|dʒ ˈɛ d ɑː
 jedi|dʒ ˈɛ d aɪ
 jedi's|dʒ ˈɛ d aɪ z
@@ -28544,6 +28843,7 @@ jesus|dʒ ˈiː z ə s
 jesus'|dʒ ˈiː z ə s
 jet|dʒ ˈɛ t
 jetblue|dʒ ˈɛ t b l uː
+jetges|dʒ ˈɛ t dʒ ᵻ z
 jetpack|dʒ ˈɛ t p æ k
 jetpacks|dʒ ˈɛ t p æ k s
 jets|dʒ ˈɛ t s
@@ -28645,6 +28945,7 @@ jiyaa|dʒ ˈɪ j ɑː
 jj|dʒ ˌeɪ dʒ ˈeɪ
 jject|dʒ ˈeɪ dʒ ˈɛ k t
 jjs|dʒ ˌeɪ dʒ ˌeɪ ˈɛ s
+jjust|dʒ ˈeɪ dʒ ˈʌ s t
 jk|dʒ ˌeɪ k ˈeɪ
 jkt|dʒ ˌeɪ k ˌeɪ t ˈiː
 jll|dʒ ˌeɪ ˌɛ l ˈɛ l
@@ -28869,6 +29170,7 @@ jra|dʒ ˌeɪ ˌɑːɹ ɹ ˈeɪ
 jsa|dʒ ˌeɪ ˌɛ s ˈeɪ
 jsc|dʒ ˌeɪ ˌɛ s s ˈiː
 jsh|dʒ ˌeɪ ˌɛ s ˈeɪ tʃ
+json|dʒ ˈeɪ s ˈɑː n
 jt|dʒ ˌeɪ t ˈiː
 jte|dʒ ˌeɪ t ˌiː  ˈiː
 jteror|dʒ ˈeɪ t ˈɛ ɹ ɚ
@@ -29599,6 +29901,7 @@ keeper's|k ˈiː p ɚ z
 keeperman|k ˈiː p ɚ m ə n
 keepers|k ˈiː p ɚ z
 keepest|k ˈiː p ɪ s t
+keephim|k ˈiː f ɪ m
 keepin|k ˈiː p ɪ n
 keepin'|k ˈiː p ɪ n
 keeping|k ˈiː p ɪ ŋ
@@ -29729,6 +30032,7 @@ kenyatta|k ˈɛ n ɪ  ˌæ ɾ ə
 kenyatta's|k ˈɛ n ɪ  ˌæ ɾ ə z
 kenyon's|k ˈɛ n ɪ  ə n z
 keon|k ɪ  ˈɑː n
+kep|k ˈɛ p
 kepa|k ˈɛ p ə
 kepada|k ɛ p ˈɑː d ə
 keps|k ˈɛ p s
@@ -29831,6 +30135,7 @@ kfc|k ˌeɪ ˌɛ f s ˈiː
 kfc's|k ˌeɪ ˌɛ f s ˈiː z
 kfi|k ˌeɪ ˌɛ f ˈaɪ
 kfsn|k ˌeɪ ˌɛ f ˌɛ s ˈɛ n
+kg|k ˌeɪ dʒ ˈiː
 kgb|k ˌeɪ dʒ ˌiː b ˈiː
 kgf|k ˌeɪ dʒ ˌiː  ˈɛ f
 kgh|k ˌeɪ dʒ ˌiː  ˈeɪ tʃ
@@ -30209,6 +30514,7 @@ kneel|n ˈiː l
 kneeled|n ˈiː l d
 kneeleth|n ˈiː l ə θ
 kneels|n ˈiː l z
+kneess|n ˈiː s
 kneipp|n ˈeɪ p
 knell|n ˈɛ l
 knelled|n ˈɛ l d
@@ -30218,6 +30524,7 @@ knew'|n ˈuː
 knewest|n ˈuː ɪ s t
 knezovich|n ɛ z ˈoʊ v ɪ tʃ
 kni|n ˈaɪ
+knicei|n ˈaɪ s aɪ
 knievel|n ˈiː v əl
 knife|n ˈaɪ f
 knifeman|n ˈaɪ f m ə n
@@ -30732,10 +31039,19 @@ kyul|k ˈaɪ  ʌ l
 kzn|k ˌeɪ z ˌiː  ˈɛ n
 l|ˈɛ l
 l&l|ˈɛ l  æ n d ˈɛ l
+l'|ˈɛ l
+l'abbiamo|ˈɛ l æ b ˈɪ  ə m ˌoʊ
+l'assomiglia|ˈɛ l ˌæ s ə m ˈɪ ɡ l iə
 l'attard|ˈɛ l ˈæ ɾ ɚ d
+l'attore|ˈɛ l ˈæ ɾ ɚ
+l'automobile|ˈɛ l ˈɔː ɾ ə m ə b ˌiː l
 l'ile|ˈɛ l ˈaɪ l
+l'interesse|ˈɛ l ˈɪ n t ɚ ɹ ˌɛ s
+l'italia|ˈɛ l ɪ t ˈeɪ l iə
+l'orio|ˈɛ l ˈoː ɹ ɪ  ˌoʊ
 l'ouest|ˈɛ l ˈaʊ ɪ s t
 l's|ˈɛ l z
+l'uomo|ˈɛ l j uː ˈoʊ m oʊ
 l=mex|ˈɛ l  ˈiː k w əl z  m ˈɛ k s
 la|l ˈæ
 la'aferikaa|l ˈæ ɐ f ɚ ɹ ˌɪ k ɑː
@@ -31203,6 +31519,7 @@ laverstock|l ˈæ v ɚ s t ˌɑː k
 lavinya|l æ v ˈɪ n j ə
 lavishness|l ˈæ v ɪ ʃ n ə s
 laviska|l ˈæ v ɪ s k ə
+lavorando|l ˌæ v oː ɹ ˈæ n d oʊ
 lavrov|l ˈæ v ɹ ɑː v
 lavviaththan|l æ v ˈaɪə θ θ ə n
 law|l ˈɔː
@@ -31261,6 +31578,7 @@ laythe|l ˈeɪ ð
 layu|l ˈeɪ uː
 layup|l ˈeɪ ʌ p
 layzie|l ˈeɪ z i
+laz|l ˈæ z
 lazihe|l ˈæ z ɪ h
 lazio|l ˈæ z ɪ  ˌoʊ
 lazrpop|l ˈæ z ə p ˌɑː p
@@ -31353,6 +31671,7 @@ learnings|l ˈɜː n ɪ ŋ z
 learnings'|l ˈɜː n ɪ ŋ z
 learnt|l ˈɜː n t
 lears|l ˈɪɹ z
+leart|l ˈɪɹ t
 lease|l ˈiː s
 leaseholders|l ˈiː s h oʊ l d ɚ z
 leash|l ˈiː ʃ
@@ -31748,6 +32067,7 @@ library|l ˈaɪ b ɹ ɛ ɹ i
 libras|l ˈaɪ b ɹ ə z
 libray|l ˈaɪ b ɹ eɪ
 librera|l iː b ɹ ɚ ɹ ˈɑː
+libri|l ˈaɪ b ɹ i
 libs|l ˈɪ b z
 libya|l ˈɪ b ɪ  ə
 licenced|l ˈaɪ s ə n s t
@@ -32111,6 +32431,7 @@ llharam|ˈɛ l l ˈæ ɹ æ m
 llike|l ˈaɪ k
 llinos|l ˈiː n oʊ z
 llldi|ˌɛ l ˌɛ l ˈɛ l d ˌiː  ˈaɪ
+llmake|ˌɛ l ˈɛ l m ˈeɪ k
 llordon't|l ˈɔːɹ d ɑː n t
 lloris|l ˈoː ɹ ɪ s
 llow|l ˈoʊ
@@ -32122,6 +32443,7 @@ llygad|l ˈaɪ ɡ æ d
 llyr|l ˈɚ
 lmao|ˈɛ l m ˈaʊ
 lmda|ˌɛ l ˌɛ m d ˌiː  ˈeɪ
+lme|ˌɛ l ˌɛ m ˈiː
 lmpty|ˌɛ l ˈɛ m t ˈaɪ
 lna|ˌɛ l ˌɛ n ˈeɪ
 lndiana|ˌɛ l ˈɛ n d aɪ ˈæ n ə
@@ -32303,6 +32625,7 @@ longsword|l ˈɔ ŋ s oːɹ d
 longue|l ˈɔ ŋ
 longung|l ˈɔ ŋ ɡ ʌ ŋ
 long…|l ˈɔ ŋ
+lontana|l ɔ n t ˈɑː n ə
 loo|l ˈuː
 look|l ˈʊ k
 look's|l ˈʊ k s
@@ -32315,6 +32638,7 @@ lookers|l ˈʊ k ɚ z
 lookest|l ˈʊ k ɪ s t
 looketh|l ˈʊ k ə θ
 lookex|l ˈʊ k ɛ k s
+lookgreat|l ˈʊ k ɡ ɹ eɪ t
 lookie|l ˈʊ k i
 lookin|l ˈʊ k ɪ n
 lookin'|l ˈʊ k ɪ n
@@ -32357,6 +32681,7 @@ loot's|l ˈuː t s
 lootcase|l ˈuː t k eɪ s
 lootin'|l ˈuː t ɪ n
 looting|l ˈuː ɾ ɪ ŋ
+loou|l ˈuː uː
 lopez|l ˈoʊ p ɛ z
 loquacity|l ə k w ˈæ s ᵻ ɾ i
 loquent|l ˈɑː k w ə n t
@@ -33460,6 +33785,7 @@ maheedwa|m ˈæ h iː d w ə
 mahei|m ˈæ h eɪ
 mahel|m ˈæ h əl
 mahfaeraak|m ˈɑː f ɛ ɹ ˌɑː k
+mahhoa|m ɑː h ˈoʊ ə
 mahi|m ˈɑː h aɪ
 mahisagar|m ˈæ h ɪ s ə ɡ ɚ
 mahishasura|m ˈæ h ɪ ʃ ˌæ s ɜː ɹ ə
@@ -33519,6 +33845,7 @@ mainbocher|m ˈeɪ n b ɑː tʃ ɚ
 maine|m ˈeɪ n
 maines's|m ˈeɪ n z ᵻ z
 mainframe's|m ˈeɪ n f ɹ eɪ m z
+maining|m ˈeɪ n ɪ ŋ
 mainlander|m ˈeɪ n l ə n d ɚ
 mainly|m ˈeɪ n l i
 mainmast|m ˈeɪ n m æ s t
@@ -33597,6 +33924,7 @@ makeshifts|m ˈeɪ k ʃ ɪ f t s
 makest|m ˈeɪ k ɪ s t
 makesyou|m ˈeɪ k s ɪ  ˌuː
 maketh|m ˈeɪ k ə θ
+makethis|m æ k ˈɛ θ ɪ z
 makig|m ˈæ k ɪ ɡ
 makin'|m ˈæ k ɪ n
 makinaa|m ˈæ k ɪ n ˌɑː
@@ -33822,6 +34150,7 @@ manaale|m ˈæ n ɑː l
 manaaneyaane|m ˈæ n ɑː n ˌaɪ  ɑː n
 manaaqe|m ˈæ n ɑː k
 manaare|m æ n ˈɑːɹ
+manable|m ˈeɪ n ə b əl
 manacled|m ˈæ n ə k əl d
 manacles|m ˈæ n ə k əl z
 manacling|m ˈæ n æ k l ɪ ŋ
@@ -33929,14 +34258,20 @@ manganiello's|m ˌæ ŋ ɡ ɐ n ɪ  ˈɛ l oʊ z
 mangaung|m ˈæ ŋ ɡ ɔː ŋ
 mangcobo|m æ ŋ k ˈoʊ b oʊ
 mangers|m ˈeɪ n dʒ ɚ z
+mangia|m ˈæ ŋ ɡ i  ə
+mangiano|m ˌæ ŋ ɡ i  ˈɑː n oʊ
+mangiava|m ˌæ ŋ ɡ ɪ  ˈɑː v ə
 mangroves|m ˈæ ŋ ɡ ɹ oʊ v z
 manhattan|m æ n h ˈæ ʔ n̩
 manheimer|m ˈæ n h eɪ m ɚ
 manholes|m ˈæ n h oʊ l z
+mani'm|m ˈæ n ɪ m
 maniacally|m ɐ n ˈaɪə k l i
+maniatphone|m ˈeɪ n ɪ  ˌæ t f oʊ n
 manicamp|m ˈæ n ɪ k ˌæ m p
 manicamp's|m ˈæ n ɪ k ˌæ m p s
 manics|m ˈæ n ɪ k s
+maniera|m ˌæ n i  ˈɛ ɹ ə
 manifesto|m ˌæ n ɪ f ˈɛ s t oʊ
 manifestors|m ˈæ n ɪ f ˌɛ s t ɚ z
 manikin|m ˈæ n ɪ k ˌɪ n
@@ -34344,6 +34679,7 @@ masaretu|m ˈæ s ɐ ɹ ˌɛ ɾ uː
 masataka|m ˌæ s ɐ t ˈɑː k ə
 masathate|m ˈæ s ɐ θ ˌeɪ t
 masbate|m ˈæ s b eɪ t
+maschile|m ˈæ s k aɪ l
 masciale|m ˈæ s ɪ  ˌeɪ l
 masculinized|m ˈæ s k j ʊ l ˌɪ n aɪ z d
 masechaa|m ˈeɪ s tʃ ɑː
@@ -34623,9 +34959,11 @@ matthias'|m ɐ θ ˈaɪ ə s
 mattia|m ˈæ ɾ i  ə
 mattie|m ˈæ ɾ i
 mattie's|m ˈæ ɾ i z
+mattine|m ˈæ t iː n
 matto|m ˈæ ɾ oʊ
 mattrel|m ˈæ t ɹ əl
 matu|m ˈɑː ɾ uː
+matua|m ˈæ ɾ uː ə
 maturely|m ə tʃ ˈʊɹ l i
 maturer|m ə tʃ ˈʊɹ ɹ ɚ
 matuschek|m ˈæ ɾ ə ʃ ˌɛ k
@@ -35026,6 +35364,7 @@ meetups|m ˈiː ɾ ʌ p s
 meeture|m ˈiː tʃ ɚ
 meeyene|m ˈiː j iː n
 mefeel|m ˈɛ f iː l
+mefor|m ˈɛ f ɚ
 mega|m ˈɛ ɡ ə
 megab|m ˈɛ ɡ ə b
 megablock|m ˈɛ ɡ ə b l ˌɑː k
@@ -35057,6 +35396,7 @@ meggacorp|m ˈɛ ɡ ɐ k ˌoːɹ p
 meggo's|m ˈɛ ɡ oʊ z
 meghan's|m ˈɛ ɡ ə n z
 meghna|m ˈɛ ɡ n ə
+meglio|m ˈɛ ɡ l ɪ  ˌoʊ
 mego|m ˈiː ɡ oʊ
 megotage|m ˈɛ ɡ ɑː ɾ ɪ dʒ
 megrims|m ˈɛ ɡ ɹ ɪ m z
@@ -35334,6 +35674,7 @@ meshege|m ˈɛ ʃ ɛ dʒ
 meshegwace|m ˈɛ ʃ ɪ ɡ w ˌeɪ s
 meshete|m ˈɛ ʃ iː t
 meshetu|m ˈɛ ʃ ɪ t ˌuː
+mesi|m ˈɛ s i
 mesmeric|m ɛ s m ˈɛ ɹ ɪ k
 mesmerized|m ˈɛ s m ɚ ɹ ˌaɪ z d
 mesmerizer|m ˈɛ s m ɚ ɹ ˌaɪ z ɚ
@@ -35358,6 +35699,7 @@ messily|m ˈɛ s ɪ l i
 messin'|m ˈɛ s ɪ n
 messmate|m ˈɛ s m eɪ t
 messmates|m ˈɛ s m eɪ t s
+messo|m ˈɛ s oʊ
 messon|m ˈɛ s ə n
 messonnier|m ˈɛ s ə n ˌɪ  ɚ
 mestalla|m ˈɛ s t æ l ə
@@ -35405,6 +35747,7 @@ metinna|m ˈɛ t ɪ n ə
 metkina|m ɛ t k ˈiː n ə
 metoo|m ˈɛ ɾ uː
 metre|m ˈiː ɾ ɚ
+metri|m ˈɛ t ɹ i
 metro|m ˈɛ t ɹ oʊ
 metropolis|m ə t ɹ ˈɑː p ə l ˌɪ s
 metropolises|m ɛ t ɹ ˈɑː p ə l ˌaɪ s ᵻ z
@@ -35555,6 +35898,8 @@ midtown's|m ˈɪ d t aʊ n z
 midvale|m ˈɪ d v eɪ l
 midwest|m ɪ d w ˈɛ s t
 midwood|m ˈɪ d w ʊ d
+mie|m ˈaɪ
+miei|m ˈiː  aɪ
 mifalegute|m ˈɪ f eɪ l ɡ j ˌuː t
 mifalegwaacawe|m ˈɪ f eɪ l ɡ w ˌɑː k ɔː
 mifune|m ˈɪ f j uː n
@@ -35621,6 +35966,7 @@ mileyone|m ˈaɪ l j oʊ n
 mileyonoce|m ˈaɪ l j ə n ˌoʊ s
 mili|m ˈɪ l i
 milicic|m ɪ l ˈɪ s ɪ k
+milioni|m ˌɪ l ɪ  ˈoʊ n i
 milipigs|m ˈɪ l ɪ p ˌɪ ɡ z
 milishits|m ˈɪ l ɪ ʃ ˌɪ t s
 milishiyaa|m ˈɪ l ɪ ʃ ˌɪ j ɑː
@@ -35807,6 +36153,7 @@ minutest|m ˈɪ n ɪ ɾ ɪ s t
 minutesthe|m aɪ n j ˈuː ɾ ɛ s ð
 minver|m ˈɪ n v ɚ
 minx|m ˈɪ ŋ k s
+mio|m ˈiː  oʊ
 miqathelawe|m ˈɪ k ɐ θ ˌɛ l ɔː
 mir|m ˈɪɹ
 miraad|m ˈɜː ɹ ɑː d
@@ -35931,6 +36278,7 @@ misscessary|m ɪ s s ˈɛ s ɚ ɹ i
 missed|m ˈɪ s t
 missen|m ˈɪ s ə n
 missent|m ɪ s ˈɛ n t
+missess|m ˈɪ s ɛ s
 missest|m ˈɪ s ɪ s t
 misseurs|m ɪ s ˈʊɹ z
 missile|m ˈɪ s əl
@@ -36110,12 +36458,14 @@ modernisation|m ˌɑː d ɚ n ə z ˈeɪ ʃ ə n
 modernise|m ˈɑː d ɚ n ˌaɪ z
 modernistic|m ˌɑː d ɚ n ˈɪ s t ɪ k
 modestly|m ˈɑː d ɪ s t l i
+modeto|m ɑː d ˈiː ɾ oʊ
 modi|m ˈoʊ d i
 modi's|m ˈoʊ d i z
 modifieds|m ˈɑː d ᵻ f ˌaɪ d z
 modifying|m ˈɑː d ᵻ f ˌaɪ ɪ ŋ
 modise|m ˈɑː d aɪ z
 modish|m ˈɑː d ɪ ʃ
+modo|m ˈoʊ d oʊ
 modryn|m ˈɑː d ɹ ɪ n
 mods|m ˈɑː d z
 modularity|m ˌɑː dʒ uː l ˈæ ɹ ᵻ ɾ i
@@ -36140,6 +36490,7 @@ mogase|m ˈɑː ɡ eɪ s
 mogens|m ˈoʊ dʒ ə n z
 mogg|m ˈɑː ɡ
 moghul|m ˈɑː ɡ h ʌ l
+moglie|m ˈɑː ɡ l i
 mogo|m ˈoʊ ɡ oʊ
 mogo's|m ˈoʊ ɡ oʊ z
 mogol|m ˈɑː ɡ ɑː l
@@ -36212,6 +36563,8 @@ moloch|m ˈɑː l ɑː k
 molochs|m ˈɑː l ɑː k z
 molonglo|m ə l ˈɔ ŋ ɡ l oʊ
 molted|m ˈoʊ l t ᵻ d
+molti|m ˈoʊ l t i
+molto|m ˈoʊ l t oʊ
 moltres|m ˈoʊ l t ɚ z
 molu|m ˈɑː l uː
 molyneux|m ˈɑː l ɪ n ˌuː
@@ -36221,7 +36574,10 @@ mombaerts'|m ˈɑː m b ɛɹ t s
 momebaasaa|m ˈoʊ m b ɑː s ˌɑː
 moment|m ˈoʊ m ə n t
 momentary|m ˈoʊ m ə n t ˌɛ ɹ i
+momenti|m oʊ m ˈɛ n t i
+momentino|m ˌoʊ m ə n t ˈiː n oʊ
 momentmento|m ˌoʊ m ə n t m ˈɛ n t oʊ
+momento|m oʊ m ˈɛ n t oʊ
 moments|m ˈoʊ m ə n t s
 moment…|m ˈoʊ m ə n t
 momma|m ˈɑː m ə
@@ -36244,6 +36600,7 @@ monan|m ˈoʊ n ə n
 monarch|m ˈɑː n ɚ k
 monarchial|m ˈɑː n ɚ k ɪ  ə l
 monarchical|m ə n ˈɑːɹ k ɪ k əl
+monarv|m ˈɑː n ɑːɹ v
 monashees|m ˈɑː n ɐ ʃ ˌiː z
 monastery's|m ˈɑː n ɐ s t ɚ ɹ i z
 monbulk|m ˈɔ n b ʌ l k
@@ -36533,6 +36890,7 @@ morth|m ˈɔːɹ θ
 morthal|m ˈɔːɹ θ əl
 mortifying|m ˈɔːɹ ɾ ᵻ f ˌaɪ ɪ ŋ
 mortimer's|m ˈɔːɹ ɾ ɪ m ɚ z
+morto|m ˈɔːɹ ɾ oʊ
 morton|m ˈɔːɹ t ə n
 morty|m ˈɔːɹ ɾ i
 morvath|m ˈɔːɹ v æ θ
@@ -36771,6 +37129,7 @@ msnbc|ˌɛ m ˌɛ s ˈɛ n b ˌiː s ˈiː
 msnbc's|ˌɛ m ˌɛ s ˈɛ n b ˌiː s ˈiː z
 msp|ˌɛ m ˌɛ s p ˈiː
 mss|ˌɛ m ˌɛ s ˈɛ s
+mstreresmores|ˈɛ m s t ɹ ˈɛ ɹ ɪ s m ˌoːɹ z
 msungama|ˈɛ m s ʌ ŋ ɡ ˈɑː m ə
 mta|ˌɛ m t ˌiː  ˈeɪ
 mtambwe|ˈɛ m t ˈæ m b w i
@@ -36949,6 +37308,7 @@ munjoy|m ˈʌ n dʒ ɔɪ
 munna|m ˈʌ n ə
 munshi|m ˈʌ n ʃ i
 muntinlupa|m ˌʌ n t ɪ n l ˈuː p ə
+muoviti|m j ˌuː ə v ˈiː ɾ i
 mupita|m j uː p ˈiː ɾ ə
 muppets'|m ˈʌ p ɪ t s
 muqtada|m ʌ k t ˈɑː d ə
@@ -37019,6 +37379,7 @@ music|m j ˈuː z ɪ k
 music'll|m j ˈuː z ɪ k əl
 music's|m j ˈuː z ɪ k z
 musician|m j uː z ˈɪ ʃ ə n
+musine|m j ˈuː s aɪ n
 musing|m j ˈuː z ɪ ŋ
 musingly|m j ˈuː z ɪ ŋ l i
 musk|m ˈʌ s k
@@ -37059,8 +37420,11 @@ mustapha|m ˈʌ s t æ f ə
 mustaq|m ˈʌ s t æ k
 mustard|m ˈʌ s t ɚ d
 muster|m ˈʌ s t ɚ
+mustess|m ˈʌ s t ɛ s
 mustified|m ˈʌ s t ᵻ f ˌaɪ d
 mustkill|m ˈʌ s t k ɪ l
+mustout|m ˈʌ s t aʊ t
+mustst|m ˈʌ s t s t
 musty|m ˈʌ s t i
 musumeci's|m j ˈuː s uː m ˌɛ s aɪ z
 muswell|m ˈʌ s w ɛ l
@@ -37101,6 +37465,7 @@ mutua|m j ˈuː ɾ uː ə
 mutually|m j ˈuː tʃ uː əl i
 mutukwa|m j ˈuː ɾ ʌ k w ə
 mutumba|m j uː t ˈʌ m b ə
+muugliness|m ˈuː ɡ l i n ə s
 muurine|m ˈuː ɹ iː n
 muuuu|m ˈuː uː
 muwafathoo|m j ˈuː w ɐ f ˌæ θ uː
@@ -37169,6 +37534,7 @@ myisty|m ˈɪ  ɪ s t i
 myits|m j ˈɪ t s
 mykonos|m aɪ k ˈoʊ n oʊ z
 mylan|m ˈaɪ l æ n
+mymoney|m ˈaɪ m ʌ n i
 myob|m ˈaɪ  ɑː b
 myotics|m aɪ  ˈɑː ɾ ɪ k s
 mypockets|m ˈaɪ p ɑː k ɪ t s
@@ -37208,6 +37574,7 @@ müller|m ˈuː l ɚ
 müller's|m ˈuː l ɚ z
 n|ˈɛ n
 n'|ˈɛ n
+n'cool|ˈɛ ŋ k ˈuː l
 n't|ˈɛ n t
 n'tbrought|ˈɛ n t b ɹ ˈɔː t
 n'wah|ˈɛ n w ˈɑː
@@ -37393,6 +37760,7 @@ nalcor|n ˈæ l k ɚ
 nam|n ˈæ m
 nam's|n ˈæ m z
 namakkal|n ˈæ m æ k əl
+namam|n ˈæ m æ m
 namames|n ˈæ m eɪ m z
 namazis|n ɐ m ˈeɪ z i z
 nambiar|n ˈæ m b aɪɚ
@@ -37514,6 +37882,7 @@ nasaa|n ˈæ s ɑː
 nasaace|n ˈæ s ɑː s
 nasarawa|n ˌæ s ɐ ɹ ˈɑː w ə
 nascar|n ˈæ s k ɑːɹ
+nasce|n ˈæ s
 naseri|n ˈæ s ɚ ɹ i
 nashe|n ˈæ ʃ
 nashed|n ˈæ ʃ t
@@ -37771,6 +38140,7 @@ nebuchadrezzar|n ˈɛ b ə tʃ ˌæ d ɹ ɪ z ˌɑːɹ
 nebulosus|n ˈɛ b j ʊ l ˌɑː s ə s
 necessaries|n ˈɛ s ᵻ s ɚ ɹ i z
 necessary|n ˈɛ s ᵻ s ɚ ɹ i
+necessita|n ə s ˈɛ s ɪ ɾ ə
 necessitous|n ə s ɪ s ˈɪ ɾ ə s
 necessity|n ə s ˈɛ s ɪ ɾ i
 nechama|n ɛ tʃ ˈɑː m ə
@@ -37826,6 +38196,7 @@ needeth|n ˈiː d ə θ
 needful|n ˈiː d f əl
 needfulness|n ˈiː d f əl n ə s
 needin'|n ˈiː d ɪ n
+needl|n ˈiː d əl
 needle|n ˈiː d əl
 needle's|n ˈiː d əl z
 needless|n ˈiː d l ə s
@@ -37890,6 +38261,7 @@ nehaleni's|n ˈɛ h eɪ l n i z
 nehikahre|n ˈɛ h ɪ k ˌɑː ɚ
 nehisi|n ˈɛ h ɪ s i
 nehiyawewin|n ˈɛ h ɪ j ˌæ w iː w ˌɪ n
+nei|n ˈiː
 neicks|n ˈiː k s
 neighbor|n ˈeɪ b ɚ
 neighborhofrom|n ˈeɪ b oːɹ h ˌɑː f ɹ ɑː m
@@ -37938,6 +38310,7 @@ nemanich|n ˈɛ m ɐ n ˌɪ ʃ
 nemcc's|n ˈɛ m k z
 neme|n ˈiː m
 nemer's|n ˈɛ m ɚ z
+nemmeno|n ɛ m ˈiː n oʊ
 nemrod|n ˈɛ m ɹ ɑː d
 nenaa|n ˈɛ n ɑː
 nenalata|n ˌɛ n ɐ l ˈɑː ɾ ə
@@ -38015,6 +38388,7 @@ nesn's|n ˈɛ s ə n z
 ness|n ˈɛ s
 ness'|n ˈɛ s
 nesses|n ˈɛ s ᵻ z
+nessuna|n ɛ s ˈuː n ə
 nest|n ˈɛ s t
 nest's|n ˈɛ s t s
 nestaljic|n ɛ s t ˈæ l dʒ ɪ k
@@ -38220,6 +38594,7 @@ niddah|n ˈɪ d ə
 nidia|n ˈɪ d i  ə
 niece|n ˈiː s
 niellen|n ɪ  ˈɛ l ə n
+niente|n ˈiː n t
 niffty|n ˈɪ f t i
 niftar|n ˈɪ f t ɚ
 nigam|n ˈɪ ɡ æ m
@@ -38491,6 +38866,7 @@ nocu|n ˈɑː k uː
 nodal|n ˈoʊ d əl
 noddies|n ˈɑː d ɪ z
 nodjoumi|n ˈɑː dʒ aʊ m i
+nodrug|n ˈɑː d ɹ ʌ ɡ
 noelene|n ˈoʊ l iː n
 nogalus|n ˈoʊ ɡ æ l ə s
 noggin|n ˈɑː ɡ ɪ n
@@ -38623,6 +38999,7 @@ normal'|n ˈoːɹ m əl
 normalisation|n ˌoːɹ m ə l ə z ˈeɪ ʃ ə n
 normalising|n ˈoːɹ m ə l ˌaɪ z ɪ ŋ
 normalized|n ˈoːɹ m əl ˌaɪ z d
+normalmente|n ˈoːɹ m ɐ l m ˌɛ n t
 norman|n ˈoːɹ m ə n
 normanby|n ˈoːɹ m æ n b i
 normand's|n ˈoːɹ m æ n d z
@@ -38701,6 +39078,8 @@ notd|n ˈɑː t d
 note|n ˈoʊ t
 notes|n ˈoʊ t s
 noteth|n ˈoʊ ɾ ə θ
+noteva|n ˈoʊ t v ə
+notevole|n ˈoʊ t v oʊ l
 nothen|n ˈɑː ð ə n
 nothin'|n ˈʌ θ ɪ n
 nothin's|n ˈʌ θ ɪ n z
@@ -38787,6 +39166,7 @@ nowzaradan|n ˈoʊ z ɐ ɹ ˌæ d ə n
 now…|n ˈaʊ
 nox|n ˈɑː k s
 nozin|n ˈɑː z ɪ n
+nozioni|n ˈoʊ z aɪə n i
 no…|n ˈoʊ
 np|ˌɛ n p ˈiː
 npa|ˌɛ n p ˌiː  ˈeɪ
@@ -39170,6 +39550,7 @@ occasionalof|ə k ˈeɪ ʒ ə n ˌæ l ɑː f
 occasions|ə k ˈeɪ ʒ ə n z
 occassion|ɑː k ˈæ ʃ ə n
 occassions|ɑː k ˈæ ʃ ə n z
+occhi|ˈɑː k aɪ
 occlusive|ə k l ˈuː s ɪ v
 occom|ˈɑː k ɑː m
 occultism|ə k ˈʌ l t ɪ z ə m
@@ -39286,6 +39667,7 @@ offers|ˈɔ f ɚ z
 offfeer|ɔ f ˈɪɹ
 offhandedly|ɔ f h ˈæ n d ᵻ d l i
 offiah|ɔ f ˈaɪə
+offic|ˈɑː f ɪ k
 offically|ˈɑː f ɪ k l i
 office|ˈɑː f ɪ s
 officer|ˈɑː f ɪ s ɚ
@@ -39316,6 +39698,7 @@ offtake|ˈɔ f t eɪ k
 offworld|ˈɔ f w ɜː l d
 ofher|ˈɑː f h ɚ
 ofhere|ˈɑː f h ɚ
+ofhuny|ˈɑː f h ʌ n i
 ofier|ˈɑː f aɪ ɚ
 ofieri|ˈoʊ f ɪ ɹ i
 ofieri's|ˈoʊ f ɪ ɹ i z
@@ -39490,6 +39873,7 @@ olgierd's|ˈɑː l dʒ ɪɹ d z
 oli|ˈoʊ l i
 oligarchic|ˌɑː l ɪ ɡ ˈɑːɹ k ɪ k
 oligarchical|ˌɑː l ɪ ɡ ˈɑːɹ k ɪ k əl
+olimpieti|ˈɑː l ɪ m p ˌaɪə ɾ i
 olimzoda|ˌɑː l ɪ m z ˈoʊ d ə
 olive|ˈɑː l ɪ v
 olle|ˈɑː l
@@ -39723,7 +40107,9 @@ opis|ˈoʊ p i z
 opium|ˈoʊ p iə m
 opla|ˈɑː p l ə
 opmean|ˈɑː p m iə n
+opofficite|ɑː p ˈɔ f ɪ s ˌaɪ t
 oporto|ɑː p ˈoːɹ ɾ oʊ
+oppeposition|ˌɑː p ɪ p ə z ˈɪ ʃ ə n
 oppo|ˈɑː p oʊ
 opponents'|ə p ˈoʊ n ə n t s
 oppong|ˈɑː p ɑː ŋ
@@ -39962,6 +40348,7 @@ osse|ˈɑː s
 osseous|ˈɑː s iə s
 ossewabrandwag|ˈɑː s j uː ˌɑː b ɹ ɐ n d w ˌæ ɡ
 ossi|ˈɑː s i
+ossia|ˈɑː ʃ ə
 ossipon|ˈɑː s ɪ p ˌɑː n
 ossoff|ˈɑː s ɔ f
 ostap|ˈɑː s t æ p
@@ -40455,6 +40842,7 @@ paedo|p ˈiː d oʊ
 paedophile|p ˈiː d ə f ˌaɪ l
 paedophiles|p ˈiː d ə f ˌaɪ l z
 paellas|p aɪ ˈeɪ ə z
+paese|p ˈiː s
 pag|p ˈæ ɡ
 paga|p ˈɑː ɡ ə
 paganism|p ˈeɪ ɡ ə n ˌɪ z ə m
@@ -40591,6 +40979,7 @@ panan|p ˈɑː n ə n
 panand|p ˈæ n æ n d
 panchatatva|p ˈæ n tʃ ɐ t ˌæ t v ə
 panchayat|p ɐ n tʃ ˈaɪə t
+pancia|p ˈæ n ʃ ə
 panda's|p ˈæ n d ə z
 panday|p ˈæ n d eɪ
 pandemic|p æ n d ˈɛ m ɪ k
@@ -40619,6 +41008,7 @@ pangs|p ˈæ ŋ z
 panic|p ˈæ n ɪ k
 panicked|p ˈæ n ɪ k t
 panickin'|p ˈæ n ɪ k ˌɪ n
+panin|p ˈæ n ɪ n
 pankaj|p ˈæ ŋ k æ dʒ
 pankovich|p æ ŋ k ˈoʊ v ɪ tʃ
 panks|p ˈæ ŋ k s
@@ -40756,6 +41146,7 @@ pareforemaanese|p ˌɛɹ f oːɹ m ɑː n ˈiː z
 pareforemaanesu|p ˌɛɹ f oːɹ m ɑː n ˈɛ s uː
 pareja|p ˈɛɹ dʒ ə
 parent|p ˈɛ ɹ ə n t
+parentesi|p ˈɛ ɹ ə n t ˌɛ s i
 parenthetic|p ɚ ɹ ə n θ ˈɛ ɾ ɪ k
 parentified|p ˈɛ ɹ ə n t ᵻ f ˌaɪ d
 parenting|p ˈɛ ɹ ə n t ɪ ŋ
@@ -40785,12 +41176,14 @@ parle|p ˈɑːɹ l
 parler's|p ˈɑːɹ l ɚ z
 parleying|p ˈɑːɹ l i  ɪ ŋ
 parleys|p ˈɑːɹ l i z
+parli|p ˈɑːɹ l i
 parliament|p ˈɑːɹ l ə m ə n t
 parlour|p ˈɑːɹ l ɚ
 parlous|p ˈɑːɹ l ə s
 parnas|p ˈɑːɹ n ə z
 parndana|p ɑːɹ n d ˈɑː n ə
 parodying|p ˈæ ɹ ə d i  ɪ ŋ
+parola|p æ ɹ ˈoʊ l ə
 parorard|p ˈæ ɹ oː ɹ ˌɑːɹ d
 parow|p ˈæ ɹ oʊ
 paroxysm|p ˈæ ɹ ə k s ˌɪ z ə m
@@ -40839,6 +41232,7 @@ partners'|p ˈɑːɹ t n ɚ z
 partook|p ˈɑːɹ ɾ ʊ k
 partridge|p ˈɑːɹ t ɹ ɪ dʒ
 parts|p ˈɑːɹ t s
+partt|p ˈɑːɹ t
 party|p ˈɑːɹ ɾ i
 partygoers|p ˈɑːɹ ɾ ɪ ɡ ˌoʊ ɚ z
 partymen|p ˈɑːɹ ɾ ɪ m ˌɛ n
@@ -40866,6 +41260,7 @@ pass|p ˈæ s
 pass're|p ˈæ s ɚ
 passage|p ˈæ s ɪ dʒ
 passast|p ˈæ s æ s t
+passati|p æ s ˈɑː ɾ i
 passcode|p ˈæ s k oʊ d
 passed|p ˈæ s t
 passenger|p ˈæ s ɪ n dʒ ɚ
@@ -40916,6 +41311,7 @@ pastwhat|p ˈæ s t w ʌ t
 pasty|p ˈæ s t i
 paswan|p ˈæ s w ə n
 pat|p ˈæ t
+patacious|p æ t ˈeɪ ʃ ə s
 patagonians|p æ t ˈæ ɡ ə n ˌiə n z
 patani|p æ t ˈɑː n i
 patanjali|p ˌæ t ɐ n dʒ ˈɑː l i
@@ -41047,6 +41443,7 @@ pbs|p ˌiː b ˌiː  ˈɛ s
 pca|p ˌiː s ˌiː  ˈeɪ
 pcc|p ˌiː s ˌiː s ˈiː
 pci|p ˌiː s ˌiː  ˈaɪ
+pckhands|p ˌiː s ˈiː k ˈɑː n d z
 pcr|p ˌiː s ˌiː  ˈɑːɹ
 pd|p ˌiː d ˈiː
 pda|p ˌiː d ˌiː  ˈeɪ
@@ -41111,6 +41508,7 @@ pedastal|p ˈɛ d æ s t əl
 peddem|p ˈɛ d ə m
 peddlers|p ˈɛ d l ɚ z
 peddling|p ˈɛ d l ɪ ŋ
+pedersoli|p ˈɛ d ɚ s ˌɑː l i
 pedestrian|p ə d ˈɛ s t ɹ iə n
 pedestrianisation|p ˌɛ d ɪ s t ɹ ˌiə n ə z ˈeɪ ʃ ə n
 pedigree|p ˈɛ d ɪ ɡ ɹ ˌiː
@@ -41232,12 +41630,15 @@ penouse|p ˈɛ n aʊ s
 penpalooza|p ˈɛ n p ɐ l ˌuː z ə
 penrith|p ɛ n ɹ ˈɪ θ
 pens|p ˈɛ n z
+pensare|p ˈɛ n s ɛɹ
+pensi|p ˈɛ n s i
 pensile|p ˈɛ n s aɪ l
 pension|p ˈɛ n ʃ ə n
 pensioned|p ˈɛ n ʃ ə n d
 pensive|p ˈɛ n s ɪ v
 pensively|p ˈɛ n s ɪ v l i
 penske's|p ˈɛ n s k s
+penso|p ˈɛ n s oʊ
 pent|p ˈɛ n t
 pentagram|p ˈɛ n t ɐ ɡ ɹ ˌæ m
 pentagram's|p ˈɛ n t ɐ ɡ ɹ ˌæ m z
@@ -41248,6 +41649,7 @@ pentroof|p ˈɛ n t ɹ uː f
 pentru|p ˈɛ n t ɹ uː
 penumbral|p ˈɛ n ʌ m b ɹ əl
 penwyn|p ˈɛ n w ɪ n
+penzi|p ˈɛ n z i
 people|p ˈiː p əl
 people'|p ˈiː p əl
 people'd|p ˈiː p əl d
@@ -41298,9 +41700,11 @@ perceptiveness|p ɚ s ˈɛ p t ɪ v n ə s
 percerin|p ˈɜː s ɚ ɹ ˌɪ n
 perch|p ˈɜː tʃ
 perchance|p ɚ tʃ ˈæ n s
+perche|p ɚ tʃ ˈɛ
 perching|p ˈɜː tʃ ɪ ŋ
 perculiar|p ɚ k j ˈuː l ɪɹ
 perdition|p ɜː d ˈɪ ʃ ə n
+perdoni|p ɜː d ˈoʊ n i
 perdue's|p ˈɜː d uː z
 pereese|p ˈɛ ɹ iː s
 pereesoce|p ˈɛ ɹ iː s ˌoʊ s
@@ -41426,6 +41830,8 @@ persists|p ɚ s ˈɪ s t s
 person|p ˈɜː s ə n
 personage|p ˈɜː s ə n ɪ dʒ
 personages|p ˈɜː s ə n ɪ dʒ ᵻ z
+personaggi|p ˈɜː s ə n ˌæ ɡ i
+personaggio|p ˌɜː s ə n ˈæ ɡ ɪ  ˌoʊ
 personal|p ˈɜː s ə n əl
 personalally|p ˈɜː s ə n ˌeɪ l əl i
 personalisation|p ˌɜː s ə n ə l ə z ˈeɪ ʃ ə n
@@ -41689,8 +42095,10 @@ physiotherapy|f ˈɪ z ɪ  ˌoʊ θ ɪ ɹ ə p i
 phytocannabinoid|f ˈaɪ ɾ ə k ˌæ n ɐ b ˌɪ n ɔɪ d
 pi|p ˈaɪ
 pi'eecedi|p ˌɪ  iː s ˈɛ d i
+piaceva|p ˈaɪ ə s ˌɛ v ə
 piano|p i  ˈæ n oʊ
 pianoforte|p i  ˌæ n ə f ˈoːɹ ɾ eɪ
+pianti|p ˈaɪ ə n t i
 piastres|p ˈaɪ ə s t ɚ z
 piatti|p ˈaɪ ə ɾ i
 piazzas|p ˈaɪ ə z ə z
@@ -41738,10 +42146,13 @@ pie'|p ˈaɪ
 piece|p ˈiː s
 pieces|p ˈiː s ᵻ z
 pieceslike|p ˈiː s ᵻ z l ˌaɪ k
+piedi|p ˈiː d i
 piedrahita|p ˌiː d ɹ ɐ h ˈiː ɾ ə
 pieman|p ˈiː m ə n
+piemata|p iː m ˈɑː ɾ ə
 piemen|p ˈiː m ɛ n
 pien|p ˈiː n
+piena|p i  ˈɛ n ə
 piepkorn|p ˈiː p k ɔːɹ n
 pier|p ˈɪɹ
 pierce|p ˈɪɹ s
@@ -41948,6 +42359,7 @@ pity|p ˈɪ ɾ i
 pity's|p ˈɪ ɾ i z
 pitying|p ˈɪ ɾ i  ɪ ŋ
 pityingly|p ˈɪ ɾ i  ɪ ŋ l i
+piu|p ˈɪ  uː
 pius|p ˈaɪ ə s
 pivet|p ˈaɪ v ə t
 pixel's|p ˈɪ k s əl z
@@ -42079,6 +42491,7 @@ playboys|p l ˈeɪ b ɔɪ z
 playcalling|p l ˈeɪ k ɔː l ɪ ŋ
 played|p l ˈeɪ d
 player|p l ˈeɪ ɚ
+playera|p l ˈeɪ ɚ ɹ ə
 playerbase|p l ˈeɪ ɚ b ˌeɪ s
 players|p l ˈeɪ ɚ z
 players'|p l ˈeɪ ɚ z
@@ -42090,6 +42503,7 @@ playfield|p l ˈeɪ f iː l d
 playfully|p l ˈeɪ f ə l i
 playin'|p l ˈeɪ ɪ n
 playing|p l ˈeɪ ɪ ŋ
+playis|p l ˈeɪ i z
 playlow|p l ˈeɪ l oʊ
 playmaker|p l ˈeɪ m eɪ k ɚ
 playmaker's|p l ˈeɪ m eɪ k ɚ z
@@ -42098,6 +42512,7 @@ playmate's|p l ˈeɪ m eɪ t z
 playoffs'|p l ˈeɪ ɔ f s
 playology's|p l eɪ ˈɑː l ə dʒ i z
 playorganizers|p l ˈeɪ oːɹ ɡ ə n ˌaɪ z ɚ z
+playour|p l ˈeɪ ɚ
 playrix|p l ˈeɪ ɹ ɪ k s
 plays|p l ˈeɪ z
 playthrough|p l ˈeɪ θ ɹ uː
@@ -42215,6 +42630,7 @@ pneumocystosis|n ˌuː m ə s ɪ s t ˈoʊ s ɪ s
 pneumonia|n uː m ˈoʊ n iə
 pnoneh|p ˈiː n ˈʌ n ˈeɪ tʃ
 pnxbet|p ˌiː  ˌɛ n ˈɛ k s b ˈɛ t
+po'|p ˈoʊ
 poached|p ˈoʊ tʃ t
 poacher's|p ˈoʊ tʃ ɚ z
 poachum|p ˈoʊ tʃ ə m
@@ -42254,6 +42670,7 @@ pogba's|p ˈɑː ɡ b ə z
 pogg|p ˈɑː ɡ
 poghosian|p ə ɡ h ˈoʊ ʒ ə n
 pohorence|p ˈoʊ h ɔː ɹ ə n s
+poi|p ˈɔɪ
 poin|p ˈɔɪ n
 point|p ˈɔɪ n t
 pointed|p ˈɔɪ n t ᵻ d
@@ -42345,6 +42762,8 @@ pollutant|p ə l ˈuː t ə n t
 pollution|p ə l ˈuː ʃ ə n
 pollutions|p ə l ˈuː ʃ ə n z
 polly|p ˈɑː l i
+pologiz|p ˈɑː l ə dʒ ˌɪ z
+pologize|p ˈɑː l ə dʒ ˌaɪ z
 pologizede|p ˈɑː l ə dʒ ˌaɪ z d
 polokwane|p ˈɑː l ə k w ˌeɪ n
 polonia's|p ə l ˈoʊ n iə z
@@ -42413,6 +42832,7 @@ popish|p ˈɑː p ɪ ʃ
 poplars|p ˈɑː p l ɚ z
 popnetmedia|p ˌɑː p n ɪ t m ˈiː d iə
 popoola|p ˈɑː p uː l ə
+popotemi|p ˈɑː p oʊ t m i
 poppin'|p ˈɑː p ɪ n
 popping|p ˈɑː p ɪ ŋ
 pops|p ˈɑː p s
@@ -42497,10 +42917,13 @@ possesseth|p ə z ˈɛ s ə θ
 possession|p ə z ˈɛ ʃ ə n
 possessors|p ə z ˈɛ s ɚ z
 possib|p ˈɑː s ɪ b
+possibile|p ˈɑː s ɪ b ˌaɪ l
+possibili|p ˈɑː s ɪ b ˌɪ l i
 possibilities|p ˌɑː s ə b ˈɪ l ᵻ ɾ i z
 possibility|p ˌɑː s ə b ˈɪ l ᵻ ɾ i
 possible|p ˈɑː s ᵻ b əl
 possibly|p ˈɑː s ᵻ b l i
+posso|p ˈɑː s oʊ
 post|p ˈoʊ s t
 postage|p ˈoʊ s t ɪ dʒ
 postal|p ˈoʊ s t əl
@@ -42519,6 +42942,7 @@ postillions|p oʊ s t ˈɪ l iə n z
 postmajor|p ˈoʊ s t m eɪ dʒ ɚ
 postman's|p ˈoʊ s t m ə n z
 postmates|p ˈoʊ s t m eɪ t s
+posto|p ˈoʊ s t oʊ
 postpaid|p ˈoʊ s t p eɪ d
 postpartum|p ˈoʊ s t p ɑːɹ ɾ ə m
 postponed|p oʊ s t p ˈoʊ n d
@@ -42542,14 +42966,18 @@ potential|p ə t ˈɛ n ʃ əl
 potentialities|p ə t ˈɛ n ʃ ɪ  ˈæ l ᵻ ɾ i z
 potentiality|p ə t ˈɛ n ʃ ɪ  ˈæ l ᵻ ɾ i
 potently|p ˈoʊ t ə n t l i
+poter|p ˈoʊ ɾ ɚ
+potessi|p ˈoʊ ɾ ɛ s i
 potesta|p oʊ t ˈɛ s t ə
 potestaquisitor|p ˈoʊ t s t ɐ k w ˌɪ s ɪ ɾ ɚ
+potevo|p ɑː t ˈiː v oʊ
 potgieter|p ˈɑː t dʒ aɪə ɾ ɚ
 potman|p ˈɑː t m ə n
 potomac|p ə t ˈoʊ m ə k
 potosi|p ə t ˈoʊ s i
 pots|p ˈɑː t s
 pottawatomie|p ˈɑː ɾ ɐ w ɐ t ˌoʊ m i
+pottenent|p ˈɑː t ɛ n ə n t
 potter's|p ˈɑː ɾ ɚ z
 potteries|p ˈɑː ɾ ɚ ɹ i z
 potting|p ˈɑː ɾ ɪ ŋ
@@ -42604,6 +43032,7 @@ ppe|p ˌiː p ˌiː  ˈiː
 ppeace|p ˈiː p ˈiː s
 ppeieps|p ˈiː p ˈeɪ ɛ p s
 ppes|p ˈiː p ˈɛ s
+ppez|p ˈiː p ˈɛ z
 ppose|p ˈiː p ˈoʊ z
 ppp|p ˌiː p ˌiː p ˈiː
 ppp's|p ˌiː p ˈiː p ˈiː z
@@ -42655,6 +43084,7 @@ prate|p ɹ ˈeɪ t
 prateek|p ɹ ˈæ ɾ iː k
 prather|p ɹ ˈæ ð ɚ
 pratically|p ɹ ˈæ ɾ ɪ k l i
+praticamente|p ɹ ˈæ ɾ ɪ k ə m ˌɛ n t
 prating|p ɹ ˈeɪ ɾ ɪ ŋ
 pratique|p ɹ æ t ˈiː k
 pratosh|p ɹ ˈæ ɾ ɑː ʃ
@@ -42772,6 +43202,8 @@ premising|p ɹ ˈɛ m ɪ s ɪ ŋ
 premium|p ɹ ˈiː m iə m
 preordainment|p ɹ ɪ  oːɹ d ˈeɪ n m ə n t
 preorder|p ɹ ɪ  ˈoːɹ d ɚ
+preparazione|p ɹ ɪ p ˌæ ɹ eɪ z ˈaɪə n i
+preparazioni|p ɹ ɪ p ˈæ ɹ eɪ z ˌaɪə n i
 prepare|p ɹ ɪ p ˈɛɹ
 prepared|p ɹ ɪ p ˈɛɹ d
 preparedness|p ɹ ɪ p ˈɛɹ d n ə s
@@ -42828,6 +43260,7 @@ presidental|p ɹ ˌɛ z ɪ d ˈɛ n t əl
 presidente|p ɹ ˈɛ z ɪ d ˌɛ n t
 presidential|p ɹ ˌɛ z ɪ d ˈɛ n ʃ əl
 presidentialness|p ɹ ˌɛ z ɪ d ˈɛ n ʃ əl n ə s
+presidentid|p ɹ ˈɛ z ɪ d ˌɛ n t ɪ d
 presidents|p ɹ ˈɛ z ɪ d ə n t s
 presight|p ɹ ɪ s ˈaɪ t
 press|p ɹ ˈɛ s
@@ -43065,6 +43498,8 @@ productivity|p ɹ ˌɑː d ə k t ˈɪ v ᵻ ɾ i
 products|p ɹ ˈɑː d ʌ k t s
 productsoscar|p ɹ ˈɑː d ə k t s ˌɑː s k ɑːɹ
 produselor|p ɹ ˈɑː dʒ uː s ˌɛ l ɚ
+produttore|p ɹ ˈɑː d ʌ ɾ ɚ
+produzione|p ɹ ˌɑː dʒ uː z ˈaɪə n i
 prof|p ɹ ˈɑː f
 profanely|p ɹ ə f ˈeɪ n l i
 profaneness|p ɹ ə f ˈeɪ n n ə s
@@ -43157,6 +43592,7 @@ promly|p ɹ ˈɑː m l i
 promodh|p ɹ ˈɑː m ɑː d
 promontories|p ɹ ˈɑː m ɔ n t ɚ ɹ i z
 promontory|p ɹ ˈɑː m ɔ n t ɚ ɹ i
+promosso|p ɹ ə m ˈɔ s oʊ
 promoted|p ɹ ə m ˈoʊ ɾ ᵻ d
 promoter|p ɹ ə m ˈoʊ ɾ ɚ
 promoter's|p ɹ ə m ˈoʊ ɾ ɚ z
@@ -43213,9 +43649,11 @@ propose|p ɹ ə p ˈoʊ z
 proposers|p ɹ ə p ˈoʊ z ɚ z
 proposition|p ɹ ˌɑː p ə z ˈɪ ʃ ə n
 propositioning|p ɹ ˌɑː p ə z ˈɪ ʃ ə n ɪ ŋ
+propria|p ɹ ˈɑː p ɹ i  ə
 proprieties|p ɹ ə p ɹ ˈaɪə ɾ ɪ z
 proprietress|p ɹ ə p ɹ ˈaɪə t ɹ ə s
 propriety|p ɹ ə p ɹ ˈaɪə ɾ i
+proprio|p ɹ ˈoʊ p ɹ ɪ  ə
 propsect|p ɹ ˈɑː p s ɛ k t
 propublica|p ɹ ə p ˈʌ b l ɪ k ə
 propylmethionine|p ɹ ˈoʊ p əl m ˌɛ θ ɪ  ˌɑː n aɪ n
@@ -43239,6 +43677,8 @@ prostrates|p ɹ ˈɑː s t ɹ eɪ t s
 prostrating|p ɹ ɑː s t ɹ ˈeɪ ɾ ɪ ŋ
 prosy|p ɹ ˈoʊ z i
 protagonist's|p ɹ ˈoʊ ɾ ɐ ɡ ə n ˌɪ s t s
+protagonista|p ɹ ˈoʊ ɾ ɐ ɡ ə n ˌɪ s t ə
+protagonisti|p ɹ ˌoʊ ɾ ɐ ɡ ə n ˈɪ s t i
 prote|p ɹ ˈoʊ t
 proteans|p ɹ oʊ t ˈiə n z
 proteas|p ɹ ˈoʊ ɾ iə z
@@ -43249,6 +43689,7 @@ protecting|p ɹ ə t ˈɛ k t ɪ ŋ
 protectingly|p ɹ ə t ˈɛ k t ɪ ŋ l i
 protection|p ɹ ə t ˈɛ k ʃ ə n
 protective|p ɹ ə t ˈɛ k t ɪ v
+protectme|p ɹ ə t ˈɛ k t m i
 protector|p ɹ ə t ˈɛ k t ɚ
 protector's|p ɹ ə t ˈɛ k t ɚ z
 protectoron|p ɹ ə t ˈɛ k t oː ɹ ˌɑː n
@@ -43457,6 +43898,7 @@ ptuz|t ˈʌ z
 ptv|p ˌiː t ˌiː v ˈiː
 ptwc|p ˌiː t ˌiː d ˌʌ b əl j ˌuː s ˈiː
 pub'|p ˈʌ b
+pubblico|p ˈʌ b l ɪ k ˌoʊ
 pubcaster|p ˈʌ b k æ s t ɚ
 pube|p j ˈuː b
 pubg|p ˈʌ b ɡ
@@ -43947,6 +44389,7 @@ qr|k j ˌuː ˈɑːɹ
 qru|k j ˌuː ˌɑːɹ j ˈuː
 qsd|k j ˌuː ˌɛ s d ˈiː
 qu'eete|k w ˈiː t
+quace|k w ˈeɪ s
 quaditterable|k w ˈɑː d ɪ ɾ ɚ ɹ ə b əl
 quadrangle|k w ˈɑː d ɹ æ ŋ ɡ əl
 quadrangular|k w ɑː d ɹ ˈæ ŋ ɡ j ʊ l ɚ
@@ -43970,6 +44413,7 @@ quakeresses|k w ˈæ k ɚ ɹ ə s ᵻ z
 quakerish|k w ˈæ k ɚ ɹ ɪ ʃ
 quakes|k w ˈeɪ k s
 quaketh|k w ˈeɪ k ə θ
+qualcosa|k w ɔ l k ˈoʊ s ə
 qualif|k w ˈɔ l ɪ f
 qualification|k w ˌɔ l ɪ f ɪ k ˈeɪ ʃ ə n
 qualifications|k w ˌɔ l ɪ f ɪ k ˈeɪ ʃ ə n z
@@ -43982,6 +44426,7 @@ qualm|k w ˈɑː m
 quammen's|k w ˈæ m ə n z
 quando|k w ˈæ n d oʊ
 quanta|k w ˈɔ n t ə
+quanto|k w ˈɔ n t oʊ
 quantums|k w ˈɔ n t ə m z
 quarantine|k w ˈɔː ɹ ə n t ˌiː n
 quarantined|k w ˈɔː ɹ ə n t ˌiː n d
@@ -44048,6 +44493,9 @@ queenstown|k w ˈiː n z t aʊ n
 queer|k w ˈɪɹ
 queerest|k w ˈɪ ɹ ɪ s t
 queerly|k w ˈɪɹ l i
+quei|k w ˈeɪ
+quella|k w ˈɛ l ə
+quelle|k w ˈɛ l
 quen|k w ˈɛ n
 quen'll|k w ˈɛ n əl
 quenched|k w ˈɛ n tʃ t
@@ -44060,6 +44508,8 @@ querying|k w ˈiə ɹ ɪ  ɪ ŋ
 quesadillas|k ˌeɪ s ə d ˈiː  ə z
 quesi've|k ˈeɪ s i  ə v
 queso|k ˈeɪ s oʊ
+questa|k w ˈɛ s t ə
+questi|k w ˈɛ s t i
 question|k w ˈɛ s tʃ ə n
 questionable|k w ˈɛ s tʃ ə n ə b əl
 questionableness|k w ˈɛ s tʃ ə n ə b əl n ə s
@@ -44072,6 +44522,7 @@ questionness|k w ˈɛ s tʃ ə n n ə s
 questions|k w ˈɛ s tʃ ə n z
 questions'|k w ˈɛ s tʃ ə n z
 questionses|k w ˈɛ s tʃ ə n s ᵻ z
+questo|k w ˈɛ s t oʊ
 quets|k ˈeɪ s
 quetta's|k w ˈɛ ɾ ə z
 quetzal|k w ˈɛ t s əl
@@ -44104,6 +44555,7 @@ quiggan|k w ˈɪ ɡ ə n
 quigley's|k w ˈɪ ɡ l i z
 quikclot|k w ˈɪ k k l ɑː t
 quills|k w ˈɪ l z
+quindi|k w ˈɪ n d i
 quinnipiac|k w ɪ n ˈɪ p i  ˌæ k
 quintard|k w ˈɪ n t ɑːɹ d
 quintat|k w ˈɪ n t æ t
@@ -44385,11 +44837,14 @@ ragamuffin|ɹ ˈæ ɡ ɐ m ˌʌ f ɪ n
 ragatha|ɹ æ ɡ ˈæ θ ə
 ragathaa|ɹ ˈæ ɡ ɐ θ ˌɑː
 ragathu|ɹ æ ɡ ˈæ θ uː
+ragazze|ɹ ˈæ ɡ æ z
+ragazzo|ɹ æ ɡ ˈæ t s oʊ
 ragdolls|ɹ ˈæ ɡ d ɑː l z
 rage|ɹ ˈeɪ dʒ
 ragechee|ɹ ˈeɪ dʒ tʃ iː
 rageth|ɹ ˈeɪ dʒ ə θ
 rageze|ɹ ˈeɪ dʒ z
+raggiunto|ɹ ˌæ ɡ ɪ  ˈʌ n t oʊ
 raggles|ɹ ˈæ ɡ əl z
 ragh|ɹ ˈɑː ɡ
 raghav|ɹ ˈæ ɡ h æ v
@@ -44397,6 +44852,7 @@ raghu|ɹ ˈæ ɡ h uː
 ragin'|ɹ ˈæ dʒ ɪ n
 raging|ɹ ˈeɪ dʒ ɪ ŋ
 ragingly|ɹ ˈeɪ dʒ ɪ ŋ l i
+ragione|ɹ æ dʒ ˈaɪə n i
 raglan|ɹ ˈæ ɡ l ə n
 ragnar|ɹ ˈæ ɡ n ɑːɹ
 ragnar's|ɹ ˈæ ɡ n ɑːɹ z
@@ -44858,6 +45314,7 @@ readpers|ɹ ˈiː d p ɚ z
 readperverss|ɹ ˈiː d p ɜː v ɚ s
 readried|ɹ ˈiː d ɹ i d
 reads|ɹ ˈiː d z
+readther|ɹ ˈiː d ð ɚ
 readvers|ɹ ˈiː d v ɚ z
 readving|ɹ ˈiː d v ɪ ŋ
 ready|ɹ ˈɛ d i
@@ -44865,6 +45322,7 @@ readydy|ɹ ˈɛ d ɪ d i
 readyies|ɹ ˈɛ d ɪ  i z
 readyy|ɹ ˈɛ d ɪ  i
 reafter|ɹ ˈiː f t ɚ
+reagisce|ɹ ˈiː dʒ ɪ s
 reains|ɹ ˈiː  ɪ n z
 real|ɹ ˈiː  ə l
 real's|ɹ ˈiː  ə l z
@@ -44934,6 +45392,7 @@ reavers|ɹ ˈiː v ɚ z
 reaves|ɹ ˈiː v z
 reawakeneth|ɹ ˈiː w eɪ k ˌiː n ə θ
 reawakening|ɹ ˈiː w eɪ k ə n ɪ ŋ
+reazioni|ɹ ˈiː z aɪə n i
 reb|ɹ ˈɛ b
 rebalance|ɹ ᵻ b ˈæ l ə n s
 rebaptize|ɹ ᵻ b ˈæ p t aɪ z
@@ -44943,6 +45402,7 @@ rebekah|ɹ ᵻ b ˈɛ k ə
 rebellion|ɹ ᵻ b ˈɛ l iə n
 rebellious|ɹ ᵻ b ˈɛ l iə s
 rebelt|ɹ ᵻ b ˈɛ l t
+rebered|ɹ ᵻ b ˈɜː d
 rebers|ɹ ᵻ b ˈɜː z
 reblinking|ɹ ᵻ b l ˈɪ ŋ k ɪ ŋ
 rebooted|ɹ ᵻ b ˈuː ɾ ᵻ d
@@ -44975,6 +45435,7 @@ receiververs|ɹ ᵻ s ˈiː v ɜː v ɚ z
 receives|ɹ ᵻ s ˈiː v z
 receiving|ɹ ᵻ s ˈiː v ɪ ŋ
 recent|ɹ ˈiː s ə n t
+recente|ɹ ˈiː s ɛ n t
 recenterly|ɹ ˈiː s ɛ n t ɚ l i
 recently|ɹ ˈiː s ə n t l i
 recep|ɹ ᵻ s ˈɛ p
@@ -44986,9 +45447,11 @@ receved|ɹ ᵻ s ˈɛ v d
 reche|ɹ ᵻ tʃ ˈɛ
 recipe|ɹ ˈɛ s ᵻ p ˌiː
 recipeless|ɹ ˈɛ s ᵻ p ˌiː l ə s
+recipro|ɹ ᵻ s ˈɪ p ɹ oʊ
 reciprocally|ɹ ᵻ s ˈɪ p ɹ ə k əl i
 reciprocation|ɹ ᵻ s ˌɪ p ɹ ə k ˈeɪ ʃ ə n
 reciprocities|ɹ ᵻ s ɪ p ɹ ˈɑː s ᵻ ɾ i z
+reciproco|ɹ ᵻ s ɪ p ɹ ˈoʊ k oʊ
 recirculated|ɹ ᵻ s ˈɜː k j ʊ l ˌeɪ ɾ ᵻ d
 recitation|ɹ ᵻ s ɪ t ˈeɪ ʃ ə n
 reciteth|ɹ ᵻ s ˈaɪ ɾ ə θ
@@ -45303,6 +45766,7 @@ regionalist|ɹ ˈiː dʒ ə n ə l ˌɪ s t
 regis'|ɹ ˈiː dʒ ɪ s
 regis'll|ɹ ˈiː dʒ ɪ s əl
 regise|ɹ ᵻ dʒ ˈaɪ z
+regista|ɹ ˈɛ dʒ ɪ s t ə
 register|ɹ ˈɛ dʒ ɪ s t ɚ
 registerin'|ɹ ˈɛ dʒ ɪ s t ɚ ɹ ˌɪ n
 registrar's|ɹ ˈɛ dʒ ɪ s t ɹ ˌɑːɹ z
@@ -45501,6 +45965,7 @@ remedy|ɹ ˈɛ m ə d i
 remee|ɹ ᵻ m ˈiː
 remejaa|ɹ ᵻ m ˈɛ dʒ ɑː
 remem|ɹ ᵻ m ˈɛ m
+remembe|ɹ ᵻ m ˈɛ m b
 remembeber|ɹ ᵻ m ˈɛ m b ɛ b ɚ
 remember|ɹ ᵻ m ˈɛ m b ɚ
 remembered|ɹ ᵻ m ˈɛ m b ɚ d
@@ -45716,6 +46181,7 @@ reproves|ɹ ᵻ p ɹ ˈuː v z
 reproving|ɹ ᵻ p ɹ ˈuː v ɪ ŋ
 reprovingly|ɹ ᵻ p ɹ ˈuː v ɪ ŋ l i
 repsonsible|ɹ ᵻ p s ˈɑː n s ᵻ b əl
+rept|ɹ ˈɛ p t
 reptile|ɹ ˈɛ p t aɪ l
 reptilions|ɹ ɛ p t ˈɪ l iə n z
 reptuation|ɹ ˌɛ p tʃ uː ˈeɪ ʃ ə n
@@ -46144,6 +46610,7 @@ ribper|ɹ ˈɪ b p ɚ
 ribs|ɹ ˈɪ b z
 ribunu|ɹ ɪ b ˈuː n uː
 ricara|ɹ ɪ k ˈɑːɹ ɹ ə
+ricchissima|ɹ ˈɪ k ɪ s ˌɪ m ə
 ricciardo|ɹ ɪ k s ˈaɪɚ d oʊ
 rice|ɹ ˈaɪ s
 rich|ɹ ˈɪ tʃ
@@ -46162,6 +46629,8 @@ rick|ɹ ˈɪ k
 ricks|ɹ ˈɪ k s
 rickshaw|ɹ ˈɪ k ʃ ɔː
 rickshaws|ɹ ˈɪ k ʃ ɔː z
+ricorda|ɹ ˈɪ k oːɹ d ə
+ricordavo|ɹ ˌɪ k oːɹ d ˈɑː v oʊ
 rid's|ɹ ˈɪ d z
 ridc|ɹ ˈɪ d k
 ridden|ɹ ˈɪ d ə n
@@ -46243,6 +46712,7 @@ rigii|ɹ ˈɪ dʒ ɪ  ˌaɪ
 rigin|ɹ ˈɪ dʒ ɪ n
 rigor|ɹ ˈɪ ɡ ɚ
 rigour|ɹ ˈɪ ɡ ɚ
+riguarda|ɹ ˈɪ ɡ ɑːɹ d ə
 rihannas'|ɹ ɪ  ˈɑː n ə z
 riho|ɹ ˈiː h oʊ
 rii|ɹ ˈɪ  aɪ
@@ -46277,6 +46747,7 @@ ringings|ɹ ˈɪ ŋ ɪ ŋ z
 ringlet|ɹ ˈɪ ŋ ɡ l ɪ t
 ringlets|ɹ ˈɪ ŋ ɡ l ɪ t s
 ringo's|ɹ ˈɪ ŋ ɡ oʊ z
+ringrazio|ɹ ɪ ŋ ɡ ɹ ˈeɪ z ɪ  ˌoʊ
 rings|ɹ ˈɪ ŋ z
 ringwood|ɹ ˈɪ ŋ w ʊ d
 rinik|ɹ ˈɪ n ɪ k
@@ -46284,6 +46755,7 @@ rink|ɹ ˈɪ ŋ k
 rinky|ɹ ˈɪ ŋ k i
 rinna|ɹ ˈɪ n ə
 rino|ɹ ˈiː n oʊ
+rinombre|ɹ ˈɪ n ɑː m b ɚ
 rinos|ɹ ˈiː n oʊ z
 rinsed|ɹ ˈɪ n s t
 rinsh|ɹ ˈɪ n ʃ
@@ -46348,6 +46820,9 @@ riskin'|ɹ ˈɪ s k ɪ n
 risks|ɹ ˈɪ s k s
 risky|ɹ ˈɪ s k i
 risper|ɹ ˈɪ s p ɚ
+rispetto|ɹ ɪ s p ˈɛ ɾ oʊ
+risposte|ɹ ˈɪ s p oʊ s t
+risposto|ɹ ɪ s p ˈoʊ s t oʊ
 ristaag|ɹ ˈɪ s t ɑː ɡ
 ristolainen|ɹ ˈɪ s t ə l ˌeɪ n ə n
 ritblat|ɹ ˈɪ t b l æ t
@@ -46360,6 +46835,8 @@ ritual|ɹ ˈɪ tʃ uː əl
 ritual'd|ɹ ˈɪ tʃ uː əl d
 ritual's|ɹ ˈɪ tʃ uː əl z
 ritz|ɹ ˈɪ t s
+riuniti|ɹ ˌɪ j uː n ˈiː ɾ i
+riusciti|ɹ ˌɪ  ə s ˈiː ɾ i
 rival|ɹ ˈaɪ v əl
 rivalled|ɹ ˈaɪ v əl d
 rivalry|ɹ ˈaɪ v əl ɹ i
@@ -46415,6 +46892,7 @@ rnao|ˈɑːɹ n ˈaʊ
 rnas|ˈɑːɹ n ˈæ s
 rnc|ˌɑːɹ ɹ ˌɛ n s ˈiː
 rng|ˌɑːɹ ɹ ˌɛ n dʒ ˈiː
+ro|ɹ ˈoʊ
 roach|ɹ ˈoʊ tʃ
 roach'll|ɹ ˈoʊ tʃ əl
 roach's|ɹ ˈoʊ tʃ ɪ z
@@ -46736,6 +47214,7 @@ rota's|ɹ ˈoʊ ɾ ə z
 rotariu|ɹ oʊ t ˈɛ ɹ ɪ  ˌuː
 rotate|ɹ oʊ t ˈeɪ t
 rotation|ɹ oʊ t ˈeɪ ʃ ə n
+rotde|ɹ ˈɑː t d
 roteie|ɹ ˈoʊ ɾ i
 rotfiend|ɹ ˈɑː t f iː n d
 rotfiends|ɹ ˈɑː t f iː n d z
@@ -46801,6 +47280,7 @@ routs|ɹ ˈaʊ t s
 roved|ɹ ˈoʊ v d
 roves|ɹ ˈoʊ v z
 roveth|ɹ ˈoʊ v ə θ
+rovinare|ɹ ˈɑː v ɪ n ˌɛɹ
 row|ɹ ˈoʊ
 rowan|ɹ ˈoʊ ə n
 rowanberry|ɹ ˈoʊ ɐ n b ˌɛ ɹ i
@@ -46998,12 +47478,14 @@ runnin'|ɹ ˈʌ n ɪ n
 running|ɹ ˈʌ n ɪ ŋ
 running's|ɹ ˈʌ n ɪ ŋ z
 runningin|ɹ ˈʌ n ɪ ŋ ɡ ˌɪ n
+runno|ɹ ˈʌ n oʊ
 runscape|ɹ ˈʌ n s k eɪ p
 runt|ɹ ˈʌ n t
 runtime|ɹ ˈʌ n t aɪ m
 runts|ɹ ˈʌ n t s
 runun|ɹ ˈʌ n ʌ n
 runye|ɹ ˈʌ n aɪ
+ruough|r j ˈuː oʊ
 rupaul's|ɹ ˈuː p ɔː l z
 rupee's|ɹ ˈuː p iː z
 rupert|ɹ ˈuː p ɚ t
@@ -47157,6 +47639,7 @@ saalace|s ˈɑː l ɪ s
 saalane|s ˈɑː l eɪ n
 saale|s ˈɑː l
 saalefe|s ˈɑː l ɛ f
+saalil|s ˈɑː l ɪ l
 saalime|s ˈɑː l aɪ m
 saall|s ˈɑː l
 saalu|s ˈɑː l uː
@@ -47272,6 +47755,8 @@ sacrifice|s ˈæ k ɹ ᵻ f ˌaɪ s
 sacrificed|s ˈæ k ɹ ᵻ f ˌaɪ s t
 sacrificer|s ˈæ k ɹ ᵻ f ˌaɪ s ɚ
 sacrifices|s ˈæ k ɹ ᵻ f ˌaɪ s ᵻ z
+sacrifichi|s ˌæ k ɹ ɪ f ˈɪ ʃ i
+sacrifichi>>|s ˌæ k ɹ ɪ f ˈɪ ʃ i
 sacrificing|s ˈæ k ɹ ᵻ f ˌaɪ s ɪ ŋ
 sacriice|s ˈæ k ɹ ɪ  ɪ s
 sad|s ˈæ d
@@ -47501,6 +47986,7 @@ salvers|s ˈæ l v ɚ z
 salving|s ˈæ l v ɪ ŋ
 salvini|s æ l v ˈiː n i
 salvvision|s ˈæ l v ɪ ʒ ə n
+salzava|s æ l t s ˈɑː v ə
 sam|s ˈæ m
 sam's|s ˈæ m z
 samaa|s ˈæ m ɑː
@@ -47656,6 +48142,7 @@ sank|s ˈæ ŋ k
 sankranti|s ˈæ ŋ k ɹ æ n t i
 sanli|s ˈæ n l i
 sann|s ˈæ n
+sanno|s ˈæ n oʊ
 sanrei|s ˈæ n ɹ eɪ
 sansretour|s ˈæ n s ɹ ɪ t ˌʊɹ
 santa|s ˈæ n t ə
@@ -47675,7 +48162,12 @@ sap|s ˈæ p
 sap's|s ˈæ p s
 sapaa|s ˈæ p ɑː
 sapaawaa|s ˈæ p ɑː w ˌɑː
+sapendolo|s ˈeɪ p ə n d ə l ˌoʊ
 saper|s ˈeɪ p ɚ
+sapeva|s ˈeɪ p v ə
+sapevamo|s ˈeɪ p v ə m ˌoʊ
+sapevano|s eɪ p v ˈɑː n oʊ
+sapevo|s æ p ˈiː v oʊ
 sapient|s ˈæ p iə n t
 sapients|s ˈæ p iə n t s
 sappers|s ˈæ p ɚ z
@@ -47773,6 +48265,7 @@ sarwacawe|s ˈɑːɹ w ɐ k ˌɔː
 sarwate|s ˈɑːɹ w eɪ t
 sarzano|s ɑːɹ z ˈɑː n oʊ
 sasa|s ˈɑː s ə
+sasay|s ˈæ s eɪ
 sascoc|s ˈæ s k ɑː k
 sash|s ˈæ ʃ
 sashus|s ˈæ ʃ ə s
@@ -47930,6 +48423,7 @@ saxhleel|s ˈæ k s ɬ iː l
 saxinger|s ˈæ k s ɪ ŋ ɡ ɚ
 saxon|s ˈæ k s ə n
 say|s ˈeɪ
+sayain|s ˈeɪ eɪ n
 sayaning|s ˈeɪ eɪ n ɪ ŋ
 sayaninge|s ˈeɪ ɐ n ˌɪ n dʒ
 saybut|s ˈeɪ b ʌ t
@@ -48089,6 +48583,8 @@ schenkerian|ʃ ɛ ŋ k ˈɪ ɹ i  ə n
 schenn|ʃ ˈɛ n
 schenzy|ʃ ˈɛ n z i
 scherencel|ʃ ˈɛ ɹ ɛ n s əl
+schermo|ʃ ˈɜː m oʊ
+scherzi|ʃ ˈɜː z i
 schetrit|ʃ ˈɛ t ɹ ɪ t
 schichter|s k ˈɪ tʃ t ɚ
 schieve|s k ˈiː v
@@ -48137,6 +48633,7 @@ schools'|s k ˈuː l z
 schoolstudents|s k ˈuː l s t uː d ə n t s
 schopenhauer|s k ˈoʊ p ə n h ˌaʊ ɚ
 schopflin|s k ˈɑː p f l ɪ n
+schrezzi|ʃ ɹ ˈɛ z i
 schuilenberg|ʃ j ˈuː aɪ l ə n b ˌɜː ɡ
 schultz's|ʃ ˈʌ l t s ᵻ z
 schulze's|ʃ ˈʌ l z z
@@ -48201,6 +48698,7 @@ scopa|s k ˈoʊ p ə
 scopdogs|s k ˈɑː p d ɑː ɡ z
 scope's|s k ˈoʊ p z
 scoped|s k ˈoʊ p d
+scoperto|s k ˈoʊ p ɚ t ˌoʊ
 scopetta|s k oʊ p ˈɛ ɾ ə
 scopsicle|s k ˈɑː p s ɪ k əl
 scopsucker|s k ˈɑː p s ʌ k ɚ
@@ -48454,6 +48952,7 @@ seconded|s ᵻ k ˈɑː n d ᵻ d
 secondin|s ˈɛ k ə n d ˌɪ n
 seconding|s ˈɛ k ə n d ɪ ŋ
 secondly|s ˈɛ k ə n d l i
+secondo|s ˈɛ k ə n d ˌoʊ
 seconds|s ˈɛ k ə n d z
 secondus|s ˈɛ k ə n d ə s
 second…|s ˈɛ k ə n d
@@ -48627,6 +49126,8 @@ segments|s ˈɛ ɡ m ə n t s
 segregated|s ˈɛ ɡ ɹ ɪ ɡ ˌeɪ ɾ ᵻ d
 segria|s ˈɛ ɡ ɹ i  ə
 segueing|s ˈɛ ɡ w eɪ ɪ ŋ
+seguito|s ɛ ɡ w ˈiː ɾ oʊ
+seguiva|s ˈɛ ɡ w ɪ v ə
 segulah|s ˈɛ ɡ j ʊ l ə
 segulas|s ˈɛ ɡ j ʊ l ə z
 seh|s ˈeɪ
@@ -48636,6 +49137,7 @@ sehetate|s ˈɛ h ɪ t ˌeɪ t
 sehetatoce|s ˈɛ h ɪ t ˌæ ɾ oʊ s
 sehetatu|s ˌɛ h ɪ t ˈɑː ɾ uː
 sehgal|s ˈeɪ ɡ əl
+sei|s ˈeɪ
 seick|s ˈeɪ k
 seidhe|s ˈeɪ d h
 seiege|s ˈeɪ ɛ dʒ
@@ -48724,6 +49226,7 @@ selfishnesses|s ˈɛ l f ɪ ʃ n ə s ᵻ z
 selfless|s ˈɛ l f l ə s
 selflessly|s ˈɛ l f l ə s l i
 selflessness|s ˈɛ l f l ə s n ə s
+selfll|s ˈɛ l f l əl
 selfscaras|s ɛ l f s k ˈɑːɹ ɹ ə z
 selinker|s ˈɛ l ɪ ŋ k ɚ
 selita|s ɛ l ˈiː ɾ ə
@@ -48778,6 +49281,7 @@ semoce|s ˈɛ m oʊ s
 semotaa|s ˈɛ m ə t ˌɑː
 semper|s ˈɛ m p ɚ
 semphere|s ˈɛ m f ɚ
+sempre|s ˈɛ m p ɚ
 semu|s ˈɛ m uː
 sen|s ˈɛ n
 senaanasaa|s ˈɛ n ɑː n ˌæ s ɑː
@@ -48861,6 +49365,8 @@ sentimentalize|s ˌɛ n t ɪ m ˈɛ n t əl ˌaɪ z
 sentimentally|s ˌɛ n t ɪ m ˈɛ n t əl i
 sentinel|s ˈɛ n t ɪ n əl
 sentinels|s ˈɛ n t ɪ n əl z
+sentire|s ˈɛ n t aɪɚ
+sentito|s ɛ n t ˈiː ɾ oʊ
 senton|s ˈɛ n t ə n
 sentop|s ˈɛ n t ɑː p
 sentosa|s ɛ n t ˈoʊ s ə
@@ -49468,11 +49974,13 @@ sheate|ʃ ˈiː t
 sheaths|ʃ ˈiː θ s
 shebaa|ʃ ˈɛ b ɑː
 shebang|ʃ ᵻ b ˈæ ŋ
+shebby|ʃ ˈɛ b i
 shebere|ʃ ˈɛ b ɚ
 sheberetanyoce|ʃ ˈɛ b ɚ ɹ ˌɛ t ɐ n ɪ  ˌoʊ s
 shechita|ʃ ɛ tʃ ˈiː ɾ ə
 shecky|ʃ ˈɛ k i
 shed|ʃ ˈɛ d
+shed'board|ʃ ˈɛ d b oːɹ d
 shedder|ʃ ˈɛ d ɚ
 shedders|ʃ ˈɛ d ɚ z
 sheds|ʃ ˈɛ d z
@@ -49739,6 +50247,7 @@ shlowad|ʃ l ˈoʊ ə d
 shluck|ʃ l ˈʌ k
 shm|ˌɛ s ˌeɪ tʃ ˈɛ m
 shmoney|ˌɛ s ˈeɪ tʃ m ˈʌ n i
+shn't|ˌɛ s ˌeɪ tʃ ˈɛ n t
 sho|ʃ ˈoʊ
 shoah|ʃ ˈoʊ
 shoaib|ʃ ˈoʊ ɪ b
@@ -49778,6 +50287,7 @@ shomi|ʃ ˈoʊ m i
 shone|ʃ ˈɑː n
 shonen|ʃ ˈoʊ n ə n
 shongom|ʃ ˈɑː ŋ ɡ ə m
+shooe|ʃ ˈuː
 shook|ʃ ˈʊ k
 shoon|ʃ ˈuː n
 shoone|ʃ ˈuː n
@@ -49980,6 +50490,7 @@ shyngle|ʃ ˈaɪ ŋ ɡ əl
 si'ee|s ˈɪ  iː
 si'ole|s ˈɪ  oʊ l
 siakam|s ˈaɪ ə k ˌæ m
+siamo|s ˈaɪ ə m ˌoʊ
 sianna|s ˈaɪ ə n ə
 siaya|s ˈaɪ ə j ə
 sibanyoni|s ˌɪ b ɐ n ɪ  ˈoʊ n i
@@ -50104,6 +50615,7 @@ signin'|s ˈɪ ɡ n ɪ n
 signing|s ˈaɪ n ɪ ŋ
 signis|s ˈɪ ɡ n i z
 signor|s ɪ n j ˈoːɹ
+signora|s ɪ n j ˈoː ɹ ə
 signoria|s ɪ n j ˈoː ɹ iə
 signposted|s ˈaɪ n p oʊ s t ᵻ d
 signs|s ˈaɪ n z
@@ -50169,6 +50681,7 @@ silversmith's|s ˈɪ l v ɚ s m ˌɪ θ z
 silversmiths|s ˈɪ l v ɚ s m ˌɪ θ s
 silverton|s ˈɪ l v ɜː t ə n
 sim|s ˈɪ m
+simbolo|s ˈɪ m b ə l ˌoʊ
 simcock|s ˈɪ m k ɑː k
 simcock's|s ˈɪ m k ɑː k s
 simelane|s ˈaɪ m l eɪ n
@@ -50318,6 +50831,7 @@ sitabo|s ɪ t ˈɑː b oʊ
 sitadl|s ˈɪ ɾ æ d əl
 sital|s ˈɪ ɾ əl
 sitautions|s ɪ t ˈɔː ʃ ə n z
+sitback|s ˈɪ t b æ k
 sitch|s ˈɪ tʃ
 site|s ˈaɪ t
 siter|s ˈaɪ ɾ ɚ
@@ -50768,6 +51282,7 @@ sme|s m ˈiː
 smeared|s m ˈɪɹ d
 smearholdlt|s m ˈɪɹ h oʊ l d l t
 smech|s m ˈɛ tʃ
+smeil|s m ˈeɪ l
 smell|s m ˈɛ l
 smell'll|s m ˈɛ l əl
 smell's|s m ˈɛ l z
@@ -50814,6 +51329,7 @@ smmes|ˌɛ s ˈɛ m m ˈɛ s
 smmt|ˌɛ s ˌɛ m ˌɛ m t ˈiː
 smmuch|ˌɛ s ˈɛ m m ˈʌ tʃ
 smmusd|ˌɛ s ˈɛ m m ˈʌ s d
+smo|s m ˈoʊ
 smoan|s m ˈoʊ n
 smocks|s m ˈɑː k s
 smoke|s m ˈoʊ k
@@ -51021,6 +51537,7 @@ socus|s ˈoʊ k ə s
 soda|s ˈoʊ d ə
 sodaree|s ˈɑː d ɐ ɹ ˌiː
 sodastream|s ˈɑː d ɐ s t ɹ ˌiː m
+soddisfatto|s ˌɑː d ɪ s f ˈæ ɾ oʊ
 sodelpa|s ˈoʊ d l p ə
 soderbergh's|s ˈoʊ d ɚ b ɚ ɡ z
 sodexo|s ɑː d ˈiː k s oʊ
@@ -51076,6 +51593,7 @@ solaced|s ˈɑː l ɪ s t
 solacing|s ˈɑː l ɪ s ɪ ŋ
 solactive|s ə l ˈæ k t ɪ v
 solaf|s ˈɑː l æ f
+solamente|s ˈɑː l ə m ˌɛ n t
 solange|s ˈɑː l æ n dʒ
 solarwinds|s ˈoʊ l ɑːɹ w ˌɪ n d z
 sold|s ˈoʊ l d
@@ -51104,6 +51622,7 @@ solicitor's|s ə l ˈɪ s ɪ ɾ ɚ z
 solid|s ˈɑː l ɪ d
 solidaariti|s ˌɑː l ɪ d ˈɑːɹ ɹ ˈiː ɾ i
 solider|s ˈɑː l aɪ d ɚ
+solidu|s ˈɑː l ɪ d ˌuː
 soliloquies|s ə l ˈɪ l ə k w ˌɪ z
 soliloquizing|s ə l ˈɪ l ə k w ˌɪ z ɪ ŋ
 soliloquy|s ə l ˈɪ l ə k w i
@@ -51151,6 +51670,7 @@ somebody|s ˈʌ m b ɑː d i
 somebody'|s ˈʌ m b ɑː d i
 somebody'd|s ˈʌ m b ɑː d i d
 somebody'll|s ˈʌ m b ə d i  əl
+somebodyio|s ˌʌ m b ə d ˈɪ  ɪ  ˌoʊ
 somebodys|s ˈʌ m b ɑː d i z
 somedday|s ˈʌ m d eɪ
 someeday|s ˈʌ m ɪ d ˌeɪ
@@ -51179,6 +51699,7 @@ someway|s ˈʌ m w eɪ
 somewhat|s ˈʌ m w ʌ t
 somewhere|s ˈʌ m w ɛɹ
 somewhere's|s ˈʌ m w ɛɹ z
+somewhereelse|s ˈʌ m w ɛ ɹ ˌɛ l s
 sommelier|s ˌʌ m ə l j ˈeɪ
 somnambulic|s ɑː m n ɐ m b j ˈʊ l ɪ k
 somniferous|s ə m n ˈɪ f ɚ ɹ ə s
@@ -51214,6 +51735,7 @@ sonir|s ˈɑː n ɪɹ
 sonje|s ˈɑː n dʒ
 sonnie|s ˈɑː n i
 sonny|s ˈʌ n i
+sono|s ˈoʊ n oʊ
 sonofa|s ə n ˈoʊ f ə
 sonofabitch|s ˈɑː n ə f ˌæ b ɪ tʃ
 sonos|s ˈoʊ n oʊ z
@@ -51293,6 +51815,7 @@ sorta|s ˈɔːɹ ɾ ə
 sortilege|s ˈɔːɹ ɾ ə l ˌɪ dʒ
 sortin|s ˈɔːɹ t ɪ n
 sortin'|s ˈɔːɹ t ɪ n
+sortry|s ˈɔːɹ t ɹ i
 sorts|s ˈɔːɹ t s
 sortword|s ˈɔːɹ t w ɜː d
 sos|s ˈɑː s
@@ -51339,6 +51862,7 @@ soulsha|s ˈoʊ l ʃ ə
 soulsword|s ˈoʊ l s oːɹ d
 soumare|s ˈaʊ m ɛɹ
 sound|s ˈaʊ n d
+soundarlike|s ˈaʊ n d ɑːɹ l ˌaɪ k
 soundbar|s ˈaʊ n d b ɑːɹ
 soundbars|s ˈaʊ n d b ɑːɹ z
 soundbops|s ˈaʊ n d b ə p s
@@ -51393,6 +51917,7 @@ sover|s ˈoʊ v ɚ
 sovereign|s ˈɑː v ɚ ɹ ˌɪ n
 sovereign's|s ˈɑː v ɚ ɹ ˌɪ n z
 sovereigns|s ˈɑː v ɚ ɹ ˌɪ n z
+sovi|s ˈoʊ v i
 soviet|s ˈoʊ v iə t
 soviyate|s ˈɑː v ɪ j ˌeɪ t
 sovngarde's|s ˈɑː v ŋ ɡ ɑːɹ d z
@@ -51458,6 +51983,7 @@ spavor|s p ˈæ v ɚ
 spax|s p ˈæ k s
 spaying|s p ˈeɪ ɪ ŋ
 spaza's|s p ˈɑː z ə z
+spazio|s p ˈæ z ɪ  ˌoʊ
 spc|ˌɛ s p ˌiː s ˈiː
 spca|ˌɛ s p ˌiː s ˌiː  ˈeɪ
 spcb|ˌɛ s p ˌiː s ˌiː b ˈiː
@@ -51557,6 +52083,7 @@ spellslinger|s p ˈɛ l s l ɪ ŋ ɡ ɚ
 spellsword|s p ˈɛ l s oːɹ d
 spellwright|s p ˈɛ l ɹ aɪ t
 spelt|s p ˈɛ l t
+spence|s p ˈɛ n s
 spencerville|s p ˈɛ n s ɚ v ˌɪ l
 spend|s p ˈɛ n d
 spended|s p ˈɛ n d ᵻ d
@@ -51575,6 +52102,7 @@ spewin'|s p j ˈuː ɪ n
 spewing|s p j ˈuː ɪ ŋ
 spf|ˌɛ s p ˌiː  ˈɛ f
 spfl|ˌɛ s p ˌiː  ˌɛ f ˈɛ l
+spg|ˌɛ s p ˌiː dʒ ˈiː
 sphere|s f ˈɪɹ
 spherically|s f ˈɛ ɹ ɪ k l i
 sphinx|s f ˈɪ ŋ k s
@@ -51718,6 +52246,7 @@ spooning|s p ˈuː n ɪ ŋ
 spoons'|s p ˈuː n z
 spoooky|s p ˈuː oʊ k i
 spoopked|s p ˈuː p k t
+spori|s p ˈɔː ɹ i
 sporstmanship|s p ˈoːɹ s t m ə n ʃ ˌɪ p
 sport|s p ˈoːɹ t
 sport'|s p ˈoːɹ t
@@ -51725,6 +52254,8 @@ sportel|s p ˈoːɹ ɾ əl
 sporting|s p ˈoːɹ ɾ ɪ ŋ
 sportive|s p ˈoːɹ ɾ ɪ v
 sportiveness|s p ˈoːɹ ɾ ɪ v n ə s
+sportivi|s p ˈoːɹ ɾ ɪ v i
+sportivo|s p oːɹ t ˈɪ v oʊ
 sportpesa|s p ˈoːɹ t p ɛ s ə
 sports|s p ˈoːɹ t s
 sports'|s p ˈoːɹ t s
@@ -51954,6 +52485,7 @@ stakeholders|s t ˈeɪ k h oʊ l d ɚ z
 stakeknife|s t ˈeɪ k n aɪ f
 stakes|s t ˈeɪ k s
 staketh|s t ˈeɪ k ə θ
+stal|s t ˈæ l
 stalactite|s t ɐ l ˈæ k t aɪ t
 stalactites|s t ɐ l ˈæ k t aɪ t s
 stalf|s t ˈæ l f
@@ -51996,6 +52528,7 @@ stangers|s t ˈæ n dʒ ɚ z
 staning|s t ˈeɪ n ɪ ŋ
 stanislaus|s t ˈæ n ɪ s l ˌaʊ s
 stanist|s t ˈæ n ɪ s t
+stanking|s t ˈæ ŋ k ɪ ŋ
 stanley|s t ˈæ n l i
 stans|s t ˈæ n z
 stansted|s t ˈæ n s t ᵻ d
@@ -52077,6 +52610,7 @@ statism|s t ˈeɪ ɾ ɪ z ə m
 statistics|s t ɐ t ˈɪ s t ɪ k s
 statlander|s t ˈæ t l ə n d ɚ
 statlilia|s t æ t l ˈɪ l iə
+stato|s t ˈɑː ɾ oʊ
 statue|s t ˈæ tʃ uː
 statue's|s t ˈæ tʃ uː z
 statului|s t ˈæ tʃ uː l j ˌuː i
@@ -52273,10 +52807,12 @@ stinted|s t ˈɪ n t ᵻ d
 stinting|s t ˈɪ n t ɪ ŋ
 stipelman's|s t ˈaɪ p l m ə n z
 stir|s t ˈɜː
+stirava|s t ɜː ɹ ˈɑː v ə
 stirrin'|s t ˈɜː ɹ ɪ n
 stirring|s t ˈɜː ɹ ɪ ŋ
 stitch|s t ˈɪ tʃ
 stitcher|s t ˈɪ tʃ ɚ
+stivali|s t ɪ v ˈɑː l i
 stke|ˌɛ s t ˌiː k ˌeɪ ˈiː
 stle|ˌɛ s t ˌiː  ˌɛ l ˈiː
 stm|ˌɛ s t ˌiː  ˈɛ m
@@ -52357,6 +52893,7 @@ stores|s t ˈoːɹ z
 storeship|s t ˈoːɹ ʃ ɪ p
 storey|s t ˈoː ɹ i
 storeys|s t ˈoː ɹ i z
+storia|s t ˈoː ɹ i  ə
 stories|s t ˈoː ɹ i z
 storks|s t ˈoːɹ k s
 storm|s t ˈoːɹ m
@@ -52405,9 +52942,11 @@ stowe's|s t ˈoʊ z
 stower|s t ˈaʊ ɚ
 stra|s t ɹ ˈɑː
 straate|s t ɹ ˈɑː t
+straayight|s t ɹ ˈɑː j aɪ t
 strabane|s t ɹ ˈæ b eɪ n
 strabo|s t ɹ ˈɑː b oʊ
 strachino|s t ɹ æ k ˈiː n oʊ
+strade|s t ɹ ˈeɪ d
 straggen|s t ɹ ˈæ ɡ ə n
 straggens|s t ɹ ˈæ ɡ ə n z
 straggling|s t ɹ ˈæ ɡ l ɪ ŋ
@@ -52565,6 +53104,7 @@ struttin'|s t ɹ ˈʌ t ɪ n
 strychnia|s t ɹ ˈɪ tʃ n i  ə
 strzok|ˌɛ s t ˌiː  ˈɑːɹ z ˈɑː k
 ststate|ˌɛ s t ˈiː s t ˈeɪ t
+ststopp|ˌɛ s t ˈiː s t ˈɑː p
 stuation|s t uː ˈeɪ ʃ ə n
 stubble|s t ˈʌ b əl
 stubble's|s t ˈʌ b əl z
@@ -52669,6 +53209,7 @@ subgenres|s ˈʌ b dʒ ɛ n ɚ z
 subhanis|s ʌ b h ˈɑː n i z
 subhash|s ˈʌ b h æ ʃ
 subiaco|s ˌʌ b ɪ  ˈɑː k oʊ
+subito|s ʌ b ˈiː ɾ oʊ
 subject|s ˈʌ b dʒ ɛ k t
 subjection|s ʌ b dʒ ˈɛ k ʃ ə n
 subjectsand|s ˈʌ b dʒ ɪ k t s ˌæ n d
@@ -52689,6 +53230,7 @@ sublimeness|s ʌ b l ˈaɪ m n ə s
 sublimer|s ˈʌ b l ɪ m ɚ
 sublimest|s ˈʌ b l aɪ m ˌɪ s t
 sublimity|s ʌ b l ˈɪ m ᵻ ɾ i
+sublow|s ˈʌ b l oʊ
 submerges|s ə b m ˈɜː dʒ ᵻ z
 submerging|s ə b m ˈɜː dʒ ɪ ŋ
 submersible|s ə b m ˈɜː s ᵻ b əl
@@ -52750,6 +53292,7 @@ successbut|s ə k s ˈɛ s b ʌ t
 successful|s ə k s ˈɛ s f əl
 succession|s ə k s ˈɛ ʃ ə n
 successions|s ə k s ˈɛ ʃ ə n z
+successo|s ə k s ˈɛ s oʊ
 successor|s ə k s ˈɛ s ɚ
 succinctness|s ə k s ˈɪ ŋ k t n ə s
 succkers|s ˈʌ k k ɚ z
@@ -52786,6 +53329,7 @@ suecc's|s ˈuː k z
 suer|s ˈuː ɚ
 suet|s ˈuː ɪ t
 suet's|s ˈuː ɪ t s
+suff|s ˈʌ f
 suffer|s ˈʌ f ɚ
 suffer'|s ˈʌ f ɚ
 suffer's|s ˈʌ f ɚ z
@@ -52980,7 +53524,9 @@ sunsilk|s ˈʌ n s ɪ l k
 sunstone|s ˈʌ n s t oʊ n
 sunstone's|s ˈʌ n s t oʊ n z
 sunstroke|s ˈʌ n s t ɹ oʊ k
+suo|s j ˈuː oʊ
 suoftenign|s j ˈuː ɔ f ˌɛ n aɪ n
+suoi|s j ˈuː ɔɪ
 suort|s j ˈuː ɔːɹ t
 supalonely|s ˈuː p ɐ l ˌoʊ n l i
 supare|s ˈuː p ɛɹ
@@ -53102,6 +53648,7 @@ suppressions|s ə p ɹ ˈɛ ʃ ə n z
 suppressors|s ə p ɹ ˈɛ s ɚ z
 suppuration|s ə p j ʊ ɹ ˈeɪ ʃ ə n
 supran's|s ˈuː p ɹ ə ˌɛ n z
+suprayer|s ˈuː p ɹ ə j ɚ
 supremacy|s uː p ɹ ˈɛ m ə s i
 supremely|s uː p ɹ ˈiː m l i
 supremest|s uː p ɹ ˈiː m ɪ s t
@@ -53308,6 +53855,7 @@ swatter|s w ˈɑː ɾ ɚ
 swattin'|s w ˈɑː t ɪ n
 swayamkrushi|s w ˌeɪ ɐ m k ɹ ˈʌ ʃ i
 swazis|s w ˈɑː z i z
+swe|s w ˈɪ
 swear|s w ˈɛɹ
 swearer|s w ˈɛ ɹ ɚ
 swearing|s w ˈɛ ɹ ɪ ŋ
@@ -53317,6 +53865,7 @@ sweating|s w ˈɛ ɾ ɪ ŋ
 sweaty|s w ˈɛ ɾ i
 swedenborg|s w ˈiː d ə n b ˌoːɹ ɡ
 swedenburg|s w ˈiː d ə n b ˌɜː ɡ
+sweed|s w ˈiː d
 sweeney's|s w ˈiː n i z
 sweep|s w ˈiː p
 sweeper|s w ˈiː p ɚ
@@ -54013,6 +54562,7 @@ takecontrol|t ˈeɪ k k ə n t ɹ ˌoʊ l
 takecttakectic|t eɪ k k t ˈeɪ k k t ɪ k
 takedown|t ˈeɪ k d aʊ n
 takego|t æ k ˈiː ɡ oʊ
+takekes|t ˈeɪ k k s
 takela|t ˈeɪ k l ə
 takelu|t ˈeɪ k l uː
 taken|t ˈeɪ k ə n
@@ -54754,6 +55304,7 @@ tazawaawe|t ˈæ z ɐ w ˌɑː w
 taziki's|t ˈæ z ɪ k i z
 tbd|t ˌiː b ˌiː d ˈiː
 tbe|t ˌiː b ˌiː  ˈiː
+tbelieve|t ˈiː b ᵻ l ˈiː v
 tbi|t ˌiː b ˌiː  ˈaɪ
 tbs|t ˌiː b ˌiː  ˈɛ s
 tc's|t ˌiː s ˈiː z
@@ -55084,7 +55635,9 @@ tenenaa|t ˈɛ n ə n ˌɑː
 teneneshoce|t ˈɛ n ə n ˌɛ ʃ oʊ s
 teneneshocu|t ˈɛ n ə n ˌɛ ʃ ə k ˌuː
 teneqeneqe|t ˈɛ n ɪ k ˌɛ n ɛ k
+tenereta|t ˈɛ n ɚ ɹ ˌɛ ɾ ə
 tenerife|t ˌɛ n ɚ ɹ ˈiː f
+tenerita|t ˌɛ n ɚ ɹ ˈiː ɾ ə
 tenery|t ˈɛ n ɚ ɹ i
 tenesaa'ee|t ˈɛ n ɪ s ˌɑː iː
 teneshe|t ɛ n ˈɛ ʃ
@@ -55134,6 +55687,7 @@ terefe|t ˈɛ ɹ ɛ f
 teregume|t ˈɛ ɹ ɪ ɡ j ˌuː m
 teregumu|t ˈɛ ɹ ɪ ɡ ˌuː m uː
 terek|t ˈɛ ɹ ɛ k
+teren|t ˈɛ ɹ ə n
 terence|t ˈɛ ɹ ə n s
 terentius|t ə ɹ ˈɛ n t ɪ  ə s
 terete|t ˈɛ ɹ iː t
@@ -55395,6 +55949,7 @@ thanes|θ ˈeɪ n z
 thanet|θ ˈæ n ɪ t
 thangammal|θ ˈæ ŋ ɡ æ m əl
 thank|θ ˈæ ŋ k
+thankank|θ ˈæ ŋ k æ ŋ k
 thankans|θ ˈæ ŋ k ə n z
 thanketh|θ ˈæ ŋ k ə θ
 thankful|θ ˈæ ŋ k f əl
@@ -55452,6 +56007,7 @@ thatad|θ ˈæ ɾ æ d
 thatas|θ ˈɑː ɾ ə z
 thataway|θ ˈæ ɾ ə w ˌeɪ
 thatb|θ ˈæ t b
+thatbids|θ ˈæ t b ɪ d z
 thatched|θ ˈæ tʃ t
 thatching|θ ˈæ tʃ ɪ ŋ
 thatdidn't|θ ˈæ t d ɪ d ə n t
@@ -56249,7 +56805,10 @@ tiptoff|t ˈɪ p t ɔ f
 tiptop|t ˈɪ p t ɑː p
 tiptree|t ˈɪ p t ɹ iː
 tir|t ˈɜː
+tira|t ˈiə ɹ ə
 tiraditos|t ˌɜː ɹ ɐ d ˈiː ɾ oʊ z
+tirano|t ɜː ɹ ˈɑː n oʊ
+tirate|t ˈɜː ɹ eɪ t
 tire|t ˈaɪɚ
 tired|t ˈaɪɚ d
 tiree|t ˈaɪɚ ɹ iː
@@ -56335,17 +56894,20 @@ toady|t ˈoʊ d i
 toahead|t ˈoʊ ə h ˌɛ d
 toain|t ˈoʊ ɪ n
 toan|t ˈoʊ n
+toannoy|t ˈoʊ n ɔɪ
 toarrow|t ˈoː ɹ oʊ
 toasty|t ˈoʊ s t i
 toay|t ˈoʊ i
 tobacco|t ə b ˈæ k oʊ
 tobacconist|t ə b ˈæ k ə n ˌɪ s t
+tobehonest|t ˈoʊ b ə n ˌɪ s t
 tobymac|t ˈɑː b ɪ m ˌæ k
 tocaacawe|t ˈɑː k ɑː k ˌɔː
 tocaacawene|t ˈɑː k ɑː k ˌɔː n
 tocaacene|t ˈɑː k ɑː s ˌiː n
 tocagen|t ˈɑː k ə dʒ ə n
 tocar|t ˈɑː k ɑːɹ
+tocchiero|t ə k ˈɪ ɹ oʊ
 toce|t ˈoʊ s
 tocenaa|t ˈoʊ s n ɑː
 tocene|t ˈoʊ s iː n
@@ -56361,6 +56923,7 @@ toddled|t ˈɑː d əl d
 toddler's|t ˈɑː d l ɚ z
 toddy|t ˈɑː d i
 todorov|t ˈoʊ d ɚ ɹ ˌɑː v
+todrun|t ˈɑː d ɹ ʌ n
 toe|t ˈoʊ
 toeat|t ˈoʊ æ t
 toed|t ˈoʊ d
@@ -56413,6 +56976,7 @@ tojohnny|t ˈɑː dʒ ɑː n i
 tok|t ˈɑː k
 tokash|t ˈɑː k æ ʃ
 tokayev|t ˈɑː k eɪ ˌɛ v
+tokeep|t ˈoʊ k ɛ p
 token|t ˈoʊ k ə n
 tokyo'll|t ˈoʊ k ɪ  ˌoʊ əl
 tol'|t ˈɑː l
@@ -56560,6 +57124,7 @@ torise|t ˈoː ɹ aɪ z
 torkild|t ˈoːɹ k ɪ l d
 torn|t ˈɔːɹ n
 tornapart|t ˈoːɹ n ɐ p ˌɑːɹ t
+tornato|t oːɹ n ˈɑː ɾ oʊ
 torolf|t ˈoː ɹ ɑː l f
 torom|t ˈoː ɹ ɑː m
 toroneto|t ˌoː ɹ ə n ˈiː ɾ oʊ
@@ -56592,6 +57157,7 @@ tostadas|t ə s t ˈɑː d ə z
 tostop|t ˈɑː s t ɑː p
 totah|t ˈoʊ ɾ ə
 total|t ˈoʊ ɾ əl
+totale|t ˈoʊ ɾ eɪ l
 totally|t ˈoʊ ɾ əl i
 totanehame|t ˈoʊ t eɪ n h ˌeɪ m
 totell|t ˈoʊ ɾ əl
@@ -56621,6 +57187,7 @@ touchpad|t ˈʌ tʃ p æ d
 touchscreen|t ˈʌ tʃ s k ɹ iː n
 touchstones|t ˈʌ tʃ s t oʊ n z
 tough|t ˈʌ f
+toughgon|t ˈʌ f ɡ ɑː n
 tought|t ˈɔː t
 toughy|t ˈʌ f i
 tounes|t ˈaʊ n z
@@ -56940,6 +57507,7 @@ trenching|t ɹ ˈɛ n tʃ ɪ ŋ
 trend|t ɹ ˈɛ n d
 trepanning|t ɹ ˈɛ p æ n ɪ ŋ
 trepidations|t ɹ ˌɛ p ɪ d ˈeɪ ʃ ə n z
+tresi|t ɹ ˈɛ s i
 trespassed|t ɹ ˈɛ s p ə s t
 trespasser|t ɹ ˈɛ s p ə s ɚ
 trespassers|t ɹ ˈɛ s p ə s ɚ z
@@ -57015,6 +57583,7 @@ trimmer|t ɹ ˈɪ m ɚ
 trinamool|t ɹ ˈaɪ n ɐ m ˌuː l
 triney|t ɹ ˈaɪ n i
 trinimac|t ɹ ˈɪ n ɪ m ˌæ k
+trinita|t ɹ ɪ n ˈiː ɾ ə
 trinkets|t ɹ ˈɪ ŋ k ɪ t s
 trinnie|t ɹ ˈɪ n i
 trio|t ɹ ˈiː  oʊ
@@ -57457,6 +58026,8 @@ tuteja|t ˈuː ɾ ɛ dʒ ə
 tutelary|t ˈuː ɾ ɪ l ˌɛ ɹ i
 tutor's|t ˈuː ɾ ɚ z
 tuts|t ˈʌ t s
+tutte|t ˈʌ t
+tutto|t ˈʌ ɾ oʊ
 tuttosport|t ˈʌ ɾ ə s p ˌoːɹ t
 tuv|t ˈʌ v
 tuver|t ˈuː v ɚ
@@ -57620,6 +58191,7 @@ ucla|j ˌuː s ˌiː  ˌɛ l ˈeɪ
 uconn|j ˈuː k ɑː n
 ucp|ˈʌ k p
 ucsf|ˈʌ k s f
+uct|ˈʌ k t
 uctuations|ˌʌ k tʃ uː ˈeɪ ʃ ə n z
 udaan|j ˈuː d ɑː n
 udaipur|j ˈuː d eɪ p ˌʊɹ
@@ -57656,6 +58228,7 @@ ugak|j ˈuː ɡ æ k
 ugandans|j ˈuː ɡ æ n d ə n z
 ugb|ˈʌ ɡ b
 ugc|ˈʌ ɡ k
+ugest|j ˈuː dʒ ɪ s t
 uggah|ˈʌ ɡ ə
 uggh|ˈʌ ɡ
 ugghh|ˈʌ ɡ
@@ -57797,6 +58370,7 @@ umwhat|ˈʌ m w ʌ t
 umy|ˈʌ m i
 umzinto|ʌ m z ˈɪ n t oʊ
 un|ˈʌ n
+un'altra|ʌ n ˈæ l t ɹ ə
 un's|ˈʌ n z
 una's|j ˈuː n ə z
 unable|ʌ n ˈeɪ b əl
@@ -58399,6 +58973,7 @@ unnamed|ʌ n n ˈeɪ m d
 unnatural|ʌ n n ˈæ tʃ ɚ ɹ əl
 unnaturalness|ʌ n n ˈæ tʃ ɚ ɹ əl n ə s
 unnecessary|ʌ n n ˈɛ s ᵻ s ɚ ɹ i
+unneed|ʌ n n ˈiː d
 unneighborly|ʌ n n ˈeɪ b ɚ l i
 unnerving|ʌ n n ˈɜː v ɪ ŋ
 unngh|ˈʌ n ŋ ɡ
@@ -58720,6 +59295,7 @@ unwrinkled|ʌ n ɹ ˈɪ ŋ k əl d
 unwrite|ʌ n ɹ ˈaɪ t
 unwto|ʌ n w t ˈoʊ
 uoh|j ˈuː oʊ
+uomo|j uː ˈoʊ m oʊ
 up|ˈʌ p
 up'|ˈʌ p
 upa|j ˈuː p ə
@@ -58866,6 +59442,8 @@ usb|j ˌuː ˌɛ s b ˈiː
 usbs|ˈʌ s b z
 usc|ˈʌ s k
 usc's|ˈʌ s k z
+uscimo|ʌ s ˈɪ m oʊ
+uscire|ˈʌ s aɪɚ
 uscirf|ˈʌ s ɜː f
 uscis|ˈʌ s k ɪ s
 uscracks|ˈʌ s k ɹ æ k s
@@ -58918,6 +59496,7 @@ ussd|ˈʌ s d
 ussher|ˈʌ s ʃ ɚ
 ustaad|ˈʌ s t ɑː d
 ustengrav|ˈʌ s t ɪ ŋ ɡ ɹ ˌæ v
+uster|ˈʌ s t ɚ
 usting|ˈʌ s t ɪ ŋ
 usu|j ˈuː z uː
 usual|j ˈuː ʒ uː əl
@@ -58937,6 +59516,7 @@ ut|ˈʌ t
 utahns|j ˈuː t ɑː n z
 utans|uː t ˈæ n z
 utd|ˈʌ t d
+ute|j ˈuː t
 uteago|j uː t ˈiː ɡ oʊ
 uter|j ˈuː ɾ ɚ
 utes|j ˈuː t s
@@ -59255,6 +59835,7 @@ vedanta|v ɛ d ˈæ n t ə
 vedas|v ˈɛ d ə z
 vedernikov|v ˈɛ d ɚ n ˌɪ k ɑː v
 vedin|v ˈɛ d ɪ n
+vedo|v ˈiː d oʊ
 vedrai|v ˈɛ d ɹ aɪ
 vedymi|v ˈɛ d ɪ m i
 veeerrry|v ˈiː  ɚ ɹ i
@@ -59435,6 +60016,7 @@ vestals|v ˈɛ s t əl z
 vestas|v ˈɛ s t ə z
 vestian|v ˈɛ s tʃ ə n
 vestibuled|v ˈɛ s t ɪ b j ˌuː l d
+vestiva|v ˈɛ s t ɪ v ə
 vestry|v ˈɛ s t ɹ i
 vesture|v ˈɛ s tʃ ɚ
 vet|v ˈɛ t
@@ -59471,6 +60053,7 @@ viability|v ˌaɪ ə b ˈɪ l ᵻ ɾ i
 viable|v ˈaɪ ə b əl
 viably|v ˈaɪ ə b l i
 viacomcbs|v ˈaɪ ə k ˌɑː m k b z
+viaggi|v ˈaɪ ə ɡ i
 viagogo's|v ˌaɪ ə ɡ ˈoʊ ɡ oʊ z
 viands|v ˈaɪ ə n d z
 viarmo|v ˈaɪɚ m oʊ
@@ -59558,6 +60141,7 @@ vigi|v ˈɪ ɡ i
 vigilant|v ˈɪ dʒ ɪ l ə n t
 vigilantly|v ˈɪ dʒ ɪ l ə n t l i
 vigilants|v ˈɪ dʒ ɪ l ə n t s
+vigliacco|v ˌɪ ɡ l ɪ  ˈæ k oʊ
 vignar|v ˈɪ ɡ n ɑːɹ
 vigors|v ˈɪ ɡ ɚ z
 vigour|v ˈɪ ɡ ɚ
@@ -59651,6 +60235,7 @@ vinod|v ˈɪ n ɑː d
 vintage|v ˈɪ n t ɪ dʒ
 vintager|v ˈɪ n t ɪ dʒ ɚ
 vintner's|v ˈɪ n t n ɚ z
+vinto|v ˈɪ n t oʊ
 viola's|v aɪ ˈoʊ l ə z
 violations|v aɪə l ˈeɪ ʃ ə n z
 violence|v ˈaɪə l ə n s
@@ -59675,6 +60260,7 @@ virgil|v ˈɜː dʒ ɪ l
 virgil's|v ˈɜː dʒ ɪ l z
 virgilian|v ɜː dʒ ˈɪ l iə n
 virginia|v ɜː dʒ ˈɪ n iə
+virgolette|v ˌɜː ɡ oʊ l ˈɛ t
 virgos|v ˈɜː ɡ oʊ z
 virk|v ˈɜː k
 virmire|v ˈɜː m aɪɚ
@@ -59721,7 +60307,11 @@ visitors'|v ˈɪ z ɪ ɾ ɚ z
 visits|v ˈɪ z ɪ t s
 visittanni|v ˈɪ z ɪ t ˌæ n i
 visor's|v ˈaɪ z ɚ z
+vissi|v ˈɪ s i
+vissuto|v ɪ s ˈuː ɾ oʊ
 vistapark|v ˈɪ s t ɐ p ˌɑːɹ k
+viste|v ˈɪ s t
+visto|v ˈɪ s t oʊ
 vistors|v ˈɪ s t ɚ z
 vists|v ˈɪ s t s
 visual|v ˈɪ ʒ uː əl
@@ -59815,6 +60405,7 @@ voebel|v ˈoʊ b əl
 voebel's|v ˈoʊ b əl z
 voellmecke|v ˈoʊ l m ɛ k
 vog|v ˈɑː ɡ
+voglia|v ˈɑː ɡ l i  ə
 vogue|v ˈoʊ ɡ
 voice|v ˈɔɪ s
 voiced|v ˈɔɪ s t
@@ -59844,6 +60435,8 @@ volcano|v ɑː l k ˈeɪ n oʊ
 volda|v ˈɑː l d ə
 vole|v ˈoʊ l
 volendrung|v ˈoʊ l ə n d ɹ ˌʌ ŋ
+voleva|v ˈoʊ l v ə
+volevo|v ɑː l ˈiː v oʊ
 volf|v ˈɑː l f
 voliere|v ˌoʊ l i  ˈɛɹ
 volitional|v ə l ˈɪ ʃ ə n əl
@@ -59974,6 +60567,8 @@ vulpine|v ˈʌ l p aɪ n
 vulture|v ˈʌ l tʃ ɚ
 vun|v ˈʌ n
 vundheim|v ˈʌ n d h aɪ m
+vuoi|v j ˈuː ɔɪ
+vuole|v j ˈuː oʊ l
 vur|v ˈɜː
 vus|v ˈʌ s
 vusi|v j ˈuː s i
@@ -60674,6 +61269,7 @@ we'regetting|w ˈɛ ɹ ɪ ɡ ɪ ɾ ɪ ŋ
 we'regoin|w ˈɛ ɹ ɪ ɡ ˌɔɪ n
 we'reready|w ˈɛ ɹ ɚ ɹ ˌɛ d i
 we's|w ˈiː z
+we't|w ˈɛ t
 we've|w ˈiː v
 wea|w ˈiː
 weade|w ˈiː d
@@ -60913,6 +61509,7 @@ wenliang|w ˈɛ n l j æ ŋ
 wensleydale|w ˈɛ n s l ɪ d ˌeɪ l
 went|w ˈɛ n t
 wentest|w ˈɛ n t ɪ s t
+wentt|w ˈɛ n t
 wenu|w ˈɛ n uː
 wenyandawik|w ˈɛ n ɪ  ˌæ n d ɐ w ˌɪ k
 weqawe|w ˈɛ k ɔː
@@ -61147,6 +61744,7 @@ wherear|w ˈɛ ɹ ɑːɹ
 whereare|w ˈɛ ɹ ɛɹ
 whereas|w ˈɛ ɹ æ z
 whereat|w ˈɛ ɹ æ t
+whereel|w ˈɛ ɹ əl
 whereelse|w ˈɛ ɹ ɛ l s
 whereevelyn|w ˈɛ ɹ ɪ v ˌɛ l ɪ n
 whereevelyone|w ˈɛ ɹ ɪ v ˌɛ l ɪ  ˌoʊ n
@@ -61163,6 +61761,7 @@ whereto|w ˈɛɹ ɾ oʊ
 wherever|w ɛ ɹ ˈɛ v ɚ
 wherewith|w ɛɹ w ˈɪ ð
 wherewolves|w ˈɛɹ w ʊ l v z
+whes|w ˈɛ z
 whether|w ˈɛ ð ɚ
 whethernitish|w ˈɛ ð ɚ n ˌɪ ɾ ɪ ʃ
 whetson|w ˈɛ t s ə n
@@ -61192,6 +61791,7 @@ whinnying|w ˈɪ n ɪ  ɪ ŋ
 whip|w ˈɪ p
 whipper|w ˈɪ p ɚ
 whipping|w ˈɪ p ɪ ŋ
+whipplash|w ˈɪ p l æ ʃ
 whips|w ˈɪ p s
 whipstock|w ˈɪ p s t ɑː k
 whirl|w ˈɜː l
@@ -61282,6 +61882,7 @@ whooaaa|w ˈuː ææ ə
 whoohoo|w ˈuː h uː
 whoohoohooo|w ˈuː h uː h ˌuː oʊ
 whook|w ˈʊ k
+whooli|w ˈuː l i
 whoomp|w ˈuː m p
 whoooa|w uː ˈoʊ ə
 whoooaaaa|w ˈuː oʊ ˌææ ə
@@ -61316,6 +61917,7 @@ why'm|w ˈaɪ m
 why've|w ˈaɪ ə v
 whyfe|w ˈaɪ f
 whyhe|w ˈaɪ h
+whyi|w ˈɪ  i
 whyi'm|w ˈɪ  ɪ m
 whyit|w j ˈɪ t
 whyred|w ˈɚ d
@@ -61520,6 +62122,7 @@ winnipeg's|w ˈɪ n ᵻ p ˌɛ ɡ z
 winobias|w ɪ n ˈoʊ b iə z
 winovich|w ɪ n ˈoʊ v ɪ tʃ
 winsomest|w ˈɪ n s oʊ m ˌɪ s t
+winss|w ˈɪ n s
 winstick|w ˈɪ n s t ɪ k
 winston's|w ˈɪ n s t ə n z
 winter|w ˈɪ n t ɚ
@@ -61637,6 +62240,7 @@ wlcome|d ˌʌ b əl j ˌuː ˈɛ l k ˈʌ m
 wlf|d ˌʌ b əl j ˌuː ˌɛ l ˈɛ f
 wliams|d ˈʌ b əl j ˌuː l ˈiː  ə m z
 wlky|d ˌʌ b əl j ˌuː ˌɛ l k ˌeɪ w ˈaɪ
+wll|d ˌʌ b əl j ˌuː ˌɛ l ˈɛ l
 wm|d ˌʌ b əl j ˌuː ˈɛ m
 wme|d ˌʌ b əl j ˌuː ˌɛ m ˈiː
 wmo|d ˌʌ b əl j ˌuː ˌɛ m ˈoʊ
@@ -61708,6 +62312,7 @@ wolves'll|w ˈʊ l v z əl
 wolvy|w ˈʊ l v i
 woman|w ˈʊ m ə n
 woman'll|w ˈʊ m ə n əl
+woman'my|w ˈʊ m ə n m i
 woman's|w ˈʊ m ə n z
 womanish|w ˈʊ m ə n ɪ ʃ
 womankind|w ˈʊ m ə ŋ k ˌaɪ n d
@@ -62555,6 +63160,7 @@ yaazute|j ˈɑː z j uː t
 yabaasa|j ˈæ b ɑː s ə
 yabalatha|j ˌæ b ɐ l ˈæ θ ə
 yabeeta|j ˈæ b iː ɾ ə
+yac|j ˈæ k
 yacaala|j ˈæ k ɑː l ə
 yacactually|j ˈæ k ɐ k tʃ ˌuː əl i
 yach|j ˈæ tʃ
@@ -63022,6 +63628,7 @@ yehonaalu|j ˈɛ h ə n ˌɑː l uː
 yehone|j ˈɛ h oʊ n
 yehune|j ˈɛ h j uː n
 yehunu|j ɛ h ˈuː n uː
+yei'm|j ˈeɪ m
 yeja|j ˈɛ dʒ ə
 yejameraalu|j ˈɛ dʒ ɐ m ɚ ɹ ˌɑː l uː
 yekabedaa|j ˈɛ k eɪ b d ˌɑː
@@ -63277,6 +63884,7 @@ you't|j ˈuː t
 you've|j ˈuː v
 you'vegot|j uː v ˈɛ ɡ ə t
 you'vegota|j uː v ɪ ɡ ˈoʊ ɾ ə
+youagain|j w ˈɑː ɡ eɪ n
 youand|j w ˈɑː n d
 youane|j w ˈɑː n
 youanyway|j w ˈɑː n ɪ w ˌeɪ
@@ -63335,11 +63943,13 @@ youreset|j ˈoː ɹ ɪ s ˌɛ t
 yourfucking|j ˈoːɹ f ʌ k ɪ ŋ
 yourhelp|j ˈoːɹ h ɛ l p
 yourinnobooses|j ˈoː ɹ ɪ n ˌɑː b uː s ᵻ z
+yourll|j ˈoːɹ l əl
 yourmedical|j oːɹ m ˈɛ d ɪ k əl
 yourmiss|j ˈoːɹ m ɪ s
 yourno|j ˈoːɹ n oʊ
 yourono|j oː ɹ ˈoʊ n oʊ
 yourorn|j ˈoː ɹ ɔːɹ n
+yourparenis|j ˈoːɹ p ɐ ɹ ˌɛ n i z
 yourpeople|j ˈoːɹ p iː p əl
 yourre|j ˈoː ɹ ə
 yourroown|j ˈoː ɹ uː w n
@@ -63374,6 +63984,8 @@ youuliarai|j aʊ j ˈuː l aɪɚ ɹ ˌaɪ
 youve|j ˈuː v
 youw|j ˈaʊ w
 youwan|j ˈaʊ w ə n
+youwatch|j ˈuː w ɑː tʃ
+youwill|j ˈaʊ w ɪ l
 youwon|j ˈaʊ w ʌ n
 youwon't|j ˈaʊ w ʌ n t
 youyour|j ˈaʊ j ɚ
@@ -63849,246 +64461,3 @@ zygarde|z ˈaɪ ɡ ɑːɹ d
 ”borrow”|b ˈɑː ɹ oʊ
 …|
 �|
-'fat|f ˈæ t
-'fated'big|f ˈeɪ t d b ɪ ɡ
-'like|l ˈaɪ k
-'llneed|ˌɛ l ˈɛ l n ˈiː d
-'ma|m ˈɑː
-'mhardard|ˈɛ m h ˈɑːɹ d ɚ d
-aaddon'tlaugh|ˈɑː d ə n t l ˌæ f
-ain's|ˈeɪ n z
-ain'ttoo|ˈeɪ n t uː
-airre|ˈɛ ɹ ə
-alall|ɐ l ˈɔː l
-almaho|ɔ l m ˈɑː h oʊ
-and'tyou|ˈæ n d t ɪ  ˌuː
-andnesomeone|ˌæ n d n ɪ s ˈoʊ m ɪ  ˌoʊ n
-appet|ɐ p ˈɛ t
-arreey|ɚ ɹ ˈiː  i
-asho|ɐ ʃ ˈoʊ
-assidi|ɐ s ˈɪ d i
-assureance|ə ʃ ˈʊɹ ɹ iː n s
-att|ˈæ t
-attor|ɐ t ˈoːɹ
-atttext|ɐ t ˈɛ k s t
-babyies|b ˈeɪ b ɪ  i z
-bei'll|b ˈeɪ əl
-bellyfor|b ˈɛ l ɪ f ɚ
-betat|b ˈeɪ ɾ ə t
-bikeand|b ˈaɪ k æ n d
-bititch|b ˈɪ ɾ ɪ tʃ
-bitits|b ɪ t ˈiː t s
-bke|b ˌiː k ˌeɪ ˈiː
-bllover|b ˈiː l ˈʌ v ɚ
-boness|b ˈoʊ n ə s
-brandwho|b ɹ ˈæ n d h uː
-breakking|b ɹ ˈeɪ k ɪ ŋ
-breright|b ɹ ˈɛ ɹ aɪ t
-bushshe|b ˈʊ ʃ ʃ
-busust|b j ˈuː s ʌ s t
-butck|b ˈʌ t k
-callol|k ˈæ l ɑː l
-can'believe|k ˈæ n b ᵻ l ˌiː v
-can'bet|k ˈæ n b ɪ t
-canyou|k ˈæ n ɪ  ˌuː
-chaaseto|tʃ ɑː s ˈiː ɾ oʊ
-cheit|tʃ ˈaɪ t
-choump|tʃ j ˈuː m p
-clck|s ˌiː  ˌɛ l s ˌiː k ˈeɪ
-coffeeand|k ˈɔ f i  ˌæ n d
-commiser|k ə m ˈaɪ z ɚ
-comped|k ˈɑː m p t
-conneexerc|k ə n ˈiː k s ɜː k
-cooffid|k ˈuː f ɪ d
-coract|k ˈɔː ɹ æ k t
-cripp|k ɹ ˈɪ p
-daddyhe|d ˈæ d ɪ h
-dadting|d ˈæ ɾ ɪ ŋ
-dble|d ˈiː b l ˈiː
-dedad|d ˈɛ d æ d
-deniny|d ˈɛ n ɪ n i
-dis|d ˈɪ s
-disby|d ɪ s b ˈaɪ
-disppose|d ɪ s p ˈoʊ z
-dition|d ˈɪ ʃ ə n
-don'for|d ˈɑː n f ɚ
-don'tfor|d ˈɑː n t f ɚ
-don'tlet|d ˈɑː n t l ɪ t
-donman|d ˈɑː n m ə n
-donomme|d ˈɑː n ɑː m
-doublein|d ˈʌ b l aɪ n
-ert|ˈɜː t
-facebut|f ˈeɪ s b ʌ t
-factat|f ˈæ k t æ t
-feeten|f ˈiː ʔ n̩
-fefalls|f ˈɛ f ɔː l z
-fils|f ˈɪ l z
-finis|f ˈɪ n i z
-finthis|f ˈɪ n θ aɪ z
-fitnesses|f ˈɪ t n ə s ᵻ z
-foall|f ˈoʊ l
-fockall|f ˈɑː k ɔː l
-foked|f ˈoʊ k t
-gafful|ɡ ˈæ f f əl
-gangks|ɡ ˈæ ŋ k s
-get'll|ɡ ˈɛ ɾ əl
-girli|ɡ ˈɪ  ə l i
-gironel|dʒ ˈaɪɚ n əl
-go'get|ɡ ˈɑː ɡ ɪ t
-go't|ɡ ˈɑː t
-goaswell|ɡ ˈoʊ s w ɛ l
-goaway|ɡ ˈoʊ w eɪ
-gogoing|ɡ ˈoʊ ɡ oʊ ɪ ŋ
-got'don|ɡ ˈɑː t d ɑː n
-greit|ɡ ɹ ˈeɪ t
-hae|h ˈiː
-handsall|h ˈæ n d s ɔː l
-hardshe|h ˈɑːɹ d ʃ
-have't|h ˈeɪ v t
-heillll|h ˈaɪ l əl
-hgr|ˌeɪ tʃ dʒ ˌiː  ˈɑːɹ
-hhome|ˈeɪ tʃ h ˈoʊ m
-hitneme|h ˈɪ t n iː m
-hoall|h ˈoʊ l
-holdles|h ˈoʊ l d əl z
-holely|h ˈoʊ l l i
-holywoall|h ˈɑː l ɪ w ˌoʊ l
-homeom|h ˈoʊ m iː  ə m
-hor|h ˈoːɹ
-humg|h ˈʌ m ɡ
-hungr|h ˈʌ ŋ ɡ ɚ
-hungrha|h ˈʌ ŋ ɡ ɹ ə
-huny|h ˈʌ n i
-hyh|h ˈɪ
-i'appreciate|aɪ ɐ p ɹ ˈiː ʃ ɪ  ˌeɪ t
-i'got|aɪ ɡ ˈɑː t
-i'investig|aɪ ˈɪ n v ɪ s t ˌɪ ɡ
-i'of|aɪ  ˈɑː f
-i'player|aɪ p l ˈeɪ ɚ
-i'tell|aɪ t ˈɛ l
-iapologiz|ˌaɪ ɐ p ˈɑː l ə dʒ ˌɪ z
-ickggid|ˈaɪ k ɡ ɪ d
-igjustestion|ˈɪ ɡ dʒ ə s t ˌɛ s tʃ ə n
-illtake|ɪ l t ˈeɪ k
-inkind|ɪ ŋ k ˈaɪ n d
-iose|ˈaɪ oʊ s
-iour|j ˈɚ
-jacketplaner|dʒ ˈæ k ɪ t p l ˌeɪ n ɚ
-ject|dʒ ˈɛ k t
-jetges|dʒ ˈɛ t dʒ ᵻ z
-jjust|dʒ ˈeɪ dʒ ˈʌ s t
-json|dʒ ˈeɪ s ˈɑː n
-keephim|k ˈiː f ɪ m
-kep|k ˈɛ p
-kneess|n ˈiː s
-knicei|n ˈaɪ s aɪ
-laz|l ˈæ z
-leart|l ˈɪɹ t
-llmake|ˌɛ l ˈɛ l m ˈeɪ k
-lme|ˌɛ l ˌɛ m ˈiː
-lookgreat|l ˈʊ k ɡ ɹ eɪ t
-loou|l ˈuː uː
-mahhoa|m ɑː h ˈoʊ ə
-maining|m ˈeɪ n ɪ ŋ
-makethis|m æ k ˈɛ θ ɪ z
-manable|m ˈeɪ n ə b əl
-mani'm|m ˈæ n ɪ m
-maniatphone|m ˈeɪ n ɪ  ˌæ t f oʊ n
-mefor|m ˈɛ f ɚ
-missess|m ˈɪ s ɛ s
-modeto|m ɑː d ˈiː ɾ oʊ
-monarv|m ˈɑː n ɑːɹ v
-mstreresmores|ˈɛ m s t ɹ ˈɛ ɹ ɪ s m ˌoːɹ z
-musine|m j ˈuː s aɪ n
-mustess|m ˈʌ s t ɛ s
-mustout|m ˈʌ s t aʊ t
-mustst|m ˈʌ s t s t
-muugliness|m ˈuː ɡ l i n ə s
-mymoney|m ˈaɪ m ʌ n i
-n'cool|ˈɛ ŋ k ˈuː l
-namam|n ˈæ m æ m
-needl|n ˈiː d əl
-nodrug|n ˈɑː d ɹ ʌ ɡ
-offic|ˈɑː f ɪ k
-ofhuny|ˈɑː f h ʌ n i
-opofficite|ɑː p ˈɔ f ɪ s ˌaɪ t
-oppeposition|ˌɑː p ɪ p ə z ˈɪ ʃ ə n
-panin|p ˈæ n ɪ n
-partt|p ˈɑːɹ t
-patacious|p æ t ˈeɪ ʃ ə s
-pckhands|p ˌiː s ˈiː k ˈɑː n d z
-playera|p l ˈeɪ ɚ ɹ ə
-playis|p l ˈeɪ i z
-playour|p l ˈeɪ ɚ
-pologiz|p ˈɑː l ə dʒ ˌɪ z
-pologize|p ˈɑː l ə dʒ ˌaɪ z
-pottenent|p ˈɑː t ɛ n ə n t
-ppez|p ˈiː p ˈɛ z
-presidentid|p ɹ ˈɛ z ɪ d ˌɛ n t ɪ d
-protectme|p ɹ ə t ˈɛ k t m i
-quace|k w ˈeɪ s
-readther|ɹ ˈiː d ð ɚ
-rebered|ɹ ᵻ b ˈɜː d
-remembe|ɹ ᵻ m ˈɛ m b
-rept|ɹ ˈɛ p t
-ro|ɹ ˈoʊ
-rotde|ɹ ˈɑː t d
-runno|ɹ ˈʌ n oʊ
-ruough|r j ˈuː oʊ
-saalil|s ˈɑː l ɪ l
-sasay|s ˈæ s eɪ
-sayain|s ˈeɪ eɪ n
-selfll|s ˈɛ l f l əl
-shebby|ʃ ˈɛ b i
-shed'board|ʃ ˈɛ d b oːɹ d
-shn't|ˌɛ s ˌeɪ tʃ ˈɛ n t
-shooe|ʃ ˈuː
-sitback|s ˈɪ t b æ k
-smeil|s m ˈeɪ l
-smo|s m ˈoʊ
-somebodyio|s ˌʌ m b ə d ˈɪ  ɪ  ˌoʊ
-somewhereelse|s ˈʌ m w ɛ ɹ ˌɛ l s
-sortry|s ˈɔːɹ t ɹ i
-soundarlike|s ˈaʊ n d ɑːɹ l ˌaɪ k
-sovi|s ˈoʊ v i
-spg|ˌɛ s p ˌiː dʒ ˈiː
-stal|s t ˈæ l
-stanking|s t ˈæ ŋ k ɪ ŋ
-straayight|s t ɹ ˈɑː j aɪ t
-ststopp|ˌɛ s t ˈiː s t ˈɑː p
-sublow|s ˈʌ b l oʊ
-suff|s ˈʌ f
-suprayer|s ˈuː p ɹ ə j ɚ
-swe|s w ˈɪ
-sweed|s w ˈiː d
-takekes|t ˈeɪ k k s
-tbelieve|t ˈiː b ᵻ l ˈiː v
-thankank|θ ˈæ ŋ k æ ŋ k
-thatbids|θ ˈæ t b ɪ d z
-toannoy|t ˈoʊ n ɔɪ
-tobehonest|t ˈoʊ b ə n ˌɪ s t
-todrun|t ˈɑː d ɹ ʌ n
-tokeep|t ˈoʊ k ɛ p
-toughgon|t ˈʌ f ɡ ɑː n
-uct|ˈʌ k t
-ugest|j ˈuː dʒ ɪ s t
-unneed|ʌ n n ˈiː d
-uster|ˈʌ s t ɚ
-ute|j ˈuː t
-we't|w ˈɛ t
-wentt|w ˈɛ n t
-whereel|w ˈɛ ɹ əl
-whes|w ˈɛ z
-whipplash|w ˈɪ p l æ ʃ
-whooli|w ˈuː l i
-whyi|w ˈɪ  i
-winss|w ˈɪ n s
-wll|d ˌʌ b əl j ˌuː ˌɛ l ˈɛ l
-woman'my|w ˈʊ m ə n m i
-yac|j ˈæ k
-yei'm|j ˈeɪ m
-youagain|j w ˈɑː ɡ eɪ n
-yourll|j ˈoːɹ l əl
-yourparenis|j ˈoːɹ p ɐ ɹ ˌɛ n i z
-youwatch|j ˈuː w ɑː tʃ
-youwill|j ˈaʊ w ɪ l

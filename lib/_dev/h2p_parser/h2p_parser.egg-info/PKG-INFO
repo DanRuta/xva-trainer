@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: h2p-parser
+Version: 1.0.0
+Summary: Heteronym to Phoneme Parser
+Home-page: https://github.com/ionite34/h2p-parser
+Author: ionite
+Author-email: dev@ionite.io
+License: Apache 2.0
+Platform: UNKNOWN
+Requires-Python: >=3.7
+License-File: LICENSE
+
+UNKNOWN
+

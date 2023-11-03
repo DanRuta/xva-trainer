@@ -337,8 +337,8 @@ window.refreshTrainingQueueList = () => {
 
         configButton.addEventListener("click", () => {
             configAnExistingItem = true
-            window.training_state.datasetsQueue[di].dataset_path = window.training_state.datasetsQueue[di].dataset_path.replaceAll(/\\/, "/")
-            window.training_state.datasetsQueue[di].output_path = window.training_state.datasetsQueue[di].output_path.replaceAll(/\\/, "/")
+            window.training_state.datasetsQueue[di].dataset_path = window.training_state.datasetsQueue[di].dataset_path.replace(/\\/g, "/")
+            window.training_state.datasetsQueue[di].output_path = window.training_state.datasetsQueue[di].output_path.replace(/\\/g, "/")
             window.showConfigMenu(window.training_state.datasetsQueue[di], di)
         })
     })
@@ -656,15 +656,15 @@ cancelConfig.addEventListener("click", () => {
     queueItemConfigModalContainer.style.display = "none"
 })
 trainingAddConfigDatasetPathInput.addEventListener("keyup", e => {
-    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/")
+    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replace(/\\/g, "/")
 })
 trainingAddConfigOutputPathInput.addEventListener("keyup", e => {
-    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/")
+    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replace(/\\/g, "/")
 })
 acceptConfig.addEventListener("click", () => {
 
-    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/")
-    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/")
+    trainingAddConfigDatasetPathInput.value = trainingAddConfigDatasetPathInput.value.replace(/\\/g, "/")
+    trainingAddConfigOutputPathInput.value = trainingAddConfigOutputPathInput.value.replace(/\\/g, "/")
 
     if (!trainingAddConfigDatasetPathInput.value.trim().length) {
         return window.errorModal("You need to specify where your dataset is located.", queueItemConfigModalContainer)
@@ -699,7 +699,7 @@ acceptConfig.addEventListener("click", () => {
 
         let xvapitch_checkpoint = "[base]"
         if (xvapitch_ckpt_option_other.checked) {
-            xvapitch_checkpoint = trainingAddConfigCkptPathInput.replaceAll(/\\/, "/")
+            xvapitch_checkpoint = trainingAddConfigCkptPathInput.replace(/\\/g, "/")
         }
 
         // TODO
@@ -708,10 +708,10 @@ acceptConfig.addEventListener("click", () => {
             const queueIndex = window.training_state.currentlyConfiguringDatasetI
 
             const configData = {
-                "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path.replaceAll(/\\/, "/"),
-                "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
+                "dataset_path": window.training_state.datasetsQueue[queueIndex].dataset_path.replace(/\\/g, "/"),
+                "output_path": trainingAddConfigOutputPathInput.value.replace(/\\/g, "/"),
                 "checkpoint": xvapitch_checkpoint,
-                // "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
+                // "hifigan_checkpoint": hg_ckpt.replace(/\\/g, "/"),
 
                 "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
@@ -731,10 +731,10 @@ acceptConfig.addEventListener("click", () => {
             const configData = {
                 "status": "Ready",
 
-                "dataset_path": trainingAddConfigDatasetPathInput.value.replaceAll(/\\/, "/"),
-                "output_path": trainingAddConfigOutputPathInput.value.replaceAll(/\\/, "/"),
+                "dataset_path": trainingAddConfigDatasetPathInput.value.replace(/\\/g, "/"),
+                "output_path": trainingAddConfigOutputPathInput.value.replace(/\\/g, "/"),
                 "checkpoint": xvapitch_checkpoint,
-                // "hifigan_checkpoint": hg_ckpt.replaceAll(/\\/, "/"),
+                // "hifigan_checkpoint": hg_ckpt.replace(/\\/g, "/"),
 
                 "use_amp": trainingAddConfigUseAmp.checked ? "true" : "false",
                 "num_workers": parseInt(trainingAddConfigWorkersInput.value),
@@ -752,7 +752,7 @@ acceptConfig.addEventListener("click", () => {
         window.refreshTrainingQueueList()
     }
 
-    let xvap_ckpt = trainingAddConfigCkptPathInput.value.trim().replaceAll(/\\/, "/")
+    let xvap_ckpt = trainingAddConfigCkptPathInput.value.trim().replace(/\\/g, "/")
     if (xvapitch_ckpt_option_base.checked) {
         xvap_ckpt = "[base]"
     }
@@ -780,6 +780,7 @@ trainingQueueBtnClear.addEventListener("click", () => {
     window.confirmModal("Are you sure you'd like to clear the training queue, losing all configured model training runs?").then(resp => {
         if (resp) {
             window.training_state.datasetsQueue = []
+            window.training_state.selectedQueueItem = undefined
             window.refreshTrainingQueueList()
             fs.writeFileSync(`${window.path}/training_queue.json`, JSON.stringify(window.training_state.datasetsQueue, null, 4))
         }
@@ -895,9 +896,15 @@ exportSubmitButton.addEventListener("click", () => {
         const metadataJSON = JSON.parse(fs.readFileSync(`${window.userSettings.datasetsPath}/${window.appState.currentDataset}/dataset_metadata.json`, "utf8"))
         const voiceId = metadataJSON.games[0].voiceId
 
-        metadataJSON.games[0].resemblyzer = trainingJSON.games[0].resemblyzer
-        metadataJSON.games[0].voiceId = voiceId//window.appState.currentDataset
-        fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${voiceId}.json`, JSON.stringify(metadataJSON, null, 4))
+        trainingJSON.author = metadataJSON.author
+        trainingJSON.license = metadataJSON.license
+        trainingJSON.lang = metadataJSON.lang
+        trainingJSON.games[0].gameId = metadataJSON.games[0].gameId
+        trainingJSON.games[0].voiceId = metadataJSON.games[0].voiceId
+        trainingJSON.games[0].gender = metadataJSON.games[0].gender
+        trainingJSON.games[0].voiceName = metadataJSON.games[0].voiceName
+
+        fs.writeFileSync(`${modelExport_outputDir.value.trim()}/${voiceId}.json`, JSON.stringify(trainingJSON, null, 4))
 
 
 

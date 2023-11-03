@@ -1,0 +1,13 @@
+g2pC-0.9.9.3.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+g2pC-0.9.9.3.dist-info/LICENSE,sha256=xx0jnfkXJvxRnG63LTGOxlggYnIysveWIZ6H3PNdCrQ,11357
+g2pC-0.9.9.3.dist-info/METADATA,sha256=c_0sbCBhcdAK6Va9RIeeIiaiAPmYoSKDdqOVfkhIyxg,6296
+g2pC-0.9.9.3.dist-info/RECORD,,
+g2pC-0.9.9.3.dist-info/REQUESTED,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+g2pC-0.9.9.3.dist-info/WHEEL,sha256=S8S5VL-stOTSZDYxHyf0KP7eds0J72qrK0Evu3TfyAY,92
+g2pC-0.9.9.3.dist-info/top_level.txt,sha256=c8k5bF0gRGeilE80Zio9nXHesPFWa2iim4AV7cfDA4k,5
+g2pc/__init__.py,sha256=wz8tscdMId428rjHRAqeI_w1RkT09ngZVRCHxCqBNg8,99
+g2pc/__pycache__/__init__.cpython-38.pyc,,
+g2pc/__pycache__/g2pc.cpython-38.pyc,,
+g2pc/cedict.pkl,sha256=wgxg6b_dMi8ynUlaH5NPNvJqyXzSBF2khKn74NbfeDo,16747381
+g2pc/crf100.bin,sha256=f_7CC0y5sHugD-mMmopaIjWGiNA29k2KKcrxtakLWWM,2236171
+g2pc/g2pc.py,sha256=tUa1H5ii8M1_5wsUBnl-1n0tl-sc9T8uN-OsEzrmWi0,7827

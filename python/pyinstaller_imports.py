@@ -8,6 +8,10 @@ import numpy.core
 import numpy.core.overrides
 
 try:
+    from pyannote.audio.features import Pretrained as _Pretrained
+except:
+    pass
+try:
     import scipy
     import scipy.linalg
     import scipy.linalg.blas
@@ -15,13 +19,19 @@ try:
     import scipy.optimize
     # import scipy.optimize.line_search
     import sklearn.utils._cython_blas
-    import sklearn.neighbors.typedefs
-    import sklearn.neighbors.quad_tree
+    try:
+        import sklearn.neighbors.typedefs
+        import sklearn.neighbors.quad_tree
+    except:
+        import sklearn.neighbors
     import sklearn.tree
     import sklearn.tree._utils
     import sklearn.utils._cython_blas
-    import sklearn.neighbors.typedefs
-    import sklearn.neighbors.quad_tree
+    try:
+        import sklearn.neighbors.typedefs
+        import sklearn.neighbors.quad_tree
+    except:
+        import sklearn.neighbors
     import sklearn.tree._utils
 except:
     print("==== scipy")

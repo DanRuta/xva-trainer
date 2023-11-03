@@ -1,0 +1,16 @@
+{
+    "absent": {
+        "VERB": "AH1 B S AE1 N T",
+        "DEFAULT": "AE1 B S AH0 N T"
+    },
+    "reject": {
+        "VERB": "R IH0 JH EH1 K T",
+        "DEFAULT": "R IY1 JH EH0 K T"
+    },
+    "read": {
+        "VBD": "R EH1 D",
+        "VBN": "R EH1 D",
+        "VBP": "R EH1 D",
+        "DEFAULT": "R IY1 D"
+    }
+}

@@ -74,28 +74,10 @@ class TTSDataset(Dataset):
     def __init__(
         self,
         args,
-        # outputs_per_step: int,
-        # text_cleaner: list,
-        # compute_linear_spec: bool,
         meta_data=None,
         priors_data_list=None,
         meta_data_finetune=None,
-        # compute_f0: bool = False,
-        # f0_cache_path: str = None,
-        # characters: Dict = None,
-        # custom_symbols: List = None,
-        # add_blank: bool = False,
-        # return_wav: bool = False,
-        # batch_group_size: int = 0,
         min_seq_len: int = 0,
-        # max_seq_len: int = float("inf"),
-        # use_phonemes: bool = False,
-        # phoneme_cache_path: str = None,
-        # enable_eos_bos: bool = False,
-        # speaker_id_mapping: Dict = None,
-        # language_id_mapping: Dict = None,
-        # use_noise_augment: bool = False,
-        # verbose: bool = False,
         lang_override = None,
         is_ft = False
     ):
@@ -127,11 +109,6 @@ class TTSDataset(Dataset):
 
         # self.batch_group_size = batch_group_size
         self.items = [line.split("|") for line in priors_data_list] if priors_data_list is not None else meta_data
-        # self.filename_to_items_mapping = None
-        # self.filenames = {}
-        # for item in self.items:
-        #     text, wav_file, speaker_name, lang = item
-        #     self.filenames[wav_file] = None
         self.filename_to_items_mapping = {}
         for item in self.items:
             text, wav_file, speaker_name, lang = item
@@ -139,33 +116,11 @@ class TTSDataset(Dataset):
                 item[-1] = lang_override
             self.filename_to_items_mapping[wav_file.split("/")[-1]] = item
 
-        # self.items_finetune = meta_data_finetune
         self.outputs_per_step = 1
         self.sample_rate = 22050
-        # self.cleaners = text_cleaner
-        # self.compute_linear_spec = compute_linear_spec
-        # self.return_wav = return_wav
-        # self.compute_f0 = compute_f0
-        # self.f0_cache_path = f0_cache_path
         self.min_seq_len = min_seq_len
-        # self.max_seq_len = max_seq_len
-        # self.characters = characters
-        # self.custom_symbols = custom_symbols
-        # self.add_blank = add_blank
-        # self.use_phonemes = use_phonemes
-        # self.phoneme_cache_path = phoneme_cache_path
-        # self.enable_eos_bos = enable_eos_bos
-        # self.speaker_id_mapping = speaker_id_mapping
-        # self.language_id_mapping = language_id_mapping
-        # self.use_noise_augment = use_noise_augment
 
         self.language_id_mapping = {name: i for i, name in enumerate(sorted(list(lang_names.keys())))}
-        # self.language_id_mapping = {name: i for i, name in enumerate(["de", "en", "it"])}
-
-        # self.verbose = verbose
-        # self.input_seq_computed = False
-        # self.rescue_item_idx = 1
-        # self.pitch_computed = False
         self.spec_segment_size = 32
 
         # setup audio processor
@@ -174,7 +129,7 @@ class TTSDataset(Dataset):
         # print("Loading text processors...")
         self.tp = {}
         for lang_code in lang_names.keys():
-            base_dir = "/".join(os.path.abspath(__file__).split("\\")[:-1])+f'/text'
+            base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'text')
             self.tp[lang_code] = get_text_preprocessor(lang_code, base_dir, override_useAnyG2P=False)
 
 
@@ -192,14 +147,10 @@ class TTSDataset(Dataset):
         self.dataset_cache["text_too_long"] = {}
         self.dataset_cache["speaker_embedding"] = {}
         self.total_cached_samples = 0
-        # self.MAX_CACHE_SAMPLES = 3000
         self.MAX_CACHE_SAMPLES = 30000
         self.MAX_CACHE_SAMPLES = 10000
-        # self.MAX_CACHE_SAMPLES = 50000
-        # self.MAX_CACHE_SAMPLES = 100000
-        # self.MAX_CACHE_SAMPLES = 0
+        self.MAX_CACHE_SAMPLES = 0 # costs RAM
 
-        # TODO, eventually, get the stats for the entire xVASpeech dataset
         # self.pitch_mean = torch.Tensor([214.72203]) # LJSpeech
         # self.pitch_std = torch.Tensor([65.72038]) # LJSpeech
         self.pitch_mean = torch.Tensor([104.606]) # xVASpeech
@@ -210,30 +161,12 @@ class TTSDataset(Dataset):
             self.stft = TacotronSTFT(filter_length=1024, hop_length=256, win_length=1024, n_mel_channels=80, sampling_rate=22050, mel_fmin=0.0, mel_fmax=8000)
 
 
-
-    # def load_wav(self, filename):
-    #     audio = self.ap.load_wav(filename)
-    #     return audio
-
     def calibrate_loss_sampling(self, loss_sampling_dict):
-        # print("calibrate_loss_sampling")
-
-        # if self.filename_to_items_mapping is None:
-        #     self.filename_to_items_mapping = {}
-        #     for item in self.items:
-        #         text, wav_file, speaker_name, lang = item
-        #         self.filename_to_items_mapping[wav_file.split("/")[-1]] = item
-            # print(f'self.filename_to_items_mapping, {list(self.filename_to_items_mapping.keys())}')
-            # print(f'self.filename_to_items_mapping, {len(self.filename_to_items_mapping)}')
-            # print(f'self.items, {len(self.items)}')
-            # print("self.filename_to_items_mapping", list(self.filename_to_items_mapping.keys())[:5])
 
         # Given a dict of losses for each filename in the dataset files list, use gaussian sampling over the centre of a list
         # of these files sorted by the loss, to get mainly the ones in the middle, leaving out samples that are already learnt
         # and also lines where the loss is high (probably badly labelled). Focus instead on the samples which have most
         # potential to actually help train the model, which will be in the middle
-
-
 
         # loss_sampling_dict - a dict like:  {stages: [{},{},{},..]}   where each sub-item is a dict of filename:loss, eg {file1.wav: 0.45, file2.wav: 0.21, ..}
         # loss_sampling_dict - a dict like:  {[{},{},{},..]}   where each sub-item is a dict of filename:loss, eg {file1.wav: 0.45, file2.wav: 0.21, ..}
@@ -269,9 +202,6 @@ class TTSDataset(Dataset):
                     continue # Skip if this sample has already been picked
 
 
-                # sample_inds_collected.append(data_list_index)
-                # if files_losses[data_list_index][0] in self.filename_to_items_mapping.keys():
-                #     sample_inds_collected.append(data_list_index)
                 sample_inds_collected.append(data_list_index)
 
 
@@ -294,25 +224,9 @@ class TTSDataset(Dataset):
 
         item = None
 
-        # If fine-tuning a voice, randomly select new data or old data, for prior preservation against xVASpeech
-        # if self.items_finetune is not None:
-        #     prior_weight = 0.5
-        #     if random.random() < prior_weight:
-        #         data_index = random.randint(0, len(self.items_finetune)-1)
-        #         try:
-        #             item = self.items_finetune[data_index]
-        #         except:
-        #             print(f'data_index: {data_index} | {len(self.items_finetune)}')
-        #             raise
-
         # If data is not selected from the finetuning dataset, pick one from the priors dataset
         if item is None:
             item = self.items[idx%len(self.items)]
-
-
-
-        # if self.args.hifi_only:
-        #     print(f'hifi_debug data, 1')
 
         text, wav_file, speaker_name, lang = item
         raw_text = text
@@ -321,11 +235,8 @@ class TTSDataset(Dataset):
 
         text = self.get_text(text, lang, wav_file)
         if len(text)==9 and text=="TOO SHORT":
-            # return self.load_data(self.rescue_item_idx)
             return self.load_data(random.randint(0, len(self.items)))
 
-
-        # wav = np.asarray(self.load_wav(wav_file), dtype=np.float32)
         wav = self.get_wav(wav_file)
         if wav is None:
             print("wav is None")
@@ -338,42 +249,17 @@ class TTSDataset(Dataset):
             print(f'wav_file, {wav_file}')
             raise
         linear = self.ap.spectrogram(wav).astype("float32")
-        # [mel, linear] = self.get_mel(wav_file, wav)
 
         if mel.shape[1]<self.spec_segment_size:
-            # print(f'Mel shorter than self.spec_segment_size', mel.shape)
             self.dataset_cache["text_too_short"][raw_text] = "x"
             return self.load_data(random.randint(0, len(self.items)))
 
-        # emb_path = wav_file.replace("/wavs/", "/se_embs/").replace(".wav", ".npy")
-        # embedding = np.load(emb_path)
         embedding = self.get_embedding(wav_file)
-
-
 
         pitch = [0]
         energy = [0]
-        if self.args.pitch:
-            pitch = self.get_pitch(wav_file, mel.shape[-1])
-            pitch = pitch[None, :]
-            pitch = torch.tensor(pitch)
-            # print(f'pitch, {pitch.shape}')
-        if self.args.energy:
-            # print(f'mel, {mel.shape}')
-            # energy = np.linalg.norm(mel, ord=2, axis=0)
-            energy = self.get_energy(wav_file, mel)
-            energy = energy[None, :]
-            energy = torch.tensor(energy)
-            # print(f'energy, {energy.shape}')
-
-        # if self.args.ow_flow:
-        #     print(f'mel, {mel}')
-        #     print(f'energy, {energy}')
-        #     fgf()
-
 
         sample = {
-            # "raw_text": raw_text,
             "text": text,
             "wav": wav,
             "mel": mel,
@@ -403,16 +289,6 @@ class TTSDataset(Dataset):
 
             return np.linalg.norm(melspec, ord=2, axis=0)
         else:
-            # if self.args.energy_magnitude:
-            #     print("mel", mel, mel.shape)
-            #     print("norm", np.linalg.norm(mel, ord=2, axis=0))
-            #     print("sum", np.sum(mel, axis=0), np.sum(mel, axis=0).shape)
-            #     print("mean", np.mean(mel, axis=0), np.mean(mel, axis=0).shape)
-            #     print("max", np.max(mel, axis=0), np.max(mel, axis=0).shape)
-            #     print("std", np.std(mel, axis=0), np.std(mel, axis=0).shape)
-            #     fgd()
-            #     return np.sum(mel, axis=0)
-            # else:
             return np.linalg.norm(mel, ord=2, axis=0)
 
     def get_text(self, raw_text, lang, wav_file):
@@ -423,24 +299,6 @@ class TTSDataset(Dataset):
             text = self.dataset_cache["text"][raw_text]
             return text
         except:
-            # text_orig = np.asarray(
-            #     text_to_sequence(
-            #         raw_text,
-            #         # [self.cleaners],
-            #         ["multilingual_cleaners"],
-            #         custom_symbols=self.custom_symbols,
-            #         tp=self.characters,
-            #         # add_blank=self.add_blank,
-            #         add_blank=True,
-            #     ),
-            #     dtype=np.int32,
-            # )
-            # text = text_orig
-            # print(f'text ORIG, {text}')
-
-
-
-
             try:
                 text, _ = self.tp[lang].text_to_sequence(raw_text)
             except:
@@ -466,49 +324,18 @@ class TTSDataset(Dataset):
 
         return text
 
-    # def get_mel(self, filename, wav):
-    #     mel_filename = filename.replace("/wavs/", "/mels/").replace(".wav", ".npy")
-    #     try:
-    #         # try:
-    #         [mel, linear] = self.dataset_cache["mel"][mel_filename]
-    #         return [mel, linear]
-    #         # except:
-    #         #     [mel, linear] = np.load(mel_filename, allow_pickle=True)
-    #     except:
-    #         # if not os.path.exists(mel_filename):
-    #         mel = self.ap.melspectrogram(wav).astype("float32")
-
-    #         linear = self.ap.spectrogram(wav).astype("float32")
-
-    #         os.makedirs("/".join(mel_filename.split("/")[:-1]), exist_ok=True)
-    #         # np.save(mel_filename, [mel, linear])
-    #         # else:
-    #         #     raise
-
-    #     if self.total_cached_samples < self.MAX_CACHE_SAMPLES:
-    #         self.total_cached_samples += 1
-    #         self.dataset_cache["mel"][mel_filename] = [mel, linear]
-
-    #     return [mel, linear]
-
     def get_wav(self, filename, retryCount=0):
-        # try:
         if filename in self.dataset_cache["wav"].keys():
             wav = self.dataset_cache["wav"][filename]
             return wav
-        # except:
         else:
             if not os.path.exists(filename):
                 return None
             wav = self.ap.load_wav(filename)
-            # if wav=="==DEL_BAD_FILE==":
             if wav is None:
                 print("==DEL_BAD_FILE==")
                 os.remove(filename)
                 return None
-            # if os.path.exists(filename):
-            # else:
-            #     raise
 
         if self.total_cached_samples < self.MAX_CACHE_SAMPLES:
             self.total_cached_samples += 1
@@ -517,7 +344,6 @@ class TTSDataset(Dataset):
         return np.asarray(wav, dtype=np.float32)
 
     def get_embedding(self, wav_file):
-        # emb_path = wav_file.replace("/wavs_postprocessed/" if self.is_ft else "/wavs/", "/se_embs/").replace(".wav", ".npy")
         emb_path = wav_file.replace("/wavs_postprocessed/", "/wavs/")
         emb_path = emb_path.replace("/wavs/", "/se_embs/").replace(".wav", ".npy")
         try:
@@ -533,44 +359,6 @@ class TTSDataset(Dataset):
         return emb
 
 
-    # def get_pitch (self, wav_file, mel_len):
-    #     pitch_path = wav_file.replace("/wavs/", "/pitch/").replace(".wav", ".npy")
-
-    #     try:
-    #         return self.dataset_cache["pitch"][pitch_path]
-    #     except:
-    #         try:
-    #             pitch = np.load(pitch_path)
-    #         except:
-
-    #             if "allow_pickle=False" in traceback.format_exc():
-    #                 os.remove(pitch_path)
-
-    #             if not os.path.exists(pitch_path):
-    #                 pitch = estimate_pitch(wav_file, mel_len, None, None)
-    #                 os.makedirs("/".join(pitch_path.split("/")[:-1]), exist_ok=True)
-
-    #                 # if self.pitch_mean is not None:
-    #                 #     pitch = normalize_pitch(pitch, self.pitch_mean.numpy(), self.pitch_std.numpy())
-
-    #                 pitch = pitch.numpy()
-    #                 np.save(pitch_path, pitch)
-    #             else:
-    #                 # Some other dataloader process might have started but not finished writing this to file
-    #                 # so loading it during that will error. Try waiting a couple of seconds, to give the other
-    #                 # process some time to finish writing to file, then try again
-    #                 time.sleep(4)
-    #                 pitch = np.load(pitch_path)
-
-    #         if self.pitch_mean is not None:
-    #             pitch = normalize_pitch(pitch, self.pitch_mean.numpy(), self.pitch_std.numpy())
-    #         if self.total_cached_samples < self.MAX_CACHE_SAMPLES:
-    #             self.total_cached_samples += 1
-    #             self.dataset_cache["pitch"][pitch_path] = pitch
-    #         return pitch
-
-
-
     def sort_and_filter_items(self, by_audio_len=False):
         r"""Sort `items` based on text length or audio length in ascending order. Filter out samples out or the length
         range.
@@ -583,28 +371,12 @@ class TTSDataset(Dataset):
         idxs = np.argsort(lengths)
         new_items = []
         ignored_short = []
-        # ignored_long = []
         for i, idx in enumerate(idxs):
             length = lengths[idx]
-            # if length < self.min_seq_len or length > self.max_seq_len:
             if length < self.min_seq_len:
                 ignored_short.append(idx)
-            # elif  length > self.max_seq_len:
-            # # if length > self.max_seq_len:
-            #     ignored_long.append(idx)
-            # else:
-            #     new_items.append(self.items[idx])
             else:
                 new_items.append(self.items[idx])
-        # shuffle batch groups
-        # if self.batch_group_size > 0:
-        #     for i in range(len(new_items) // self.batch_group_size):
-        #         offset = i * self.batch_group_size
-        #         end_offset = offset + self.batch_group_size
-        #         temp_items = new_items[offset:end_offset]
-        #         random.shuffle(temp_items)
-        #         new_items[offset:end_offset] = temp_items
-        # print(f'Number of dataset samples ignored for being too short = {len(ignored_short)}, or too long = {len(ignored_long)}')
         print(f'Number of dataset samples ignored for being too short = {len(ignored_short)}')
         print(f'Final number of dataset lines: {len(new_items)}')
         self.items = new_items
@@ -653,20 +425,12 @@ class TTSDataset(Dataset):
                 language_ids = [self.language_id_mapping[ln] for ln in batch["language_name"]]
             else:
                 language_ids = None
-            # get pre-computed d-vectors
-            # d_vectors = []
             wav_files_names = list(batch["item_idx"])
 
             d_vectors = list(batch["d_vectors"])
 
 
-            # get numerical speaker ids from speaker names
-            # if self.speaker_id_mapping:
-            #     speaker_ids = [self.speaker_id_mapping[sn] for sn in batch["speaker_name"]]
-            # else:
-            #     speaker_ids = None
             mel = list(batch["mel"])
-
             mel_lengths = [m.shape[1] for m in mel]
 
             # lengths adjusted by the reduction factor
@@ -695,9 +459,7 @@ class TTSDataset(Dataset):
             # convert things to pytorch
             text_lengths = torch.LongTensor(text_lengths)
             text = torch.LongTensor(text)
-            # mel = torch.FloatTensor(mel).contiguous()
             mel_lengths = torch.LongTensor(mel_lengths)
-            # stop_targets = torch.FloatTensor(stop_targets)
 
             if d_vectors is not None:
                 d_vectors = torch.FloatTensor(np.array(d_vectors))
@@ -707,23 +469,13 @@ class TTSDataset(Dataset):
                 language_ids = torch.LongTensor(language_ids)
 
 
-            # print(f'linear 1, {linear.shape}')
             linear = prepare_tensor(batch["linear"], self.outputs_per_step)
-            # if batch["linear"][0] is not None:
-            #     linear = prepare_tensor(batch["linear"], self.outputs_per_step)
-            # else:
-            #     linear = [self.ap.spectrogram(w).astype("float32") for w in batch["wav"]]
-            #     linear = prepare_tensor(linear, self.outputs_per_step)
 
-            # print(f'linear 2, {linear.shape}')
             linear = linear.transpose(0, 2, 1)
             linear = torch.FloatTensor(linear).contiguous()
-            # else:
-            #     linear = None
 
             # format waveforms
             wav_padded = None
-            # if self.return_wav:
             wav_lengths = [w.shape[0] for w in batch["wav"]]
             max_wav_len = max(mel_lengths_adjusted) * self.ap.hop_length
             wav_lengths = torch.LongTensor(wav_lengths)
@@ -745,53 +497,20 @@ class TTSDataset(Dataset):
                 # Right zero-pad mel-spec
 
                 n_formants = batch["pitch"][0].shape[0]
-                # pitch_padded = torch.zeros(mel.size(0), n_formants, mel.size(2), dtype=mel.dtype)
                 try:
                     max_target_len = max([x.shape[1] for x in list(batch["mel"])])
-                    # pitch_padded = torch.zeros(len(wav_files_names), n_formants, batch["mel"][0].size[2], dtype=mel.dtype)
-                    # pitch_padded = torch.zeros(len(wav_files_names), n_formants, max_target_len, dtype=mel.dtype)
                     pitch_padded = torch.zeros(len(wav_files_names), n_formants, max_target_len)#, dtype=mel.dtype)
                 except:
                     print("mel", batch["mel"][0].size, list(batch["mel"]), wav_files_names[0])
                     raise
-                # energy_padded = torch.zeros_like(pitch_padded[:, 0, :])
 
-                # for i in range(len(ids_sorted_decreasing)):
                 for i in range(len(batch["pitch"])):
-                    # pitch = batch[ids_sorted_decreasing[i]]["pitch"]
-                    # pitch = batch["pitch"][ids_sorted_decreasing[i]]
                     pitch = batch["pitch"][i]
 
-                    # energy = batch[ids_sorted_decreasing[i]][4]
                     try:
-                        # pitch_padded[i, :, :pitch.shape[1]] += torch.squeeze(pitch, 0)#.long()
                         pitch_padded[i, :, :pitch.shape[-1]] += torch.squeeze(pitch, 0)
                     except:
-                        # print("pitch_padded", pitch_padded.shape, pitch.shape, torch.squeeze(pitch, 0).shape)
                         pitch_padded[i, :, :min(pitch.shape[-1], pitch_padded.shape[2])] += torch.squeeze(pitch, 0)[:, :pitch_padded.shape[2]]
-                        # raise
-                        # pitch_padded[i, :, :pitch.shape[1]] += pitch.long()
-
-                    # energy_padded[i, :energy.shape[0]] += energy
-
-
-            if self.args.energy:
-                n_formants = batch["energy"][0].shape[0]
-                max_target_len = max([x.shape[1] for x in list(batch["mel"])])
-                energy_padded = torch.zeros(len(wav_files_names), n_formants, max_target_len)#, dtype=mel.dtype)
-
-                for i in range(len(batch["energy"])):
-                    energy = batch["energy"][i].unsqueeze(dim=0)
-                    # print(f'energy_padded, {energy_padded.shape}')
-                    # print(f'energy, {energy.shape}')
-                    try:
-                        energy_padded[i, :, :min(energy.shape[-1], energy_padded.shape[-1])] += torch.squeeze(energy, 0)
-                    except:
-                        energy_padded[i, :, :min(energy.shape[-1], energy_padded.shape[2])] += torch.squeeze(energy, 0)[:, :energy_padded.shape[2]]
-
-
-
-
 
             return {
                 "text": text,
@@ -801,8 +520,6 @@ class TTSDataset(Dataset):
                 "energy_padded": energy_padded,
                 "mel_lengths": mel_lengths,
                 "mel_mask": mel_mask,
-                # "stop_targets": stop_targets,
-                # "item_idxs": batch["item_idx"],
                 "d_vectors": d_vectors,
                 "waveform": wav_padded,
                 "language_ids": language_ids,
@@ -870,6 +587,8 @@ def normalize_pitch(pitch, mean, std):
 
 def read_datasets (languages, dataset_roots, extract_embs, device, data_mult=1, trainer=None, cmd_training=True, is_ft=False):
 
+    languages_loaded = set()
+
     # if extract_embs:
     if device is None:
         device = torch.device("cpu")
@@ -892,6 +611,7 @@ def read_datasets (languages, dataset_roots, extract_embs, device, data_mult=1, 
         for fname in sub_files:
             if "." not in fname and "_" in fname and fname.split("_")[0] in languages and os.path.exists(f'{root}/{fname}/metadata.csv'):
                 all_datasets.append(f'{root}/{fname}')
+                languages_loaded.add(fname.split("_")[0])
     # print(f'all_datasets, {len(all_datasets)}')
 
     # Go through each dataset's metadata.csv file, and read in the lines. Optionally extract embeddings for the wav files
@@ -961,7 +681,7 @@ def read_datasets (languages, dataset_roots, extract_embs, device, data_mult=1, 
 
     with open(f'{dataset_roots[0]}/.has_extracted_embs', "w+") as f: # TODO, detect dataset changes, to invalidate this? md5?
         f.write("")
-    return all_metadata, len(all_datasets), data_mult
+    return all_metadata, len(all_datasets), data_mult, sorted(languages_loaded)
 
 
 def pre_cache_g2p (dataset_roots, lang=None):
@@ -983,7 +703,7 @@ def pre_cache_g2p (dataset_roots, lang=None):
 
     # tp = get_text_preprocessor(lang_code, base_dir)
     tp = {}
-    base_dir = "/".join(os.path.abspath(__file__).split("\\")[:-1])+f'/text'
+    base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'text')
     for lang_code in languages:
         tp[lang_code] = get_text_preprocessor(lang_code, base_dir, override_useAnyG2P=True)
 

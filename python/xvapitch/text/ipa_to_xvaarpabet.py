@@ -258,36 +258,20 @@ def text_pinyin_to_pinyin_symbs (text):
 
 def _espeak_exe(base_dir, args: List, sync=False) -> List[str]:
     """Run espeak with the given arguments."""
-    # espeak_lib = f'F:/Speech/espeak/eSpeak/command_line/espeak.exe'
-    # espeak_lib = f'C:/Program Files (x86)/eSpeak/command_line/espeak.exe'
-    # espeak_lib = f'F:/Speech/espeak/eSpeak_NG/espeak-ng.exe'
     espeak_lib = f'{base_dir}/eSpeak_NG/espeak-ng.exe'
     cmd = [
         espeak_lib,
-        # f'--path="F:/Speech/espeak/eSpeak_NG"',
         f'--path="{base_dir}/eSpeak_NG"',
         "-q",
         "-b",
         "1",  # UTF8 text encoding
     ]
     cmd.extend(args)
-    # logging.debug("espeakng: executing %s", repr(cmd))
-    # print("espeakng: executing %s", repr(" ".join(cmd)))
-
-
-    # print(" ".join(cmd))
-    # print(f'F:/Speech/espeak/eSpeak_NG/espeak-ng.exe --path="F:/Speech/espeak/eSpeak_NG" -q -b 1 -v ro --ipa=1 "bună ziua. Ce mai faceți?"')
-    # print("---")
 
 
     try:
         with subprocess.Popen(
             " ".join(cmd),
-            # cmd,
-            # f'F:/Speech/espeak/eSpeak_NG/espeak-ng.exe --path="F:/Speech/espeak/eSpeak_NG" -q -b 1 -v ro --ipa=1 "bună ziua. Ce mai faceți?"',
-            # F:/Speech/espeak/eSpeak_NG/espeak-ng.exe --path="F:/Speech/espeak/eSpeak_NG" -q -b 1 -v ro --ipa=1 "bună ziua. Ce mai faceți?"
-            # F:/Speech/espeak/eSpeak_NG/espeak-ng.exe --path="F:/Speech/espeak/eSpeak_NG" -q -b 1 -v ro --ipa=1 "bună ziua. Ce mai faceți?"
-
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
         ) as p:

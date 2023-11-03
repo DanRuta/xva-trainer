@@ -38,9 +38,7 @@ const lang_names = {
 }
 
 const makeTranscriptionModelDropdown = () => {
-    const languages = fs.readdirSync(`${window.path}/python/transcribe/wav2vec2`)
-        .filter(name => !name.startsWith("_")&&!name.includes("."))
-        .map(langCode => {return [langCode, lang_names[langCode]]}).sort((a,b) => a[1]<b[1]?-1:1)
+    const languages = Object.keys(lang_names).map(langCode => {return [langCode, lang_names[langCode]]}).sort((a,b) => a[1]<b[1]?-1:1)
     const selectElem = createElem("select")
 
     // Whisper
@@ -64,19 +62,20 @@ const makeTranscriptionModelDropdown = () => {
     whisperLangSelect.value = "en"
 
     // Wav2vec2
-    languages.forEach(lang => {
-        const optionElem = createElem("option", {value: `wav2vec2_${lang[0]}`})
-        optionElem.innerHTML = `Wav2vec2: ${lang[1]}`
-        selectElem.appendChild(optionElem)
-    })
+    // languages.forEach(lang => {
+    //     const optionElem = createElem("option", {value: `wav2vec2_${lang[0]}`})
+    //     optionElem.innerHTML = `Wav2vec2: ${lang[1]}`
+    //     selectElem.appendChild(optionElem)
+    // })
     selectElem.value = "whisper_medium"
     const modelDescription = createElem("div", "Transcription model (more available on nexus)")
     const rowItemModel = createElem("div", createElem("div", modelDescription), createElem("div", selectElem))
 
-    const whisperLangDescription = createElem("div", "Whisper language")
+    const whisperLangDescription = createElem("div", "Language")
     const rowItemWhisperLang = createElem("div", createElem("div", whisperLangDescription), createElem("div", whisperLangSelect))
     return [rowItemModel, selectElem, rowItemWhisperLang, whisperLangSelect]
 }
+
 
 const tools = {
     "Audio formatting": {
@@ -507,7 +506,7 @@ const tools = {
         }
     },
 }
-
+delete tools["AI speaker diarization"] // TEMPORARY, until pyannote dep is fixed
 
 // Brute force progress indicator, for when the WebSockets don't work
 setInterval(() => {
